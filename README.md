@@ -1,10 +1,6 @@
 # idem-mobile
 React native mobile app for Idem
 
-# idem-mobile
-React native mobile app for Idem
-[![deploy-docker](https://github.com/dltxio/idem/actions/workflows/docker-image.yml/badge.svg)](https://github.com/dltxio/idem/actions/workflows/docker-image.yml)
-
 ## Abstract
 
 Idem is an open source cross platform mobile application based on the Decentralised Identity Foundations DID protocol. The mobile application will give individuals control of their digital identities by establishing trust in an interaction between two individuals or entities that do not know each other. For trust to happen, the offering party will present credentials to the receiving parties, which can verify that the credentials are from an issuer that they trust.
