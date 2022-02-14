@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "strict": true,
+    "target": "es6",
+    "module": "commonjs",    
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "rootDir": ".",
+    "outDir": "./build",
+  },
+  "references": [
+    {
+      "path": "./server"
+    },
+    {
+      "path": "./app"
+    }
+  ],
+  "include": [
+    "./server/src/**/*.d.ts",
+    "./app/**/*.d.ts"
+  ],
+  "exclude": ["node_modules", "*/dist/*", "*/build/*"]
+}

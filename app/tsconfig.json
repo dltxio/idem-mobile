@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "composite": true,
+  "compilerOptions": {
+    "rootDir": "./",
+    "outDir": "./build",
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react-native",
+    "lib": ["dom", "esnext"],
+    "typeRoots": ["./types"]
+  },
+  "references": [{ "path": "../server-interfaces" }],
+  "include": ["./", "../server-interfaces/src/**/*.d.ts", "./config.dev.json"]
+}

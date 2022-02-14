@@ -1,0 +1,17 @@
+﻿{
+  "assets": {
+    "endpoint": "https://raw.githubusercontent.com/dltxio/idem/master/",
+    "claims": "assets/claims.json",
+    "vendors": "assets/sites.json",
+    "settings": "assets/settings.json"
+  },
+  "mobile": {
+    "endpoint": ""
+  },
+  "email": {
+    "endpoint": "http://localhost:3000/api/emails"
+  },
+  "onboard": {
+    "endpoint": "http://localhost:3001/api/claims"
+  }
+}

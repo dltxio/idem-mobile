@@ -1,0 +1,30 @@
+[
+    {
+        "key": "1x00",
+        "name": "Get Paid In Bitcoin",
+        "url": "https://www.getpaidinbitcoin.com.au",
+        "description": "Easiest way to get bitcoin",
+        "registration": "https://testapi.getpaidinbitcoin.com.au/user/verifyid",
+        "claims": [
+            {
+                "email": true
+            }
+        ]
+    },
+    {
+        "key": "1x01",
+        "name": "Digital Surge",
+        "url": "https://www.digitalsurge.com.au",
+        "description": "Lorem ipsum dolor sit amet",
+        "registration": "https://digitalsurge.com.au/api/registration/sign-up/",
+        "affiliation": "HT7LT"
+    },
+    {
+        "key": "1x02",
+        "name": "CoinTree",
+        "url": "https://cointree.com.au",
+        "description": "Lorem ipsum dolor sit amet",
+        "registration": "https://digitalsurge.com.au/api/registration/sign-up/",
+        "affiliation": "https://www.cointree.com?r=33Y8v9n4DsXm"
+    }
+]

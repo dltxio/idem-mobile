@@ -1,0 +1,12 @@
+[
+    {
+        "key":"1x00",
+        "name": "Eth Keypair",
+        "description": ""
+    },
+    {
+        "key":"1x01",
+        "name": "PGP Keypair",
+        "description": ""
+    }
+]
