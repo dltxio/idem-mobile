@@ -14,6 +14,7 @@ const App = () => {
       callback: string; // base 64 encoded url
       nonce: string;
     } | null>(null);
+    
   Linking.addEventListener("url", (event) => {
     const data = Linking.parse(event.url);
     if (
