@@ -97,8 +97,7 @@ Meta data is stored in a W3 Verifiable claims JSON object https://www.w3.org/TR/
             "credentialSubject": {
                 "name": "dob",
                 "value": "1998-01-01T00:00:00Z",
-            },
-            "proof": {}
+            }
         }
     ]
 }
