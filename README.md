@@ -64,7 +64,7 @@ Meta data is stored in a W3 Verifiable claims JSON object https://www.w3.org/TR/
 
 ```json
 {
-    "connectionID": "16bcs3-vxc123",
+    "connectionID": "c1d18b8a-e6cf-4c24-9329-1e8e5385a67f",
     "claims": [
         {
             "@context": [
