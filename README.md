@@ -119,7 +119,6 @@ An existing Idem User will be able to log in to a participating (third party) we
 A new user will initiate the registration process by entering their email address and a new password in to the participating (third party) website. At this point if the user does not complete the registration process, the new user will be able to return to the website and log in using the QR code displayed on the screen when returning to the same website. Once the New User logs in and is inside the website, the new Idem User will continue with the verification process, uploading the requested documents on the website using the Idem App. Once documents have been submitted and verified, the User will be able to:
 
 i)	Register credentials on the website using Idem credentials.
-
 ii)	Verify documents using Idem verified documents.
 
 <img src="https://user-images.githubusercontent.com/91101134/141231143-676d3413-ac01-462a-9fac-ee0b4fd509a3.jpeg" width=100% height=100%>
@@ -128,29 +127,6 @@ ii)	Verify documents using Idem verified documents.
 The flowchart below is a verification workflow diagram for 3rd party developers to integrate their Exchange or website with Idem. It works as follows:
 
 <img src="https://user-images.githubusercontent.com/91101134/141231224-ad845a7c-d336-43cb-b9ea-a2d7c3f1a021.jpeg" width=100% height=100%>
-
-## User Story 2:  Verify an already registered user
-
-1. A user with no digital ID visits “demo.idem.com.au” and creates an account by entering their email address and password (a user with a registered ID will scan a QR code and log in directly).
-
-2. The "demo.idem.com.au" site will request give access to the user to enter the site (dashboard).
-
-3. A user with a registered ID will scan a QR code and have their claims verified directly. A new user will be asked to verify their claims using Idem. Specifically, this means that a user will verify specific information that is requested from them that is considered to be true, such as their name, address, etc. The user will be able to verify using existing (“old” implies already verified however document may have expired or not yet verified) mechanisms which involve uploading KYC documents (driver’s license / passports etc).
-
-4. The user scans external QR codes, which requests specific information from the user held in Idem.
-
-5. The user checks the information being requested in Idem, approves the claims request and Idem verifies the claim and the user gains access to external site.
-
-6. The App posts the API specified in the QR code. Two options are to be made available:
-
-i) The App will post to the Exchange directly - see point 7. below.
-ii) The App will use ECDSA to sign the certificates using Idem.
-	
-7. Provide call back option for ECDSA authentication to validate SSL Certificates over HTTP in Exchange, and option for Exchange to whitelist IP addresses.
-
-8. The Exchange verifies the user’s claims and lets Idem know. Webhook needed to tie to the Exchange to let Idem know the results of the verification (eg when the verification is complete, or whether more information is needed etc).
-
-9. Sends users to Home Page which displays verified documents.
 
 ### Implementation
 ### Step 1:  Onboarding on Third-Party Sites
@@ -223,7 +199,6 @@ TBA
 ### Trusted ID verification providers
 
 A smart contract contains a struct of trusted providers.  The providers can only be granted or revoked by an independent third party, such as Blockchain Australia, DataZoo etc.
-
 
 ## References
 
