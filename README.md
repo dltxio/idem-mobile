@@ -177,7 +177,7 @@ A QR code deeplink is a URL providing the claims required by site, along with a 
 
 
 ## Verify these claims
-These claims are then verified by third-party KYC vendors who return an X-509 SSL certificate signed JSON object that can then be used again. Each vendor has a different process for onboarding and the app will maintain these different business requirements.
+These claims are then verified by third-party KYC vendors who return an ESDCA signed JSON object that can then be used again. Each vendor has a different process for onboarding and the app will maintain these different business requirements.
 
 <img src="https://user-images.githubusercontent.com/91101134/141231805-bbbfc5e8-341e-4d7e-b2f9-ff8015652fd1.jpeg" width=100% height=100%>
 
