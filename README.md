@@ -52,7 +52,7 @@ And their personal data is updated at demo.idem.com.au
 ## Creating a profile on your Idem app
 
 ### Step 1: New Idem registration
-A user creates a new local profile on their mobile device using the Idem app.  Their email address is their as a unique identifier.
+A user creates a new local profile on their mobile device using the Idem app.  Their email address is their unique identifier.
 
 ### Step 2: New private key
 The app will automatically create a 256-bit private key on the device or allow users to import a mnemonic seed phrase based on the bitcoin BIP39 standard. This will be used to sign and verify requests using ECDSA to third parties.
