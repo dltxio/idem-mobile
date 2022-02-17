@@ -13,14 +13,10 @@
   },
   "references": [
     {
-      "path": "./server"
-    },
-    {
       "path": "./app"
     }
   ],
   "include": [
-    "./server/src/**/*.d.ts",
     "./app/**/*.d.ts"
   ],
   "exclude": ["node_modules", "*/dist/*", "*/build/*"]

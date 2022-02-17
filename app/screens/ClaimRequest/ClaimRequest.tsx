@@ -26,7 +26,6 @@ const VERIFIED_CLAIMS = {
 }
 
 const ClaimRequest = ({ setScreen, claimData }: Props) => {
-    console.log(claimData)
     const [err, setErr] = React.useState<string | null>(null);
 
     const claims = JSON.parse(claimData?.claims || "[]");

@@ -1,37 +1,33 @@
 # idem-mobile
-React native mobile app for Idem
+React native mobile app for Idem.
 
-# idem-mobile
-React native mobile app for Idem
 [![deploy-docker](https://github.com/dltxio/idem/actions/workflows/docker-image.yml/badge.svg)](https://github.com/dltxio/idem/actions/workflows/docker-image.yml)
 
-## Abstract
+## What is Idem?
+Idem (_Idem_, from now on) is an open source cross-platform mobile application based on the [Decentralised Identity Foundation's DID protocol](https://identity.foundation). The application will give individuals control of their digital identities by establishing trust in an interaction between two individuals or entities that do not know each other. For trust to happen, the offering party will present credentials to the receiving parties, which can verify that the credentials are from an issuer that they trust. _Idem_ is designed to be used by third parties who require their customers to be KYC'd, such as cryptocurrency exchanges (e.g. [Coinswap](https://app.coinswap.space)).
 
-Idem is an open source cross platform mobile application based on the Decentralised Identity Foundations DID protocol. The mobile application will give individuals control of their digital identities by establishing trust in an interaction between two individuals or entities that do not know each other. For trust to happen, the offering party will present credentials to the receiving parties, which can verify that the credentials are from an issuer that they trust.
-
-Each time an exchange requests an ID from a new user, the KYC provider charges the exchange a fee. Users are required to provide KYC information and have it verified for each and every exchange onboarding instead of being able to reuse verification from a trusted provider. By locally storing user's verified information with a cryptographic signature, we can enhance the customer onboarding experience and reduce costs incurred by vendors.
+Each time an exchange requests an ID from a new user, the KYC provider charges the exchange a fee. Users are required to provide KYC information and have it verified for each and every exchange onboarding instead of being able to reuse verification from a trusted provider. By locally storing users' verified information with a cryptographic signature, we can enhance the onboarding experience and reduce costs incurred by vendors.
 
 ## The Tech
-Idem uses a number of cryptographic protocols to sign and encrypt your data. PGP/GPG encryption is used to securely store data on your device, while the Ethereum elliptic curve (ECDSA) is used to sign claims which conforms to the DID foundations verifiable claims schema. Specifically, anyone can verify that the transaction is valid. The verification doesn't involve the users private key and is never known by Idem.
+_Idem_ uses a number of cryptographic protocols to sign and encrypt data. *PGP/GPG* encryption is used to securely store data on a device, while the *Ethereum elliptic curve (ECDSA)* is used to sign claims which conform to the DID foundation's verifiable claims schema. Anyone can verify that transactions involving _Idem_ are valid. Furthermore, verification doesn't involve the user's private key (which is never known by _Idem_).
 
-## What is Idem?
-Idem is designed to be used by third parties who require their customers to by KYC'd, such as crypto currency exchanges.  There are two ways in which the Idem app can be used: 
-
-1. Onboarding / Registering new users who do not have an account on the third party platform (User Story 1)
-2. Verification exsiting users (User Story 2)
+## Use
+There are two ways in which _Idem_ can be used:
+1. Onboarding / registering new users who do not have an account on a website (User Story 1)
+2. Verifying existing users (User Story 2)
 
 ### User Story 1:  Onboarding a new user
 ```text
 As a frustrated crypto customer, 
-I want to onboard to the exchange via the Idem app, 
-So that I don't have to re-supply all my information again and again and again!
+I want to onboard to an exchange via the Idem app, 
+So that I don't have to resupply all my information again and again and again!
 ```
 
 ```text
 Given an Idem user,  
-When they visit demo.idem.com.au registration page,  
+When they visit the demo.idem.com.au registration page,  
 And they scan the QR code via the app,  
-And Ok on the app,  
+And click 'Ok' on the app,  
 Then they are registered on demo.idem.com.au,
 And their ID is verified,  
 And they are redirected to demo.idem.com.au's home page.
@@ -39,7 +35,7 @@ And they are redirected to demo.idem.com.au's home page.
 ### User Story 2:  Verify an already registered user
 ```text
 As an existing unverified customer of demo.idem.com.au,
-I want to verify my KYC requirements via the Idem app,
+I want to verify my KYC requirements via Idem,
 So that I don't need to complete yet another KYC process.
 ```
 
@@ -47,7 +43,7 @@ So that I don't need to complete yet another KYC process.
 Given an Idem user,  
 When they visit demo.idem.com.au,  
 And they scan the QR code via the app,  
-And OK to sharing data on the app to demo.idem.com.au,  
+And agree to share data on the app to demo.idem.com.au,  
 Then their ID is posted from the app to demo.idem.com.au's API,
 And their Idem signature is verified,
 And their personal data is updated at demo.idem.com.au
@@ -55,143 +51,89 @@ And their personal data is updated at demo.idem.com.au
 
 ## Creating a profile on your Idem app
 
-### Step 1: New Idem registration
-A user creates a new local profile on their mobile device using the Idem app.  Their email address is their as a unique identifier.
+### 1: New Idem registration
+A user downlooads _Idem_ on their mobile device and creates a new local profile on the app. Their email address is their unique identifier.
 
-### Step 2: New private key
-The app will automatically create a 256-bit private key on the device or allow users to import a mnemonic seed phrase based on the bitcoin BIP39 standard. This will be used to sign and verify requests using ECDSA to third parties.
+### 2: New private key
+_Idem_ can automatically create a 256-bit private key on the device or it can allow the user to import a mnemonic seed phrase (based on the bitcoin BIP39 standard) of their choice. This will be used to sign and verify requests (using elliptic curve crytography - Secp256k1) to third parties.
 
-### Step 3: Upload data
-Users can choose certain types of claims to verify such as 18+, Date of Birth or Address. They are required to substantiate any of those claims with supporting evidence such as a government issued document, utilities bill etc. The documents are enrcypeted and stored in the local storage of the device along with a keccak 256 hash and signed by the ECDSA curve.
-
-Meta data is stored in a W3 Verifiable claims JSON object https://www.w3.org/TR/vc-data-model/#contexts:
-
-```json
-{
-    "connectionID": "16bcs3-vxc123",
-    "claims": [
-        {
-            "@context": [
-                "https://www.w3.org/2018/credentials/v1",
-            ],
-            "type": ["VerifiableCredential", "EmailCredential"],
-            "issuanceDate": "2020-01-01T19:73:24Z",
-            "credentialSubject": {
-                "name": "Email",
-                "value": "test@dltx.io",
-            },
-            "proof": {}
-        },{
-            "@context": [
-                "https://www.w3.org/2018/credentials/v1",
-            ],
-            "type": ["VerifiableCredential", "NameCredential"],
-            "issuanceDate": "2020-01-01T19:73:24Z",
-            "credentialSubject": {
-                "name": "fullname",
-                "value": "Mr John Doe",
-            },
-            "proof": {}
-        },{
-            "@context": [
-                "https://www.w3.org/2018/credentials/v1",
-            ],
-            "type": ["VerifiableCredential", "DateOfBirthCredential"],
-            "issuanceDate": "2020-01-01T19:73:24Z",
-            "credentialSubject": {
-                "name": "dob",
-                "value": "1998-01-01T00:00:00Z",
-            },
-            "proof": {}
-        }
-    ]
-}
-```
-
-Note:  See the Microsoft claims class for .net https://docs.microsoft.com/en-us/dotnet/api/system.security.claims.claim?view=net-5.0
+### 3: Upload data
+The user can choose certain types of claims to verify such as _18+_, _Date of Birth_ or _Address_. They have to substantiate those claims with supporting evidence such as a government-issued document (passport, drivers license, etc.), a utilities bill, etc. The documents are encrypted and stored in the local storage of the device.
 
 ## User Flow Experience - Customer Point of View
-The flowchart below is a user work flow demonstrating the user experience. Here we present 3 User scenarios.
+Here are two common scenarios involving a user and a participating third-party website ("the website"):
 
-### Existing Idem User
-An existing Idem User will be able to log in to a participating (third party) website by simply using the Idem App to scan the QR code displayed on the participating website. Once authenticated, the User will be able to:
+### 1. New (to the website) user
+The user initiates the registration process by entering their email address and a password into the website. The use of Recaptchas on most websites rules out a full-fledged _Idem_ registration, although _Idem_ could be used to fill the email address and generate a password on behalf of the user. From here, the user can use _Idem_ to complete the verification process by allowing _Idem_ to supply the claims the website requires.
 
-1. Update their claims such as Date of Birth, name and address using the verified data on the Idem app.
-2. Supply verified evidence in the form of documents to the participating website.
+### 2. Existing (to the website) user
+An existing user can log into the website by scanning the QR code (using _Idem_) the website displays, Recaptcha allowing. Otherwise, the user can simply log in manually and enjoy the benefits of the website, having already presented their credentials using _Idem_.
 
-### New User
-A new user will initiate the registration process by entering their email address and a new password in to the participating (third party) website. At this point if the user does not complete the registration process, the new user will be able to return to the website and log in using the QR code displayed on the screen when returning to the same website. Once the New User logs in and is inside the website, the new Idem User will continue with the verification process, uploading the requested documents on the website using the Idem App. Once documents have been submitted and verified, the User will be able to:
-
-i)	Register credentials on the website using Idem credentials.
-
-ii)	Verify documents using Idem verified documents.
-
-<img src="https://user-images.githubusercontent.com/91101134/141231143-676d3413-ac01-462a-9fac-ee0b4fd509a3.jpeg" width=100% height=100%>
+Note that for MVP purposes (see below), the claims required will all already have been saved to the user's device during their initial _Idem_ set-up. _Idem_ will also be able to update any claims the website requires, such as date of birth, name, or address, or provide extra credentials if the user wanted to access a new part of the site.
 
 ## Verification Workflow Diagram
-The flowchart below is a verification workflow diagram for 3rd party developers to integrate their Exchange or website with Idem. It works as follows:
+The flowchart below is a verification workflow diagram for third-party developers to integrate a website (such as an exchange) with _Idem_. It works as follows:
 
 <img src="https://user-images.githubusercontent.com/91101134/141231224-ad845a7c-d336-43cb-b9ea-a2d7c3f1a021.jpeg" width=100% height=100%>
 
-## User Story 2:  Verify an already registered user
-
-1. A user with no digital ID visits “demo.idem.com.au” and creates an account by entering their email address and password (a user with a registered ID will scan a QR code and log in directly).
-
-2. The "demo.idem.com.au" site will request give access to the user to enter the site (dashboard).
-
-3. A user with a registered ID will scan a QR code and have their claims verified directly. A new user will be asked to verify their claims using Idem. Specifically, this means that a user will verify specific information that is requested from them that is considered to be true, such as their name, address, etc. The user will be able to verify using existing (“old” implies already verified however document may have expired or not yet verified) mechanisms which involve uploading KYC documents (driver’s license / passports etc).
-
-4. The user scans external QR codes, which requests specific information from the user held in Idem.
-
-5. The user checks the information being requested in Idem, approves the claims request and Idem verifies the claim and the user gains access to external site.
-
-6. The App posts the API specified in the QR code. Two options are to be made available:
-
-i) The App will post to the Exchange directly - see point 7. below.
-ii) The App will use ECDSA to sign the certificates using Idem.
-	
-7. Provide call back option for ECDSA authentication to validate SSL Certificates over HTTP in Exchange, and option for Exchange to whitelist IP addresses.
-
-8. The Exchange verifies the user’s claims and lets Idem know. Webhook needed to tie to the Exchange to let Idem know the results of the verification (eg when the verification is complete, or whether more information is needed etc).
-
-9. Sends users to Home Page which displays verified documents.
-
-### Implementation
-### Step 1:  Onboarding on Third-Party Sites
+## Implementation
+### 1. Onboarding on Third-Party Sites
 The site "demo.idem.com.au" creates a unique deeplink url with the url schema `did://` along with the claims it requires:
 
-* Domain (mandatory)
-* Call back path
-* Nonce as UUID (mandatory)
-* An array of claims required
+* callback: Base64-encoded URL
+* nonce: UUID
+* claims: Array of claims required
 
-Eg: `did://callback=demo.idem.com.au&callback=/verify?nonce=8b5c66c0-bceb-40b4-b099-d31b127bf7b3&claims=[0x01]`
+Eg: `did://callback=ZGVtby5pZGVtLmNvbS5hdS92ZXJpZnk=?nonce=8b5c66c0-bceb-40b4-b099-d31b127bf7b3&claims=[0x01]`
 
-### Step 2:  Posting the signed data to the exchange
-The user will then receive confirmation alert on the device with the claims the exchange is requesting as specified in the deeplink.  Should the user accept that request for claims, the app will the post the claims in the following DID schema.
+N.b. all parameters are mandatory. In this example _ZGVtby5pZGVtLmNvbS5hdS92ZXJpZnk=_ is the Base64-encoded digest of _demo.idem.com.au/verify_.
 
-```json
-TBA
-```
-
-
-Often a site will email a user once they have created an account with an email address and password.  At this step, the site could also pass an unsigned url for the users to scan with their Idem app to validate their email and other claims.
-
-A QR code deeplink is a URL providing the claims required by site, along with a call back url.  
-
-
-## Verify these claims
-These claims are then verified by third-party KYC vendors who return an X-509 SSL certificate signed JSON object that can then be used again. Each vendor has a different process for onboarding and the app will maintain these different business requirements.
+### 2. Verifying the claims
+_Idem_ will then check to see if it already has those claims. If it does, skip to step 4. If it doesn't, it will use the _idem-api_ module to obtain the relevant credentials which are verified by third-party KYC vendors and who return an X-509 SSL certificate signed JSON object that can then be reused. Each vendor has a different process for onboarding and the app will maintain these different business requirements. N.b. for the MVP we will only be using [greenId](https://gbg-greenid.com/).
 
 <img src="https://user-images.githubusercontent.com/91101134/141231805-bbbfc5e8-341e-4d7e-b2f9-ff8015652fd1.jpeg" width=100% height=100%>
 
-## Appendix
+### 3. Shaping the response from the API
+The claims will be packaged by the _idem-api_ module as a (Verifiable Presentation)[https://www.w3.org/TR/vc-data-model/#presentations], which is just a wrapped collection of credentials conforming to the W3C Verifiable Credentials Data Model (see JSON model below) and returned, having been signed using Secp256k1, to _Idem_. _Idem_ then caches the signed presentation for subsequent requests.
 
-### Routes
-TBA  
+```json
+{
+    "@context": [
+        "https://www.w3.org/2018/credentials/v1",
+        "https://schema.org"
+    ],
+    "type": ["VerifiableCredential", "Person"],
+    "issuer": "https://idem.com.au",
+    "credentialSubject": {
+        "givenName": "Ralph",
+        "familyName": "Lavelle",
+        "email": "ralph.lavelle@dltx.io",
+        "telephone": "1234567890",
+        "birthDate": "1967-04-15T12:00:00Z"
+    },
+    "issuanceDate": "2022-03-01T12:00:00Z",
+    "expirationDate": "2023-03-01T12:00:00Z",
+    "proof": {
+        "type": "EcdsaSecp256k1Signature2019",
+        "created": "2022-03-01T12:00:00Z",
+        "verificationMethod": "https://idem.com.au/keys/1",
+        "nonce": "d61c4599-0cc2-4479-9efc-c63add3a43b2",
+        "signatureValue": "pYw8XNi1..Cky6Ed="
+    }
+}
+```
 
-### Registration Schema
-TBA  
+### 4. Posting the signed data back to the exchange
+Finally, _Idem_ sends the credentials payload back to the website. Upon receipt of the credentials, the website authenticates the signature against the payload and shows a success message to the user. Obviously, it's up to the website to handle the success or failure of the verification of the user in whatver way it sees fit. 
+
+
+## Demo/MVP
+For the sake of getting things done, parts of the workflow mentioned here will be left out of early versions of the project. For an MVP scenario, the website will only request claims that _Idem_ already has, thus obviating the involvement of the _idem-api_ module (and therefore the credentials issuers themselves). This is probably what will happen the vast majority of the time, though - users will set themselves up in advnace with whatever they are likely to need to register with an exchange, rather than leave it to when they are actually trying to verify to an exchange.
+
+Note that this 'happy path' will still require _Idem_ to obtain credentials from an issuer for a once-off initial verification.
+
+## Unsure
+There may be cases where the _idem-api_ module is able to request the website's callback URL _directly_, without having to route back through _Idem_. The exchange would have to have whitelisted _idem-api_ module's IP address to verify incoming requests from that app. 
 
 ### Table of claims
 
@@ -228,6 +170,10 @@ TBA
 
 A smart contract contains a struct of trusted providers.  The providers can only be granted or revoked by an independent third party, such as Blockchain Australia, DataZoo etc.
 
+Metadata is stored in a [W3 Verifiable claims](https://www.w3.org/TR/vc-data-model/#contexts:) JSON object:
+
+Note: See the [Microsoft claims class for .net](https://docs.microsoft.com/en-us/dotnet/api/system.security.claims.claim?view=net-5.0).
+
 
 ## References
 
@@ -235,3 +181,6 @@ https://www.servicesaustralia.gov.au/individuals/topics/confirm-your-identity/29
 https://en.bitcoin.it/wiki/Seed_phrase
 https://docs.microsoft.com/en-us/dotnet/api/system.security.claims.claim?view=net-5.0
 Transactions on the Ethereum Test Network "Kovan" will be signed with the ETH account `0xE4ed9ceF6989CFE9da7c1Eec8c2299141dD9e7cC`
+
+## (Removed Diagrams)
+https://user-images.githubusercontent.com/91101134/141231143-676d3413-ac01-462a-9fac-ee0b4fd509a3.jpeg
