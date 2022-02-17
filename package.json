@@ -1,7 +1,7 @@
 {
   "name": "idem",
   "version": "1.0.0",
-  "repository": "https://github.com/dltxio/idem.git",
+  "repository": "https://github.com/dltxio/idem-mobile.git",
   "license": "MIT",
   "scripts": {
     "postinstall": "yarn yarn-sub-project",

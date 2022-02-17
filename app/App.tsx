@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text, View } from "react-native";
 import Info from "./screens/Info/Info";
-import ClaimRequest from './screens/ClaimRequest/ClaimRequest';
+import ClaimRequest from './screens/claimrequest/claimrequest';
 import * as Linking from 'expo-linking';
 import { imageAssets } from "./styles/theme/images";
 import { fontAssets } from "./styles/theme/fonts";
