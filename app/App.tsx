@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View } from "react-native";
-import Info from "./screens/Info/Info";
-import ClaimRequest from './screens/claimrequest/claimrequest';
-import * as Linking from 'expo-linking';
+import { View } from "react-native";
 import { imageAssets } from "./styles/theme/images";
 import { fontAssets } from "./styles/theme/fonts";
 import navRef from "./navigation/navRef";
@@ -12,6 +9,7 @@ import DrawerNavigator from "./navigation/DrawerNavigator";
 import { RootStoreProvider } from "./store/rootStore";
 import { StatusBar } from "expo-status-bar";
 import { ClaimProvider } from "./providers/Claim";
+import TabNavigator from "./navigation/MainTabNavigator";
 
 export type Screens = "Info" | "ClaimRequest";
 
@@ -36,6 +34,7 @@ const App = () => {
         <ClaimProvider>
           <DrawerNavigator />
         </ClaimProvider>
+        {/* <TabNavigator /> */}
       </NavigationContainer>
     </RootStoreProvider>
   // const [screen, setScreen] = useState<Screens>("Info");

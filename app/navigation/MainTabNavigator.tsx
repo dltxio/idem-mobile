@@ -36,11 +36,11 @@ const TabNavigator = () => (
       activeTintColor: colors.lightPurple,
       inactiveTintColor: colors.gray,
       style: {
-        // backgroundColor: "white",
-        // borderTopColor: "gray",
-        // borderTopWidth: 1,
-        // paddingBottom: 5,
-        // paddingTop: 5,
+        backgroundColor: "white",
+        borderTopColor: "gray",
+        borderTopWidth: 1,
+        paddingBottom: 5,
+        paddingTop: 5,
       },
     }}
     initialRouteName="Claims"
