@@ -1,8 +1,6 @@
 # idem-mobile
 React native mobile app for Idem.
 
-[![deploy-docker](https://github.com/dltxio/idem/actions/workflows/docker-image.yml/badge.svg)](https://github.com/dltxio/idem/actions/workflows/docker-image.yml)
-
 ## What is Idem?
 Idem (_Idem_, from now on) is an open source cross-platform mobile application based on the [Decentralised Identity Foundation's DID protocol](https://identity.foundation). The application will give individuals control of their digital identities by establishing trust in an interaction between two individuals or entities that do not know each other. For trust to happen, the offering party will present credentials to the receiving parties, which can verify that the credentials are from an issuer that they trust. _Idem_ is designed to be used by third parties who require their customers to be KYC'd, such as cryptocurrency exchanges (e.g. [Coinswap](https://app.coinswap.space)).
 
@@ -124,29 +122,28 @@ The claims will be packaged by the _idem-api_ module as a (Verifiable Presentati
 ```
 
 ```json
+{
   "@context": [
     "https://www.w3.org/2018/credentials/v1",
-    "https://www.w3.org/2018/credentials/examples/v1"
+    "https://schema.org"
   ],
   "type": "VerifiablePresentation",
-  
   "verifiableCredential": [{
     "@context": [
       "https://www.w3.org/2018/credentials/v1",
     ],
-    "type": ["VerifiableCredential", "PersonCredential"],
+    "type": ["VerifiableCredential", "NameCredential"],
     "issuer": "https://idem.com.au/",
-    "issuanceDate": "2022-01-01T19:23:24Z",
+    "issuanceDate": "2022-03-01T12:00:00Z",
+    "expirationDate": "2023-03-01T12:00:00Z",
     "credentialSubject": {
-      "alumniOf": {
-        "name": [{
-          "value": "Example University",
-        }]
+        "givenName": "Ralph",
+        "familyName": "Lavelle"
       }
     },
     "proof": {
-      "type": "RsaSignature2018",
-      "created": "2017-06-18T21:19:10Z",
+      "type": "esdca",
+      "created": "2022-03-01T12:00:00Z",
       "proofPurpose": "assertionMethod",
       "verificationMethod": "https://idem.com.au",
       "jws": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..TCYt5X
@@ -158,7 +155,7 @@ The claims will be packaged by the _idem-api_ module as a (Verifiable Presentati
   "proof": {
     "type": "edcsa...",
     "created": "2018-09-14T21:19:10Z",
-    "proofPurpose": "authentication",
+    "proofPurpose": "assertionMethod",
     "verificationMethod": "did:idem:ebfeb1f712ebc6f1c276e12ec21#keys-1",
     "challenge": "1f44d55f-f161-4938-a659-f8026467f126",
     "domain": "",
