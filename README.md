@@ -123,6 +123,53 @@ The claims will be packaged by the _idem-api_ module as a (Verifiable Presentati
 }
 ```
 
+```json
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://www.w3.org/2018/credentials/examples/v1"
+  ],
+  "type": "VerifiablePresentation",
+  
+  "verifiableCredential": [{
+    "@context": [
+      "https://www.w3.org/2018/credentials/v1",
+    ],
+    "type": ["VerifiableCredential", "PersonCredential"],
+    "issuer": "https://idem.com.au/",
+    "issuanceDate": "2022-01-01T19:23:24Z",
+    "credentialSubject": {
+      "alumniOf": {
+        "name": [{
+          "value": "Example University",
+        }]
+      }
+    },
+    "proof": {
+      "type": "RsaSignature2018",
+      "created": "2017-06-18T21:19:10Z",
+      "proofPurpose": "assertionMethod",
+      "verificationMethod": "https://idem.com.au",
+      "jws": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..TCYt5X
+        sITJX1CxPCT8yAV-TVkIEq_PbChOMqsLfRoPsnsgw5WEuts01mq-pQy7UJiN5mgRxD-WUc
+        X16dUEMGlv50aqzpqh4Qktb3rk-BuQy72IFLOqV0G_zS245-kronKb78cPN25DGlcTwLtj
+        PAYuNzVBAh4vGHSrQyHUdBBPM"
+    }
+  }],
+  "proof": {
+    "type": "edcsa...",
+    "created": "2018-09-14T21:19:10Z",
+    "proofPurpose": "authentication",
+    "verificationMethod": "did:idem:ebfeb1f712ebc6f1c276e12ec21#keys-1",
+    "challenge": "1f44d55f-f161-4938-a659-f8026467f126",
+    "domain": "",
+    "jws": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..kTCYt5
+      XsITJX1CxPCT8yAV-TVIw5WEuts01mq-pQy7UJiN5mgREEMGlv50aqzpqh4Qq_PbChOMqs
+      LfRoPsnsgxD-WUcX16dUOqV0G_zS245-kronKb78cPktb3rk-BuQy72IFLN25DYuNzVBAh
+      4vGHSrQyHUGlcTwLtjPAnKb78"
+  }
+}
+```
+
 ### 4. Posting the signed data back to the exchange
 Finally, _Idem_ sends the credentials payload back to the website. Upon receipt of the credentials, the website authenticates the signature against the payload and shows a success message to the user. Obviously, it's up to the website to handle the success or failure of the verification of the user in whatver way it sees fit. 
 
@@ -174,6 +221,14 @@ Metadata is stored in a [W3 Verifiable claims](https://www.w3.org/TR/vc-data-mod
 
 Note: See the [Microsoft claims class for .net](https://docs.microsoft.com/en-us/dotnet/api/system.security.claims.claim?view=net-5.0).
 
+## Test Vectors
+
+`excite hospital vast lounge please rebel evolve limit planet taste bronze side`
+
+| Name | Address | Private Key |
+|---|---|---|
+| Idem  | 0x645cD9fE9620649BF71a806bE803695B02f697Aa | 0xcaf6a36710a30e92d8ae27d2110772f14d077a813183091d16af04c71b93bb96 |
+| Alice | 0x8444F8EF5694F09110B5191fCfab012f2E974135 | 0x409f3c9850a095fb1e3967bb55507df2b85bc647d9bc601528d5eb1094deeacc |
 
 ## References
 
