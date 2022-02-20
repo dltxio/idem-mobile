@@ -138,11 +138,36 @@ The claims will be packaged by the _idem-api_ module as a (Verifiable Presentati
     "expirationDate": "2023-03-01T12:00:00Z",
     "credentialSubject": {
         "givenName": "Ralph",
-        "familyName": "Lavelle"
+        "familyName": "Lavelle",
+        "key": "0x02"
       }
     },
     "proof": {
-      "type": "esdca",
+      "type": "EcdsaSecp256k1Signature2019",
+      "created": "2022-03-01T12:00:00Z",
+      "proofPurpose": "assertionMethod",
+      "verificationMethod": "https://idem.com.au",
+      "jws": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..TCYt5X
+        sITJX1CxPCT8yAV-TVkIEq_PbChOMqsLfRoPsnsgw5WEuts01mq-pQy7UJiN5mgRxD-WUc
+        X16dUEMGlv50aqzpqh4Qktb3rk-BuQy72IFLOqV0G_zS245-kronKb78cPN25DGlcTwLtj
+        PAYuNzVBAh4vGHSrQyHUdBBPM"
+    }
+  },
+  {
+    "@context": [
+      "https://www.w3.org/2018/credentials/v1",
+    ],
+    "type": ["VerifiableCredential", "EmailCredential"],
+    "issuer": "https://idem.com.au/",
+    "issuanceDate": "2022-03-01T12:00:00Z",
+    "expirationDate": "2023-03-01T12:00:00Z",
+    "credentialSubject": {
+        "email": "ralph.lavelle@dltx.io",
+        "key": "0x03"
+      }
+    },
+    "proof": {
+      "type": "EcdsaSecp256k1Signature2019",
       "created": "2022-03-01T12:00:00Z",
       "proofPurpose": "assertionMethod",
       "verificationMethod": "https://idem.com.au",
@@ -153,12 +178,12 @@ The claims will be packaged by the _idem-api_ module as a (Verifiable Presentati
     }
   }],
   "proof": {
-    "type": "edcsa...",
-    "created": "2018-09-14T21:19:10Z",
-    "proofPurpose": "assertionMethod",
+    "type": "EcdsaSecp256k1Signature2019",
+    "created": "2022-03-01T12:00:00Z",
+    "proofPurpose": "authentication",
     "verificationMethod": "did:idem:ebfeb1f712ebc6f1c276e12ec21#keys-1",
-    "challenge": "1f44d55f-f161-4938-a659-f8026467f126",
-    "domain": "",
+    "challenge": "8b5c66c0-bceb-40b4-b099-d31b127bf7b3",
+    "domain": "https://demo.idem.com.au",
     "jws": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..kTCYt5
       XsITJX1CxPCT8yAV-TVIw5WEuts01mq-pQy7UJiN5mgREEMGlv50aqzpqh4Qq_PbChOMqs
       LfRoPsnsgxD-WUcX16dUOqV0G_zS245-kronKb78cPktb3rk-BuQy72IFLN25DYuNzVBAh
@@ -169,7 +194,6 @@ The claims will be packaged by the _idem-api_ module as a (Verifiable Presentati
 
 ### 4. Posting the signed data back to the exchange
 Finally, _Idem_ sends the credentials payload back to the website. Upon receipt of the credentials, the website authenticates the signature against the payload and shows a success message to the user. Obviously, it's up to the website to handle the success or failure of the verification of the user in whatver way it sees fit. 
-
 
 ## Demo/MVP
 For the sake of getting things done, parts of the workflow mentioned here will be left out of early versions of the project. For an MVP scenario, the website will only request claims that _Idem_ already has, thus obviating the involvement of the _idem-api_ module (and therefore the credentials issuers themselves). This is probably what will happen the vast majority of the time, though - users will set themselves up in advnace with whatever they are likely to need to register with an exchange, rather than leave it to when they are actually trying to verify to an exchange.
@@ -190,18 +214,6 @@ There may be cases where the _idem-api_ module is able to request the website's 
 | 0x04 | Mobile Number | mobilenumber | Mobile Number | Users mobile number | 
 | 0x05 | Address | address | Physical Address | Users physical address | 
 | 0x06 | Birth Year | birthyear | YYYY ISO 8601 | Users year of birth |
-
-
-### Table of claims data types
-
-| Name | Value |
-| --- | --- |
-| decimal | |
-| boolean | |
-| integer | |
-| email | |
-| date | |
-| datetime |
 
 ### Table of documents
 
