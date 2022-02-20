@@ -79,7 +79,7 @@ The flowchart below is a verification workflow diagram for third-party developer
 The site "demo.idem.com.au" creates a unique deeplink url with the url schema `did://` along with the claims it requires:
 
 * callback: Base64-encoded URL
-* nonce: UUID
+* nonce: UUID (also used in challenge)
 * claims: Array of claims required
 
 Eg: `did://callback=ZGVtby5pZGVtLmNvbS5hdS92ZXJpZnk=?nonce=8b5c66c0-bceb-40b4-b099-d31b127bf7b3&claims=[0x01]`
