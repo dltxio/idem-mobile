@@ -30,7 +30,7 @@ const DrawerNavigator = () => {
 
   return (
     <>
-      {claims && claims.length > 0 ? (
+      {true ? (
         <Drawer.Navigator
           initialRouteName="Home"
           drawerContent={DrawerMenuContainer}
