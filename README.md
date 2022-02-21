@@ -82,7 +82,7 @@ The site "demo.idem.com.au" creates a unique deeplink url with the url schema `d
 * nonce: UUID (also used in challenge)
 * claims: Array of claims required
 
-Eg: `did://callback=ZGVtby5pZGVtLmNvbS5hdS92ZXJpZnk=?nonce=8b5c66c0-bceb-40b4-b099-d31b127bf7b3&claims=[0x01]`
+Eg: `did://callback=ZGVtby5pZGVtLmNvbS5hdS92ZXJpZnk=?nonce=8b5c66c0-bceb-40b4-b099-d31b127bf7b3&claims=[NameCredential,EmailCredential]`
 
 N.b. all parameters are mandatory. In this example _ZGVtby5pZGVtLmNvbS5hdS92ZXJpZnk=_ is the Base64-encoded digest of _demo.idem.com.au/verify_.
 
@@ -205,15 +205,15 @@ There may be cases where the _idem-api_ module is able to request the website's 
 
 ### Table of claims
 
-| Key | Subject | Mnemonic | Standard | Description |
-|---|---|---|---|---|
-| 0x00 | 18+ | eighteenplus | 18 Plus | 18 Plus | 
-| 0x01 | Birth Date | dob | YYYY-MM-DD ISO 8601 | Users date of birth | 
-| 0x02 | Full Name | fullname | | Users full name |
-| 0x03 | Email | email | email | Users email address  | 
-| 0x04 | Mobile Number | mobilenumber | Mobile Number | Users mobile number | 
-| 0x05 | Address | address | Physical Address | Users physical address | 
-| 0x06 | Birth Year | birthyear | YYYY ISO 8601 | Users year of birth |
+| CredentialSubject | Mnemonic | Standard | Description |
+|---|---|---|---|
+| AdultCredential | eighteenplus | 18 Plus | 18 Plus | 
+| BirthCredential | dob | YYYY-MM-DD ISO 8601 | Users date of birth | 
+| NameCredential | fullname | Firstname Lastname | | Users full name |
+| EmailCredential | email | Email | Users email address  | 
+| MobileCredential | mobilenumber | Mobile Number | Users mobile number | 
+| AddressCredential | address | Physical Address | Users physical address | 
+| BirthYearCredential | birthyear | YYYY ISO 8601 | Users year of birth |
 
 ### Table of documents
 
