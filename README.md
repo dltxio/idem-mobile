@@ -82,7 +82,7 @@ The site "demo.idem.com.au" creates a unique deeplink url with the url schema `d
 * nonce: UUID (also used in challenge)
 * claims: Array of claims required
 
-Eg: `did://callback=ZGVtby5pZGVtLmNvbS5hdS92ZXJpZnk=?nonce=8b5c66c0-bceb-40b4-b099-d31b127bf7b3&claims=[NameCredential,EmailCredential]`
+Eg: `did://callback=ZGVtby5pZGVtLmNvbS5hdS92ZXJpZnk=?nonce=8b5c66c0-bceb-40b4-b099-d31b127bf7b3&claims=EmailCredential,NameCredential`
 
 N.b. all parameters are mandatory. In this example _ZGVtby5pZGVtLmNvbS5hdS92ZXJpZnk=_ is the Base64-encoded digest of _demo.idem.com.au/verify_.
 
@@ -94,32 +94,6 @@ _Idem_ will then check to see if it already has those claims. If it does, skip t
 ### 3. Shaping the response from the API
 The claims will be packaged by the _idem-api_ module as a (Verifiable Presentation)[https://www.w3.org/TR/vc-data-model/#presentations], which is just a wrapped collection of credentials conforming to the W3C Verifiable Credentials Data Model (see JSON model below) and returned, having been signed using Secp256k1, to _Idem_. _Idem_ then caches the signed presentation for subsequent requests.
 
-```json
-{
-    "@context": [
-        "https://www.w3.org/2018/credentials/v1",
-        "https://schema.org"
-    ],
-    "type": ["VerifiableCredential", "Person"],
-    "issuer": "https://idem.com.au",
-    "credentialSubject": {
-        "givenName": "Ralph",
-        "familyName": "Lavelle",
-        "email": "ralph.lavelle@dltx.io",
-        "telephone": "1234567890",
-        "birthDate": "1967-04-15T12:00:00Z"
-    },
-    "issuanceDate": "2022-03-01T12:00:00Z",
-    "expirationDate": "2023-03-01T12:00:00Z",
-    "proof": {
-        "type": "EcdsaSecp256k1Signature2019",
-        "created": "2022-03-01T12:00:00Z",
-        "verificationMethod": "https://idem.com.au/keys/1",
-        "nonce": "d61c4599-0cc2-4479-9efc-c63add3a43b2",
-        "signatureValue": "pYw8XNi1..Cky6Ed="
-    }
-}
-```
 
 ```json
 {
@@ -138,8 +112,7 @@ The claims will be packaged by the _idem-api_ module as a (Verifiable Presentati
     "expirationDate": "2023-03-01T12:00:00Z",
     "credentialSubject": {
         "givenName": "Ralph",
-        "familyName": "Lavelle",
-        "key": "0x02"
+        "familyName": "Lavelle"
       }
     },
     "proof": {
@@ -162,8 +135,7 @@ The claims will be packaged by the _idem-api_ module as a (Verifiable Presentati
     "issuanceDate": "2022-03-01T12:00:00Z",
     "expirationDate": "2023-03-01T12:00:00Z",
     "credentialSubject": {
-        "email": "ralph.lavelle@dltx.io",
-        "key": "0x03"
+        "email": "ralph.lavelle@dltx.io"
       }
     },
     "proof": {

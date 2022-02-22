@@ -4,7 +4,7 @@ import {
   View,
   StatusBar,
   TouchableOpacity,
-  ViewStyle,
+  ViewStyle
 } from "react-native";
 import styles from "../../styles";
 import { useNavigation } from "@react-navigation/core";
@@ -12,6 +12,9 @@ import { observer } from "mobx-react-lite";
 import { colors } from "../../styles/theme";
 import Profile from "../profile";
 import useClaims from "../../hooks/useClaims";
+import Button from "../../components/Button";
+import { sendOnboarding } from "../../helpers/claim/verify";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type ClaimsListItemProps = {
   onPress: () => void;
@@ -73,6 +76,27 @@ const ClaimSelector = () => {
       </View>
     );
 
+  const onPressSubmit = async (values: any) => {
+    try {
+      values = {
+        challenge: "8b5c66c0-bceb-40b4-b099-d31b127bf7b3", // need to move this out of here at some stage
+        name: "Ralph",
+        email: "ralph@ralphlavelle.net",
+        dob: "01/01/1990",
+        address: "123 Main St",
+        mobile: "1234567890"
+      };
+      const claims = await sendOnboarding(values);
+      // console.log(`>>> claims: ${claims}`);
+      if (claims.length > 0) {
+        await AsyncStorage.setItem("claims", JSON.stringify(claims));
+      }
+      await fetchClaims();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <View style={styles.list.root as ViewStyle}>
       <StatusBar barStyle="light-content" />
@@ -96,6 +120,11 @@ const ClaimSelector = () => {
           );
         })}
       </View>
+      <Button
+        title="Submit"
+        style={styles.baseStyle.baseButton}
+        onPress={onPressSubmit}
+      />
     </View>
   );
 };

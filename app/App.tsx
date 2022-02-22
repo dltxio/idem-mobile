@@ -9,7 +9,6 @@ import DrawerNavigator from "./navigation/DrawerNavigator";
 import { RootStoreProvider } from "./store/rootStore";
 import { StatusBar } from "expo-status-bar";
 import { ClaimProvider } from "./providers/Claim";
-import TabNavigator from "./navigation/MainTabNavigator";
 
 export type Screens = "Info" | "ClaimRequest";
 
@@ -34,31 +33,8 @@ const App = () => {
         <ClaimProvider>
           <DrawerNavigator />
         </ClaimProvider>
-        {/* <TabNavigator /> */}
       </NavigationContainer>
     </RootStoreProvider>
-  // const [screen, setScreen] = useState<Screens>("Info");
-  // const [claimRequestData, setClaimRequestData] = useState<{
-  //   claims: string, // A json stringified array of numbers
-  //   callback: string, // base 64 encoded url
-  //   nonce: string
-  // } | null>(null);
-  // Linking.addEventListener('url', (event) => {
-  //   const data = Linking.parse(event.url);
-  //   if (!data.queryParams.claims || !data.queryParams.nonce || !data.queryParams.callback) return;
-  //   if (data.queryParams) {
-  //     setClaimRequestData(data.queryParams);
-  //     setScreen("ClaimRequest");
-  //   }
-  // })
-
-  // return (
-  //   <View style={{ flex: 1 }}>
-  //     {/* <Text style={{ margin: 50 }}>{JSON.stringify(claimRequestData)}</Text> */}
-  //     {screen === "Info" && <Info />}
-  //     {screen === "ClaimRequest" && claimRequestData && <ClaimRequest setScreen={setScreen} claimData={claimRequestData} />}
-  //   </View>
-  // );
   );
 };
 

@@ -41,7 +41,7 @@
     "prop-types": "^15.7.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-native": "~0.64.1",
+    "react-native": "~0.63.4",
     "react-native-elements": "^3.4.1",
     "react-native-fast-openpgp": "^2.0.0-rc1",
     "react-native-gesture-handler": "~1.10.2",
