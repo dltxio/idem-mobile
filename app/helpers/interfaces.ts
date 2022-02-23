@@ -32,7 +32,6 @@ export interface IProof {
     // };
   
   export interface IClaimRequest {
-    challenge: string;
     name: string;
     dob: string;
     mobile: string;

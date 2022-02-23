@@ -18,7 +18,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type ClaimsListItemProps = {
   onPress: () => void;
-  claim: server.Claim;
+  claim: any;
 };
 
 const ClaimListItem = ({ onPress, claim }: ClaimsListItemProps) => {
@@ -79,18 +79,29 @@ const ClaimSelector = () => {
   const onPressSubmit = async (values: any) => {
     try {
       values = {
-        challenge: "8b5c66c0-bceb-40b4-b099-d31b127bf7b3", // need to move this out of here at some stage
         name: "Ralph",
         email: "ralph@ralphlavelle.net",
         dob: "01/01/1990",
         address: "123 Main St",
         mobile: "1234567890"
       };
-      const claims = await sendOnboarding(values);
-      // console.log(`>>> claims: ${claims}`);
-      if (claims.length > 0) {
-        await AsyncStorage.setItem("claims", JSON.stringify(claims));
+      const challenge = "8b5c66c0-bceb-40b4-b099-d31b127bf7b3"; // need to move this out of here at some stage
+      const presentation = await sendOnboarding(values, challenge);
+      console.log(`presentation: ${presentation}`);
+      const claims = await [];
+      // console.log(`presentation: ${presentation}`)
+      // let mappedClaims = [];
+      // for (const credential in presentation.verifiableCredential) {
+      //   let claim = {
+      //     key: credential,
+      //     value: presentation.verifiableCredential[credential]
+      //   }
+      //   mappedClaims.push(claim);
+      // }
+      if (!!claims) {
+        await AsyncStorage.setItem("claims", JSON.stringify(claims)); // mappedClaims));
       }
+      //console.log(`>>> claims: ${claims}`);
       await fetchClaims();
     } catch (error) {
       console.error(error);
@@ -102,8 +113,8 @@ const ClaimSelector = () => {
       <StatusBar barStyle="light-content" />
       {claims.length > 0 && (
         <Profile
-          fullName={claims.find((c) => c.key === "0x02")?.credentialSubject.value!}
-          emailAddress={claims.find((c) => c.key === "0x03")?.credentialSubject.value!}
+          fullName={claims.find(c => c.key === "email")?.credentialSubject.value!}
+          emailAddress={claims.find(c => c.key === "address")?.credentialSubject.value!}
         />
       )}
       <View style={{ flex: 1, width: "100%" }}>

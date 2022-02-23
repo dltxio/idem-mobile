@@ -14,6 +14,7 @@ import { sendOnboarding } from "../../helpers/claim/verify";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from "../../components/Button";
 import useClaims from "../../hooks/useClaims";
+import { IClaimRequest } from "../../helpers/interfaces";
 
 const Onboard = () => {
   const [showDate, setShowDate] = useState<boolean>(false);
@@ -31,15 +32,14 @@ const Onboard = () => {
     mobile: yup.string().required("Mobile number is required"),
   });
 
-  const onPressSubmit = async (values: any) => {
+  const onPressSubmit = async (values: IClaimRequest) => {
     if (!date) {
       setDateError("Date of birth is required");
       return;
     }
-    values.dob = date;
     try {
-      const claims = await sendOnboarding(values);
-      if (claims.length > 0) {
+      const claims = await sendOnboarding(values, "");
+      if (!!claims) {
         await AsyncStorage.setItem("claims", JSON.stringify(claims));
       }
       await fetchClaims();
@@ -115,9 +115,8 @@ const Onboard = () => {
                 onPress={() => setShowDate(!showDate)}
                 style={styles.baseStyle.dataPick}
               >
-                <Text style={styles.baseStyle.dataText}>{`${
-                  date || "Please enter the specific date"
-                }`}</Text>
+                <Text style={styles.baseStyle.dataText}>{`${date || "Please enter the specific date"
+                  }`}</Text>
               </TouchableOpacity>
               {dateError && (
                 <Text style={styles.baseStyle.errorMessage}>{dateError}</Text>
