@@ -88,7 +88,7 @@ const ClaimSelector = () => {
       const challenge = "8b5c66c0-bceb-40b4-b099-d31b127bf7b3"; // need to move this out of here at some stage
       const presentation = await sendOnboarding(values, challenge);
       console.log(`presentation: ${presentation}`);
-      const claims = await [];
+      const claims: unknown = [];
       // console.log(`presentation: ${presentation}`)
       // let mappedClaims = [];
       // for (const credential in presentation.verifiableCredential) {
@@ -102,7 +102,7 @@ const ClaimSelector = () => {
         await AsyncStorage.setItem("claims", JSON.stringify(claims)); // mappedClaims));
       }
       //console.log(`>>> claims: ${claims}`);
-      await fetchClaims();
+      fetchClaims();
     } catch (error) {
       console.error(error);
     }
