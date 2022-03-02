@@ -42,7 +42,7 @@ const Onboard = () => {
       if (!!claims) {
         await AsyncStorage.setItem("claims", JSON.stringify(claims));
       }
-      await fetchClaims();
+      fetchClaims();
     } catch (error) {
       console.error(error);
     }

@@ -45,7 +45,7 @@ const DateClaim = ({
         }}
       />
       <Button
-        title="Add Supporting Document From Device"
+        title="Add supporting document from device"
         style={styles.claim.uploadButton as ViewStyle}
         onPress={uploadFileFromBrowser}
       />
@@ -53,7 +53,7 @@ const DateClaim = ({
         title="Verify"
         style={styles.claim.verifyButton as ViewStyle}
         disabled={true}
-        onPress={() => verifyClaim(item)}
+        onPress={() => verifyClaim(item, "0")} // todo:  add nonce
       />
     </View>
   );
