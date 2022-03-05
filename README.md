@@ -153,7 +153,7 @@ The claims will be packaged by the _idem-api_ module as a (Verifiable Presentati
     "type": "EcdsaSecp256k1Signature2019",
     "created": "2022-03-01T12:00:00Z",
     "proofPurpose": "authentication",
-    "verificationMethod": "did:idem:0x645cD9fE9620649BF71a806bE803695B02f697Aa#keys-1",
+    "verificationMethod": "did:idem:0x8444F8EF5694F09110B5191fCfab012f2E974135",
     "challenge": "8b5c66c0-bceb-40b4-b099-d31b127bf7b3",
     "domain": "https://demo.idem.com.au",
     "jws": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..kTCYt5
