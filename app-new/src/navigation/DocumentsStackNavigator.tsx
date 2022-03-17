@@ -8,7 +8,7 @@ const DocumentsStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Setting"
+        name="Documents"
         component={() => (
           <View>
             <Text>Documents</Text>
