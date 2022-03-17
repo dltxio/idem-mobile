@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "app-new",
-    "slug": "app-new",
+    "name": "IDEM",
+    "slug": "IDEM",
     "version": "1.0.0",
     "entryPoint": "./src/App.tsx",
     "orientation": "portrait",

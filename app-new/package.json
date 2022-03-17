@@ -1,7 +1,8 @@
 {
-  "name": "app-new",
+  "name": "idem",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
+  "license": "MIT",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
