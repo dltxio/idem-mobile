@@ -47,7 +47,7 @@ const Home: React.FC = () => {
       </View>
 
       <ScrollView style={commonStyles.screenContent}>
-        <Text style={styles.claimsHeaderText}>Your claims</Text>
+        <Text style={commonStyles.text.smallHeading}>Your claims</Text>
         {usersClaims.length ? (
           <ClaimsList claims={usersClaims} onPress={navigateToClaim} />
         ) : (
@@ -58,7 +58,7 @@ const Home: React.FC = () => {
             </Text>
           </View>
         )}
-        <Text style={styles.claimsHeaderText}>All claims</Text>
+        <Text style={commonStyles.text.smallHeading}>All claims</Text>
         <ClaimsList claims={unclaimedClaims} onPress={navigateToClaim} />
       </ScrollView>
     </View>
@@ -85,11 +85,6 @@ const styles = StyleSheet.create({
     width: 90,
     backgroundColor: "grey",
     marginTop: 3
-  },
-  claimsHeaderText: {
-    fontWeight: "500",
-    fontSize: 18,
-    marginBottom: 10
   },
   emptyClaimsText: {
     marginBottom: 10

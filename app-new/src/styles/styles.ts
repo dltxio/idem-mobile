@@ -1,3 +1,4 @@
+import { StyleSheet } from "react-native";
 import colors from "./colors";
 
 export default {
@@ -18,5 +19,12 @@ export default {
   screenContent: {
     paddingTop: 20,
     paddingHorizontal: 20
+  },
+  text: {
+    smallHeading: {
+      fontWeight: "500" as any,
+      fontSize: 18,
+      marginBottom: 10
+    }
   }
 };

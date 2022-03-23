@@ -25,3 +25,16 @@ export type VerifiedClaimData = {
 export type VerifiedClaim = Claim & {
   value: string;
 };
+
+export type ClaimRequestParams = {
+  callback?: string;
+  claims?: string;
+  nonce?: string;
+};
+
+export type ClaimRequest = {
+  host: string;
+  callback: string;
+  nonce: string;
+  claims: ClaimType[];
+};
