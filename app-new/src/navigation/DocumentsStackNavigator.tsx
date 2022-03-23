@@ -1,19 +1,34 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Text, View } from "react-native";
+import DocumentsScreen from "./screens/DocumentsScreen";
+import DocumentScreen from "./screens/DocumentScreen";
+import { DocumentId } from "../types/document";
+import { getDocumentFromDocumentId } from "../utils/document-utils";
 
-const Stack = createStackNavigator();
+export type DocumentsStackParamList = {
+  Documents: undefined;
+  Document: {
+    documentId: DocumentId;
+  };
+};
+
+const Stack = createStackNavigator<DocumentsStackParamList>();
 
 const DocumentsStackNavigator = () => {
   return (
     <Stack.Navigator>
+      <Stack.Screen name="Documents" component={DocumentsScreen} />
       <Stack.Screen
-        name="Documents"
-        component={() => (
-          <View>
-            <Text>Documents</Text>
-          </View>
-        )}
+        name="Document"
+        options={props => {
+          const document = getDocumentFromDocumentId(
+            props.route.params.documentId
+          );
+          return {
+            title: document.title
+          };
+        }}
+        component={DocumentScreen}
       />
     </Stack.Navigator>
   );

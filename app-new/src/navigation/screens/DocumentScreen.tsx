@@ -5,12 +5,15 @@ import { Button } from "react-native-elements";
 import commonStyles from "../../styles/styles";
 import { useDocumentStore } from "../../context/DocumentStore";
 import {
+  DocumentsStackNavigation,
   ProfileStackNavigation,
   ProfileStackNavigationRoute
 } from "../../types/navigation";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-type Navigation = ProfileStackNavigation<"Document">;
+type Navigation =
+  | ProfileStackNavigation<"Document">
+  | DocumentsStackNavigation<"Documents">;
 
 const DocumentScreen: React.FC = () => {
   const { documents, uploadDocument } = useDocumentStore();
@@ -31,10 +34,12 @@ const DocumentScreen: React.FC = () => {
     }
   };
 
-  const goBack = () => {
-    navigation.goBack();
-    route.params.onSelect();
-  };
+  const goBack = route.params.onSelect
+    ? () => {
+        navigation.goBack();
+        route.params.onSelect();
+      }
+    : undefined;
 
   const document = documents.find(doc => doc.id === route.params.documentId);
 
@@ -52,7 +57,7 @@ const DocumentScreen: React.FC = () => {
           <Button title="Pick an image from camera roll" onPress={pickImage} />
         )}
       </View>
-      {document ? (
+      {document && goBack ? (
         <Button title="Select" onPress={goBack} style={{ marginTop: 20 }} />
       ) : null}
     </ScrollView>
