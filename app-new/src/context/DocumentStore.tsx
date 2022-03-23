@@ -5,6 +5,7 @@ import { documentsLocalStorage } from "../utils/local-storage";
 export type DocumentsValue = {
   documents: DocumentWithFile[];
   uploadDocument: (claimId: DocumentId, file: string) => Promise<void>;
+  reset: () => void;
 };
 
 export const DocumentsContext = React.createContext<DocumentsValue | undefined>(
@@ -34,12 +35,18 @@ export const DocumentProvider: React.FC<{
     });
   };
 
+  const reset = () => {
+    documentsLocalStorage.clear();
+    setDocuments([]);
+  };
+
   const value = React.useMemo(
     () => ({
       documents,
-      uploadDocument
+      uploadDocument,
+      reset
     }),
-    [documents, uploadDocument]
+    [documents, uploadDocument, reset]
   );
 
   return (

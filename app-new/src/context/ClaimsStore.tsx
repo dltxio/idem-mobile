@@ -12,6 +12,7 @@ export type ClaimsVault = {
     value: any,
     verificationDocument: DocumentId | undefined
   ) => Promise<void>;
+  reset: () => void;
 };
 
 export const ClaimsContext = React.createContext<ClaimsVault | undefined>(
@@ -89,13 +90,19 @@ export const ClaimsProvider: React.FC<{
     });
   };
 
+  const reset = () => {
+    claimsLocalStorage.clear();
+    setVerifiedClaimTypes([]);
+  };
+
   const value = React.useMemo(
     () => ({
       unclaimedClaims,
       usersClaims,
-      onClaim
+      onClaim,
+      reset
     }),
-    [allClaims, verifiedClaimTypes, onClaim]
+    [allClaims, verifiedClaimTypes, onClaim, reset]
   );
 
   return (
