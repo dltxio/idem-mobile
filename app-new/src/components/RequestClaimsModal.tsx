@@ -3,9 +3,10 @@ import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import axios from "axios";
 import { useClaimsStore } from "../context/ClaimsStore";
-import { Claim, ClaimRequest } from "../types/claim";
+import { Claim, ClaimRequest, ClaimWithValue } from "../types/claim";
 import Modal from "./Modal";
 import {
+  displayClaimValue,
   generateClaimRequestResponsePayload,
   getClaimsFromTypes
 } from "../utils/claim-utils";
@@ -46,7 +47,8 @@ const RequestClaimsModal: React.FC<Props> = ({ claimRequest, onClose }) => {
       setLoading(false);
       onClose();
     } catch (error) {
-      console.error(error);
+      const err = error as any;
+      console.error(err?.response?.data || error);
       setSuccess(false);
     } finally {
       setLoading(false);
@@ -89,7 +91,9 @@ const ClaimList: React.FC<{
   return (
     <View style={styles.claimList}>
       {claims.map(c => {
-        const claimText = c.value ? `${c.title}: ${c.value}` : c.title;
+        const claimText = c.value
+          ? `${c.title}: ${displayClaimValue(c as ClaimWithValue)}`
+          : c.title;
 
         return (
           <View key={c.key}>

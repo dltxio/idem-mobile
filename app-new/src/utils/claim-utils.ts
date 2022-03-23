@@ -6,7 +6,7 @@ import {
   ClaimRequestParams,
   ClaimType,
   ClaimRequest,
-  VerifiedClaim
+  ClaimWithValue
 } from "../types/claim";
 
 export const getClaimFromType = (claimType: ClaimType): Claim =>
@@ -59,8 +59,22 @@ export const parseClaimRequest = (
   };
 };
 
+export const displayClaimValue = (claim: ClaimWithValue): string => {
+  const formatters: { [key in ClaimType]: (value: any) => string } = {
+    "18+": (value: any) => value.over18,
+    DateOfBirthCredential: (value: any) => value.dob,
+    FullNameCredential: (value: any) => value.firstName + " " + value.lastName,
+    EmailCredential: (value: any) => value.email,
+    MobileNumberCredential: (value: any) => value.mobileNumber,
+    AddressCredential: (value: any) =>
+      value.propertyNumber + " " + value.streetName + ", " + value.postCode
+  };
+
+  return formatters[claim.type](claim.value);
+};
+
 export const generateClaimRequestResponsePayload = (
-  claims: VerifiedClaim[]
+  claims: ClaimWithValue[]
 ) => {
   const verifiableCredential = claims.map(claim => {
     return {

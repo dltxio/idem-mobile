@@ -11,7 +11,10 @@ import DocumentScreen from "./screens/DocumentScreen";
 export type ProfileStackParamList = {
   Home: undefined;
   Claim: { claimType: ClaimType };
-  Document: { documentId: DocumentId };
+  Document: {
+    documentId: DocumentId;
+    onSelect: () => void;
+  };
 };
 
 const Stack = createStackNavigator<ProfileStackParamList>();

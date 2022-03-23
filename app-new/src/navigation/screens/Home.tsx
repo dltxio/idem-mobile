@@ -6,10 +6,7 @@ import colors from "../../styles/colors";
 import commonStyles from "../../styles/styles";
 import { ProfileStackNavigation } from "../../types/navigation";
 import { ClaimsList } from "../../components";
-import {
-  useClaimsStore,
-  useVerifiedClaimValue
-} from "../../context/ClaimsStore";
+import { useClaimsStore } from "../../context/ClaimsStore";
 import { useNavigation } from "@react-navigation/native";
 import { ClaimType } from "../../types/claim";
 
@@ -18,7 +15,6 @@ type Navigation = ProfileStackNavigation<"Home">;
 const Home: React.FC = () => {
   const insets = useSafeAreaInsets();
   const { usersClaims, unclaimedClaims } = useClaimsStore();
-  const name = useVerifiedClaimValue("FullNameCredential");
   const navigation = useNavigation<Navigation>();
 
   const navigateToClaim = (claimType: ClaimType) => {
@@ -36,13 +32,8 @@ const Home: React.FC = () => {
           }}
         />
         <View style={styles.userDetails}>
-          {name && <Text>{name}</Text>}
-          {!name && (
-            <React.Fragment>
-              <View style={styles.userDetailPlaceholder} />
-              <View style={[styles.userDetailPlaceholder, { width: 150 }]} />
-            </React.Fragment>
-          )}
+          <View style={styles.userDetailPlaceholder} />
+          <View style={[styles.userDetailPlaceholder, { width: 150 }]} />
         </View>
       </View>
 
@@ -58,8 +49,12 @@ const Home: React.FC = () => {
             </Text>
           </View>
         )}
-        <Text style={commonStyles.text.smallHeading}>All claims</Text>
-        <ClaimsList claims={unclaimedClaims} onPress={navigateToClaim} />
+        {unclaimedClaims.length ? (
+          <>
+            <Text style={commonStyles.text.smallHeading}>All claims</Text>
+            <ClaimsList claims={unclaimedClaims} onPress={navigateToClaim} />
+          </>
+        ) : null}
       </ScrollView>
     </View>
   );

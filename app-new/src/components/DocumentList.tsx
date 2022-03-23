@@ -1,32 +1,44 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { ListItem } from "react-native-elements";
-import { Document, DocumentId } from "../types/document";
-import { getClaimFromType } from "../utils/claim-utils";
+import { DocumentId } from "../types/document";
 import { AntDesign } from "@expo/vector-icons";
-import { getDocumentsClaims } from "../utils/document-utils";
+import allDocuments from "../data/documents";
 
 type Props = {
-  documents: Document[];
+  documents: DocumentId[];
   onPress: (documentId: DocumentId) => void;
+  selectedDocumentId: DocumentId | undefined;
 };
 
-const DocumentList: React.FC<Props> = ({ documents, onPress }) => {
+const DocumentList: React.FC<Props> = ({
+  documents,
+  selectedDocumentId,
+  onPress
+}) => {
   return (
     <View>
-      {documents.map(doc => {
+      {documents.map(d => {
+        const document = allDocuments.find(doc => doc.id === d);
+
+        if (!document) {
+          return null;
+        }
+
         return (
-          <ListItem key={doc.id} bottomDivider onPress={() => onPress(doc.id)}>
+          <ListItem
+            key={document.id}
+            bottomDivider
+            onPress={() => onPress(document.id)}
+          >
             <ListItem.Content>
-              <ListItem.Title>{doc.title}</ListItem.Title>
-              <Text style={{ fontSize: 12 }}>Claims</Text>
-              <Text style={{ fontSize: 10 }}>
-                {getDocumentsClaims(doc)
-                  .map(ct => getClaimFromType(ct).title)
-                  .join(", ")}
-              </Text>
+              <ListItem.Title>{document.title}</ListItem.Title>
             </ListItem.Content>
-            <AntDesign name="right" size={24} color="black" />
+            <AntDesign
+              name={selectedDocumentId === document.id ? "check" : "right"}
+              size={24}
+              color="black"
+            />
           </ListItem>
         );
       })}

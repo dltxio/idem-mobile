@@ -10,13 +10,12 @@ import { useEffect } from "react";
 import { ClaimRequest } from "./types/claim";
 import { parseClaimRequest } from "./utils/claim-utils";
 import { RequestClaimsModal } from "./components";
+import { DocumentProvider } from "./context/DocumentStore";
 
 const App = () => {
   const initialURL = Linking.useURL();
   const [newUrl, setNewUrl] = React.useState<boolean>(false);
   const [claimRequest, setClaimRequest] = React.useState<ClaimRequest>();
-
-  console.log(initialURL);
 
   useEffect(() => {
     Linking.addEventListener("url", ({ url }) => {
@@ -53,14 +52,16 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <ClaimsProvider>
-        <NavigationContainer>
-          <StatusBar style="auto" />
-          <TabNavigator />
-          <RequestClaimsModal
-            claimRequest={claimRequest}
-            onClose={() => setClaimRequest(undefined)}
-          />
-        </NavigationContainer>
+        <DocumentProvider>
+          <NavigationContainer>
+            <StatusBar style="auto" />
+            <TabNavigator />
+            <RequestClaimsModal
+              claimRequest={claimRequest}
+              onClose={() => setClaimRequest(undefined)}
+            />
+          </NavigationContainer>
+        </DocumentProvider>
       </ClaimsProvider>
     </SafeAreaProvider>
   );

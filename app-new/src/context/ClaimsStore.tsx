@@ -1,24 +1,19 @@
 import * as React from "react";
-import {
-  Claim,
-  ClaimType,
-  VerifiedClaim,
-  VerifiedClaimData
-} from "../types/claim";
+import { Claim, ClaimType, ClaimWithValue, ClaimData } from "../types/claim";
 import allClaims from "../data/claims";
 import { DocumentId } from "../types/document";
-import { getDocumentFromDocumentId } from "../utils/document-utils";
 
-export type AccountVault = {
+export type ClaimsVault = {
   unclaimedClaims: Claim[];
-  usersClaims: VerifiedClaim[];
-  onVerifyDocument: (
-    documentId: DocumentId,
-    data: { [key: string]: string }
+  usersClaims: ClaimWithValue[];
+  onClaim: (
+    claimId: ClaimType,
+    value: any,
+    verificationDocument: DocumentId | undefined
   ) => Promise<void>;
 };
 
-export const ClaimsContext = React.createContext<AccountVault | undefined>(
+export const ClaimsContext = React.createContext<ClaimsVault | undefined>(
   undefined
 );
 
@@ -26,10 +21,10 @@ export const ClaimsProvider: React.FC<{
   children: React.ReactNode;
 }> = props => {
   const [verifiedClaimTypes, setVerifiedClaimTypes] = React.useState<
-    VerifiedClaimData[]
+    ClaimData[]
   >([]);
 
-  const usersClaims: VerifiedClaim[] = React.useMemo(
+  const usersClaims: ClaimWithValue[] = React.useMemo(
     () =>
       allClaims
         .filter(claim =>
@@ -61,30 +56,14 @@ export const ClaimsProvider: React.FC<{
     [verifiedClaimTypes]
   );
 
-  const onVerifyDocument = async (
-    documentId: DocumentId,
-    data: { [key: string]: string }
+  const onClaim = async (
+    claimId: ClaimType,
+    value: string,
+    verificationDocument: DocumentId | undefined
   ) => {
     // This is a mock function.
     // In the future we will send this data off to an api to be verified
-    console.log("Verifying document", documentId, data);
-    const document = getDocumentFromDocumentId(documentId);
-
-    const newVerifiedClaims: VerifiedClaimData[] = [];
-
-    for (const field of document.fields) {
-      const fieldData = data[field.id];
-      if (!fieldData) {
-        continue;
-      }
-
-      for (const claimType of field.claimTypes) {
-        newVerifiedClaims.push({
-          type: claimType,
-          value: fieldData
-        });
-      }
-    }
+    console.log("making a claim", claimId, value, verificationDocument);
 
     await new Promise(resolve =>
       setTimeout(() => {
@@ -92,16 +71,16 @@ export const ClaimsProvider: React.FC<{
       }, 2000)
     );
 
-    setVerifiedClaimTypes(previous => [...previous, ...newVerifiedClaims]);
+    setVerifiedClaimTypes(previous => [...previous, { type: claimId, value }]);
   };
 
   const value = React.useMemo(
     () => ({
       unclaimedClaims,
       usersClaims,
-      onVerifyDocument
+      onClaim
     }),
-    [allClaims, verifiedClaimTypes, onVerifyDocument]
+    [allClaims, verifiedClaimTypes, onClaim]
   );
 
   return (

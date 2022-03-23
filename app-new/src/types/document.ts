@@ -1,16 +1,11 @@
-import { ClaimType } from "./claim";
-
-export type DocumentId = "passport" | "driversLicense";
-
-export type DocumentField = {
-  id: string;
-  title: string;
-  type: "text" | "date";
-  claimTypes: ClaimType[];
-};
+export type DocumentId = "passport" | "drivers-license";
 
 export type Document = {
   id: DocumentId;
   title: string;
-  fields: DocumentField[];
+};
+
+export type DocumentWithFile = {
+  id: DocumentId;
+  file: string;
 };

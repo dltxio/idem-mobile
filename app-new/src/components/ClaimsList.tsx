@@ -1,7 +1,8 @@
 import { AntDesign } from "@expo/vector-icons";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { ListItem } from "react-native-elements";
-import { Claim, ClaimType } from "../types/claim";
+import { Claim, ClaimType, ClaimWithValue } from "../types/claim";
+import { displayClaimValue } from "../utils/claim-utils";
 
 type PossiblyVerifiedClaim = Claim & { value?: string };
 
@@ -28,11 +29,13 @@ const ClaimItem: React.FC<{
   claim: PossiblyVerifiedClaim;
   onPress: () => void;
 }> = ({ claim, onPress }) => {
+  const value = claim.value ? displayClaimValue(claim as ClaimWithValue) : "";
+
   return (
     <ListItem key={claim.key} bottomDivider onPress={onPress}>
       <ListItem.Content>
         <ListItem.Title>{claim.title}</ListItem.Title>
-        {claim.value && <ListItem.Subtitle>{claim.value}</ListItem.Subtitle>}
+        {claim.value && <ListItem.Subtitle>{value}</ListItem.Subtitle>}
       </ListItem.Content>
       <AntDesign name="right" size={24} color="black" />
     </ListItem>

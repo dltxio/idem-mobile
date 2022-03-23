@@ -1,39 +1,14 @@
-import { Document, DocumentField } from "../types/document";
+import { Document } from "../types/document";
 
-const fullNameField: DocumentField = {
-  id: "fullName",
-  title: "Full Name",
-  type: "text",
-  claimTypes: ["FullNameCredential"]
-};
-
-const dobField: DocumentField = {
-  id: "dob",
-  title: "Date of birth",
-  type: "date",
-  claimTypes: ["DateOfBirthCredential", "18+"]
-};
-
-const claims: Document[] = [
+const documents: Document[] = [
   {
     id: "passport",
-    title: "Passport",
-    fields: [fullNameField, dobField]
+    title: "Passport"
   },
   {
-    id: "driversLicense",
-    title: "Driver's License",
-    fields: [
-      fullNameField,
-      dobField,
-      {
-        id: "address",
-        title: "Address",
-        type: "text",
-        claimTypes: ["AddressCredential"]
-      }
-    ]
+    id: "drivers-license",
+    title: "Driver's License"
   }
 ];
 
-export default claims;
+export default documents;

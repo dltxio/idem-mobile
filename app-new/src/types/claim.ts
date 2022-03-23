@@ -1,3 +1,6 @@
+import { Field } from "./general";
+import { DocumentId } from "./document";
+
 export type ClaimType =
   | "18+"
   | "DateOfBirthCredential"
@@ -15,14 +18,16 @@ export type Claim = {
   title: string;
   description: string;
   verificationAction: VerificationAction;
+  fields: Field[];
+  verificationDocuments: DocumentId[];
 };
 
-export type VerifiedClaimData = {
+export type ClaimData = {
   type: ClaimType;
   value: string;
 };
 
-export type VerifiedClaim = Claim & {
+export type ClaimWithValue = Claim & {
   value: string;
 };
 
