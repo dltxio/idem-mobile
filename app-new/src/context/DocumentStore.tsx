@@ -1,5 +1,6 @@
 import * as React from "react";
 import { DocumentId, DocumentWithFile } from "../types/document";
+import { documentsLocalStorage } from "../utils/local-storage";
 
 export type DocumentsValue = {
   documents: DocumentWithFile[];
@@ -15,8 +16,22 @@ export const DocumentProvider: React.FC<{
 }> = props => {
   const [documents, setDocuments] = React.useState<DocumentWithFile[]>([]);
 
+  React.useEffect(() => {
+    (async () => {
+      const initialDocuments = await documentsLocalStorage.get();
+
+      if (initialDocuments) {
+        setDocuments(initialDocuments);
+      }
+    })();
+  }, []);
+
   const uploadDocument = async (id: DocumentId, file: string) => {
-    setDocuments(previous => [...previous, { id, file }]);
+    setDocuments(previous => {
+      const updatedDocuments = [...previous, { id, file }];
+      documentsLocalStorage.save(updatedDocuments);
+      return updatedDocuments;
+    });
   };
 
   const value = React.useMemo(

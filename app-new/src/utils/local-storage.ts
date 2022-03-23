@@ -1,0 +1,46 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ClaimData, ClaimWithValue } from "../types/claim";
+import { DocumentWithFile } from "../types/document";
+
+type LocalStorage<T> = {
+  save: (data: T) => Promise<void>;
+  get: () => Promise<T | null>;
+  clear: () => Promise<void>;
+};
+
+const createLocalStorage = <T>(
+  key: string,
+  isObject: boolean
+): LocalStorage<T> => {
+  const save = (data: T) =>
+    AsyncStorage.setItem(
+      key,
+      isObject ? JSON.stringify(data) : (data as unknown as string)
+    );
+  const get = async () => {
+    const data = await AsyncStorage.getItem(key);
+
+    if (!data) {
+      return null;
+    }
+
+    return isObject ? JSON.parse(data) : data;
+  };
+  const clear = () => AsyncStorage.removeItem(key);
+
+  return {
+    save,
+    get,
+    clear
+  };
+};
+
+export const claimsLocalStorage = createLocalStorage<ClaimData[]>(
+  "CLAIMS",
+  true
+);
+
+export const documentsLocalStorage = createLocalStorage<DocumentWithFile[]>(
+  "DOCUMENTS",
+  true
+);

@@ -2,6 +2,7 @@ import * as React from "react";
 import { Claim, ClaimType, ClaimWithValue, ClaimData } from "../types/claim";
 import allClaims from "../data/claims";
 import { DocumentId } from "../types/document";
+import { claimsLocalStorage } from "../utils/local-storage";
 
 export type ClaimsVault = {
   unclaimedClaims: Claim[];
@@ -23,6 +24,16 @@ export const ClaimsProvider: React.FC<{
   const [verifiedClaimTypes, setVerifiedClaimTypes] = React.useState<
     ClaimData[]
   >([]);
+
+  React.useEffect(() => {
+    (async () => {
+      const initialClaims = await claimsLocalStorage.get();
+
+      if (initialClaims) {
+        setVerifiedClaimTypes(initialClaims);
+      }
+    })();
+  }, []);
 
   const usersClaims: ClaimWithValue[] = React.useMemo(
     () =>
@@ -71,7 +82,11 @@ export const ClaimsProvider: React.FC<{
       }, 2000)
     );
 
-    setVerifiedClaimTypes(previous => [...previous, { type: claimId, value }]);
+    setVerifiedClaimTypes(previous => {
+      const updatedClaims = [...previous, { type: claimId, value }];
+      claimsLocalStorage.save(updatedClaims);
+      return updatedClaims;
+    });
   };
 
   const value = React.useMemo(
