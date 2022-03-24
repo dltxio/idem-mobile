@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FontIcon from "react-native-vector-icons/FontAwesome5";
 import { colors } from "../styles/theme";
 import SettingsStackNavigator from "./SettingsStackNavigator";
-import ClaimsStackNavigator from "./ClaimsStackNavigator";
+import ProfileStackNavigator from "./ProfileStackNavigator";
 import VendorsStackNavigator from "./VendorsStackNavigator";
 
 const Tab = createBottomTabNavigator();
@@ -45,7 +45,7 @@ const TabNavigator = () => (
     }}
     initialRouteName="Claims"
   >
-    <Tab.Screen name="Claims" component={ClaimsStackNavigator} />
+    <Tab.Screen name="Claims" component={ProfileStackNavigator} />
     <Tab.Screen name="3rd Parties" component={VendorsStackNavigator} />
     <Tab.Screen name="Settings" component={SettingsStackNavigator} />
   </Tab.Navigator>
