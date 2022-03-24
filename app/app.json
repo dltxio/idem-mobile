@@ -1,16 +1,17 @@
 {
   "expo": {
-    "name": "Idem",
-    "slug": "Idem",
-    "privacy": "public",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "name": "IDEM",
+    "slug": "IDEM",
     "version": "1.0.0",
+    "entryPoint": "./src/App.tsx",
     "orientation": "portrait",
-    "icon": "./assets/images/logo.png",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "userInterfaceStyle": "automatic",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -18,23 +19,16 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.idem"
+      "supportsTablet": true
     },
-    "packagerOpts": {
-      "config": "metro.config.js",
-      "sourceExts": [
-        "js",
-        "jsx",
-        "svg",
-        "ts",
-        "tsx"
-      ]
-    },
-    "description": "",
     "android": {
-      "package": "com.idem"
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
     },
-    "scheme": "did"
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
   }
 }

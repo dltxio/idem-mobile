@@ -1,13 +1,6 @@
 {
-  "extends": "../tsconfig.json",
-  "composite": true,
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "rootDir": "./",
-    "outDir": "./build",
-    "allowSyntheticDefaultImports": true,
-    "jsx": "react-native",
-    "lib": ["dom", "esnext"],
-    "typeRoots": ["./types"]
-  },
-  "include": ["./", "./config.dev.json"]
+    "strict": true
+  }
 }
