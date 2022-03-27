@@ -26,7 +26,7 @@ const claims: Claim[] = [
     fields: [
       {
         id: "dob",
-        title: "Date of birth",
+        title: "Date Of Birth",
         type: "date"
       }
     ],
@@ -52,7 +52,7 @@ const claims: Claim[] = [
     title: "Email",
     description: "Your email address",
     verificationAction: "form",
-    fields: [{ id: "email", title: "email", type: "text" }],
+    fields: [{ id: "email", title: "Email", type: "text" }],
     verificationDocuments: []
   },
   {

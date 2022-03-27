@@ -40,8 +40,8 @@ const DocumentsScreen: React.FC = () => {
       ) : (
         <View>
           <Text style={styles.emptyClaimsText}>
-            You don't have have any documents yet. Get started by uploading a
-            document below
+            You haven't added any documents yet. Get started by uploading a
+            document below.
           </Text>
         </View>
       )}

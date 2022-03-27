@@ -150,7 +150,7 @@ const ClaimScreen: React.FC = () => {
       )}
       {documentList}
       <Button
-        title={isVerifying ? "Submit & verify" : "Submit"}
+        title={isVerifying ? "Submit & verify" : "Save"}
         disabled={!canSubmit}
         onPress={onSubmit}
         loading={loading}
@@ -167,7 +167,8 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   verifyButton: {
-    marginTop: 20
+    marginBottom: 20
+    // bottom: 0
   }
 });
 

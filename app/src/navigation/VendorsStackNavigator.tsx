@@ -22,7 +22,7 @@ const VendorsStackNavigator = () => {
         name="3rd Party List"
         component={() => (
           <View>
-            <Button title="Reset data" onPress={onReset} />
+            {/* <Button title="Reset data" onPress={onReset} /> */}
           </View>
         )}
       />
