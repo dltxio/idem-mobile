@@ -24,11 +24,11 @@ export type Claim = {
 
 export type ClaimData = {
   type: ClaimType;
-  value: string;
+  value: any; // each claim type has it own value type. todo - make generic
 };
 
 export type ClaimWithValue = Claim & {
-  value: string;
+  value: any; // each claim type has it own value type. todo - make generic
 };
 
 export type ClaimRequestParams = {

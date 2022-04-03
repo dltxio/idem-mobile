@@ -20,11 +20,14 @@ type Navigation = ProfileStackNavigation<"Claim">;
 const ClaimScreen: React.FC = () => {
   const route = useRoute<ProfileStackNavigationRoute<"Claim">>();
   const claim = getClaimFromType(route.params.claimType);
+  const { onClaim, usersClaims } = useClaimsStore();
+
+  const userClaim = usersClaims.find(c => c.type === claim.type);
+
   const navigation = useNavigation<Navigation>();
   const [formState, setFormState] = React.useState<{ [key: string]: string }>(
-    {}
+    userClaim?.value || {}
   );
-  const { onClaim } = useClaimsStore();
   let dateRefs = React.useRef<{ [key: string]: any }>({});
   const [showDatePickerForFieldId, setShowDatePickerForFieldId] =
     React.useState<string>();
