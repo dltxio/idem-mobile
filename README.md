@@ -156,6 +156,11 @@ The claims will be packaged by the _idem-api_ module as a (Verifiable Presentati
 }
 ```
 
+![vc](https://user-images.githubusercontent.com/8411406/161453157-9ef4942f-4ebe-40d1-98e1-16abeb204047.png)  
+
+c# Verifiable Credential model
+
+
 ### 4. Posting the signed data back to the exchange
 Finally, _Idem_ sends the credentials payload back to the website. Upon receipt of the credentials, the website authenticates the signature against the payload and shows a success message to the user. Obviously, it's up to the website to handle the success or failure of the verification of the user in whatver way it sees fit. 
 
