@@ -35,7 +35,7 @@ const DetailOrPlaceholder: React.FC<{
     );
   }
 
-  return <Text style={{ fontWeight: bold ? "bold" : undefined }}>{value}</Text>;
+  return <Text style={bold && styles.boldText}>{value}</Text>;
 };
 
 const styles = StyleSheet.create({
@@ -57,6 +57,9 @@ const styles = StyleSheet.create({
     width: 90,
     backgroundColor: "grey",
     marginTop: 3
+  },
+  boldText: {
+    fontWeight: "bold"
   }
 });
 
