@@ -4,6 +4,7 @@ import { Avatar } from "react-native-elements";
 import colors from "../styles/colors";
 import commonStyles from "../styles/styles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+const defaultProfilePicture = require("../../assets/default-profile-picture.png");
 
 const UserDetailsHeader: React.FC = () => {
   const insets = useSafeAreaInsets();
@@ -12,13 +13,7 @@ const UserDetailsHeader: React.FC = () => {
 
   return (
     <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
-      <Avatar
-        rounded
-        size="large"
-        source={{
-          uri: "https://www.pngkit.com/png/detail/126-1262807_instagram-default-profile-picture-png.png"
-        }}
-      />
+      <Avatar rounded size="large" source={defaultProfilePicture} />
       <View style={styles.userDetails}>
         <DetailOrPlaceholder value={name} bold={true} placeholderWidth={90} />
         <DetailOrPlaceholder value={email} placeholderWidth={150} />
