@@ -1,13 +1,15 @@
-import DocumentList from "./DocumentList";
+import FileList from "./FileList";
 import ClaimsList from "./ClaimsList";
 import Modal from "./Modal";
 import RequestClaimsModal from "./RequestClaimsModal";
 import UserDetailsHeader from "./UserDetailsHeader";
+import Button from "./Button";
 
 export {
-  DocumentList,
+  FileList,
   ClaimsList,
   Modal,
   RequestClaimsModal,
-  UserDetailsHeader
+  UserDetailsHeader,
+  Button
 };

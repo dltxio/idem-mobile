@@ -5,7 +5,9 @@ export type Document = {
   title: string;
 };
 
-export type DocumentWithFile = {
-  id: DocumentId;
+export type File = {
+  id: string;
+  documentId: DocumentId;
+  fileName: string;
   file: string;
 };

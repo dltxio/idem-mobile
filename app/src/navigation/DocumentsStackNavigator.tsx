@@ -1,14 +1,12 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import DocumentsScreen from "./screens/DocumentsScreen";
-import DocumentScreen from "./screens/DocumentScreen";
-import { DocumentId } from "../types/document";
-import { getDocumentFromDocumentId } from "../utils/document-utils";
+import ViewFile from "./screens/ViewFileScreen";
 
 export type DocumentsStackParamList = {
   Documents: undefined;
-  Document: {
-    documentId: DocumentId;
+  ViewFile: {
+    fileId: string;
   };
 };
 
@@ -19,16 +17,13 @@ const DocumentsStackNavigator = () => {
     <Stack.Navigator>
       <Stack.Screen name="Documents" component={DocumentsScreen} />
       <Stack.Screen
-        name="Document"
-        options={props => {
-          const document = getDocumentFromDocumentId(
-            props.route.params.documentId
-          );
+        name="ViewFile"
+        options={() => {
           return {
-            title: document.title
+            title: ""
           };
         }}
-        component={DocumentScreen}
+        component={ViewFile}
       />
     </Stack.Navigator>
   );

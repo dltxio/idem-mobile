@@ -29,6 +29,14 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "IDEM accesses your photos to verify your claims"
+        }
+      ]
+    ]
   }
 }

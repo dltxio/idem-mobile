@@ -8,11 +8,7 @@ import { displayClaimValue } from "../utils/claim-utils";
 export type ClaimsVault = {
   unclaimedClaims: Claim[];
   usersClaims: ClaimWithValue[];
-  onClaim: (
-    claimId: ClaimType,
-    value: any,
-    verificationDocument: DocumentId | undefined
-  ) => Promise<void>;
+  onClaim: (claimId: ClaimType, value: any, files: string[]) => Promise<void>;
   reset: () => void;
 };
 
@@ -72,11 +68,11 @@ export const ClaimsProvider: React.FC<{
   const onClaim = async (
     claimId: ClaimType,
     value: string,
-    verificationDocument: DocumentId | undefined
+    files: string[]
   ) => {
     // This is a mock function.
     // In the future we will send this data off to an api to be verified
-    console.log("making a claim", claimId, value, verificationDocument);
+    console.log("making a claim", claimId, value, files);
 
     await new Promise(resolve =>
       setTimeout(() => {

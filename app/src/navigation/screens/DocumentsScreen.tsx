@@ -1,60 +1,105 @@
 import * as React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import commonStyles from "../../styles/styles";
-import { DocumentList } from "../../components";
+import { Button, FileList } from "../../components";
 import allDocuments from "../../data/documents";
 import { useDocumentStore } from "../../context/DocumentStore";
 import { DocumentsStackNavigation } from "../../types/navigation";
-import { DocumentId } from "../../types/document";
 import { useNavigation } from "@react-navigation/native";
+import { Picker } from "@react-native-picker/picker";
+import * as ImagePicker from "expo-image-picker";
+import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/document-utils";
 
 type Navigation = DocumentsStackNavigation<"Documents">;
 
 const DocumentsScreen: React.FC = () => {
-  const { documents } = useDocumentStore();
+  const { files, uploadFile } = useDocumentStore();
   const navigation = useNavigation<Navigation>();
 
-  const uploadedDocuments = allDocuments.filter(doc =>
-    documents.find(d => d.id === doc.id)
+  const [selectedDocumentId, setSelectedDocumentId] = React.useState(
+    allDocuments[allDocuments.length - 1].id
   );
 
-  const notUploadedDocuments = allDocuments.filter(
-    doc => !uploadedDocuments.find(d => d.id === doc.id)
-  );
+  const [status, requestPermission] = ImagePicker.useCameraPermissions();
 
-  const navigateToDocument = (documentId: DocumentId) => {
-    navigation.navigate("Document", {
-      documentId
+  const navigateToFile = (fileId: string) => {
+    navigation.navigate("ViewFile", {
+      fileId
     });
   };
 
+  const pickPhotoFromLibrary = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync(
+      DOCUMENT_IMAGE_OPTIONS
+    );
+
+    if (!result.cancelled) {
+      uploadFile(selectedDocumentId, result.uri);
+    }
+  };
+
+  const takePhoto = async () => {
+    let hasPermission = !!status?.granted;
+
+    if (!status?.granted) {
+      hasPermission = (await requestPermission()).granted;
+    }
+
+    if (!hasPermission) {
+      return;
+    }
+    const result = await ImagePicker.launchCameraAsync(DOCUMENT_IMAGE_OPTIONS);
+
+    if (!result.cancelled) {
+      uploadFile(selectedDocumentId, result.uri);
+    }
+  };
+
   return (
-    <View style={[commonStyles.screen, commonStyles.screenContent]}>
-      <Text style={commonStyles.text.smallHeading}>Your documents</Text>
-      {uploadedDocuments.length ? (
-        <DocumentList
-          documents={uploadedDocuments.map(d => d.id)}
-          onPress={navigateToDocument}
-          selectedDocumentId={undefined}
-        />
-      ) : (
-        <View>
-          <Text style={styles.emptyClaimsText}>
-            You haven't added any documents yet. Get started by uploading a
-            document below.
-          </Text>
-        </View>
-      )}
-      {notUploadedDocuments.length ? (
-        <>
-          <Text style={commonStyles.text.smallHeading}>All documents</Text>
-          <DocumentList
-            documents={notUploadedDocuments.map(d => d.id)}
-            onPress={navigateToDocument}
-            selectedDocumentId={undefined}
+    <View
+      style={[commonStyles.screen, commonStyles.screenContent, styles.screen]}
+    >
+      <View style={styles.section}>
+        <Text style={commonStyles.text.smallHeading}>Your documents</Text>
+        {files.length ? (
+          <FileList
+            files={files}
+            onPress={navigateToFile}
+            isCheckList={false}
           />
-        </>
-      ) : null}
+        ) : (
+          <View>
+            <Text style={styles.emptyClaimsText}>
+              You haven't added any documents yet. Get started by uploading a
+              document below.
+            </Text>
+          </View>
+        )}
+      </View>
+      <View style={[styles.section, { justifyContent: "flex-end" }]}>
+        <Text style={commonStyles.text.smallHeading}>Upload document</Text>
+        <Picker
+          selectedValue={selectedDocumentId}
+          onValueChange={itemValue => setSelectedDocumentId(itemValue)}
+          numberOfLines={2}
+          style={{ height: 150 }}
+        >
+          {allDocuments.map(doc => (
+            <Picker.Item key={doc.id} label={doc.title} value={doc.id} />
+          ))}
+        </Picker>
+
+        <Button
+          title="Take photo"
+          style={styles.photoButton}
+          onPress={takePhoto}
+        />
+        <Button
+          title="Select from photos"
+          style={styles.photoButton}
+          onPress={pickPhotoFromLibrary}
+        />
+      </View>
     </View>
   );
 };
@@ -62,6 +107,10 @@ const DocumentsScreen: React.FC = () => {
 export default DocumentsScreen;
 
 const styles = StyleSheet.create({
+  screen: {
+    justifyContent: "space-between",
+    marginBottom: 30
+  },
   introText: {
     marginBottom: 10
   },
@@ -70,5 +119,11 @@ const styles = StyleSheet.create({
   },
   emptyClaimsText: {
     marginBottom: 10
+  },
+  photoButton: {
+    marginTop: 10
+  },
+  section: {
+    height: "50%"
   }
 });
