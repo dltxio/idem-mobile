@@ -78,11 +78,13 @@ const DocumentsScreen: React.FC = () => {
       </View>
       <View style={[styles.section, styles.bottomSection]}>
         <Text style={commonStyles.text.smallHeading}>Upload document</Text>
+        <Text style={styles.label}>Document type</Text>
         <Picker
           selectedValue={selectedDocumentId}
           onValueChange={itemValue => setSelectedDocumentId(itemValue)}
           numberOfLines={2}
           style={styles.picker}
+          itemStyle={styles.pickerItem}
         >
           {allDocuments.map(doc => (
             <Picker.Item key={doc.id} label={doc.title} value={doc.id} />
@@ -129,7 +131,13 @@ const styles = StyleSheet.create({
   bottomSection: {
     justifyContent: "flex-end"
   },
+  label: {
+    marginTop: 10
+  },
   picker: {
     height: 150
+  },
+  pickerItem: {
+    fontSize: 12
   }
 });
