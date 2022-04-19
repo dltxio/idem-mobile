@@ -6,10 +6,10 @@ import UserDetailsHeader from "./UserDetailsHeader";
 import Button from "./Button";
 
 export {
-  FileList,
+  Button,
   ClaimsList,
+  FileList,
   Modal,
   RequestClaimsModal,
-  UserDetailsHeader,
-  Button
+  UserDetailsHeader
 };

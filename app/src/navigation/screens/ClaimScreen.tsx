@@ -219,7 +219,7 @@ const VerificationFiles: React.FC<{
           </Text>
           <FileList
             files={filesWithSelected}
-            onPress={onSelectFile}
+            onFilePress={onSelectFile}
             isCheckList={true}
           />
         </>

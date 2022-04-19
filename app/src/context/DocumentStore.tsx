@@ -37,13 +37,13 @@ export const DocumentProvider: React.FC<{
     }
 
     setFiles(previous => {
-      const updatedDocuments = [
+      const updatedFiles = [
         ...previous,
         // todo -  replace uuid with hash?
-        { id: uuid.v4() as string, documentId, file, fileName }
+        { id: uuid.v4() as string, documentId: documentId, file, fileName }
       ];
-      fileLocalStorage.save(updatedDocuments);
-      return updatedDocuments;
+      fileLocalStorage.save(updatedFiles);
+      return updatedFiles;
     });
   };
 

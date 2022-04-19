@@ -39,15 +39,15 @@ const DocumentsScreen: React.FC = () => {
   };
 
   const takePhoto = async () => {
-    let hasPermission = !!status?.granted;
-
-    if (!status?.granted) {
-      hasPermission = (await requestPermission()).granted;
-    }
+    const hasPermission = !!status?.granted;
 
     if (!hasPermission) {
-      return;
+      const newHasPermission = (await requestPermission()).granted;
+      if (newHasPermission) {
+        return;
+      }
     }
+
     const result = await ImagePicker.launchCameraAsync(DOCUMENT_IMAGE_OPTIONS);
 
     if (!result.cancelled) {
@@ -64,7 +64,7 @@ const DocumentsScreen: React.FC = () => {
         {files.length ? (
           <FileList
             files={files}
-            onPress={navigateToFile}
+            onFilePress={navigateToFile}
             isCheckList={false}
           />
         ) : (

@@ -5,16 +5,22 @@ import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 import { getDocumentFromDocumentId } from "../utils/document-utils";
+import { StyleSheet } from "react-native";
+import colors from "../styles/colors";
 
 type FileItem = File & { selected?: boolean };
 
 type Props = {
   files: FileItem[];
-  onPress: (fileId: string) => void;
+  onFilePress: (fileId: string) => void;
   isCheckList: boolean;
 };
 
-const FileList: React.FC<Props> = ({ isCheckList, files, onPress }) => {
+const FileList: React.FC<Props> = ({
+  isCheckList,
+  files,
+  onFilePress: onPress
+}) => {
   return (
     <ScrollView>
       {files.map(file => {
@@ -35,18 +41,13 @@ const FileList: React.FC<Props> = ({ isCheckList, files, onPress }) => {
               <ListItem.Subtitle>{file.fileName}</ListItem.Subtitle>
             </ListItem.Content>
             {!isCheckList ? (
-              <AntDesign name="right" size={24} color="black" />
+              <AntDesign name="right" style={styles.icon} />
             ) : file.selected ? (
-              <MaterialIcons
-                name="radio-button-checked"
-                size={24}
-                color="black"
-              />
+              <MaterialIcons name="radio-button-checked" style={styles.icon} />
             ) : (
               <MaterialIcons
                 name="radio-button-unchecked"
-                size={24}
-                color="black"
+                style={styles.icon}
               />
             )}
           </ListItem>
@@ -57,3 +58,10 @@ const FileList: React.FC<Props> = ({ isCheckList, files, onPress }) => {
 };
 
 export default FileList;
+
+const styles = StyleSheet.create({
+  icon: {
+    color: colors.black,
+    fontSize: 24
+  }
+});
