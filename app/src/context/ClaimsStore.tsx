@@ -3,6 +3,7 @@ import { Claim, ClaimType, ClaimWithValue, ClaimData } from "../types/claim";
 import allClaims from "../data/claims";
 import { DocumentId } from "../types/document";
 import { claimsLocalStorage } from "../utils/local-storage";
+import { displayClaimValue } from "../utils/claim-utils";
 
 export type ClaimsVault = {
   unclaimedClaims: Claim[];
@@ -126,5 +127,5 @@ export const useVerifiedClaimValue = (
 ): string | undefined => {
   const { usersClaims } = useClaimsStore();
   const claim = usersClaims.find(c => c.type === claimType);
-  return claim ? claim.value : undefined;
+  return claim ? displayClaimValue(claim) : undefined;
 };
