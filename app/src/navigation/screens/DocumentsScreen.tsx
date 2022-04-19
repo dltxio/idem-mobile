@@ -76,13 +76,13 @@ const DocumentsScreen: React.FC = () => {
           </View>
         )}
       </View>
-      <View style={[styles.section, { justifyContent: "flex-end" }]}>
+      <View style={[styles.section, styles.bottomSection]}>
         <Text style={commonStyles.text.smallHeading}>Upload document</Text>
         <Picker
           selectedValue={selectedDocumentId}
           onValueChange={itemValue => setSelectedDocumentId(itemValue)}
           numberOfLines={2}
-          style={{ height: 150 }}
+          style={styles.picker}
         >
           {allDocuments.map(doc => (
             <Picker.Item key={doc.id} label={doc.title} value={doc.id} />
@@ -125,5 +125,11 @@ const styles = StyleSheet.create({
   },
   section: {
     height: "50%"
+  },
+  bottomSection: {
+    justifyContent: "flex-end"
+  },
+  picker: {
+    height: 150
   }
 });

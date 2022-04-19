@@ -67,7 +67,6 @@ const ClaimScreen: React.FC = () => {
   };
 
   const onSelectFile = (fileId: string) => {
-    console.log(fileId);
     if (!selectedFileIds.includes(fileId)) {
       setSelectedFileIds([...selectedFileIds, fileId]);
     } else {
