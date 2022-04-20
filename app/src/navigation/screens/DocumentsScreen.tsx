@@ -7,8 +7,8 @@ import { useDocumentStore } from "../../context/DocumentStore";
 import { DocumentsStackNavigation } from "../../types/navigation";
 import { useNavigation } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
-import * as ImagePicker from "expo-image-picker";
 import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/document-utils";
+import useSelectPhoto from "../../hooks/useSelectPhoto";
 
 type Navigation = DocumentsStackNavigation<"Documents">;
 
@@ -20,7 +20,9 @@ const DocumentsScreen: React.FC = () => {
     allDocuments[allDocuments.length - 1].id
   );
 
-  const [status, requestPermission] = ImagePicker.useCameraPermissions();
+  const { selectPhotoFromCameraRoll, selectPhotoFromCamera } = useSelectPhoto(
+    DOCUMENT_IMAGE_OPTIONS
+  );
 
   const navigateToFile = (fileId: string) => {
     navigation.navigate("ViewFile", {
@@ -29,9 +31,7 @@ const DocumentsScreen: React.FC = () => {
   };
 
   const pickPhotoFromLibrary = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync(
-      DOCUMENT_IMAGE_OPTIONS
-    );
+    const result = await selectPhotoFromCameraRoll();
 
     if (!result.cancelled) {
       uploadFile(selectedDocumentId, result.uri);
@@ -39,18 +39,9 @@ const DocumentsScreen: React.FC = () => {
   };
 
   const takePhoto = async () => {
-    const hasPermission = !!status?.granted;
+    const result = await selectPhotoFromCamera();
 
-    if (!hasPermission) {
-      const newHasPermission = (await requestPermission()).granted;
-      if (newHasPermission) {
-        return;
-      }
-    }
-
-    const result = await ImagePicker.launchCameraAsync(DOCUMENT_IMAGE_OPTIONS);
-
-    if (!result.cancelled) {
+    if (result && !result.cancelled) {
       uploadFile(selectedDocumentId, result.uri);
     }
   };
