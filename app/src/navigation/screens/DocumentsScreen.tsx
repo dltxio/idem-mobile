@@ -7,7 +7,7 @@ import { useDocumentStore } from "../../context/DocumentStore";
 import { DocumentsStackNavigation } from "../../types/navigation";
 import { useNavigation } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
-import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/document-utils";
+import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/image-utils";
 import useSelectPhoto from "../../hooks/useSelectPhoto";
 
 type Navigation = DocumentsStackNavigation<"Documents">;

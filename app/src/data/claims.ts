@@ -51,7 +51,7 @@ const claims: Claim[] = [
     nnemonic: "email",
     title: "Email",
     description: "Your email address",
-    verificationAction: "form",
+    verificationAction: "action",
     fields: [{ id: "email", title: "Email", type: "text" }],
     verificationDocuments: []
   },
@@ -61,7 +61,7 @@ const claims: Claim[] = [
     nnemonic: "mobile",
     title: "Mobile",
     description: "Your mobile number",
-    verificationAction: "form",
+    verificationAction: "action",
     fields: [{ id: "mobileNumber", title: "Mobile number", type: "text" }],
     verificationDocuments: []
   },
@@ -78,6 +78,17 @@ const claims: Claim[] = [
       { id: "postCode", title: "Post Code", type: "text" }
     ],
     verificationDocuments: ["drivers-license"]
+  },
+  {
+    type: "ProfileImageCredential",
+    key: "0x06",
+    nnemonic: "profileImage",
+    title: "Profile image",
+    description: "Your profile image",
+    verificationAction: "action",
+    fields: [],
+    verificationDocuments: [],
+    hideFromList: true
   }
 ];
 

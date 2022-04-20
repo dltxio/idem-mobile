@@ -1,14 +1,13 @@
 import * as React from "react";
 import { Claim, ClaimType, ClaimWithValue, ClaimData } from "../types/claim";
 import allClaims from "../data/claims";
-import { DocumentId } from "../types/document";
 import { claimsLocalStorage } from "../utils/local-storage";
 import { displayClaimValue } from "../utils/claim-utils";
 
 export type ClaimsVault = {
   unclaimedClaims: Claim[];
   usersClaims: ClaimWithValue[];
-  onClaim: (claimId: ClaimType, value: any, files: string[]) => Promise<void>;
+  addClaim: (claimId: ClaimType, value: any, files: string[]) => Promise<void>;
   reset: () => void;
 };
 
@@ -65,7 +64,7 @@ export const ClaimsProvider: React.FC<{
     [verifiedClaimTypes]
   );
 
-  const onClaim = async (
+  const addClaim = async (
     claimId: ClaimType,
     value: string,
     files: string[]
@@ -81,7 +80,8 @@ export const ClaimsProvider: React.FC<{
     );
 
     setVerifiedClaimTypes(previous => {
-      const updatedClaims = [...previous, { type: claimId, value }];
+      const previousWithoutClaim = previous.filter(c => c.type !== claimId);
+      const updatedClaims = [...previousWithoutClaim, { type: claimId, value }];
       claimsLocalStorage.save(updatedClaims);
       return updatedClaims;
     });
@@ -96,10 +96,10 @@ export const ClaimsProvider: React.FC<{
     () => ({
       unclaimedClaims,
       usersClaims,
-      onClaim,
+      addClaim,
       reset
     }),
-    [allClaims, verifiedClaimTypes, onClaim, reset]
+    [allClaims, verifiedClaimTypes, addClaim, reset]
   );
 
   return (
@@ -118,9 +118,7 @@ export const useClaimsStore = () => {
   return context;
 };
 
-export const useVerifiedClaimValue = (
-  claimType: ClaimType
-): string | undefined => {
+export const useClaimValue = (claimType: ClaimType): string | undefined => {
   const { usersClaims } = useClaimsStore();
   const claim = usersClaims.find(c => c.type === claimType);
   return claim ? displayClaimValue(claim) : undefined;

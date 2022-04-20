@@ -1,19 +1,47 @@
 import { View, StyleSheet, Text } from "react-native";
-import { useVerifiedClaimValue } from "../context/ClaimsStore";
+import { useClaimsStore, useClaimValue } from "../context/ClaimsStore";
 import { Avatar } from "react-native-elements";
 import colors from "../styles/colors";
 import commonStyles from "../styles/styles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import useSelectPhoto from "../hooks/useSelectPhoto";
+import { PROFILE_IMAGE_OPTIONS } from "../utils/image-utils";
+import { useDocumentStore } from "../context/DocumentStore";
 const defaultProfilePicture = require("../../assets/default-profile-picture.png");
 
 const UserDetailsHeader: React.FC = () => {
   const insets = useSafeAreaInsets();
-  const name = useVerifiedClaimValue("FullNameCredential");
-  const email = useVerifiedClaimValue("EmailCredential");
+  const name = useClaimValue("FullNameCredential");
+  const email = useClaimValue("EmailCredential");
+  const profileImageId = useClaimValue("ProfileImageCredential");
+
+  const { selectPhotoFromCameraRoll } = useSelectPhoto(PROFILE_IMAGE_OPTIONS);
+  const { addClaim } = useClaimsStore();
+  const { uploadFile, files } = useDocumentStore();
+
+  const profilePictureFile = files.find(file => file.id === profileImageId);
+
+  const addProfileImageClaim = async () => {
+    const file = await selectPhotoFromCameraRoll();
+    if (file.cancelled) {
+      return;
+    }
+    const fileId = await uploadFile("profile-image", file.uri);
+    addClaim("ProfileImageCredential", { fileId }, []);
+  };
 
   return (
     <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
-      <Avatar rounded size="large" source={defaultProfilePicture} />
+      <Avatar
+        rounded
+        size="large"
+        source={
+          profilePictureFile?.file
+            ? { uri: profilePictureFile?.file }
+            : defaultProfilePicture
+        }
+        onPress={addProfileImageClaim}
+      />
       <View style={styles.userDetails}>
         <DetailOrPlaceholder value={name} bold={true} placeholderWidth={90} />
         <DetailOrPlaceholder value={email} placeholderWidth={150} />

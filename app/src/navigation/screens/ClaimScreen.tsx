@@ -20,7 +20,7 @@ type Navigation = ProfileStackNavigation<"Claim">;
 const ClaimScreen: React.FC = () => {
   const route = useRoute<ProfileStackNavigationRoute<"Claim">>();
   const claim = getClaimFromType(route.params.claimType);
-  const { onClaim, usersClaims } = useClaimsStore();
+  const { addClaim, usersClaims } = useClaimsStore();
 
   const userClaim = usersClaims.find(c => c.type === claim.type);
 
@@ -59,7 +59,7 @@ const ClaimScreen: React.FC = () => {
 
   const onSubmit = async () => {
     setLoading(true);
-    await onClaim(claim.type, formState, selectedFileIds);
+    await addClaim(claim.type, formState, selectedFileIds);
     navigation.reset({
       routes: [{ name: "Home" }]
     });

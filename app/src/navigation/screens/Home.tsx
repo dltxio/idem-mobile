@@ -24,7 +24,10 @@ const Home: React.FC = () => {
       <ScrollView style={commonStyles.screenContent}>
         <Text style={commonStyles.text.smallHeading}>Your claims</Text>
         {usersClaims.length ? (
-          <ClaimsList claims={usersClaims} onPress={navigateToClaim} />
+          <ClaimsList
+            claims={usersClaims.filter(c => !c.hideFromList)}
+            onPress={navigateToClaim}
+          />
         ) : (
           <View>
             <Text style={styles.emptyClaimsText}>
@@ -36,7 +39,10 @@ const Home: React.FC = () => {
         {unclaimedClaims.length ? (
           <>
             <Text style={commonStyles.text.smallHeading}>All claims</Text>
-            <ClaimsList claims={unclaimedClaims} onPress={navigateToClaim} />
+            <ClaimsList
+              claims={unclaimedClaims.filter(c => !c.hideFromList)}
+              onPress={navigateToClaim}
+            />
           </>
         ) : null}
       </ScrollView>
