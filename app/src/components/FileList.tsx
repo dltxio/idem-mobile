@@ -16,11 +16,7 @@ type Props = {
   isCheckList: boolean;
 };
 
-const FileList: React.FC<Props> = ({
-  isCheckList,
-  files,
-  onFilePress: onPress
-}) => {
+const FileList: React.FC<Props> = ({ isCheckList, files, onFilePress }) => {
   return (
     <ScrollView>
       {files.map(file => {
@@ -34,7 +30,7 @@ const FileList: React.FC<Props> = ({
           <ListItem
             key={file.id}
             bottomDivider
-            onPress={() => onPress(file.id)}
+            onPress={() => onFilePress(file.id)}
           >
             <ListItem.Content>
               <ListItem.Title>{document.title}</ListItem.Title>
