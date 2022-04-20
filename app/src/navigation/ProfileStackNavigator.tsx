@@ -4,15 +4,13 @@ import ProfileScreen from "./screens/Home";
 import ClaimScreen from "./screens/ClaimScreen";
 import { ClaimType } from "../types/claim";
 import { getClaimFromType } from "../utils/claim-utils";
-import { DocumentId } from "../types/document";
-import { getDocumentFromDocumentId } from "../utils/document-utils";
-import DocumentScreen from "./screens/DocumentScreen";
+import ViewFile from "./screens/ViewFileScreen";
 
 export type ProfileStackParamList = {
   Home: undefined;
   Claim: { claimType: ClaimType };
-  Document: {
-    documentId: DocumentId;
+  ViewFile: {
+    fileId: string;
     onSelect: () => void;
   };
 };
@@ -44,16 +42,13 @@ const ProfileStackNavigator = () => {
         component={ClaimScreen}
       />
       <Stack.Screen
-        name="Document"
-        options={props => {
-          const document = getDocumentFromDocumentId(
-            props.route.params.documentId
-          );
+        name="ViewFile"
+        options={() => {
           return {
-            title: document.title
+            title: ""
           };
         }}
-        component={DocumentScreen}
+        component={ViewFile}
       />
     </Stack.Navigator>
   );

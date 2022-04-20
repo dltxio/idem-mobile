@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ClaimData, ClaimWithValue } from "../types/claim";
-import { DocumentWithFile } from "../types/document";
+import { ClaimData } from "../types/claim";
+import { File } from "../types/document";
 
 type LocalStorage<T> = {
   save: (data: T) => Promise<void>;
@@ -40,7 +40,4 @@ export const claimsLocalStorage = createLocalStorage<ClaimData[]>(
   true
 );
 
-export const documentsLocalStorage = createLocalStorage<DocumentWithFile[]>(
-  "DOCUMENTS",
-  true
-);
+export const fileLocalStorage = createLocalStorage<File[]>("FILES", true);

@@ -2,7 +2,7 @@ import * as React from "react";
 import moment from "moment";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { View, StyleSheet, Keyboard, Text } from "react-native";
-import { Button, Input, Switch } from "react-native-elements";
+import { Input, Switch } from "react-native-elements";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import commonStyles from "../../styles/styles";
 import {
@@ -10,10 +10,10 @@ import {
   ProfileStackNavigationRoute
 } from "../../types/navigation";
 import { getClaimFromType } from "../../utils/claim-utils";
-import { DocumentId } from "../../types/document";
 import { Claim } from "../../types/claim";
-import { DocumentList } from "../../components";
+import { FileList, Button } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
+import { useDocumentStore } from "../../context/DocumentStore";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -33,8 +33,7 @@ const ClaimScreen: React.FC = () => {
     React.useState<string>();
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [selectedDocumentId, setSelectedDocumentId] =
-    React.useState<DocumentId>();
+  const [selectedFileIds, setSelectedFileIds] = React.useState<string[]>([]);
 
   const showDatePickerFor = (fieldId: string) => {
     Keyboard.dismiss();
@@ -60,38 +59,39 @@ const ClaimScreen: React.FC = () => {
 
   const onSubmit = async () => {
     setLoading(true);
-    await onClaim(claim.type, formState, undefined);
+    await onClaim(claim.type, formState, selectedFileIds);
     navigation.reset({
       routes: [{ name: "Home" }]
     });
     setLoading(false);
   };
 
-  const navigateToDocument = (documentId: DocumentId) => {
-    navigation.navigate("Document", {
-      documentId,
-      onSelect: () => setSelectedDocumentId(documentId)
-    });
+  const onSelectFile = (fileId: string) => {
+    if (!selectedFileIds.includes(fileId)) {
+      setSelectedFileIds([...selectedFileIds, fileId]);
+    } else {
+      setSelectedFileIds(selectedFileIds.filter(id => id !== fileId));
+    }
   };
 
   const documentList =
     claim.verificationAction === "document-upload" ? (
-      <VerificationDocuments
+      <VerificationFiles
         claim={claim}
         isVerifying={isVerifying}
         setIsVerifying={newValue => {
           setIsVerifying(newValue);
-          setSelectedDocumentId(undefined);
+          setSelectedFileIds([]);
         }}
-        navigateToDocument={navigateToDocument}
-        selectedDocumentId={selectedDocumentId}
+        selectedFileIds={selectedFileIds}
+        onSelectFile={onSelectFile}
       />
     ) : null;
 
   const canSubmit =
     claim.fields.filter(field => formState[field.id]).length ===
       claim.fields.length &&
-    ((isVerifying && selectedDocumentId) || !isVerifying);
+    ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
 
   return (
     <View style={[commonStyles.screen, commonStyles.screenContent]}>
@@ -153,7 +153,7 @@ const ClaimScreen: React.FC = () => {
       )}
       {documentList}
       <Button
-        title={isVerifying ? "Submit & verify" : "Save"}
+        title={isVerifying ? "Submit & verify" : "Submit"}
         disabled={!canSubmit}
         onPress={onSubmit}
         loading={loading}
@@ -170,24 +170,35 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   verifyButton: {
+    marginTop: 20,
     marginBottom: 20
-    // bottom: 0
   }
 });
 
-const VerificationDocuments: React.FC<{
+const VerificationFiles: React.FC<{
   claim: Claim;
   isVerifying: boolean;
-  selectedDocumentId: DocumentId | undefined;
+  selectedFileIds: string[];
   setIsVerifying: (value: boolean) => void;
-  navigateToDocument: (documentId: DocumentId) => void;
+  onSelectFile: (fileId: string) => void;
 }> = ({
   claim,
   isVerifying,
-  selectedDocumentId,
-  navigateToDocument,
+  selectedFileIds,
+  onSelectFile,
   setIsVerifying
 }) => {
+  const { files } = useDocumentStore();
+
+  const filesThatCanBeUsedToVerify = files.filter(file =>
+    claim.verificationDocuments.includes(file.documentId)
+  );
+
+  const filesWithSelected = filesThatCanBeUsedToVerify.map(file => ({
+    ...file,
+    selected: selectedFileIds.includes(file.id)
+  }));
+
   return (
     <View>
       <View
@@ -206,10 +217,10 @@ const VerificationDocuments: React.FC<{
             The following documents can be used to verify your{" "}
             {claim.title.toLowerCase()} claim.
           </Text>
-          <DocumentList
-            documents={claim.verificationDocuments}
-            onPress={navigateToDocument}
-            selectedDocumentId={selectedDocumentId}
+          <FileList
+            files={filesWithSelected}
+            onFilePress={onSelectFile}
+            isCheckList={true}
           />
         </>
       ) : null}

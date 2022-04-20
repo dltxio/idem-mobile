@@ -21,7 +21,13 @@ const TabNavigator = () => (
   >
     <Tab.Screen name="Profile" component={ProfileStackNavigator} />
     <Tab.Screen name="3rd Parties" component={VendorsStackNavigator} />
-    <Tab.Screen name="Documents" component={DocumentsStackNavigator} />
+    <Tab.Screen
+      name="DocumentsTab"
+      options={{
+        title: "Documents"
+      }}
+      component={DocumentsStackNavigator}
+    />
   </Tab.Navigator>
 );
 
@@ -38,7 +44,7 @@ const renderTabIcon = (
   const iconFromRouteName: { [key: string]: string } = {
     Profile: "address-book",
     "3rd Parties": "university",
-    Documents: "cog"
+    DocumentsTab: "cog"
   };
 
   return (

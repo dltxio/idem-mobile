@@ -1,6 +1,5 @@
 import * as React from "react";
 import { StyleSheet, View, ScrollView, Text } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import commonStyles from "../../styles/styles";
 import { ProfileStackNavigation } from "../../types/navigation";
 import { ClaimsList, UserDetailsHeader } from "../../components";
@@ -11,7 +10,6 @@ import { ClaimType } from "../../types/claim";
 type Navigation = ProfileStackNavigation<"Home">;
 
 const Home: React.FC = () => {
-  const insets = useSafeAreaInsets();
   const { usersClaims, unclaimedClaims } = useClaimsStore();
   const navigation = useNavigation<Navigation>();
 

@@ -1,10 +1,12 @@
 import * as React from "react";
-import { DocumentId, DocumentWithFile } from "../types/document";
-import { documentsLocalStorage } from "../utils/local-storage";
+import uuid from "react-native-uuid";
+import { DocumentId, File } from "../types/document";
+import { getImageFileName } from "../utils/document-utils";
+import { fileLocalStorage } from "../utils/local-storage";
 
 export type DocumentsValue = {
-  documents: DocumentWithFile[];
-  uploadDocument: (claimId: DocumentId, file: string) => Promise<void>;
+  files: File[];
+  uploadFile: (claimId: DocumentId, file: string) => Promise<void>;
   reset: () => void;
 };
 
@@ -15,38 +17,48 @@ export const DocumentsContext = React.createContext<DocumentsValue | undefined>(
 export const DocumentProvider: React.FC<{
   children: React.ReactNode;
 }> = props => {
-  const [documents, setDocuments] = React.useState<DocumentWithFile[]>([]);
+  const [files, setFiles] = React.useState<File[]>([]);
 
   React.useEffect(() => {
     (async () => {
-      const initialDocuments = await documentsLocalStorage.get();
+      const initialDocuments = await fileLocalStorage.get();
 
       if (initialDocuments) {
-        setDocuments(initialDocuments);
+        setFiles(initialDocuments);
       }
     })();
   }, []);
 
-  const uploadDocument = async (id: DocumentId, file: string) => {
-    setDocuments(previous => {
-      const updatedDocuments = [...previous, { id, file }];
-      documentsLocalStorage.save(updatedDocuments);
-      return updatedDocuments;
+  const uploadFile = async (documentId: DocumentId, file: string) => {
+    const fileName = getImageFileName(file);
+    if (!fileName) {
+      console.error("Could not get filename from file uri");
+      return;
+    }
+
+    setFiles(previous => {
+      const updatedFiles = [
+        ...previous,
+        // todo -  replace uuid with hash?
+        { id: uuid.v4() as string, documentId: documentId, file, fileName }
+      ];
+      fileLocalStorage.save(updatedFiles);
+      return updatedFiles;
     });
   };
 
   const reset = () => {
-    documentsLocalStorage.clear();
-    setDocuments([]);
+    fileLocalStorage.clear();
+    setFiles([]);
   };
 
   const value = React.useMemo(
     () => ({
-      documents,
-      uploadDocument,
+      files,
+      uploadFile,
       reset
     }),
-    [documents, uploadDocument, reset]
+    [files, uploadFile, reset]
   );
 
   return (
