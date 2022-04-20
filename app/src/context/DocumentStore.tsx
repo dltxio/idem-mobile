@@ -12,6 +12,7 @@ export type DocumentsValue = {
     documentId: DocumentId,
     file: ImagePicker.ImageInfo
   ) => Promise<string>;
+  deleteFile: (fileId: string) => void;
   reset: () => void;
 };
 
@@ -74,6 +75,12 @@ export const DocumentProvider: React.FC<{
     return id;
   };
 
+  const deleteFile = (fileId: string) => {
+    const updatedFiles = files.filter(files => files.id !== fileId);
+    fileLocalStorage.save(updatedFiles);
+    setFiles(updatedFiles);
+  };
+
   const reset = () => {
     fileLocalStorage.clear();
     setFiles([]);
@@ -83,6 +90,7 @@ export const DocumentProvider: React.FC<{
     () => ({
       files,
       addFile,
+      deleteFile,
       reset
     }),
     [files, addFile, reset]
