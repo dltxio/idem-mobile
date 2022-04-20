@@ -8,6 +8,9 @@ export type Document = {
 export type File = {
   id: string;
   documentId: DocumentId;
-  fileName: string;
-  file: string;
+  name: string;
+  uri: string;
+  hashes: {
+    sha256: string;
+  };
 };

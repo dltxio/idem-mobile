@@ -17,7 +17,7 @@ const UserDetailsHeader: React.FC = () => {
 
   const { selectPhotoFromCameraRoll } = useSelectPhoto(PROFILE_IMAGE_OPTIONS);
   const { addClaim } = useClaimsStore();
-  const { uploadFile, files } = useDocumentStore();
+  const { addFile, files } = useDocumentStore();
 
   const profilePictureFile = files.find(file => file.id === profileImageId);
 
@@ -26,7 +26,7 @@ const UserDetailsHeader: React.FC = () => {
     if (file.cancelled) {
       return;
     }
-    const fileId = await uploadFile("profile-image", file.uri);
+    const fileId = await addFile("profile-image", file);
     addClaim("ProfileImageCredential", { fileId }, []);
   };
 
@@ -36,8 +36,8 @@ const UserDetailsHeader: React.FC = () => {
         rounded
         size="large"
         source={
-          profilePictureFile?.file
-            ? { uri: profilePictureFile?.file }
+          profilePictureFile?.uri
+            ? { uri: profilePictureFile?.uri }
             : defaultProfilePicture
         }
         onPress={addProfileImageClaim}

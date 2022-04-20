@@ -34,7 +34,7 @@ const FileList: React.FC<Props> = ({ isCheckList, files, onFilePress }) => {
           >
             <ListItem.Content>
               <ListItem.Title>{document.title}</ListItem.Title>
-              <ListItem.Subtitle>{file.fileName}</ListItem.Subtitle>
+              <ListItem.Subtitle>{file.name}</ListItem.Subtitle>
             </ListItem.Content>
             {!isCheckList ? (
               <AntDesign name="right" style={styles.icon} />

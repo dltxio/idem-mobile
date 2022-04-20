@@ -13,7 +13,7 @@ import useSelectPhoto from "../../hooks/useSelectPhoto";
 type Navigation = DocumentsStackNavigation<"Documents">;
 
 const DocumentsScreen: React.FC = () => {
-  const { files, uploadFile } = useDocumentStore();
+  const { files, addFile } = useDocumentStore();
   const navigation = useNavigation<Navigation>();
 
   const [selectedDocumentId, setSelectedDocumentId] = React.useState(
@@ -31,10 +31,10 @@ const DocumentsScreen: React.FC = () => {
   };
 
   const pickPhotoFromLibrary = async () => {
-    const result = await selectPhotoFromCameraRoll();
+    const file = await selectPhotoFromCameraRoll();
 
-    if (!result.cancelled) {
-      uploadFile(selectedDocumentId, result.uri);
+    if (!file.cancelled) {
+      addFile(selectedDocumentId, file);
     }
   };
 
@@ -42,7 +42,7 @@ const DocumentsScreen: React.FC = () => {
     const result = await selectPhotoFromCamera();
 
     if (result && !result.cancelled) {
-      uploadFile(selectedDocumentId, result.uri);
+      addFile(selectedDocumentId, result);
     }
   };
 

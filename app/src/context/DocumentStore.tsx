@@ -1,4 +1,6 @@
 import * as React from "react";
+import * as ImagePicker from "expo-image-picker";
+import * as Crypto from "expo-crypto";
 import uuid from "react-native-uuid";
 import { DocumentId, File } from "../types/document";
 import { getImageFileName } from "../utils/document-utils";
@@ -6,7 +8,10 @@ import { fileLocalStorage } from "../utils/local-storage";
 
 export type DocumentsValue = {
   files: File[];
-  uploadFile: (claimId: DocumentId, file: string) => Promise<string>;
+  addFile: (
+    documentId: DocumentId,
+    file: ImagePicker.ImageInfo
+  ) => Promise<string>;
   reset: () => void;
 };
 
@@ -29,23 +34,39 @@ export const DocumentProvider: React.FC<{
     })();
   }, []);
 
-  const uploadFile = async (
+  const addFile = async (
     documentId: DocumentId,
-    file: string
+    file: ImagePicker.ImageInfo
   ): Promise<string> => {
-    const fileName = getImageFileName(file);
-    if (!fileName) {
+    const name = getImageFileName(file.uri);
+    if (!name) {
       throw new Error("Could not get filename from file uri");
     }
+
+    if (!file.base64) {
+      throw new Error("No base64");
+    }
+
+    const sha256 = await Crypto.digestStringAsync(
+      Crypto.CryptoDigestAlgorithm.SHA256,
+      file.base64
+    );
 
     // todo -  replace uuid with hash?
     const id = uuid.v4() as string;
 
+    const newFile: File = {
+      id,
+      documentId,
+      name,
+      uri: file.uri,
+      hashes: {
+        sha256
+      }
+    };
+
     setFiles(previous => {
-      const updatedFiles = [
-        ...previous,
-        { id, documentId: documentId, file, fileName }
-      ];
+      const updatedFiles = [...previous, newFile];
       fileLocalStorage.save(updatedFiles);
       return updatedFiles;
     });
@@ -61,10 +82,10 @@ export const DocumentProvider: React.FC<{
   const value = React.useMemo(
     () => ({
       files,
-      uploadFile,
+      addFile,
       reset
     }),
-    [files, uploadFile, reset]
+    [files, addFile, reset]
   );
 
   return (
