@@ -7,9 +7,10 @@ export type ClaimType =
   | "FullNameCredential"
   | "EmailCredential"
   | "MobileNumberCredential"
-  | "AddressCredential";
+  | "AddressCredential"
+  | "ProfileImageCredential";
 
-export type VerificationAction = "document-upload" | "form";
+export type VerificationAction = "document-upload" | "action";
 
 export type Claim = {
   type: ClaimType;
@@ -20,6 +21,7 @@ export type Claim = {
   verificationAction: VerificationAction;
   fields: Field[];
   verificationDocuments: DocumentId[];
+  hideFromList?: boolean;
 };
 
 export type ClaimData = {

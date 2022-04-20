@@ -6,7 +6,7 @@ import { fileLocalStorage } from "../utils/local-storage";
 
 export type DocumentsValue = {
   files: File[];
-  uploadFile: (claimId: DocumentId, file: string) => Promise<void>;
+  uploadFile: (claimId: DocumentId, file: string) => Promise<string>;
   reset: () => void;
 };
 
@@ -29,22 +29,28 @@ export const DocumentProvider: React.FC<{
     })();
   }, []);
 
-  const uploadFile = async (documentId: DocumentId, file: string) => {
+  const uploadFile = async (
+    documentId: DocumentId,
+    file: string
+  ): Promise<string> => {
     const fileName = getImageFileName(file);
     if (!fileName) {
-      console.error("Could not get filename from file uri");
-      return;
+      throw new Error("Could not get filename from file uri");
     }
+
+    // todo -  replace uuid with hash?
+    const id = uuid.v4() as string;
 
     setFiles(previous => {
       const updatedFiles = [
         ...previous,
-        // todo -  replace uuid with hash?
-        { id: uuid.v4() as string, documentId: documentId, file, fileName }
+        { id, documentId: documentId, file, fileName }
       ];
       fileLocalStorage.save(updatedFiles);
       return updatedFiles;
     });
+
+    return id;
   };
 
   const reset = () => {

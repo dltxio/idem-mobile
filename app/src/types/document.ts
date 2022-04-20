@@ -1,4 +1,4 @@
-export type DocumentId = "passport" | "drivers-license";
+export type DocumentId = "passport" | "drivers-license" | "profile-image";
 
 export type Document = {
   id: DocumentId;
