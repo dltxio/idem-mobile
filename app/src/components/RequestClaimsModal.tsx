@@ -1,12 +1,9 @@
 import * as React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, AlertButton } from "react-native";
 import axios from "axios";
 import { useClaimsStore } from "../context/ClaimsStore";
-import { Claim, ClaimRequest, ClaimWithValue } from "../types/claim";
-import Button from "./Button";
-import Modal from "./Modal";
+import { ClaimRequest } from "../types/claim";
 import {
-  displayClaimValue,
   generateClaimRequestResponsePayload,
   getClaimsFromTypes
 } from "../utils/claim-utils";
@@ -18,101 +15,63 @@ type Props = {
 
 const RequestClaimsModal: React.FC<Props> = ({ claimRequest, onClose }) => {
   const { usersClaims } = useClaimsStore();
-  const [loading, setLoading] = React.useState<boolean>();
-  const [success, setSuccess] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
 
-  const claims =
-    claimRequest?.claims &&
-    getClaimsFromTypes(claimRequest.claims).map(claim => ({
+  const onCloseInternal = () => {
+    setIsOpen(false);
+    onClose();
+  };
+
+  React.useEffect(() => {
+    if (!claimRequest || isOpen) {
+      return;
+    }
+
+    setIsOpen(true);
+
+    const claims = getClaimsFromTypes(claimRequest.claims).map(claim => ({
       ...claim,
       value: usersClaims.find(userClaim => userClaim.key === claim.key)?.value
     }));
 
-  const unClaimedClaims = claims?.filter(c => !c.value);
+    const unClaimedClaims = claims.filter(c => !c.value);
 
-  const onConfirm = async () => {
-    if (!claimRequest?.callback) {
-      return;
+    const alertTitle = `${claimRequest.host} is requesting your claims`;
+
+    const alertContent = !unClaimedClaims.length
+      ? `Tap "OK" to share ${claims.map(c => c.title).join(", ")}`
+      : `Unable to complete request. You have not provided the following claims: ${unClaimedClaims
+          .map(c => c.title)
+          .join(", ")}`;
+
+    const sendClaims = async () => {
+      const body = generateClaimRequestResponsePayload(claims);
+
+      try {
+        await axios.post(claimRequest.callback, body);
+        onCloseInternal();
+      } catch (error) {
+        const err = error as any;
+        console.error(err?.response?.data || error);
+      }
+    };
+
+    const buttons: AlertButton[] = [
+      {
+        text: !unClaimedClaims.length ? "Cancel" : "OK",
+        onPress: onCloseInternal,
+        style: "cancel"
+      }
+    ];
+
+    if (!unClaimedClaims.length) {
+      buttons.push({ text: "OK", onPress: sendClaims });
     }
 
-    const claimsToPost = usersClaims.filter((claim: Claim) =>
-      claimRequest.claims.includes(claim.type)
-    );
+    Alert.alert(alertTitle, alertContent, buttons);
+  }, [claimRequest]);
 
-    const body = generateClaimRequestResponsePayload(claimsToPost);
-
-    try {
-      setLoading(true);
-      await axios.post(claimRequest.callback, body);
-      setLoading(false);
-      onClose();
-    } catch (error) {
-      const err = error as any;
-      console.error(err?.response?.data || error);
-      setSuccess(false);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const content = claimRequest && claims && unClaimedClaims && (
-    <>
-      <Text>{claimRequest.host} has requested the following claims:</Text>
-      <ClaimList claims={claims} />
-      {unClaimedClaims.length ? (
-        <Text style={styles.cantProceedText}>
-          Unable to complete this request because you dont have the following
-          claims: {unClaimedClaims.map(c => c.title).join(", ")}
-        </Text>
-      ) : null}
-      {!unClaimedClaims.length && success !== true && (
-        <Button
-          title="Confirm"
-          onPress={onConfirm}
-          style={styles.confirmButton}
-          loading={loading}
-        />
-      )}
-    </>
-  );
-
-  return (
-    <Modal title="Request for claims" show={!!claimRequest} onClose={onClose}>
-      {content}
-    </Modal>
-  );
+  return null;
 };
 
 export default RequestClaimsModal;
-
-const ClaimList: React.FC<{
-  claims: (Omit<Claim, "value"> & { value?: string })[];
-}> = ({ claims }) => {
-  return (
-    <View style={styles.claimList}>
-      {claims.map(c => {
-        const claimText = c.value
-          ? `${c.title}: ${displayClaimValue(c as ClaimWithValue)}`
-          : c.title;
-
-        return (
-          <View key={c.key}>
-            <Text>{claimText}</Text>
-          </View>
-        );
-      })}
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  claimList: {
-    marginTop: 10
-  },
-  cantProceedText: {
-    marginTop: 10
-  },
-  confirmButton: {
-    marginTop: 20
-  }
-});
