@@ -13,7 +13,7 @@ import useSelectPhoto from "../../hooks/useSelectPhoto";
 type Navigation = DocumentsStackNavigation<"Documents">;
 
 const DocumentsScreen: React.FC = () => {
-  const { files, addFile } = useDocumentStore();
+  const { files, addFile, deleteFile } = useDocumentStore();
   const navigation = useNavigation<Navigation>();
 
   const [selectedDocumentId, setSelectedDocumentId] = React.useState(
@@ -57,6 +57,7 @@ const DocumentsScreen: React.FC = () => {
             files={files}
             onFilePress={navigateToFile}
             isCheckList={false}
+            onDeleteFile={deleteFile}
           />
         ) : (
           <View>
