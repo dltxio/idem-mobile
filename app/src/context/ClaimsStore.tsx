@@ -4,14 +4,14 @@ import allClaims from "../data/claims";
 import { claimsLocalStorage } from "../utils/local-storage";
 import { displayClaimValue } from "../utils/claim-utils";
 
-export type ClaimsVault = {
+export type ClaimsValue = {
   unclaimedClaims: Claim[];
   usersClaims: ClaimWithValue[];
   addClaim: (claimId: ClaimType, value: any, files: string[]) => Promise<void>;
   reset: () => void;
 };
 
-export const ClaimsContext = React.createContext<ClaimsVault | undefined>(
+export const ClaimsContext = React.createContext<ClaimsValue | undefined>(
   undefined
 );
 

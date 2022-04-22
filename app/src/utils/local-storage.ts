@@ -1,6 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
 import { ClaimData } from "../types/claim";
 import { File } from "../types/document";
+import { Mnemonic } from "../types/wallet";
 
 type LocalStorage<T> = {
   save: (data: T) => Promise<void>;
@@ -8,15 +10,8 @@ type LocalStorage<T> = {
   clear: () => Promise<void>;
 };
 
-const createLocalStorage = <T>(
-  key: string,
-  isObject: boolean
-): LocalStorage<T> => {
-  const save = (data: T) =>
-    AsyncStorage.setItem(
-      key,
-      isObject ? JSON.stringify(data) : (data as unknown as string)
-    );
+const createLocalStorage = <T>(key: string): LocalStorage<T> => {
+  const save = (data: T) => AsyncStorage.setItem(key, JSON.stringify(data));
   const get = async () => {
     const data = await AsyncStorage.getItem(key);
 
@@ -24,7 +19,7 @@ const createLocalStorage = <T>(
       return null;
     }
 
-    return isObject ? JSON.parse(data) : data;
+    return JSON.parse(data);
   };
   const clear = () => AsyncStorage.removeItem(key);
 
@@ -35,9 +30,27 @@ const createLocalStorage = <T>(
   };
 };
 
-export const claimsLocalStorage = createLocalStorage<ClaimData[]>(
-  "CLAIMS",
-  true
-);
+const createSecureStorage = <T>(key: string): LocalStorage<T> => {
+  const save = (data: T) => SecureStore.setItemAsync(key, JSON.stringify(data));
+  const get = async () => {
+    const data = await SecureStore.getItemAsync(key);
 
-export const fileLocalStorage = createLocalStorage<File[]>("FILES", true);
+    if (!data) {
+      return null;
+    }
+
+    return JSON.parse(data);
+  };
+  const clear = () => SecureStore.deleteItemAsync(key);
+
+  return {
+    save,
+    get,
+    clear
+  };
+};
+
+export const claimsLocalStorage = createLocalStorage<ClaimData[]>("CLAIMS");
+export const fileLocalStorage = createLocalStorage<File[]>("FILES");
+export const hasMnemonicLocalStorage = createLocalStorage<boolean>("MNEMONIC");
+export const mnemonicLocalStorage = createSecureStorage<Mnemonic>("MNEMONIC");

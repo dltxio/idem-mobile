@@ -11,6 +11,7 @@ import { ClaimRequest } from "./types/claim";
 import { parseClaimRequest } from "./utils/claim-utils";
 import { RequestClaimsModal } from "./components";
 import { DocumentProvider } from "./context/DocumentStore";
+import { WalletProvider } from "./context/WalletStore";
 
 const App = () => {
   const initialURL = Linking.useURL();
@@ -51,18 +52,20 @@ const App = () => {
 
   return (
     <SafeAreaProvider>
-      <ClaimsProvider>
-        <DocumentProvider>
-          <NavigationContainer>
-            <StatusBar style="auto" />
-            <TabNavigator />
-            <RequestClaimsModal
-              claimRequest={claimRequest}
-              onClose={() => setClaimRequest(undefined)}
-            />
-          </NavigationContainer>
-        </DocumentProvider>
-      </ClaimsProvider>
+      <WalletProvider>
+        <ClaimsProvider>
+          <DocumentProvider>
+            <NavigationContainer>
+              <StatusBar style="auto" />
+              <TabNavigator />
+              <RequestClaimsModal
+                claimRequest={claimRequest}
+                onClose={() => setClaimRequest(undefined)}
+              />
+            </NavigationContainer>
+          </DocumentProvider>
+        </ClaimsProvider>
+      </WalletProvider>
     </SafeAreaProvider>
   );
 };

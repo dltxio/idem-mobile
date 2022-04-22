@@ -4,6 +4,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import DocumentsStackNavigator from "./DocumentsStackNavigator";
 import ProfileStackNavigator from "./ProfileStackNavigator";
 import VendorsStackNavigator from "./VendorsStackNavigator";
+import SettingsStackNavigator from "./SettingsStackNavigator";
 import { ParamListBase, RouteProp } from "@react-navigation/native";
 import colors from "../styles/colors";
 
@@ -28,6 +29,13 @@ const TabNavigator = () => (
       }}
       component={DocumentsStackNavigator}
     />
+    <Tab.Screen
+      name="SettingsTab"
+      options={{
+        title: "Settings"
+      }}
+      component={SettingsStackNavigator}
+    />
   </Tab.Navigator>
 );
 
@@ -44,7 +52,8 @@ const renderTabIcon = (
   const iconFromRouteName: { [key: string]: string } = {
     Profile: "address-book",
     "3rd Parties": "university",
-    DocumentsTab: "cog"
+    DocumentsTab: "cog",
+    Settings: "cog"
   };
 
   return (
