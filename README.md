@@ -39,6 +39,7 @@ Then they are registered on demo.idem.com.au,
 And their ID is verified,  
 And they are redirected to demo.idem.com.au's home page.
 ```
+
 ### User Story 2:  Verify an already registered user
 ```text
 As an existing unverified customer of demo.idem.com.au,
@@ -91,9 +92,7 @@ The site "demo.idem.com.au" creates a unique deeplink url with the url schema `d
 * nonce: UUID (also used in challenge)
 * claims: Array of claims required
 
-Eg: `did://callback=ZGVtby5pZGVtLmNvbS5hdS92ZXJpZnk=?nonce=8b5c66c0-bceb-40b4-b099-d31b127bf7b3&claims=EmailCredential,NameCredential`
-
-N.b. all parameters are mandatory. In this example _ZGVtby5pZGVtLmNvbS5hdS92ZXJpZnk=_ is the Base64-encoded digest of _demo.idem.com.au/verify_.
+Eg: `did://callback=https://demo.idem.com.au/callback/?nonce=8b5c66c0-bceb-40b4-b099-d31b127bf7b3&claims=EmailCredential,NameCredential`
 
 ### 2. Verifying the claims
 _Idem_ will then check to see if it already has those claims. If it does, skip to step 4. If it doesn't, it will use the _idem-api_ module to obtain the relevant credentials which are verified by third-party KYC vendors and who return an X-509 SSL certificate signed JSON object that can then be reused. Each vendor has a different process for onboarding and the app will maintain these different business requirements. N.b. for the MVP we will only be using [greenId](https://gbg-greenid.com/).
