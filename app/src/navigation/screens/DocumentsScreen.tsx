@@ -69,7 +69,7 @@ const DocumentsScreen: React.FC = () => {
         )}
       </View>
       <View style={[styles.section, styles.bottomSection]}>
-        <Text style={commonStyles.text.smallHeading}>Upload document</Text>
+        <Text style={commonStyles.text.smallHeading}>Upload a document to your device</Text>
         <Text style={styles.label}>Document type</Text>
         <Picker
           selectedValue={selectedDocumentId}
@@ -84,14 +84,20 @@ const DocumentsScreen: React.FC = () => {
         </Picker>
 
         <Button
-          title="Take photo"
+          title="Take A Photo"
           style={styles.photoButton}
           onPress={takePhoto}
         />
         <Button
-          title="Select from photos"
+          title="Select From Camera Roll"
           style={styles.photoButton}
           onPress={pickPhotoFromLibrary}
+        />
+
+      <Button
+          title="Select From Device"
+          style={styles.photoButton}
+          onPress={takePhoto}
         />
       </View>
     </View>
