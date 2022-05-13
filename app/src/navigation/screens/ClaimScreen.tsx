@@ -57,7 +57,7 @@ const ClaimScreen: React.FC = () => {
     hideDatePicker();
   };
 
-  const onSubmit = async () => {
+  const onSave = async () => {
     setLoading(true);
     await addClaim(claim.type, formState, selectedFileIds);
     navigation.reset({
@@ -88,7 +88,7 @@ const ClaimScreen: React.FC = () => {
       />
     ) : null;
 
-  const canSubmit =
+  const canSave =
     claim.fields.filter(field => formState[field.id]).length ===
       claim.fields.length &&
     ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
@@ -153,9 +153,9 @@ const ClaimScreen: React.FC = () => {
       )}
       {documentList}
       <Button
-        title={isVerifying ? "Submit & verify" : "Submit"}
-        disabled={!canSubmit}
-        onPress={onSubmit}
+        title={isVerifying ? "Save & Verify" : "Save"}
+        disabled={!canSave}
+        onPress={onSave}
         loading={loading}
         style={styles.verifyButton}
       />
