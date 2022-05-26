@@ -62,14 +62,14 @@ const DocumentsScreen: React.FC = () => {
         ) : (
           <View>
             <Text style={styles.emptyClaimsText}>
-              You haven't added any documents yet. Get started by uploading a
+              You haven't attached any files yet. Get started by selecting a
               document below.
             </Text>
           </View>
         )}
       </View>
       <View style={[styles.section, styles.bottomSection]}>
-        <Text style={commonStyles.text.smallHeading}>Upload a document to your device</Text>
+        <Text style={commonStyles.text.smallHeading}>Attach a file from your device</Text>
         <Text style={styles.label}>Document type</Text>
         <Picker
           selectedValue={selectedDocumentId}
