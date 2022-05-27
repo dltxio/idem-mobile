@@ -6,6 +6,7 @@ import { ClaimsList, UserDetailsHeader } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useNavigation } from "@react-navigation/native";
 import { ClaimType } from "../../types/claim";
+import { getMneumonic } from "../../utils/mneumonic-utils";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -16,6 +17,10 @@ const Home: React.FC = () => {
   const navigateToClaim = (claimType: ClaimType) => {
     navigation.navigate("Claim", { claimType });
   };
+
+  React.useLayoutEffect(() => {
+    getMneumonic();
+  }, []);
 
   return (
     <View style={commonStyles.screen}>
