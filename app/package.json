@@ -38,6 +38,7 @@
     "react-native-elements": "^3.4.2",
     "react-native-fast-openpgp": "^2.2.3",
     "react-native-gesture-handler": "~2.1.0",
+    "react-native-get-random-values": "^1.8.0",
     "react-native-modal-datetime-picker": "^13.1.0",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
