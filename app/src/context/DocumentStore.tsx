@@ -55,9 +55,8 @@ export const DocumentProvider: React.FC<{
       file.base64
     );
     
-    let buffer = Buffer.from(file.base64, "base64");
+    const buffer = Buffer.from(file.base64, "base64");
     const keccakHash = keccak256(buffer);
-    console.log(keccakHash);
 
     // todo -  replace uuid with hash?
     const id = uuid.v4() as string;
