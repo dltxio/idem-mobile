@@ -36,6 +36,7 @@
     "react-native-datepicker": "^1.7.2",
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "~2.1.0",
+    "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^13.1.0",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",

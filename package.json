@@ -14,6 +14,7 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
-    "nodejs-nodemailer-outlook": "^1.2.4"
+    "nodejs-nodemailer-outlook": "^1.2.4",
+    "react-native-modal": "^13.0.1"
   }
 }
