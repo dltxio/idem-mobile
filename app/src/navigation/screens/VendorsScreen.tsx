@@ -21,7 +21,7 @@ const VendorsScreen: React.FC = () => {
       },
       {
         text: "Cancel",
-        onPress: () => Alert.alert("Cancel Pressed"),
+        onPress: () => console.log("Cancel Pressed"),
         style: "cancel",
       },
     ],
