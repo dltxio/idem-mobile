@@ -7,9 +7,14 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useSelectPhoto from "../hooks/useSelectPhoto";
 import { PROFILE_IMAGE_OPTIONS } from "../utils/image-utils";
 import { useDocumentStore } from "../context/DocumentStore";
+import { useNavigation } from "@react-navigation/native";
+import { ProfileStackNavigation } from "../types/navigation";
 const defaultProfilePicture = require("../../assets/default-profile-picture.png");
 
+type Navigation = ProfileStackNavigation<"Home">;
+
 const UserDetailsHeader: React.FC = () => {
+  const navigation = useNavigation<Navigation>();
   const insets = useSafeAreaInsets();
   const name = useClaimValue("FullNameCredential");
   const email = useClaimValue("EmailCredential");
@@ -45,6 +50,7 @@ const UserDetailsHeader: React.FC = () => {
       <View style={styles.userDetails}>
         <DetailOrPlaceholder value={name} bold={true} placeholderWidth={90} />
         <DetailOrPlaceholder value={email} placeholderWidth={150} />
+        <Text onPress={() => navigation.navigate("PGP")}>My PGP</Text>
       </View>
     </View>
   );
