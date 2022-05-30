@@ -88,7 +88,7 @@ The flowchart below is a verification workflow diagram for third-party developer
 ### 1. Onboarding on Third-Party Sites
 The site "demo.idem.com.au" creates a unique deeplink url with the url schema `did://` along with the claims it requires:
 
-* callback: Base64-encoded URL
+* callback: URL
 * nonce: UUID (also used in challenge)
 * claims: Array of claims required
 
