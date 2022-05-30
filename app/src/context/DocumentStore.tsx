@@ -5,6 +5,8 @@ import uuid from "react-native-uuid";
 import { DocumentId, File } from "../types/document";
 import { getImageFileName } from "../utils/document-utils";
 import { fileLocalStorage } from "../utils/local-storage";
+import { keccak256 } from "ethers/lib/utils";
+import { Buffer } from "buffer";
 
 export type DocumentsValue = {
   files: File[];
@@ -52,6 +54,10 @@ export const DocumentProvider: React.FC<{
       Crypto.CryptoDigestAlgorithm.SHA256,
       file.base64
     );
+    
+    let buffer = Buffer.from(file.base64, "base64");
+    const keccakHash = keccak256(buffer);
+    console.log(keccakHash);
 
     // todo -  replace uuid with hash?
     const id = uuid.v4() as string;
@@ -62,7 +68,8 @@ export const DocumentProvider: React.FC<{
       name,
       uri: file.uri,
       hashes: {
-        sha256
+        sha256,
+        keccakHash
       }
     };
 

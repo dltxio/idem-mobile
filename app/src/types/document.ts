@@ -12,5 +12,6 @@ export type File = {
   uri: string;
   hashes: {
     sha256: string;
+    keccakHash: string;
   };
 };
