@@ -26,7 +26,7 @@ export const MnemonicProvider: React.FC<{
       const initialMnemonic = await mnemonicLocalStorage.get();
 
       if (initialMnemonic) {
-        setMnemonic(initialMnemonic.privateKey);
+        setMnemonic(initialMnemonic.mnemonic);
       }
     })();
   }, []);
@@ -34,9 +34,8 @@ export const MnemonicProvider: React.FC<{
   const createMnemonic = async () => {
     try {
       const wallet = ethers.Wallet.createRandom();
-      await AsyncStorage.setItem("PRIVATE_KEY", wallet.privateKey);
+      await AsyncStorage.setItem("MNEMONIC", wallet.mnemonic.phrase);
       setMnemonic(wallet.mnemonic.phrase);
-      console.log(mnemonic)
       return mnemonic;
     } catch (error) {
       console.log(error);

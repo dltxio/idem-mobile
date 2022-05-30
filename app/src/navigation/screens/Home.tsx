@@ -1,12 +1,11 @@
 import * as React from "react";
-import { StyleSheet, View, ScrollView, Text } from "react-native";
+import { StyleSheet, View, ScrollView, Text, Button, Dimensions } from "react-native";
 import commonStyles from "../../styles/styles";
 import { ProfileStackNavigation } from "../../types/navigation";
 import { ClaimsList, UserDetailsHeader } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useNavigation } from "@react-navigation/native";
 import { ClaimType } from "../../types/claim";
-import { useMnemonic } from "../../context/Mnemonic";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -18,17 +17,9 @@ const Home: React.FC = () => {
     navigation.navigate("Claim", { claimType });
   };
 
-  const { mnemonic, createMnemonic } = useMnemonic();
-
-  React.useLayoutEffect(() => {
-    createMnemonic();
-    console.log(mnemonic);
-  }, [])
-
   return (
     <View style={commonStyles.screen}>
       <UserDetailsHeader />
-
       <ScrollView style={commonStyles.screenContent}>
         <Text style={commonStyles.text.smallHeading}>Your claims</Text>
         {usersClaims.length ? (
@@ -63,5 +54,5 @@ export default Home;
 const styles = StyleSheet.create({
   emptyClaimsText: {
     marginBottom: 10
-  }
+  },
 });
