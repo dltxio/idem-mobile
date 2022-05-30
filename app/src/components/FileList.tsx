@@ -71,14 +71,6 @@ const FileList: React.FC<Props> = ({
                     buttonStyle={styles.deleteDocumentButton}
                   />
                 }
-                leftContent={
-                  <Button
-                    title="Delete"
-                    onPress={() => onDeleteFile(file.id)}
-                    icon={DELETE_ICON}
-                    buttonStyle={styles.deleteDocumentButton}
-                  />
-                }
               >
                 {content}
               </ListItem.Swipeable>
