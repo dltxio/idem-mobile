@@ -1,3 +1,3 @@
 export type PrivateKey = {
-    privateKey: string;
-  }
+  privateKey: string;
+};

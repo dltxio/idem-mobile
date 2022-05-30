@@ -11,6 +11,7 @@ import { ClaimRequest } from "./types/claim";
 import { parseClaimRequest } from "./utils/claim-utils";
 import { RequestClaimsModal } from "./components";
 import { DocumentProvider } from "./context/DocumentStore";
+import { MnemonicProvider } from "./context/Mnemonic";
 
 const App = () => {
   const initialURL = Linking.useURL();
@@ -53,14 +54,16 @@ const App = () => {
     <SafeAreaProvider>
       <ClaimsProvider>
         <DocumentProvider>
-          <NavigationContainer>
-            <StatusBar style="auto" />
-            <TabNavigator />
-            <RequestClaimsModal
-              claimRequest={claimRequest}
-              onClose={() => setClaimRequest(undefined)}
-            />
-          </NavigationContainer>
+          <MnemonicProvider>
+            <NavigationContainer>
+              <StatusBar style="auto" />
+              <TabNavigator />
+              <RequestClaimsModal
+                claimRequest={claimRequest}
+                onClose={() => setClaimRequest(undefined)}
+              />
+            </NavigationContainer>
+          </MnemonicProvider>
         </DocumentProvider>
       </ClaimsProvider>
     </SafeAreaProvider>
