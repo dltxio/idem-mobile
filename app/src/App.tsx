@@ -12,6 +12,7 @@ import { parseClaimRequest } from "./utils/claim-utils";
 import { RequestClaimsModal } from "./components";
 import { DocumentProvider } from "./context/DocumentStore";
 import { MnemonicProvider } from "./context/Mnemonic";
+import { PGPProvider } from "./context/PGP";
 
 const App = () => {
   const initialURL = Linking.useURL();
@@ -55,6 +56,7 @@ const App = () => {
       <ClaimsProvider>
         <DocumentProvider>
           <MnemonicProvider>
+            <PGPProvider>
             <NavigationContainer>
               <StatusBar style="auto" />
               <TabNavigator />
@@ -63,6 +65,7 @@ const App = () => {
                 onClose={() => setClaimRequest(undefined)}
               />
             </NavigationContainer>
+            </PGPProvider>
           </MnemonicProvider>
         </DocumentProvider>
       </ClaimsProvider>

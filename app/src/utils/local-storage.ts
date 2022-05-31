@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { KeyPair } from "react-native-fast-openpgp";
 import { ClaimData } from "../types/claim";
 import { File } from "../types/document";
 import { Wallet } from "../types/wallet";
@@ -44,3 +45,5 @@ export const claimsLocalStorage = createLocalStorage<ClaimData[]>(
 export const fileLocalStorage = createLocalStorage<File[]>("FILES", true);
 
 export const mnemonicLocalStorage = createLocalStorage<Wallet>("MNEMONIC", false);
+
+export const pgpLocalStorage = createLocalStorage<KeyPair>("PGP", true);

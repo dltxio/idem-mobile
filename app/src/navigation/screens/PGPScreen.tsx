@@ -1,75 +1,54 @@
-import OpenPGP from "react-native-fast-openpgp";
 import * as React from "react";
-import { Formik } from "formik";
-import { View, Text, Button, TextInput, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  TextInput,
+  StyleSheet
+} from "react-native";
+import { usePGP } from "../../context/PGP";
 
 export const PGPScreen: React.FC = () => {
-  const [keyPair, setKeyPair] = React.useState<{
-    publicKey: string;
-    privateKey: string;
-  }>({
-    publicKey: "",
-    privateKey: ""
-  });
-
-  const [formState, setFormState] = React.useState<{name: string, email: string, password: string }>({name: "", email: "", password: ""});
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const { keyPair, generatePGP } = usePGP();
+  const [name, setName] = React.useState<string>("");
+  const [email, setEmail] = React.useState<string>("");
+  const [passphrase, setPassphrase] = React.useState<string>("");
 
   const onSubmit = async () => {
-      setLoading(true);
-      await OpenPGP.generate(formState);;
-      setLoading(false);
-    };
-  }
+    const pgp = await generatePGP({name, email, passphrase});
+    console.log(pgp);
+  };
+
+
   return (
     <View style={styles.container}>
       <View>
         <Text>Generate a PGP to sign transactions:</Text>
-        <Formik
-          initialValues={{
-            name: "",
-            email: "",
-            password: ""
-          }}
-          onSubmit={async data => {
-            const output = await OpenPGP.generate({
-              name: data.name,
-              email: data.email,
-              passphrase: data.password
-            });
-            console.log(data.name);
-            setKeyPair(output);
-          }}
-        >
-          {({ submitForm, handleChange, values }) => (
-              <View>
-                <TextInput
-                  placeholder="Name"
-                  onChangeText={handleChange("name")}
-                  value={values.name.trim()}
-                />
-                <TextInput
-                  placeholder="Email"
-                  onChangeText={handleChange("email")}
-                  value={values.email.trim()}
-                />
-                <TextInput
-                  placeholder="Password"
-                  onChangeText={handleChange("password")}
-                  value={values.password.trim()}
-                  secureTextEntry={true}
-                />
-                <Button title="Generate PGP Key Pair" onPress={submitForm} />
-              </View>
-          )}
-        </Formik>
-
-        {!!keyPair && !!keyPair.publicKey && <Text>{keyPair.publicKey}</Text>}
-        {!!keyPair && !!keyPair.privateKey && <Text>{keyPair.privateKey}</Text>}
+        <View>
+          <TextInput
+            placeholder="Name"
+            onChangeText={setName}
+            value={name.trim()}
+          />
+          <TextInput
+            placeholder="Email"
+            onChangeText={setEmail}
+            value={email.trim()}
+          />
+          <TextInput
+            placeholder="Password"
+            onChangeText={setPassphrase}
+            value={passphrase.trim()}
+            secureTextEntry={true}
+          />
+            <Button title="Generate PGP Key Pair" onPress={onSubmit} />
+            {!!keyPair && !!keyPair.privateKey && <Text>Private Key: {keyPair.privateKey}</Text> }
+            {!!keyPair && !!keyPair.publicKey && <Text>Public Key: {keyPair.publicKey}</Text> }
+        </View>
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
