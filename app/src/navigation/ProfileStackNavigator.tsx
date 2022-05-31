@@ -5,6 +5,8 @@ import ClaimScreen from "./screens/ClaimScreen";
 import { ClaimType } from "../types/claim";
 import { getClaimFromType } from "../utils/claim-utils";
 import ViewFile from "./screens/ViewFileScreen";
+import { useMnemonic } from "../context/Mnemonic";
+import MnemonicScreen from "./screens/Mnemonic";
 
 export type ProfileStackParamList = {
   Home: undefined;
@@ -13,16 +15,19 @@ export type ProfileStackParamList = {
     fileId: string;
     onSelect: () => void;
   };
+  Mnemonic: undefined;
 };
 
 const Stack = createStackNavigator<ProfileStackParamList>();
 
 const ProfileStackNavigator = () => {
+  const { mnemonic } = useMnemonic();
   return (
     <Stack.Navigator
       screenOptions={{
         headerBackTitleVisible: false
       }}
+      initialRouteName={mnemonic ? "Home" : "Mnemonic"}
     >
       <Stack.Screen
         name="Home"
@@ -30,6 +35,13 @@ const ProfileStackNavigator = () => {
           headerShown: false
         })}
         component={ProfileScreen}
+      />
+      <Stack.Screen
+        name="Mnemonic"
+        options={() => ({
+          headerShown: false
+        })}
+        component={MnemonicScreen}
       />
       <Stack.Screen
         name="Claim"
