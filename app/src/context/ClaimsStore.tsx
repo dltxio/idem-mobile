@@ -42,7 +42,7 @@ export const ClaimsProvider: React.FC<{
         )
         .map((claim) => {
           const verifiedClaim = verifiedClaimTypes.find(
-            (vc) => vc.type === claim.type
+            (vc) => vc?.type === claim.type
           )!;
 
           return {
