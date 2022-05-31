@@ -22,7 +22,7 @@ export const DocumentsContext = React.createContext<DocumentsValue | undefined>(
 
 export const DocumentProvider: React.FC<{
   children: React.ReactNode;
-}> = props => {
+}> = (props) => {
   const [files, setFiles] = React.useState<File[]>([]);
 
   React.useEffect(() => {
@@ -66,7 +66,7 @@ export const DocumentProvider: React.FC<{
       }
     };
 
-    setFiles(previous => {
+    setFiles((previous) => {
       const updatedFiles = [...previous, newFile];
       fileLocalStorage.save(updatedFiles);
       return updatedFiles;
@@ -76,7 +76,7 @@ export const DocumentProvider: React.FC<{
   };
 
   const deleteFile = (fileId: string) => {
-    const updatedFiles = files.filter(files => files.id !== fileId);
+    const updatedFiles = files.filter((files) => files.id !== fileId);
     fileLocalStorage.save(updatedFiles);
     setFiles(updatedFiles);
   };

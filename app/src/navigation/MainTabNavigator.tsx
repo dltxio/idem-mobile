@@ -14,7 +14,7 @@ const TabNavigator = () => (
     initialRouteName="Profile"
     screenOptions={({ route }) => ({
       headerShown: false,
-      tabBarIcon: tabProps => renderTabIcon(route, tabProps),
+      tabBarIcon: (tabProps) => renderTabIcon(route, tabProps),
       tabBarActiveTintColor: colors.blue,
       tabBarInactiveTintColor: colors.gray
     })}

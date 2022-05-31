@@ -19,7 +19,7 @@ const UserDetailsHeader: React.FC = () => {
   const { addClaim } = useClaimsStore();
   const { addFile, files } = useDocumentStore();
 
-  const profilePictureFile = files.find(file => file.id === profileImageId);
+  const profilePictureFile = files.find((file) => file.id === profileImageId);
 
   const addProfileImageClaim = async () => {
     const file = await selectPhotoFromCameraRoll();

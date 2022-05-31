@@ -56,7 +56,6 @@ export const MnemonicProvider: React.FC<{
     [mnemonic, createMnemonic, reset]
   );
 
-
   return (
     <MnemonicContext.Provider value={value}>
       {props.children}
@@ -70,6 +69,6 @@ export const useMnemonic = () => {
   if (context === undefined) {
     throw new Error("useMnemonic must be used within a MnemonicProvider");
   }
-  
+
   return context;
 };
