@@ -20,7 +20,6 @@ const Home: React.FC = () => {
   return (
     <View style={commonStyles.screen}>
       <UserDetailsHeader />
-
       <ScrollView style={commonStyles.screenContent}>
         <Text style={commonStyles.text.smallHeading}>Your claims</Text>
         {usersClaims.length ? (
@@ -55,5 +54,5 @@ export default Home;
 const styles = StyleSheet.create({
   emptyClaimsText: {
     marginBottom: 10
-  }
+  },
 });
