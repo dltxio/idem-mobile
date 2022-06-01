@@ -59,7 +59,7 @@ And their personal data is updated at demo.idem.com.au
 
 ## Creating a profile on your Idem app
 
-### 1: New Idem registration
+### 1: New IDEM registration
 A user downlooads _Idem_ on their mobile device and creates a new local profile on the app. Their email address is their unique identifier.
 
 ### 2: New private key
