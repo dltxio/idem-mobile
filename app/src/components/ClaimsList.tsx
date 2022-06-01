@@ -14,7 +14,7 @@ type Props = {
 const ClaimsList: React.FC<Props> = ({ claims, onPress }) => {
   return (
     <View style={styles.claimsListWrapper}>
-      {claims.map(claim => (
+      {claims.map((claim) => (
         <ClaimItem
           key={claim.key}
           claim={claim}

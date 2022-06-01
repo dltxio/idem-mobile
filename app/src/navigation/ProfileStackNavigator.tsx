@@ -45,7 +45,7 @@ const ProfileStackNavigator = () => {
       />
       <Stack.Screen
         name="Claim"
-        options={props => {
+        options={(props) => {
           const claim = getClaimFromType(props.route.params.claimType);
           return {
             title: claim.title
