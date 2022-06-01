@@ -1,14 +1,12 @@
 {
   "extends": "../tsconfig.json",
   "composite": true,
-  "disableEmit": false,
   "compilerOptions": {
-    "strict": true,
     "allowSyntheticDefaultImports": true,
     "isolatedModules": true,
     "jsx": "react-native",
-    "strictNullChecks": true,
-    "lib": ["es7", "dom"]
+    "noEmit": true,
+    "lib": ["DOM", "es6"]
   },
   "include": ["./**/*"]
 }
