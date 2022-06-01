@@ -33,7 +33,7 @@ const ViewFile: React.FC = () => {
         <Text>{document.title}</Text>
         <Text style={styles.title}>SHA265</Text>
         <Text>{file.hashes.sha256}</Text>
-        <Text style={styles.title}>KECCAK265</Text>
+        <Text style={styles.title}>KECCAK256</Text>
         <Text>{file.hashes.keccakHash}</Text>
       </View>
     </ScrollView>
