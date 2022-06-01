@@ -9,6 +9,8 @@ import { useNavigation } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
 import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/image-utils";
 import useSelectPhoto from "../../hooks/useSelectPhoto";
+import DocumentPicker from "react-native-document-picker";
+import { requestMediaLibraryPermissionsAsync } from "expo-image-picker";
 
 type Navigation = DocumentsStackNavigation<"Documents">;
 
@@ -46,6 +48,20 @@ const DocumentsScreen: React.FC = () => {
     }
   };
 
+  const uploadFile = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles]
+      });
+      console.log(res);
+    } catch (error) {
+      if (DocumentPicker.isCancel(error)) {
+      } else {
+        throw error;
+      }
+    }
+  };
+
   return (
     <View
       style={[commonStyles.screen, commonStyles.screenContent, styles.screen]}
@@ -69,9 +85,11 @@ const DocumentsScreen: React.FC = () => {
         )}
       </View>
       <View style={[styles.section, styles.bottomSection]}>
-        <Text style={commonStyles.text.smallHeading}>Attach a file from your device</Text>
+        <Text style={commonStyles.text.smallHeading}>
+          Attach a file from your device
+        </Text>
         <Text style={styles.label}>Document type</Text>
-        <Picker
+        {/* <Picker
           selectedValue={selectedDocumentId}
           onValueChange={itemValue => setSelectedDocumentId(itemValue)}
           numberOfLines={2}
@@ -81,7 +99,7 @@ const DocumentsScreen: React.FC = () => {
           {allDocuments.map(doc => (
             <Picker.Item key={doc.id} label={doc.title} value={doc.id} />
           ))}
-        </Picker>
+        </Picker> */}
 
         <Button
           title="Take A Photo"
@@ -94,10 +112,10 @@ const DocumentsScreen: React.FC = () => {
           onPress={pickPhotoFromLibrary}
         />
 
-      <Button
+        <Button
           title="Select From Device"
           style={styles.photoButton}
-          onPress={takePhoto}
+          onPress={uploadFile}
         />
       </View>
     </View>
