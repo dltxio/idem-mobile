@@ -14,6 +14,7 @@ import { Claim } from "../../types/claim";
 import { FileList, Button } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
+import { pgpLocalStorage } from "../../utils/local-storage";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -74,6 +75,11 @@ const ClaimScreen: React.FC = () => {
     }
   };
 
+  const verifyEmail = async () => {
+    await pgpLocalStorage.get();
+    
+  }
+
   const documentList =
     claim.verificationAction === "document-upload" ? (
       <VerificationFiles
@@ -105,13 +111,16 @@ const ClaimScreen: React.FC = () => {
 
         if (field.type === "text") {
           return (
+            <View
+              key={field.id}>
             <Input
-              key={field.id}
               label={field.title}
               value={formState[field.id]}
               onChangeText={onChange}
               clearButtonMode="always"
             />
+            {field.id === "email" ? <Text onPress={verifyEmail} style={{paddingBottom: 10}}>Verify your email</Text> : <Text></Text>}
+            </View>
           );
         }
 
