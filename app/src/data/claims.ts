@@ -70,12 +70,14 @@ const claims: Claim[] = [
     key: "0x05",
     nnemonic: "address",
     title: "Address",
-    description: "Your physical address",
+    description: "Your home address",
     verificationAction: "document-upload",
     fields: [
-      { id: "propertyNumber", title: "Property Number", type: "text" },
-      { id: "streetName", title: "Street Name", type: "text" },
-      { id: "postCode", title: "Post Code", type: "text" }
+      { id: "HouseNumber", title: "Unit/House Number", type: "text" },
+      { id: "streetName", title: "Street address", type: "text" },
+      { id: "suburb", title: "Suburb", type: "text" },
+      { id: "postCode", title: "Post Code", type: "text" },
+      { id: "state", title: "State", type: "text" }
     ],
     verificationDocuments: ["drivers-license"]
   },
