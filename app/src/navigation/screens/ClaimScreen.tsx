@@ -14,6 +14,7 @@ import { Claim } from "../../types/claim";
 import { FileList, Button } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
+import { getDocumentFromDocumentId } from "../../utils/document-utils";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -199,6 +200,10 @@ const VerificationFiles: React.FC<{
     selected: selectedFileIds.includes(file.id)
   }));
 
+  const validDocumentNames = claim.verificationDocuments.map((document) => {
+    return `\n- ${getDocumentFromDocumentId(document).title}`;
+  })
+
   return (
     <View>
       <View
@@ -212,17 +217,21 @@ const VerificationFiles: React.FC<{
         <Text>I would like to verify my claim</Text>
       </View>
       {isVerifying ? (
-        <>
-          <Text style={styles.introText}>
-            The following documents can be used to verify your{" "}
-            {claim.title.toLowerCase()} claim.
-          </Text>
-          <FileList
-            files={filesWithSelected}
-            onFilePress={onSelectFile}
-            isCheckList={true}
-          />
-        </>
+        filesThatCanBeUsedToVerify.length > 0 ?
+          <>
+            <Text style={styles.introText}>
+              The following documents can be used to verify your{" "}
+              {claim.title.toLowerCase()} claim.
+            </Text>
+            <FileList
+              files={filesWithSelected}
+              onFilePress={onSelectFile}
+              isCheckList={true}
+            />
+          </> : 
+            <Text style={styles.introText}>
+              No valid documents.  Please add one of the following: {validDocumentNames}
+            </Text>
       ) : null}
     </View>
   );
