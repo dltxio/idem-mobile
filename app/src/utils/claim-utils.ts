@@ -70,7 +70,7 @@ export const displayClaimValue = (claim: ClaimWithValue): string => {
     EmailCredential: (value: any) => value.email,
     MobileNumberCredential: (value: any) => value.mobileNumber,
     AddressCredential: (value: any) =>
-      value.propertyNumber + " " + value.streetName + ", " + value.postCode,
+      `${value.HouseNumber} ${value.streetName}, ${value.postCode}`,
     ProfileImageCredential: (value: any) => value.fileId
   };
 
