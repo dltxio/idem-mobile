@@ -15,15 +15,15 @@ export const PGPScreen: React.FC = () => {
   const [passphrase, setPassphrase] = React.useState<string>("");
 
   const onSubmit = async () => {
+    console.log("here");
     const pgp = await generatePGP({name, email, passphrase});
     console.log(pgp);
   };
 
-
   return (
     <View style={styles.container}>
       <View>
-        <Text>Generate a PGP to sign transactions:</Text>
+        <Text>Generate a PGP key pair</Text>
         <View>
           <TextInput
             placeholder="Name"
