@@ -54,7 +54,7 @@ export const DocumentProvider: React.FC<{
       Crypto.CryptoDigestAlgorithm.SHA256,
       file.base64
     );
-    
+
     const buffer = Buffer.from(file.base64, "base64");
     const keccakHash = keccak256(buffer);
 

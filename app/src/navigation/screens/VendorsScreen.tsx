@@ -10,25 +10,25 @@ const VendorsScreen: React.FC = () => {
   const { reset: resetClaims } = useClaimsStore();
 
   const showAlert = () =>
-  Alert.alert(
-    "CAUTION",
-    "You are about to reset your data, including claims and files. Would you like to continue?",
-    [
+    Alert.alert(
+      "CAUTION",
+      "You are about to reset your data, including claims and files. Would you like to continue?",
+      [
+        {
+          text: "OK",
+          onPress: onReset,
+          style: "destructive"
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        }
+      ],
       {
-        text: "OK",
-        onPress: onReset,
-        style: "destructive",
-      },
-      {
-        text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
-        style: "cancel",
-      },
-    ],
-    {
-      cancelable: true,
-    }
-  );
+        cancelable: true
+      }
+    );
 
   const onReset = () => {
     resetDocuments();

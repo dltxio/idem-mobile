@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, ScrollView, Text, Alert } from "react-native";
+import { StyleSheet, View, ScrollView, Text } from "react-native";
 import commonStyles from "../../styles/styles";
 import { ProfileStackNavigation } from "../../types/navigation";
 import { ClaimsList, UserDetailsHeader } from "../../components";
