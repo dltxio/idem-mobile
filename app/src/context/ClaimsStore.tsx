@@ -32,26 +32,21 @@ export const ClaimsProvider: React.FC<{
     })();
   }, []);
 
-  const usersClaims: ClaimWithValue[] = React.useMemo(
-    () =>
-      allClaims
-        .filter((claim) =>
-          verifiedClaimTypes.find(
-            (verifiedClaim) => verifiedClaim.type === claim.type
-          )
-        )
-        .map((claim) => {
-          const verifiedClaim = verifiedClaimTypes.find(
-            (vc) => vc?.type === claim.type
-          )!;
-
-          return {
-            ...claim,
-            ...verifiedClaim
-          };
-        }),
-    [verifiedClaimTypes]
-  );
+  const usersClaims: ClaimWithValue[] = React.useMemo(() => {
+    const verifiedClaims: ClaimWithValue[] = [];
+    allClaims.forEach((claim) => {
+      const verifiedClaim = verifiedClaimTypes.find(
+        (vc) => vc?.type === claim.type
+      );
+      if (verifiedClaim !== undefined) {
+        verifiedClaims.push({
+          ...claim,
+          ...verifiedClaim
+        });
+      }
+    });
+    return verifiedClaims;
+  }, [verifiedClaimTypes]);
 
   const unclaimedClaims = React.useMemo(
     () =>

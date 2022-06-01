@@ -9,8 +9,11 @@ import {
   ClaimWithValue
 } from "../types/claim";
 
-export const getClaimFromType = (claimType: ClaimType): Claim =>
-  allClaims.find((claim) => claim.type === claimType)!;
+export const getClaimFromType = (claimType: ClaimType): Claim => {
+  const claim = allClaims.find((claim) => claim.type === claimType);
+  if (claim) return claim;
+  throw Error("Claim not found");
+};
 
 export const getClaimsFromTypes = (claimTypes: ClaimType[]): Claim[] =>
   allClaims.filter((claim) => claimTypes.includes(claim.type));

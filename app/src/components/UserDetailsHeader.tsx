@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useSelectPhoto from "../hooks/useSelectPhoto";
 import { PROFILE_IMAGE_OPTIONS } from "../utils/image-utils";
 import { useDocumentStore } from "../context/DocumentStore";
-const defaultProfilePicture = require("../../assets/default-profile-picture.png");
+import defaultProfilePicture from "../../assets/default-profile-picture.png";
 
 const UserDetailsHeader: React.FC = () => {
   const insets = useSafeAreaInsets();
