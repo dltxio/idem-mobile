@@ -1,7 +1,5 @@
 import * as React from "react";
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import "react-native-get-random-values";
-import "@ethersproject/shims";
 import { ethers } from "ethers";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { mnemonicLocalStorage } from "../utils/local-storage";
