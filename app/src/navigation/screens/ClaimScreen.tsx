@@ -22,13 +22,13 @@ const ClaimScreen: React.FC = () => {
   const claim = getClaimFromType(route.params.claimType);
   const { addClaim, usersClaims } = useClaimsStore();
 
-  const userClaim = usersClaims.find(c => c.type === claim.type);
+  const userClaim = usersClaims.find((c) => c.type === claim.type);
 
   const navigation = useNavigation<Navigation>();
   const [formState, setFormState] = React.useState<{ [key: string]: string }>(
     userClaim?.value || {}
   );
-  let dateRefs = React.useRef<{ [key: string]: any }>({});
+  const dateRefs = React.useRef<{ [key: string]: any }>({});
   const [showDatePickerForFieldId, setShowDatePickerForFieldId] =
     React.useState<string>();
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
@@ -48,7 +48,7 @@ const ClaimScreen: React.FC = () => {
 
   const onDateSelect = (date: Date) => {
     if (showDatePickerForFieldId) {
-      setFormState(previous => ({
+      setFormState((previous) => ({
         ...previous,
         [showDatePickerForFieldId]: moment(date).format("DD/MM/YYYY")
       }));
@@ -70,7 +70,7 @@ const ClaimScreen: React.FC = () => {
     if (!selectedFileIds.includes(fileId)) {
       setSelectedFileIds([...selectedFileIds, fileId]);
     } else {
-      setSelectedFileIds(selectedFileIds.filter(id => id !== fileId));
+      setSelectedFileIds(selectedFileIds.filter((id) => id !== fileId));
     }
   };
 
@@ -79,7 +79,7 @@ const ClaimScreen: React.FC = () => {
       <VerificationFiles
         claim={claim}
         isVerifying={isVerifying}
-        setIsVerifying={newValue => {
+        setIsVerifying={(newValue) => {
           setIsVerifying(newValue);
           setSelectedFileIds([]);
         }}
@@ -89,29 +89,55 @@ const ClaimScreen: React.FC = () => {
     ) : null;
 
   const canSave =
-    claim.fields.filter(field => formState[field.id]).length ===
+    claim.fields.filter((field) => formState[field.id]).length ===
       claim.fields.length &&
     ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
 
   return (
-    <ScrollView>
-      <View style={[commonStyles.screen, commonStyles.screenContent]}>
-        {claim.fields.map(field => {
-          const onChange = (value: string) => {
-            setFormState(previous => ({
-              ...previous,
-              [field.id]: value
-            }));
-          };
+    <View style={[commonStyles.screen, commonStyles.screenContent]}>
+      {claim.fields.map((field) => {
+        const onChange = (value: string) => {
+          setFormState((previous) => ({
+            ...previous,
+            [field.id]: value
+          }));
+        };
 
-          if (field.type === "text") {
-            return (
-              <Input
-                key={field.id}
-                label={field.title}
-                value={formState[field.id]}
-                onChangeText={onChange}
-                clearButtonMode="always"
+        if (field.type === "text") {
+          return (
+            <Input
+              key={field.id}
+              label={field.title}
+              value={formState[field.id]}
+              onChangeText={onChange}
+              clearButtonMode="always"
+            />
+          );
+        }
+
+        if (field.type === "date") {
+          return (
+            <Input
+              key={field.id}
+              label={field.title}
+              value={formState[field.id]}
+              ref={(ref) =>
+                (dateRefs.current = {
+                  [field.id]: ref
+                })
+              }
+              onFocus={() => showDatePickerFor(field.id)}
+            />
+          );
+        }
+
+        if (field.type === "boolean") {
+          return (
+            <View key={field.id} style={{ paddingVertical: 20 }}>
+              <Text style={{ marginBottom: 20 }}>{field.title}</Text>
+              <Switch
+                value={formState[field.id] === "true"}
+                onValueChange={(value) => onChange(value ? "true" : "false")}
               />
             );
           }
@@ -192,11 +218,11 @@ const VerificationFiles: React.FC<{
 }) => {
   const { files } = useDocumentStore();
 
-  const filesThatCanBeUsedToVerify = files.filter(file =>
+  const filesThatCanBeUsedToVerify = files.filter((file) =>
     claim.verificationDocuments.includes(file.documentId)
   );
 
-  const filesWithSelected = filesThatCanBeUsedToVerify.map(file => ({
+  const filesWithSelected = filesThatCanBeUsedToVerify.map((file) => ({
     ...file,
     selected: selectedFileIds.includes(file.id)
   }));

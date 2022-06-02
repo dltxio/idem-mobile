@@ -9,11 +9,14 @@ import {
   ClaimWithValue
 } from "../types/claim";
 
-export const getClaimFromType = (claimType: ClaimType): Claim =>
-  allClaims.find(claim => claim.type === claimType)!;
+export const getClaimFromType = (claimType: ClaimType): Claim => {
+  const claim = allClaims.find((claim) => claim.type === claimType);
+  if (claim) return claim;
+  throw Error("Claim not found");
+};
 
 export const getClaimsFromTypes = (claimTypes: ClaimType[]): Claim[] =>
-  allClaims.filter(claim => claimTypes.includes(claim.type));
+  allClaims.filter((claim) => claimTypes.includes(claim.type));
 
 export const parseClaimRequest = (
   claimRequest: ClaimRequestParams
@@ -42,8 +45,8 @@ export const parseClaimRequest = (
 
   const claimTypes = claimRequest.claims.split(",");
 
-  const validClaimTypes = claimTypes.filter(ct =>
-    claims.find(c => c.type === ct)
+  const validClaimTypes = claimTypes.filter((ct) =>
+    claims.find((c) => c.type === ct)
   );
 
   if (!validClaimTypes.length) {
@@ -77,7 +80,7 @@ export const displayClaimValue = (claim: ClaimWithValue): string => {
 export const generateClaimRequestResponsePayload = (
   claims: ClaimWithValue[]
 ) => {
-  const verifiableCredential = claims.map(claim => {
+  const verifiableCredential = claims.map((claim) => {
     return {
       "@context": ["https://www.w3.org/2018/credentials/v1"],
       type: ["VerifiableCredential", claim.type],
