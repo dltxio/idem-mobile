@@ -29,19 +29,19 @@ const RequestClaimsModal: React.FC<Props> = ({ claimRequest, onClose }) => {
 
     setIsOpen(true);
 
-    const claims = getClaimsFromTypes(claimRequest.claims).map(claim => ({
+    const claims = getClaimsFromTypes(claimRequest.claims).map((claim) => ({
       ...claim,
-      value: usersClaims.find(userClaim => userClaim.key === claim.key)?.value
+      value: usersClaims.find((userClaim) => userClaim.key === claim.key)?.value
     }));
 
-    const unClaimedClaims = claims.filter(c => !c.value);
+    const unClaimedClaims = claims.filter((c) => !c.value);
 
     const alertTitle = `${claimRequest.host} is requesting your claims`;
 
     const alertContent = !unClaimedClaims.length
-      ? `Tap "OK" to share ${claims.map(c => c.title).join(", ")}`
+      ? `Tap "OK" to share ${claims.map((c) => c.title).join(", ")}`
       : `Unable to complete request. You have not provided the following claims: ${unClaimedClaims
-          .map(c => c.title)
+          .map((c) => c.title)
           .join(", ")}`;
 
     const sendClaims = async () => {

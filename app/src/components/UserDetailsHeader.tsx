@@ -9,7 +9,7 @@ import { PROFILE_IMAGE_OPTIONS } from "../utils/image-utils";
 import { useDocumentStore } from "../context/DocumentStore";
 import { useNavigation } from "@react-navigation/native";
 import { ProfileStackNavigation } from "../types/navigation";
-const defaultProfilePicture = require("../../assets/default-profile-picture.png");
+import defaultProfilePicture from "../../assets/default-profile-picture.png";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -24,7 +24,7 @@ const UserDetailsHeader: React.FC = () => {
   const { addClaim } = useClaimsStore();
   const { addFile, files } = useDocumentStore();
 
-  const profilePictureFile = files.find(file => file.id === profileImageId);
+  const profilePictureFile = files.find((file) => file.id === profileImageId);
 
   const addProfileImageClaim = async () => {
     const file = await selectPhotoFromCameraRoll();

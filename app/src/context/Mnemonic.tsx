@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import "react-native-get-random-values";
-import "@ethersproject/shims";
 import * as React from "react";
 import { ethers } from "ethers";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -56,7 +54,6 @@ export const MnemonicProvider: React.FC<{
     [mnemonic, createMnemonic, reset]
   );
 
-
   return (
     <MnemonicContext.Provider value={value}>
       {props.children}
@@ -70,6 +67,6 @@ export const useMnemonic = () => {
   if (context === undefined) {
     throw new Error("useMnemonic must be used within a MnemonicProvider");
   }
-  
+
   return context;
 };

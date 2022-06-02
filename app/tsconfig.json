@@ -1,6 +1,11 @@
 {
-  "extends": "expo/tsconfig.base",
+  "extends": "../tsconfig.json",
+  "composite": true,
   "compilerOptions": {
-    "strict": true
-  }
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "jsx": "react-native",
+    "lib": ["DOM", "es6"]
+  },
+  "include": ["./**/*"]
 }

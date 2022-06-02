@@ -23,13 +23,13 @@ const ClaimScreen: React.FC = () => {
   const claim = getClaimFromType(route.params.claimType);
   const { addClaim, usersClaims } = useClaimsStore();
 
-  const userClaim = usersClaims.find(c => c.type === claim.type);
+  const userClaim = usersClaims.find((c) => c.type === claim.type);
 
   const navigation = useNavigation<Navigation>();
   const [formState, setFormState] = React.useState<{ [key: string]: string }>(
     userClaim?.value || {}
   );
-  let dateRefs = React.useRef<{ [key: string]: any }>({});
+  const dateRefs = React.useRef<{ [key: string]: any }>({});
   const [showDatePickerForFieldId, setShowDatePickerForFieldId] =
     React.useState<string>();
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
@@ -49,7 +49,7 @@ const ClaimScreen: React.FC = () => {
 
   const onDateSelect = (date: Date) => {
     if (showDatePickerForFieldId) {
-      setFormState(previous => ({
+      setFormState((previous) => ({
         ...previous,
         [showDatePickerForFieldId]: moment(date).format("DD/MM/YYYY")
       }));
@@ -71,21 +71,20 @@ const ClaimScreen: React.FC = () => {
     if (!selectedFileIds.includes(fileId)) {
       setSelectedFileIds([...selectedFileIds, fileId]);
     } else {
-      setSelectedFileIds(selectedFileIds.filter(id => id !== fileId));
+      setSelectedFileIds(selectedFileIds.filter((id) => id !== fileId));
     }
   };
 
   const verifyEmail = async () => {
     await pgpLocalStorage.get();
-    
-  }
+  };
 
   const documentList =
     claim.verificationAction === "document-upload" ? (
       <VerificationFiles
         claim={claim}
         isVerifying={isVerifying}
-        setIsVerifying={newValue => {
+        setIsVerifying={(newValue) => {
           setIsVerifying(newValue);
           setSelectedFileIds([]);
         }}
@@ -95,15 +94,15 @@ const ClaimScreen: React.FC = () => {
     ) : null;
 
   const canSave =
-    claim.fields.filter(field => formState[field.id]).length ===
+    claim.fields.filter((field) => formState[field.id]).length ===
       claim.fields.length &&
     ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
 
   return (
     <View style={[commonStyles.screen, commonStyles.screenContent]}>
-      {claim.fields.map(field => {
+      {claim.fields.map((field) => {
         const onChange = (value: string) => {
-          setFormState(previous => ({
+          setFormState((previous) => ({
             ...previous,
             [field.id]: value
           }));
@@ -111,15 +110,20 @@ const ClaimScreen: React.FC = () => {
 
         if (field.type === "text") {
           return (
-            <View
-              key={field.id}>
-            <Input
-              label={field.title}
-              value={formState[field.id]}
-              onChangeText={onChange}
-              clearButtonMode="always"
-            />
-            {field.id === "email" ? <Text onPress={verifyEmail} style={{paddingBottom: 10}}>Verify your email</Text> : <Text></Text>}
+            <View key={field.id}>
+              <Input
+                label={field.title}
+                value={formState[field.id]}
+                onChangeText={onChange}
+                clearButtonMode="always"
+              />
+              {field.id === "email" ? (
+                <Text onPress={verifyEmail} style={{ paddingBottom: 10 }}>
+                  Verify your email
+                </Text>
+              ) : (
+                <Text></Text>
+              )}
             </View>
           );
         }
@@ -130,7 +134,7 @@ const ClaimScreen: React.FC = () => {
               key={field.id}
               label={field.title}
               value={formState[field.id]}
-              ref={ref =>
+              ref={(ref) =>
                 (dateRefs.current = {
                   [field.id]: ref
                 })
@@ -146,7 +150,7 @@ const ClaimScreen: React.FC = () => {
               <Text style={{ marginBottom: 20 }}>{field.title}</Text>
               <Switch
                 value={formState[field.id] === "true"}
-                onValueChange={value => onChange(value ? "true" : "false")}
+                onValueChange={(value) => onChange(value ? "true" : "false")}
               />
             </View>
           );
@@ -199,11 +203,11 @@ const VerificationFiles: React.FC<{
 }) => {
   const { files } = useDocumentStore();
 
-  const filesThatCanBeUsedToVerify = files.filter(file =>
+  const filesThatCanBeUsedToVerify = files.filter((file) =>
     claim.verificationDocuments.includes(file.documentId)
   );
 
-  const filesWithSelected = filesThatCanBeUsedToVerify.map(file => ({
+  const filesWithSelected = filesThatCanBeUsedToVerify.map((file) => ({
     ...file,
     selected: selectedFileIds.includes(file.id)
   }));
