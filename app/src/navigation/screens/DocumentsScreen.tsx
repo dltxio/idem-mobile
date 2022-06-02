@@ -53,9 +53,12 @@ const DocumentsScreen: React.FC = () => {
       const res = await DocumentPicker.getDocumentAsync({
         type: "*/*"
       });
-      if (res && res.type === "cancel") {
+      if (res && res.type !== "cancel") {
         addFile(selectedDocumentId, res);
-      }  
+      } 
+    } catch (error) {
+      // 
+    }
   };
 
   return (

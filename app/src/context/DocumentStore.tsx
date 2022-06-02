@@ -1,5 +1,7 @@
 import * as React from "react";
 import * as ImagePicker from "expo-image-picker";
+import * as DocumentPicker from "expo-document-picker"
+import * as FileSystem from "expo-file-system"
 import * as Crypto from "expo-crypto";
 import uuid from "react-native-uuid";
 import { DocumentId, File } from "../types/document";
@@ -12,7 +14,7 @@ export type DocumentsValue = {
   files: File[];
   addFile: (
     documentId: DocumentId,
-    file: ImagePicker.ImageInfo
+    file: ImagePicker.ImageInfo | DocumentPicker.DocumentResult
   ) => Promise<string>;
   deleteFile: (fileId: string) => void;
   reset: () => void;
@@ -39,7 +41,7 @@ export const DocumentProvider: React.FC<{
 
   const addFile = async (
     documentId: DocumentId,
-    file: ImagePicker.ImageInfo
+    file: ImagePicker.ImageInfo | DocumentPicker.DocumentResult
   ): Promise<string> => {
     const name = getImageFileName(file.uri);
     if (!name) {
@@ -47,7 +49,11 @@ export const DocumentProvider: React.FC<{
     }
 
     if (!file.base64) {
-      throw new Error("No base64");
+      file.base64 = await FileSystem.readAsStringAsync(file.uri, { encoding: 'base64' });
+    }
+
+    if (!file.base64) {
+      throw new Error("No base64"); // TODO: Not sure if we should keep this conditional or if we need to resctructure it based on both type of file
     }
 
     const sha256 = await Crypto.digestStringAsync(
