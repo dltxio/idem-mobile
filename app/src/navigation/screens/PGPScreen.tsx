@@ -21,13 +21,17 @@ const PGPScreen: React.FC = () => {
   const importPGP = async () => {
     setPrivateKey(privateKey);
     setPublicKey(publicKey);
-    await pgpLocalStorage.save({keyPair: {privateKey: privateKey, publicKey: publicKey}});
+    await pgpLocalStorage.save({
+      keyPair: { privateKey: privateKey, publicKey: publicKey }
+    });
     console.log(await pgpLocalStorage.get());
-  }
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.introText}>Import your PGP to sign transactions:</Text>
+      <Text style={styles.introText}>
+        Import your PGP to sign transactions:
+      </Text>
       <TextInput
         placeholder="Paste your PRIVATE key here"
         onChangeText={setPrivateKey}
@@ -51,8 +55,11 @@ const PGPScreen: React.FC = () => {
         onPress={importPGP}
         style={styles.verifyButton}
       />
-      <Text style={styles.warning}>NOTE: Importing your keys saves them to your local storage. IDEM does not have access to the keys you import.</Text>
-      </View>
+      <Text style={styles.warning}>
+        NOTE: Importing your keys saves them to your local storage. IDEM does
+        not have access to the keys you import.
+      </Text>
+    </View>
   );
 };
 
