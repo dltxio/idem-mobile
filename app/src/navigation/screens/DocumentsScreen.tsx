@@ -9,7 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
 import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/image-utils";
 import useSelectPhoto from "../../hooks/useSelectPhoto";
-import DocumentPicker from "react-native-document-picker";
+import * as DocumentPicker from "expo-document-picker";
 import { requestMediaLibraryPermissionsAsync } from "expo-image-picker";
 
 type Navigation = DocumentsStackNavigation<"Documents">;
@@ -50,16 +50,12 @@ const DocumentsScreen: React.FC = () => {
 
   const uploadFile = async () => {
     try {
-      const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles]
+      const res = await DocumentPicker.getDocumentAsync({
+        type: "*/*"
       });
-      console.log(res);
-    } catch (error) {
-      if (DocumentPicker.isCancel(error)) {
-      } else {
-        throw error;
-      }
-    }
+      if (res && res.type === "cancel") {
+        addFile(selectedDocumentId, res);
+      }  
   };
 
   return (
