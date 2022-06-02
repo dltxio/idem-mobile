@@ -94,50 +94,24 @@ const ClaimScreen: React.FC = () => {
     ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
 
   return (
-    <View style={[commonStyles.screen, commonStyles.screenContent]}>
-      {claim.fields.map((field) => {
-        const onChange = (value: string) => {
-          setFormState((previous) => ({
-            ...previous,
-            [field.id]: value
-          }));
-        };
+    <ScrollView>
+      <View style={[commonStyles.screen, commonStyles.screenContent]}>
+        {claim.fields.map((field) => {
+          const onChange = (value: string) => {
+            setFormState((previous) => ({
+              ...previous,
+              [field.id]: value
+            }));
+          };
 
-        if (field.type === "text") {
-          return (
-            <Input
-              key={field.id}
-              label={field.title}
-              value={formState[field.id]}
-              onChangeText={onChange}
-              clearButtonMode="always"
-            />
-          );
-        }
-
-        if (field.type === "date") {
-          return (
-            <Input
-              key={field.id}
-              label={field.title}
-              value={formState[field.id]}
-              ref={(ref) =>
-                (dateRefs.current = {
-                  [field.id]: ref
-                })
-              }
-              onFocus={() => showDatePickerFor(field.id)}
-            />
-          );
-        }
-
-        if (field.type === "boolean") {
-          return (
-            <View key={field.id} style={{ paddingVertical: 20 }}>
-              <Text style={{ marginBottom: 20 }}>{field.title}</Text>
-              <Switch
-                value={formState[field.id] === "true"}
-                onValueChange={(value) => onChange(value ? "true" : "false")}
+          if (field.type === "text") {
+            return (
+              <Input
+                key={field.id}
+                label={field.title}
+                value={formState[field.id]}
+                onChangeText={onChange}
+                clearButtonMode="always"
               />
             );
           }
@@ -148,7 +122,7 @@ const ClaimScreen: React.FC = () => {
                 key={field.id}
                 label={field.title}
                 value={formState[field.id]}
-                ref={ref =>
+                ref={(ref) =>
                   (dateRefs.current = {
                     [field.id]: ref
                   })
@@ -164,7 +138,7 @@ const ClaimScreen: React.FC = () => {
                 <Text style={{ marginBottom: 20 }}>{field.title}</Text>
                 <Switch
                   value={formState[field.id] === "true"}
-                  onValueChange={value => onChange(value ? "true" : "false")}
+                  onValueChange={(value) => onChange(value ? "true" : "false")}
                 />
               </View>
             );
@@ -199,7 +173,8 @@ const styles = StyleSheet.create({
   },
   verifyButton: {
     marginTop: 20,
-    marginBottom: 20
+    marginBottom: 20,
+    paddingBottom: 20
   }
 });
 
