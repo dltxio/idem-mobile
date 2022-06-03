@@ -1,0 +1,7 @@
+node_modules/
+babel.config.js
+metro.config.js
+build/
+server/jest.config.js
+app/types.tsx
+__tests__/

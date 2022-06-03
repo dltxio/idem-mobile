@@ -1,12 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Button,
-  Dimensions
-} from "react-native";
+import { StyleSheet, View, Text, Button, Dimensions } from "react-native";
 import { useMnemonic } from "../../context/Mnemonic";
 import { ProfileStackNavigation } from "../../types/navigation";
 
@@ -28,12 +22,12 @@ const MnemonicScreen: React.FC = () => {
   return (
     <View style={styles.mnemonic}>
       <Text>{mnemonic}</Text>
-        <Button
-          onPress={() => {
-            navigation.navigate("Home");
-          }}
-          title={"Go to Profile"}
-        />
+      <Button
+        onPress={() => {
+          navigation.navigate("Home");
+        }}
+        title={"Go to Profile"}
+      />
     </View>
   );
 };
@@ -41,7 +35,7 @@ const MnemonicScreen: React.FC = () => {
 export default MnemonicScreen;
 
 const styles = StyleSheet.create({
-mnemonic: {
+  mnemonic: {
     justifyContent: "center",
     alignItems: "center",
     height: Dimensions.get("window").height

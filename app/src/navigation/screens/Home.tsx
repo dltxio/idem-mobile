@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, ScrollView, Text, Alert } from "react-native";
+import { StyleSheet, View, ScrollView, Text } from "react-native";
 import commonStyles from "../../styles/styles";
 import { ProfileStackNavigation } from "../../types/navigation";
 import { ClaimsList, UserDetailsHeader } from "../../components";
@@ -24,7 +24,7 @@ const Home: React.FC = () => {
         <Text style={commonStyles.text.smallHeading}>Your claims</Text>
         {usersClaims.length ? (
           <ClaimsList
-            claims={usersClaims.filter(c => !c.hideFromList)}
+            claims={usersClaims.filter((c) => !c.hideFromList)}
             onPress={navigateToClaim}
           />
         ) : (
@@ -39,7 +39,7 @@ const Home: React.FC = () => {
           <>
             <Text style={commonStyles.text.smallHeading}>All claims</Text>
             <ClaimsList
-              claims={unclaimedClaims.filter(c => !c.hideFromList)}
+              claims={unclaimedClaims.filter((c) => !c.hideFromList)}
               onPress={navigateToClaim}
             />
           </>
@@ -54,5 +54,5 @@ export default Home;
 const styles = StyleSheet.create({
   emptyClaimsText: {
     marginBottom: 10
-  },
+  }
 });

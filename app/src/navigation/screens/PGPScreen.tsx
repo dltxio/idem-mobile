@@ -20,7 +20,7 @@ const PGPScreen: React.FC = () => {
     setKeytext(keytext);
     await pgpLocalStorage.save({keytext: keytext});
     console.log(await pgpLocalStorage.get());
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -39,8 +39,11 @@ const PGPScreen: React.FC = () => {
         onPress={importPGP}
         style={styles.verifyButton}
       />
-      <Text style={styles.warning}>NOTE: Importing your keys saves them to your local storage. IDEM does not have access to the keys you import.</Text>
-      </View>
+      <Text style={styles.warning}>
+        NOTE: Importing your keys saves them to your local storage. IDEM does
+        not have access to the keys you import.
+      </Text>
+    </View>
   );
 };
 
