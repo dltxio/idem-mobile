@@ -1,7 +1,7 @@
 import * as React from "react";
 import moment from "moment";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { View, StyleSheet, Keyboard, Text } from "react-native";
+import { View, StyleSheet, Keyboard, Text, Alert } from "react-native";
 import { Input, Switch } from "react-native-elements";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import commonStyles from "../../styles/styles";
@@ -202,7 +202,26 @@ const VerificationFiles: React.FC<{
 
   const validDocumentNames = claim.verificationDocuments.map((document) => {
     return `\n- ${getDocumentFromDocumentId(document).title}`;
-  })
+  });
+
+  React.useLayoutEffect(() => {
+    if (isVerifying && filesThatCanBeUsedToVerify.length === 0) {
+      setIsVerifying(false);
+      Alert.alert(
+        "No valid documents",
+        `Please add one of the following: ${validDocumentNames}`,
+        [
+          {
+            text: "OK",
+            style: "destructive"
+          }
+        ],
+        {
+          cancelable: true
+        }
+      );
+    }
+  }, [isVerifying]);
 
   return (
     <View>
@@ -217,21 +236,17 @@ const VerificationFiles: React.FC<{
         <Text>I would like to verify my claim</Text>
       </View>
       {isVerifying ? (
-        filesThatCanBeUsedToVerify.length > 0 ?
-          <>
-            <Text style={styles.introText}>
-              The following documents can be used to verify your{" "}
-              {claim.title.toLowerCase()} claim.
-            </Text>
-            <FileList
-              files={filesWithSelected}
-              onFilePress={onSelectFile}
-              isCheckList={true}
-            />
-          </> : 
-            <Text style={styles.introText}>
-              No valid documents.  Please add one of the following: {validDocumentNames}
-            </Text>
+        <>
+          <Text style={styles.introText}>
+            The following documents can be used to verify your{" "}
+            {claim.title.toLowerCase()} claim.
+          </Text>
+          <FileList
+            files={filesWithSelected}
+            onFilePress={onSelectFile}
+            isCheckList={true}
+          />
+        </>
       ) : null}
     </View>
   );
