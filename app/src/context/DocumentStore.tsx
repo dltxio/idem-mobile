@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ImagePicker from "expo-image-picker";
-import * as DocumentPicker from "expo-document-picker"
-import * as FileSystem from "expo-file-system"
+import * as DocumentPicker from "expo-document-picker";
+import * as FileSystem from "expo-file-system";
 import * as Crypto from "expo-crypto";
 import uuid from "react-native-uuid";
 import { DocumentId, File } from "../types/document";
@@ -43,25 +43,25 @@ export const DocumentProvider: React.FC<{
     documentId: DocumentId,
     file: ImagePicker.ImageInfo | DocumentPicker.DocumentResult
   ): Promise<string> => {
+    if (file.type === "cancel") {
+      return "";
+    }
     const name = getImageFileName(file.uri);
+
     if (!name) {
       throw new Error("Could not get filename from file uri");
     }
 
-    if (!file.base64) {
-      file.base64 = await FileSystem.readAsStringAsync(file.uri, { encoding: 'base64' });
-    }
-
-    if (!file.base64) {
-      throw new Error("No base64"); // TODO: Not sure if we should keep this conditional or if we need to resctructure it based on both type of file
-    }
+    const base64 = await FileSystem.readAsStringAsync(file.uri, {
+      encoding: "base64"
+    });
 
     const sha256 = await Crypto.digestStringAsync(
       Crypto.CryptoDigestAlgorithm.SHA256,
-      file.base64
+      base64
     );
 
-    const buffer = Buffer.from(file.base64, "base64");
+    const buffer = Buffer.from(base64, "base64");
     const keccakHash = keccak256(buffer);
 
     // todo -  replace uuid with hash?

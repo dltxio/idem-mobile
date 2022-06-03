@@ -6,11 +6,9 @@ import allDocuments from "../../data/documents";
 import { useDocumentStore } from "../../context/DocumentStore";
 import { DocumentsStackNavigation } from "../../types/navigation";
 import { useNavigation } from "@react-navigation/native";
-import { Picker } from "@react-native-picker/picker";
 import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/image-utils";
 import useSelectPhoto from "../../hooks/useSelectPhoto";
 import * as DocumentPicker from "expo-document-picker";
-import { requestMediaLibraryPermissionsAsync } from "expo-image-picker";
 
 type Navigation = DocumentsStackNavigation<"Documents">;
 
@@ -18,7 +16,7 @@ const DocumentsScreen: React.FC = () => {
   const { files, addFile, deleteFile } = useDocumentStore();
   const navigation = useNavigation<Navigation>();
 
-  const [selectedDocumentId, setSelectedDocumentId] = React.useState(
+  const [selectedDocumentId] = React.useState(
     allDocuments[allDocuments.length - 1].id
   );
 
@@ -55,9 +53,9 @@ const DocumentsScreen: React.FC = () => {
       });
       if (res && res.type !== "cancel") {
         addFile(selectedDocumentId, res);
-      } 
+      }
     } catch (error) {
-      // 
+      //
     }
   };
 
