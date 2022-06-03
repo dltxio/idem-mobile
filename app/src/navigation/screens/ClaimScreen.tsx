@@ -168,9 +168,9 @@ const ClaimScreen: React.FC = () => {
             <View key={field.id}>
               <Input
                 label={field.title}
+                clearButtonMode="always"
                 value={formState[field.id]}
                 onChangeText={onChange}
-                clearButtonMode="always"
               />
               {field.id === "email" ? (
                 <Text
@@ -189,9 +189,9 @@ const ClaimScreen: React.FC = () => {
         if (field.type === "date") {
           return (
             <Input
+              value={formState[field.id]}
               key={field.id}
               label={field.title}
-              value={formState[field.id]}
               ref={(ref) =>
                 (dateRefs.current = {
                   [field.id]: ref
