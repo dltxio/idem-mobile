@@ -6,6 +6,7 @@ import { ClaimsList, UserDetailsHeader } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useNavigation } from "@react-navigation/native";
 import { ClaimType } from "../../types/claim";
+import CreateMnemonicController from "../../components/CreateMnemonicController";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -20,6 +21,7 @@ const Home: React.FC = () => {
   return (
     <View style={commonStyles.screen}>
       <UserDetailsHeader />
+      <CreateMnemonicController />
       <ScrollView style={commonStyles.screenContent}>
         <Text style={commonStyles.text.smallHeading}>Your claims</Text>
         {usersClaims.length ? (
