@@ -17,7 +17,7 @@ export const ClaimsContext = React.createContext<ClaimsVault | undefined>(
 
 export const ClaimsProvider: React.FC<{
   children: React.ReactNode;
-}> = props => {
+}> = (props) => {
   const [verifiedClaimTypes, setVerifiedClaimTypes] = React.useState<
     ClaimData[]
   >([]);
@@ -32,33 +32,28 @@ export const ClaimsProvider: React.FC<{
     })();
   }, []);
 
-  const usersClaims: ClaimWithValue[] = React.useMemo(
-    () =>
-      allClaims
-        .filter(claim =>
-          verifiedClaimTypes.find(
-            verifiedClaim => verifiedClaim.type === claim.type
-          )
-        )
-        .map(claim => {
-          const verifiedClaim = verifiedClaimTypes.find(
-            vc => vc.type === claim.type
-          )!;
-
-          return {
-            ...claim,
-            ...verifiedClaim
-          };
-        }),
-    [verifiedClaimTypes]
-  );
+  const usersClaims: ClaimWithValue[] = React.useMemo(() => {
+    const verifiedClaims: ClaimWithValue[] = [];
+    allClaims.forEach((claim) => {
+      const verifiedClaim = verifiedClaimTypes.find(
+        (vc) => vc?.type === claim.type
+      );
+      if (verifiedClaim !== undefined) {
+        verifiedClaims.push({
+          ...claim,
+          ...verifiedClaim
+        });
+      }
+    });
+    return verifiedClaims;
+  }, [verifiedClaimTypes]);
 
   const unclaimedClaims = React.useMemo(
     () =>
       allClaims.filter(
-        claim =>
+        (claim) =>
           !verifiedClaimTypes.find(
-            verifiedClaim => verifiedClaim.type === claim.type
+            (verifiedClaim) => verifiedClaim.type === claim.type
           )
       ),
     [verifiedClaimTypes]
@@ -73,14 +68,14 @@ export const ClaimsProvider: React.FC<{
     // In the future we will send this data off to an api to be verified
     console.log("making a claim", claimId, value, files);
 
-    await new Promise(resolve =>
+    await new Promise((resolve) =>
       setTimeout(() => {
         resolve(null);
       }, 2000)
     );
 
-    setVerifiedClaimTypes(previous => {
-      const previousWithoutClaim = previous.filter(c => c.type !== claimId);
+    setVerifiedClaimTypes((previous) => {
+      const previousWithoutClaim = previous.filter((c) => c.type !== claimId);
       const updatedClaims = [...previousWithoutClaim, { type: claimId, value }];
       claimsLocalStorage.save(updatedClaims);
       return updatedClaims;
@@ -120,6 +115,6 @@ export const useClaimsStore = () => {
 
 export const useClaimValue = (claimType: ClaimType): string | undefined => {
   const { usersClaims } = useClaimsStore();
-  const claim = usersClaims.find(c => c.type === claimType);
+  const claim = usersClaims.find((c) => c.type === claimType);
   return claim ? displayClaimValue(claim) : undefined;
 };
