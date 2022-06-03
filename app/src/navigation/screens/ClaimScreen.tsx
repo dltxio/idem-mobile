@@ -213,34 +213,6 @@ const ClaimScreen: React.FC = () => {
             </View>
           );
         }
-
-        if (field.type === "date") {
-          return (
-            <Input
-              key={field.id}
-              label={field.title}
-              value={formState[field.id]}
-              ref={(ref) =>
-                (dateRefs.current = {
-                  [field.id]: ref
-                })
-              }
-              onFocus={() => showDatePickerFor(field.id)}
-            />
-          );
-        }
-
-        if (field.type === "boolean") {
-          return (
-            <View key={field.id} style={{ paddingVertical: 20 }}>
-              <Text style={{ marginBottom: 20 }}>{field.title}</Text>
-              <Switch
-                value={formState[field.id] === "true"}
-                onValueChange={(value) => onChange(value ? "true" : "false")}
-              />
-            </View>
-          );
-        }
       })}
       {showDatePickerForFieldId && (
         <DateTimePickerModal
