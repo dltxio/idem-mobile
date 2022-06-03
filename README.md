@@ -5,8 +5,8 @@ React native mobile app for Idem
 
 To run the app
 ```bash
-cd app
 yarn install
+cd app
 yarn start
 ```
 

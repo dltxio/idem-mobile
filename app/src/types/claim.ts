@@ -1,5 +1,6 @@
 import { Field } from "./general";
 import { DocumentId } from "./document";
+import { PGP } from "./wallet";
 
 export type ClaimType =
   | "18+"
@@ -45,3 +46,13 @@ export type ClaimRequest = {
   nonce: string;
   claims: ClaimType[];
 };
+
+export type VerifyEmail = {
+  token: string | undefined;
+  addresses: string[];
+};
+
+export type UploadPGPKeyResponse = {
+  key_fpr: string;
+  token: string;
+}

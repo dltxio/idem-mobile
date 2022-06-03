@@ -4,50 +4,38 @@ import { Button } from "../../components";
 import { pgpLocalStorage } from "../../utils/local-storage";
 
 const PGPScreen: React.FC = () => {
-  const [privateKey, setPrivateKey] = React.useState<string | undefined>();
-  const [publicKey, setPublicKey] = React.useState<string | undefined>();
+  const [keytext, setKeytext] = React.useState<string | undefined>();
 
   React.useEffect(() => {
     (async () => {
       const initialPgp = await pgpLocalStorage.get();
 
       if (initialPgp) {
-        setPublicKey(initialPgp.keyPair.publicKey);
-        setPrivateKey(initialPgp.keyPair.privateKey);
+        setKeytext(initialPgp.keytext);
       }
     })();
   }, []);
 
   const importPGP = async () => {
-    setPrivateKey(privateKey);
-    setPublicKey(publicKey);
-    await pgpLocalStorage.save({keyPair: {privateKey: privateKey, publicKey: publicKey}});
+    setKeytext(keytext);
+    await pgpLocalStorage.save({keytext: keytext});
     console.log(await pgpLocalStorage.get());
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.introText}>Import your PGP to sign transactions:</Text>
-      <TextInput
-        placeholder="Paste your PRIVATE key here"
-        onChangeText={setPrivateKey}
-        placeholderTextColor={"black"}
-        value={privateKey}
-        style={styles.input}
-        multiline={true}
-        selectionColor={"white"}
-      />
+      <Text style={styles.introText}>Import your Public Key to sign transactions:</Text>
       <TextInput
         placeholder="Paste your PUBLIC key here"
         placeholderTextColor={"black"}
-        onChangeText={setPublicKey}
-        value={publicKey}
+        onChangeText={setKeytext}
+        value={keytext}
         style={styles.input}
         multiline={true}
         selectionColor={"white"}
       />
       <Button
-        title={"Import my PGP"}
+        title={"Import my Public Key"}
         onPress={importPGP}
         style={styles.verifyButton}
       />

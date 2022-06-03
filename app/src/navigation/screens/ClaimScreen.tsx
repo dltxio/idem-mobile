@@ -1,7 +1,7 @@
 import * as React from "react";
 import moment from "moment";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { View, StyleSheet, Keyboard, Text } from "react-native";
+import { View, StyleSheet, Keyboard, Text, Alert } from "react-native";
 import { Input, Switch } from "react-native-elements";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import commonStyles from "../../styles/styles";
@@ -10,11 +10,12 @@ import {
   ProfileStackNavigationRoute
 } from "../../types/navigation";
 import { getClaimFromType } from "../../utils/claim-utils";
-import { Claim } from "../../types/claim";
+import { Claim, UploadPGPKeyResponse, VerifyEmail } from "../../types/claim";
 import { FileList, Button } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
 import { pgpLocalStorage } from "../../utils/local-storage";
+import axios, { AxiosError } from "axios";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -35,6 +36,7 @@ const ClaimScreen: React.FC = () => {
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [selectedFileIds, setSelectedFileIds] = React.useState<string[]>([]);
+  const [verifyEmailRequest, setVerifyEmailRequest] = React.useState<VerifyEmail>();
 
   const showDatePickerFor = (fieldId: string) => {
     Keyboard.dismiss();
@@ -75,10 +77,47 @@ const ClaimScreen: React.FC = () => {
     }
   };
 
-  const verifyEmail = async () => {
-    await pgpLocalStorage.get();
-    
-  }
+  const verifyEmail = async (email: string) => {
+    const armoredKey = await pgpLocalStorage.get();
+    try {
+      setIsVerifying(true);
+      const uploadResponse = await axios.post<UploadPGPKeyResponse>("https://keys.openpgp.org/vks/v1/upload", armoredKey, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      setVerifyEmailRequest({token: uploadResponse.data.token, addresses: [email]});
+      console.log(verifyEmailRequest);
+      try {
+        const body = JSON.stringify(verifyEmailRequest);
+       await axios.post(
+          "https://keys.openpgp.org/vks/v1/request-verify",
+          body,
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
+        });
+          Alert.alert(
+            `EMAIL SENT`,
+            `Please check your email for instructions from keys.openpgp.org on how to verify your claim.`,
+            [
+              {
+                text: "OK",
+                onPress: () => console.log(""),
+                style: "cancel"
+              }
+            ]
+          );
+      } catch (error) {
+        const err = error as AxiosError;
+        console.error(err?.response?.data || error);
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      console.error(err?.response?.data || error);
+    }
+  };
 
   const documentList =
     claim.verificationAction === "document-upload" ? (
@@ -111,15 +150,25 @@ const ClaimScreen: React.FC = () => {
 
         if (field.type === "text") {
           return (
-            <View
-              key={field.id}>
-            <Input
-              label={field.title}
-              value={formState[field.id]}
-              onChangeText={onChange}
-              clearButtonMode="always"
-            />
-            {field.id === "email" ? <Text onPress={verifyEmail} style={{paddingBottom: 10}}>Verify your email</Text> : <Text></Text>}
+            <View key={field.id}>
+              <Input
+                label={field.title}
+                value={formState[field.id]}
+                onChangeText={onChange}
+                clearButtonMode="always"
+              />
+              {field.id === "email" ? (
+                <Text
+                  onPress={() => {
+                    verifyEmail(formState.email);
+                  }}
+                  style={{ paddingBottom: 10 }}
+                >
+                  Verify your email
+                </Text>
+              ) : (
+                <Text>Save your email</Text>
+              )}
             </View>
           );
         }
