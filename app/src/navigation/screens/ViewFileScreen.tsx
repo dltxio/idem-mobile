@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { WebView } from "react-native-webview";
 import commonStyles from "../../styles/styles";
 import { useDocumentStore } from "../../context/DocumentStore";
 import { ProfileStackNavigationRoute } from "../../types/navigation";
@@ -21,7 +22,8 @@ const ViewFile: React.FC = () => {
   return (
     <ScrollView style={[commonStyles.screen, commonStyles.screenContent]}>
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Image
+        <WebView
+          originWhitelist={["*"]}
           source={{
             uri: file.uri
           }}
