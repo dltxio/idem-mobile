@@ -18,13 +18,15 @@ const PGPScreen: React.FC = () => {
 
   const importPGP = async () => {
     setKeytext(keytext);
-    await pgpLocalStorage.save({keytext: keytext});
+    await pgpLocalStorage.save({ keytext: keytext });
     console.log(await pgpLocalStorage.get());
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.introText}>Import your Public Key to sign transactions:</Text>
+      <Text style={styles.introText}>
+        Import your Public Key to sign transactions:
+      </Text>
       <TextInput
         placeholder="Paste your PUBLIC key here"
         placeholderTextColor={"black"}

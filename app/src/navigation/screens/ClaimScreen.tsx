@@ -1,7 +1,14 @@
 import * as React from "react";
 import moment from "moment";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { View, StyleSheet, Keyboard, Text, Alert,ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Keyboard,
+  Text,
+  Alert,
+  ScrollView
+} from "react-native";
 import { Input, Switch } from "react-native-elements";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import commonStyles from "../../styles/styles";
@@ -37,7 +44,8 @@ const ClaimScreen: React.FC = () => {
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [selectedFileIds, setSelectedFileIds] = React.useState<string[]>([]);
-  const [verifyEmailRequest, setVerifyEmailRequest] = React.useState<VerifyEmail>();
+  const [verifyEmailRequest, setVerifyEmailRequest] =
+    React.useState<VerifyEmail>();
 
   const showDatePickerFor = (fieldId: string) => {
     Keyboard.dismiss();
@@ -81,35 +89,41 @@ const ClaimScreen: React.FC = () => {
   const verifyEmail = async (email: string) => {
     const armoredKey = await pgpLocalStorage.get();
     try {
-      setIsVerifying(true);
-      const uploadResponse = await axios.post<UploadPGPKeyResponse>("https://keys.openpgp.org/vks/v1/upload", armoredKey, {
-        headers: {
-          "Content-Type": "application/json"
+      const uploadResponse = await axios.post<UploadPGPKeyResponse>(
+        "https://keys.openpgp.org/vks/v1/upload",
+        armoredKey,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
         }
+      );
+      setVerifyEmailRequest({
+        token: uploadResponse.data.token,
+        addresses: [email]
       });
-      setVerifyEmailRequest({token: uploadResponse.data.token, addresses: [email]});
-      console.log(verifyEmailRequest);
       try {
         const body = JSON.stringify(verifyEmailRequest);
-       await axios.post(
+        await axios.post(
           "https://keys.openpgp.org/vks/v1/request-verify",
           body,
           {
             headers: {
               "Content-Type": "application/json"
             }
-        });
-          Alert.alert(
-            `EMAIL SENT`,
-            `Please check your email for instructions from keys.openpgp.org on how to verify your claim.`,
-            [
-              {
-                text: "OK",
-                onPress: () => console.log(""),
-                style: "cancel"
-              }
-            ]
-          );
+          }
+        );
+        Alert.alert(
+          `EMAIL SENT`,
+          `Please check your email for instructions from keys.openpgp.org on how to verify your claim.`,
+          [
+            {
+              text: "OK",
+              onPress: () => console.log(""),
+              style: "cancel"
+            }
+          ]
+        );
       } catch (error) {
         const err = error as AxiosError;
         console.error(err?.response?.data || error);
@@ -141,13 +155,13 @@ const ClaimScreen: React.FC = () => {
 
   return (
     <ScrollView style={[commonStyles.screen, commonStyles.screenContent]}>
-        {claim.fields.map((field) => {
-          const onChange = (value: string) => {
-            setFormState((previous) => ({
-              ...previous,
-              [field.id]: value
-            }));
-          };
+      {claim.fields.map((field) => {
+        const onChange = (value: string) => {
+          setFormState((previous) => ({
+            ...previous,
+            [field.id]: value
+          }));
+        };
 
         if (field.type === "text") {
           return (
@@ -159,7 +173,10 @@ const ClaimScreen: React.FC = () => {
                 clearButtonMode="always"
               />
               {field.id === "email" ? (
-                <Text onPress={() => verifyEmail} style={{ paddingBottom: 10 }}>
+                <Text
+                  onPress={() => verifyEmail(formState[field.id])}
+                  style={{ paddingBottom: 10 }}
+                >
                   Verify your email
                 </Text>
               ) : (
@@ -194,53 +211,53 @@ const ClaimScreen: React.FC = () => {
                 onValueChange={(value) => onChange(value ? "true" : "false")}
               />
             </View>
-            );
-          }
+          );
+        }
 
-          if (field.type === "date") {
-            return (
-              <Input
-                key={field.id}
-                label={field.title}
-                value={formState[field.id]}
-                ref={(ref) =>
-                  (dateRefs.current = {
-                    [field.id]: ref
-                  })
-                }
-                onFocus={() => showDatePickerFor(field.id)}
+        if (field.type === "date") {
+          return (
+            <Input
+              key={field.id}
+              label={field.title}
+              value={formState[field.id]}
+              ref={(ref) =>
+                (dateRefs.current = {
+                  [field.id]: ref
+                })
+              }
+              onFocus={() => showDatePickerFor(field.id)}
+            />
+          );
+        }
+
+        if (field.type === "boolean") {
+          return (
+            <View key={field.id} style={{ paddingVertical: 20 }}>
+              <Text style={{ marginBottom: 20 }}>{field.title}</Text>
+              <Switch
+                value={formState[field.id] === "true"}
+                onValueChange={(value) => onChange(value ? "true" : "false")}
               />
-            );
-          }
-
-          if (field.type === "boolean") {
-            return (
-              <View key={field.id} style={{ paddingVertical: 20 }}>
-                <Text style={{ marginBottom: 20 }}>{field.title}</Text>
-                <Switch
-                  value={formState[field.id] === "true"}
-                  onValueChange={(value) => onChange(value ? "true" : "false")}
-                />
-              </View>
-            );
-          }
-        })}
-        {showDatePickerForFieldId && (
-          <DateTimePickerModal
-            isVisible={true}
-            mode="date"
-            onConfirm={onDateSelect}
-            onCancel={hideDatePicker}
-          />
-        )}
-        {documentList}
-        <Button
-          title={isVerifying ? "Save & Verify" : "Save"}
-          disabled={!canSave}
-          onPress={onSave}
-          loading={loading}
-          style={styles.verifyButton}
+            </View>
+          );
+        }
+      })}
+      {showDatePickerForFieldId && (
+        <DateTimePickerModal
+          isVisible={true}
+          mode="date"
+          onConfirm={onDateSelect}
+          onCancel={hideDatePicker}
         />
+      )}
+      {documentList}
+      <Button
+        title={isVerifying ? "Save & Verify" : "Save"}
+        disabled={!canSave}
+        onPress={onSave}
+        loading={loading}
+        style={styles.verifyButton}
+      />
     </ScrollView>
   );
 };
