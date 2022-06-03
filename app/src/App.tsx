@@ -1,7 +1,6 @@
 import * as React from "react";
 import "react-native-get-random-values";
 import "@ethersproject/shims";
-import { registerRootComponent } from "expo";
 import * as Linking from "expo-linking";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
@@ -72,4 +71,4 @@ const App = () => {
   );
 };
 
-registerRootComponent(App);
+export default App;
