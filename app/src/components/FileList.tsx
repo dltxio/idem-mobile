@@ -7,8 +7,12 @@ import { ScrollView } from "react-native-gesture-handler";
 import { getDocumentFromDocumentId } from "../utils/document-utils";
 import { StyleSheet, View } from "react-native";
 import colors from "../styles/colors";
+import { DocumentsStackNavigation } from "../types/navigation";
+import { useNavigation } from "@react-navigation/native";
 
 type FileItem = File & { selected?: boolean };
+
+type Navigation = DocumentsStackNavigation<"Documents">;
 
 type Props = {
   files: FileItem[];
@@ -25,6 +29,7 @@ const FileList: React.FC<Props> = ({
   onFilePress,
   onDeleteFile
 }) => {
+  const navigation = useNavigation<Navigation>();
   return (
     <ScrollView>
       {/* this view is here because without it the swipeable list item explodes */}
@@ -71,6 +76,15 @@ const FileList: React.FC<Props> = ({
                     buttonStyle={styles.deleteDocumentButton}
                   />
                 }
+                leftContent={
+                  <Button
+                    title="View"
+                    onPress={() =>
+                      navigation.navigate("ViewFile", { fileId: file.id })
+                    }
+                    buttonStyle={styles.viewDocumentButton}
+                  />
+                }
               >
                 {content}
               </ListItem.Swipeable>
@@ -98,5 +112,9 @@ const styles = StyleSheet.create({
   deleteDocumentButton: {
     minHeight: "100%",
     backgroundColor: "red"
+  },
+  viewDocumentButton: {
+    minHeight: "100%",
+    backgroundColor: "green"
   }
 });
