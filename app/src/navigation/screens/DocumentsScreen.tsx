@@ -90,12 +90,12 @@ const DocumentsScreen: React.FC = () => {
         <Text style={styles.label}>Document type</Text>
         {/* <Picker
           selectedValue={selectedDocumentId}
-          onValueChange={itemValue => setSelectedDocumentId(itemValue)}
+          onValueChange={(itemValue) => setSelectedDocumentId(itemValue)}
           numberOfLines={2}
           style={styles.picker}
           itemStyle={styles.pickerItem}
         >
-          {allDocuments.map(doc => (
+          {allDocuments.map((doc) => (
             <Picker.Item key={doc.id} label={doc.title} value={doc.id} />
           ))}
         </Picker> */}

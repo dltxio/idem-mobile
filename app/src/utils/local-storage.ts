@@ -43,4 +43,7 @@ export const claimsLocalStorage = createLocalStorage<ClaimData[]>(
 
 export const fileLocalStorage = createLocalStorage<File[]>("FILES", true);
 
-export const mnemonicLocalStorage = createLocalStorage<Wallet>("MNEMONIC", false);
+export const mnemonicLocalStorage = createLocalStorage<Wallet>(
+  "MNEMONIC",
+  true
+);

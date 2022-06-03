@@ -10,7 +10,7 @@ const ViewFile: React.FC = () => {
   const { files } = useDocumentStore();
   const route = useRoute<ProfileStackNavigationRoute<"ViewFile">>();
 
-  const file = files.find(f => f.id === route.params.fileId);
+  const file = files.find((f) => f.id === route.params.fileId);
 
   if (!file) {
     return null;
@@ -31,9 +31,9 @@ const ViewFile: React.FC = () => {
       <View style={{ paddingTop: 10 }}>
         <Text style={styles.title}>Document Type</Text>
         <Text>{document.title}</Text>
-        <Text style={styles.title}>SHA265</Text>
+        <Text style={styles.title}>SHA256</Text>
         <Text>{file.hashes.sha256}</Text>
-        <Text style={styles.title}>KECCAK265</Text>
+        <Text style={styles.title}>KECCAK256</Text>
         <Text>{file.hashes.keccakHash}</Text>
       </View>
     </ScrollView>

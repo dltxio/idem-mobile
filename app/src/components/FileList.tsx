@@ -29,7 +29,7 @@ const FileList: React.FC<Props> = ({
     <ScrollView>
       {/* this view is here because without it the swipeable list item explodes */}
       <View>
-        {files.map(file => {
+        {files.map((file) => {
           const document = getDocumentFromDocumentId(file.documentId);
 
           if (!document) {
