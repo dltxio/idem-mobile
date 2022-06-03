@@ -1,7 +1,14 @@
 import * as React from "react";
 import moment from "moment";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { View, StyleSheet, Keyboard, Text, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Keyboard,
+  Text,
+  Alert,
+  ScrollView
+} from "react-native";
 import { Input, Switch } from "react-native-elements";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import commonStyles from "../../styles/styles";
@@ -14,6 +21,7 @@ import { Claim } from "../../types/claim";
 import { FileList, Button } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
+import { getDocumentFromDocumentId } from "../../utils/document-utils";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -201,6 +209,29 @@ const VerificationFiles: React.FC<{
     ...file,
     selected: selectedFileIds.includes(file.id)
   }));
+
+  const validDocumentNames = claim.verificationDocuments.map((document) => {
+    return `\n- ${getDocumentFromDocumentId(document).title}`;
+  });
+
+  React.useLayoutEffect(() => {
+    if (isVerifying && filesThatCanBeUsedToVerify.length === 0) {
+      setIsVerifying(false);
+      Alert.alert(
+        "No valid documents",
+        `Please add one of the following: ${validDocumentNames}`,
+        [
+          {
+            text: "OK",
+            style: "destructive"
+          }
+        ],
+        {
+          cancelable: true
+        }
+      );
+    }
+  }, [isVerifying]);
 
   return (
     <View>
