@@ -3,6 +3,8 @@ React native mobile app for Idem
 
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
+![build status main branch](https://github.com/dltxio/idem-mobile/workflows/CI/badge.svg?branch=main)
+
 To run the app
 ```bash
 cd app
