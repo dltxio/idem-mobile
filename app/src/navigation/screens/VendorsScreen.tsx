@@ -36,9 +36,7 @@ const VendorsScreen: React.FC = () => {
   };
 
   return (
-    <View style={commonStyles.screen}>
-      <Button title="Reset data" onPress={showAlert} />
-    </View>
+    <View style={commonStyles.screen}></View>
   );
 };
 
