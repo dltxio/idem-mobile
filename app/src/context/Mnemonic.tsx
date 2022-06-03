@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from "react";
 import { ethers } from "ethers";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { mnemonicLocalStorage } from "../utils/local-storage";
 
 export type MnemonicValue = {
   mnemonic: string | undefined;
   createMnemonic: () => Promise<string | undefined>;
+  loadingMnemonic: boolean;
   reset: () => void;
 };
 
@@ -18,21 +18,24 @@ export const MnemonicProvider: React.FC<{
   children: React.ReactNode;
 }> = (props) => {
   const [mnemonic, setMnemonic] = React.useState<string | undefined>();
+  const [loadingMnemonic, setLoadingMnemonic] = React.useState<boolean>(true);
 
   React.useEffect(() => {
     (async () => {
+      setLoadingMnemonic(true);
       const initialMnemonic = await mnemonicLocalStorage.get();
 
       if (initialMnemonic) {
         setMnemonic(initialMnemonic.mnemonic);
       }
+      setLoadingMnemonic(false);
     })();
   }, []);
 
   const createMnemonic = async () => {
     try {
       const wallet = ethers.Wallet.createRandom();
-      await AsyncStorage.setItem("MNEMONIC", wallet.mnemonic.phrase);
+      await mnemonicLocalStorage.save({ mnemonic: wallet.mnemonic.phrase });
       setMnemonic(wallet.mnemonic.phrase);
       return mnemonic;
     } catch (error) {
@@ -49,7 +52,8 @@ export const MnemonicProvider: React.FC<{
     () => ({
       mnemonic,
       createMnemonic,
-      reset
+      reset,
+      loadingMnemonic
     }),
     [mnemonic, createMnemonic, reset]
   );
