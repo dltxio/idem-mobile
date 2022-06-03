@@ -1,6 +1,14 @@
 import * as React from "react";
-import { View, Alert } from "react-native";
+import {
+  View,
+  Alert,
+  StyleSheet,
+  ActivityIndicator,
+  Text,
+  Modal
+} from "react-native";
 import { useMnemonic } from "../context/Mnemonic";
+import commonStyles from "../styles/styles";
 
 const CreateMnemonicController: React.FC = () => {
   const { mnemonic, createMnemonic, loadingMnemonic } = useMnemonic();
@@ -15,11 +23,9 @@ const CreateMnemonicController: React.FC = () => {
     }
   }, [mnemonic, loadingMnemonic]);
 
-  const showLoadingAlert = async () => {
-    Alert.alert("Creating Mnemonic...", "", [], {
-      cancelable: false
-    });
-    // The alert needs just a moment of time to appear
+  const acceptAsk = async () => {
+    setShowMnemonic(true);
+    // The loading screen needs just a moment of time to appear
     await new Promise((resolve) => {
       setTimeout(resolve, 1);
     });
@@ -50,10 +56,7 @@ const CreateMnemonicController: React.FC = () => {
       [
         {
           text: "OK",
-          onPress: () => {
-            setShowMnemonic(true);
-            showLoadingAlert();
-          },
+          onPress: acceptAsk,
           style: "destructive"
         },
         {
@@ -66,7 +69,30 @@ const CreateMnemonicController: React.FC = () => {
       }
     );
   };
+  if (showMnemonic) {
+    return (
+      <Modal style={commonStyles.screen}>
+        <View style={styles.loadingScreen}>
+          <Text style={styles.loadingText}>Generating Mnemonic</Text>
+          <ActivityIndicator size="large" color={"#000"} />
+        </View>
+      </Modal>
+    );
+  }
+
   return <View />;
 };
 
 export default CreateMnemonicController;
+
+const styles = StyleSheet.create({
+  loadingScreen: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+
+  loadingText: {
+    marginBottom: 20
+  }
+});
