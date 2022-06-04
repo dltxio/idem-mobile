@@ -19,7 +19,6 @@ const PGPScreen: React.FC = () => {
   const importPGP = async () => {
     setKeytext(keytext);
     await pgpLocalStorage.save({ keytext: keytext });
-    console.log(await pgpLocalStorage.get());
   };
 
   return (
