@@ -1,6 +1,4 @@
 import * as React from "react";
-import * as ImagePicker from "expo-image-picker";
-import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import * as Crypto from "expo-crypto";
 import uuid from "react-native-uuid";
@@ -12,10 +10,7 @@ import { Buffer } from "buffer";
 
 export type DocumentsValue = {
   files: File[];
-  addFile: (
-    documentId: DocumentId,
-    file: ImagePicker.ImageInfo | DocumentPicker.DocumentResult
-  ) => Promise<string>;
+  addFile: (documentId: DocumentId, uri: string) => Promise<string>;
   deleteFile: (fileId: string) => void;
   reset: () => void;
 };
@@ -41,18 +36,15 @@ export const DocumentProvider: React.FC<{
 
   const addFile = async (
     documentId: DocumentId,
-    file: ImagePicker.ImageInfo | DocumentPicker.DocumentResult
+    uri: string
   ): Promise<string> => {
-    if (file.type === "cancel") {
-      return "";
-    }
-    const name = getImageFileName(file.uri);
+    const name = getImageFileName(uri);
 
     if (!name) {
       throw new Error("Could not get filename from file uri");
     }
 
-    const base64 = await FileSystem.readAsStringAsync(file.uri, {
+    const base64 = await FileSystem.readAsStringAsync(uri, {
       encoding: "base64"
     });
 
@@ -71,7 +63,7 @@ export const DocumentProvider: React.FC<{
       id,
       documentId,
       name,
-      uri: file.uri,
+      uri: uri,
       hashes: {
         sha256,
         keccakHash

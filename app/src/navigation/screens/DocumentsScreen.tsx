@@ -34,7 +34,7 @@ const DocumentsScreen: React.FC = () => {
     const file = await selectPhotoFromCameraRoll();
 
     if (!file.cancelled) {
-      addFile(selectedDocumentId, file);
+      addFile(selectedDocumentId, file.uri);
     }
   };
 
@@ -42,7 +42,7 @@ const DocumentsScreen: React.FC = () => {
     const result = await selectPhotoFromCamera();
 
     if (result && !result.cancelled) {
-      addFile(selectedDocumentId, result);
+      addFile(selectedDocumentId, result.uri);
     }
   };
 
@@ -52,10 +52,10 @@ const DocumentsScreen: React.FC = () => {
         type: "*/*"
       });
       if (res && res.type !== "cancel") {
-        addFile(selectedDocumentId, res);
+        addFile(selectedDocumentId, res.uri);
       }
     } catch (error) {
-      //
+      console.log(error);
     }
   };
 
@@ -86,17 +86,6 @@ const DocumentsScreen: React.FC = () => {
           Attach a file from your device
         </Text>
         <Text style={styles.label}>Document type</Text>
-        {/* <Picker
-          selectedValue={selectedDocumentId}
-          onValueChange={(itemValue) => setSelectedDocumentId(itemValue)}
-          numberOfLines={2}
-          style={styles.picker}
-          itemStyle={styles.pickerItem}
-        >
-          {allDocuments.map((doc) => (
-            <Picker.Item key={doc.id} label={doc.title} value={doc.id} />
-          ))}
-        </Picker> */}
 
         <Button
           title="Take A Photo"
