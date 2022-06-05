@@ -38,7 +38,7 @@ const PGPScreen: React.FC = () => {
         Import your Public Key to sign transactions:
       </Text>
       <TextInput
-        placeholder="Paste your PUBLIC key here"
+        placeholder="Paste your PRIVATE key here"
         placeholderTextColor={"black"}
         onChangeText={setKeytext}
         value={keytext}
@@ -47,7 +47,7 @@ const PGPScreen: React.FC = () => {
         selectionColor={"white"}
       />
       <View style={styles.verifyButton}>
-        <Button title={"Import my Public Key"} onPress={importPGP} />
+        <Button title={"Import my Private Key"} onPress={importPGP} />
       </View>
       <View style={styles.verifyButton}>
         <Button
