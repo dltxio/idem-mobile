@@ -50,7 +50,9 @@ const UserDetailsHeader: React.FC = () => {
       <View style={styles.userDetails}>
         <DetailOrPlaceholder value={name} bold={true} placeholderWidth={90} />
         <DetailOrPlaceholder value={email} placeholderWidth={150} />
-        <Text onPress={() => navigation.navigate("PGP")}>Import a PGP</Text>
+        <Text onPress={() => navigation.navigate("PGP")}>
+          Import your PGP/GPG key pair
+        </Text>
       </View>
     </View>
   );
