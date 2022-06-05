@@ -35,7 +35,7 @@ const PGPScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.introText}>
-        Import your Public Key to sign transactions:
+        Import your Private Key to sign transactions:
       </Text>
       <TextInput
         placeholder="Paste your PRIVATE key here"
