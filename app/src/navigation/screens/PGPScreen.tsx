@@ -1,10 +1,21 @@
+import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
-import { View, StyleSheet, TextInput, Text, Dimensions } from "react-native";
-import { Button } from "../../components";
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  Text,
+  Dimensions,
+  Button
+} from "react-native";
+import { ProfileStackNavigation } from "../../types/navigation";
 import { pgpLocalStorage } from "../../utils/local-storage";
+
+type Navigation = ProfileStackNavigation<"Home">;
 
 const PGPScreen: React.FC = () => {
   const [keytext, setKeytext] = React.useState<string | undefined>();
+  const navigation = useNavigation<Navigation>();
 
   React.useEffect(() => {
     (async () => {
@@ -35,11 +46,15 @@ const PGPScreen: React.FC = () => {
         multiline={true}
         selectionColor={"white"}
       />
-      <Button
-        title={"Import my Public Key"}
-        onPress={importPGP}
-        style={styles.verifyButton}
-      />
+      <View style={styles.verifyButton}>
+        <Button title={"Import my Public Key"} onPress={importPGP} />
+      </View>
+      <View style={styles.verifyButton}>
+        <Button
+          title={"Back to my profile"}
+          onPress={() => navigation.navigate("Home")}
+        />
+      </View>
       <Text style={styles.warning}>
         NOTE: Importing your keys saves them to your local storage. IDEM does
         not have access to the keys you import.
@@ -52,9 +67,11 @@ export default PGPScreen;
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
-    height: Dimensions.get("window").height
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    marginTop: 80
   },
   introText: {
     marginBottom: 10
@@ -62,14 +79,15 @@ const styles = StyleSheet.create({
   input: {
     marginVertical: 10,
     backgroundColor: "grey",
-    height: 100,
-    width: Dimensions.get("window").width * 0.7,
+    height: 200,
     padding: 10,
-    overflow: "scroll"
+    overflow: "scroll",
+    width: Dimensions.get("window").width
   },
   verifyButton: {
     marginTop: 20,
-    marginBottom: 20
+    marginBottom: 20,
+    width: Dimensions.get("window").width
   },
   warning: {
     width: Dimensions.get("window").width * 0.8,
