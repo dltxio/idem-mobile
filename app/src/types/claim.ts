@@ -45,3 +45,12 @@ export type ClaimRequest = {
   nonce: string;
   claims: ClaimType[];
 };
+
+export type VerifyEmail = {
+  token: string | undefined;
+  addresses: string[];
+};
+
+export type UploadPGPKeyResponse = {
+  token: string;
+};
