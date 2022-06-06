@@ -45,5 +45,5 @@ export const fileLocalStorage = createLocalStorage<File[]>("FILES", true);
 
 export const mnemonicLocalStorage = createLocalStorage<Wallet>(
   "MNEMONIC",
-  false
+  true
 );

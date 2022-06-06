@@ -1,7 +1,14 @@
 import * as React from "react";
 import moment from "moment";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { View, StyleSheet, Keyboard, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Keyboard,
+  Text,
+  Alert,
+  ScrollView
+} from "react-native";
 import { Input, Switch } from "react-native-elements";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import commonStyles from "../../styles/styles";
@@ -14,6 +21,7 @@ import { Claim } from "../../types/claim";
 import { FileList, Button } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
+import { getDocumentFromDocumentId } from "../../utils/document-utils";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -94,72 +102,74 @@ const ClaimScreen: React.FC = () => {
     ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
 
   return (
-    <View style={[commonStyles.screen, commonStyles.screenContent]}>
-      {claim.fields.map((field) => {
-        const onChange = (value: string) => {
-          setFormState((previous) => ({
-            ...previous,
-            [field.id]: value
-          }));
-        };
+    <ScrollView>
+      <View style={[commonStyles.screen, commonStyles.screenContent]}>
+        {claim.fields.map((field) => {
+          const onChange = (value: string) => {
+            setFormState((previous) => ({
+              ...previous,
+              [field.id]: value
+            }));
+          };
 
-        if (field.type === "text") {
-          return (
-            <Input
-              key={field.id}
-              label={field.title}
-              value={formState[field.id]}
-              onChangeText={onChange}
-              clearButtonMode="always"
-            />
-          );
-        }
-
-        if (field.type === "date") {
-          return (
-            <Input
-              key={field.id}
-              label={field.title}
-              value={formState[field.id]}
-              ref={(ref) =>
-                (dateRefs.current = {
-                  [field.id]: ref
-                })
-              }
-              onFocus={() => showDatePickerFor(field.id)}
-            />
-          );
-        }
-
-        if (field.type === "boolean") {
-          return (
-            <View key={field.id} style={{ paddingVertical: 20 }}>
-              <Text style={{ marginBottom: 20 }}>{field.title}</Text>
-              <Switch
-                value={formState[field.id] === "true"}
-                onValueChange={(value) => onChange(value ? "true" : "false")}
+          if (field.type === "text") {
+            return (
+              <Input
+                key={field.id}
+                label={field.title}
+                value={formState[field.id]}
+                onChangeText={onChange}
+                clearButtonMode="always"
               />
-            </View>
-          );
-        }
-      })}
-      {showDatePickerForFieldId && (
-        <DateTimePickerModal
-          isVisible={true}
-          mode="date"
-          onConfirm={onDateSelect}
-          onCancel={hideDatePicker}
+            );
+          }
+
+          if (field.type === "date") {
+            return (
+              <Input
+                key={field.id}
+                label={field.title}
+                value={formState[field.id]}
+                ref={(ref) =>
+                  (dateRefs.current = {
+                    [field.id]: ref
+                  })
+                }
+                onFocus={() => showDatePickerFor(field.id)}
+              />
+            );
+          }
+
+          if (field.type === "boolean") {
+            return (
+              <View key={field.id} style={{ paddingVertical: 20 }}>
+                <Text style={{ marginBottom: 20 }}>{field.title}</Text>
+                <Switch
+                  value={formState[field.id] === "true"}
+                  onValueChange={(value) => onChange(value ? "true" : "false")}
+                />
+              </View>
+            );
+          }
+        })}
+        {showDatePickerForFieldId && (
+          <DateTimePickerModal
+            isVisible={true}
+            mode="date"
+            onConfirm={onDateSelect}
+            onCancel={hideDatePicker}
+          />
+        )}
+        {documentList}
+        <Button
+          title={isVerifying ? "Save & Verify" : "Save"}
+          disabled={!canSave}
+          onPress={onSave}
+          loading={loading}
+          style={styles.verifyButton}
         />
-      )}
-      {documentList}
-      <Button
-        title={isVerifying ? "Save & Verify" : "Save"}
-        disabled={!canSave}
-        onPress={onSave}
-        loading={loading}
-        style={styles.verifyButton}
-      />
-    </View>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -171,7 +181,8 @@ const styles = StyleSheet.create({
   },
   verifyButton: {
     marginTop: 20,
-    marginBottom: 20
+    marginBottom: 20,
+    paddingBottom: 20
   }
 });
 
@@ -198,6 +209,29 @@ const VerificationFiles: React.FC<{
     ...file,
     selected: selectedFileIds.includes(file.id)
   }));
+
+  const validDocumentNames = claim.verificationDocuments.map((document) => {
+    return `\n- ${getDocumentFromDocumentId(document).title}`;
+  });
+
+  React.useLayoutEffect(() => {
+    if (isVerifying && filesThatCanBeUsedToVerify.length === 0) {
+      setIsVerifying(false);
+      Alert.alert(
+        "No valid documents",
+        `Please add one of the following: ${validDocumentNames}`,
+        [
+          {
+            text: "OK",
+            style: "destructive"
+          }
+        ],
+        {
+          cancelable: true
+        }
+      );
+    }
+  }, [isVerifying]);
 
   return (
     <View>
