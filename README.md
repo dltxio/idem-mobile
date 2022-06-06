@@ -9,8 +9,8 @@ React native mobile app for Idem
 To run the app
 
 ```bash
-cd app
 yarn install
+cd app
 yarn start
 ```
 
@@ -43,7 +43,7 @@ So that I don't have to resupply all my information again and again and again!
 Given an Idem user,
 When they visit the demo.idem.com.au registration page,
 And they scan the QR code via the app,
-And click 'Ok' on the app,
+And click 'OK' on the app,
 Then they are registered on demo.idem.com.au,
 And their ID is verified,
 And they are redirected to demo.idem.com.au's home page.
