@@ -9,18 +9,12 @@ type Navigation = VendorStackNavigation<"VendorsList">;
 
 const VendorsScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
-  const { vendors, getVendors } = useVendorsList();
+  const { vendors } = useVendorsList();
 
   return (
     <View style={[styles.container, { marginTop: 70 }]}>
       <Text style={styles.header}>Supported Exchanges</Text>
       {vendors.map((vendor) => {
-        const vendorList = getVendors();
-
-        if (!vendorList) {
-          return null;
-        }
-
         const content = (
           <>
             <ListItem.Content style={styles.container}>

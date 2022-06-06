@@ -16,8 +16,6 @@ const VendorDetailsScreen: React.FC = () => {
     return null;
   }
 
-  console.log(vendor);
-
   return (
     <View style={styles.container} key={vendor.name}>
       <Text style={styles.header}>{vendor.name}</Text>
