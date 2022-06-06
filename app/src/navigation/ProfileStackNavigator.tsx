@@ -5,6 +5,7 @@ import ClaimScreen from "./screens/ClaimScreen";
 import { ClaimType } from "../types/claim";
 import { getClaimFromType } from "../utils/claim-utils";
 import ViewFile from "./screens/ViewFileScreen";
+import PGPScreen from "./screens/PGPScreen";
 
 export type ProfileStackParamList = {
   Home: undefined;
@@ -14,6 +15,7 @@ export type ProfileStackParamList = {
     onSelect: () => void;
   };
   Mnemonic: undefined;
+  PGP: undefined;
 };
 
 const Stack = createStackNavigator<ProfileStackParamList>();
@@ -32,6 +34,13 @@ const ProfileStackNavigator = () => {
           headerShown: false
         })}
         component={ProfileScreen}
+      />
+      <Stack.Screen
+        name="PGP"
+        options={() => ({
+          headerShown: false
+        })}
+        component={PGPScreen}
       />
       <Stack.Screen
         name="Claim"
