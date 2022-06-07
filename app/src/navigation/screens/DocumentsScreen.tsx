@@ -6,9 +6,9 @@ import allDocuments from "../../data/documents";
 import { useDocumentStore } from "../../context/DocumentStore";
 import { DocumentsStackNavigation } from "../../types/navigation";
 import { useNavigation } from "@react-navigation/native";
-import { Picker } from "@react-native-picker/picker";
 import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/image-utils";
 import useSelectPhoto from "../../hooks/useSelectPhoto";
+import * as DocumentPicker from "expo-document-picker";
 
 type Navigation = DocumentsStackNavigation<"Documents">;
 
@@ -16,7 +16,7 @@ const DocumentsScreen: React.FC = () => {
   const { files, addFile, deleteFile } = useDocumentStore();
   const navigation = useNavigation<Navigation>();
 
-  const [selectedDocumentId, setSelectedDocumentId] = React.useState(
+  const [selectedDocumentId] = React.useState(
     allDocuments[allDocuments.length - 1].id
   );
 
@@ -34,7 +34,7 @@ const DocumentsScreen: React.FC = () => {
     const file = await selectPhotoFromCameraRoll();
 
     if (!file.cancelled) {
-      addFile(selectedDocumentId, file);
+      addFile(selectedDocumentId, file.uri);
     }
   };
 
@@ -42,7 +42,20 @@ const DocumentsScreen: React.FC = () => {
     const result = await selectPhotoFromCamera();
 
     if (result && !result.cancelled) {
-      addFile(selectedDocumentId, result);
+      addFile(selectedDocumentId, result.uri);
+    }
+  };
+
+  const uploadFile = async () => {
+    try {
+      const res = await DocumentPicker.getDocumentAsync({
+        type: "*/*"
+      });
+      if (res && res.type !== "cancel") {
+        addFile(selectedDocumentId, res.uri);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -73,17 +86,6 @@ const DocumentsScreen: React.FC = () => {
           Attach a file from your device
         </Text>
         <Text style={styles.label}>Document type</Text>
-        <Picker
-          selectedValue={selectedDocumentId}
-          onValueChange={(itemValue) => setSelectedDocumentId(itemValue)}
-          numberOfLines={2}
-          style={styles.picker}
-          itemStyle={styles.pickerItem}
-        >
-          {allDocuments.map((doc) => (
-            <Picker.Item key={doc.id} label={doc.title} value={doc.id} />
-          ))}
-        </Picker>
 
         <Button
           title="Take A Photo"
@@ -99,7 +101,7 @@ const DocumentsScreen: React.FC = () => {
         <Button
           title="Select From Device"
           style={styles.photoButton}
-          onPress={takePhoto}
+          onPress={uploadFile}
         />
       </View>
     </View>
