@@ -5,3 +5,12 @@ export type Field = {
   title: string;
   type: FieldType;
 };
+
+export type Vendor = {
+  description: string;
+  logo: string;
+  name: string;
+  signup: string;
+  tagline: string;
+  website: string;
+};

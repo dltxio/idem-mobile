@@ -1,13 +1,34 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import VendorsScreen from "./screens/VendorsScreen";
+import VendorDetailsScreen from "./screens/VendorDetails";
 
-const Stack = createStackNavigator();
+export type VendorStackParamList = {
+  VendorsList: undefined;
+  VendorDetails: { vendorId: string };
+};
+
+const Stack = createStackNavigator<VendorStackParamList>();
 
 const VendorsStackNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="3rd Party List" component={VendorsScreen} />
+      <Stack.Screen
+        name="VendorsList"
+        component={VendorsScreen}
+        options={() => ({
+          headerShown: false
+        })}
+      />
+      <Stack.Screen
+        name="VendorDetails"
+        component={VendorDetailsScreen}
+        options={() => {
+          return {
+            title: ""
+          };
+        }}
+      />
     </Stack.Navigator>
   );
 };
