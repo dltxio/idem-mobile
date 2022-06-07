@@ -31,7 +31,7 @@ const UserDetailsHeader: React.FC = () => {
     if (file.cancelled) {
       return;
     }
-    const fileId = await addFile("profile-image", file);
+    const fileId = await addFile("profile-image", file.uri);
     addClaim("ProfileImageCredential", { fileId }, []);
   };
 

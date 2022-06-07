@@ -14,29 +14,30 @@ const VendorsScreen: React.FC = () => {
   return (
     <View style={[styles.container, { marginTop: 70 }]}>
       <Text style={styles.header}>Supported Exchanges</Text>
-      {vendors.map((vendor) => {
-        const content = (
-          <>
-            <ListItem.Content style={styles.container}>
-              <ListItem.Title>{vendor.name}</ListItem.Title>
-            </ListItem.Content>
-          </>
-        );
+      {vendors.length > 0 &&
+        vendors.map((vendor) => {
+          const content = (
+            <>
+              <ListItem.Content style={styles.container}>
+                <ListItem.Title>{vendor.name}</ListItem.Title>
+              </ListItem.Content>
+            </>
+          );
 
-        return (
-          <ListItem
-            key={vendor.name}
-            style={styles.container}
-            onPress={() =>
-              navigation.navigate("VendorDetails", {
-                vendorId: vendor.name
-              })
-            }
-          >
-            {content}
-          </ListItem>
-        );
-      })}
+          return (
+            <ListItem
+              key={vendor.name}
+              style={styles.container}
+              onPress={() =>
+                navigation.navigate("VendorDetails", {
+                  vendorId: vendor.name
+                })
+              }
+            >
+              {content}
+            </ListItem>
+          );
+        })}
     </View>
   );
 };
