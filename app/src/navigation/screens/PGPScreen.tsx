@@ -12,7 +12,10 @@ import { ProfileStackNavigation } from "../../types/navigation";
 import { pgpLocalStorage } from "../../utils/local-storage";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
-import { GDrive } from "@robinbobin/react-native-google-drive-api-wrapper";
+import {
+  GDrive,
+  ListQueryBuilder
+} from "@robinbobin/react-native-google-drive-api-wrapper";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -26,28 +29,23 @@ const PGPScreen: React.FC = () => {
       "917254276650-a502sa63k7pfq443sub3bmj4m9ot4mmc.apps.googleusercontent.com"
   });
 
+  const handleGdriver = async (response: any) => {
+    const gdrive = new GDrive();
+    console.log(response.authentication);
+    gdrive.accessToken = response.authentication?.accessToken;
+    gdrive.fetchCoercesTypes = false;
+    gdrive.fetchRejectsOnHttpErrors = false;
+    gdrive.fetchTimeout = 3000;
+
+    await gdrive.files.list();
+    console.log(await gdrive.files.list());
+  };
   //So Jo can push with husky-- unused value
-  console.log(request);
+  //console.log(request);
 
   React.useEffect(() => {
-    if (response?.type === "success") {
-      const { authentication } = response;
-      const gdrive = new GDrive();
-      gdrive.accessToken = authentication?.accessToken;
-      const files = async () => {
-        const googlefiles = await gdrive.files.list();
-        console.log(googlefiles);
-      };
-      files();
-      //==> TokenResponse {
-      //   "accessToken": "ya29.a0ARrdaM_OeAdIE2X30u3Sn4eVYa7P4Yyn7c0Fr7Q5V5FHyj0xYc_Vdr5RLMk6Xsbf671qiNHkQjGStiYJcvDZ8hVCpS-N_gutbEbLUM8lnmymZ1577CkQxnkUFsSKq73zHqWm3YtMqky2ZlmwjineJZvQsveh",
-      //   "expiresIn": "3599",
-      //   "issuedAt": 1654571579,
-      //   "refreshToken": undefined,
-      //   "scope": "email profile openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
-      //   "state": "4wOVIJ50rS",
-      //   "tokenType": "Bearer",
-      // }
+    if (response?.type === "success" && response?.authentication) {
+      handleGdriver(response);
     }
   }, [response]);
 
