@@ -9,9 +9,9 @@ on:
       - main
 
 jobs:
-  lint:
+  build-and-lint:
     runs-on: ubuntu-18.04
-    name: Lint
+    name: Build and Lint
     steps:
       - name: Checkout Branch
         uses: actions/checkout@v3
