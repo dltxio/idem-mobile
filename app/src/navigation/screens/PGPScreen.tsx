@@ -1,47 +1,41 @@
-import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  Text,
-  Dimensions,
-  Button
-} from "react-native";
-import { ProfileStackNavigation } from "../../types/navigation";
-import { pgpLocalStorage } from "../../utils/local-storage";
+import { View, StyleSheet, TextInput, Text, Dimensions } from "react-native";
+import { fileLocalStorage, pgpLocalStorage } from "../../utils/local-storage";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 import {
   GDrive,
   ListQueryBuilder
 } from "@robinbobin/react-native-google-drive-api-wrapper";
+import { Button } from "../../components";
 
 WebBrowser.maybeCompleteAuthSession();
 
-type Navigation = ProfileStackNavigation<"Home">;
-
 const PGPScreen: React.FC = () => {
   const [keytext, setKeytext] = React.useState<string | undefined>();
-  const navigation = useNavigation<Navigation>();
-  const [request, response, promptAsync] = Google.useAuthRequest({
+  const [, response, promptAsync] = Google.useAuthRequest({
+    scopes: ["https://www.googleapis.com/auth/drive"],
     expoClientId:
       "917254276650-a502sa63k7pfq443sub3bmj4m9ot4mmc.apps.googleusercontent.com"
   });
 
   const handleGdriver = async (response: any) => {
     const gdrive = new GDrive();
-    console.log(response.authentication);
     gdrive.accessToken = response.authentication?.accessToken;
-    gdrive.fetchCoercesTypes = false;
+    gdrive.fetchCoercesTypes = true;
     gdrive.fetchRejectsOnHttpErrors = false;
     gdrive.fetchTimeout = 3000;
 
-    await gdrive.files.list();
-    console.log(await gdrive.files.list());
+    const keystoreFile = await gdrive.files.list({
+      q: new ListQueryBuilder()
+        .e("name", "keystore.json")
+        .and()
+        .in("root", "parents")
+    });
+    await fileLocalStorage.save(keystoreFile);
+    const files = await fileLocalStorage.get();
+    console.log(files);
   };
-  //So Jo can push with husky-- unused value
-  //console.log(request);
 
   React.useEffect(() => {
     if (response?.type === "success" && response?.authentication) {
@@ -87,12 +81,6 @@ const PGPScreen: React.FC = () => {
           onPress={() => {
             promptAsync();
           }}
-        />
-      </View>
-      <View style={styles.verifyButton}>
-        <Button
-          title={"Back to my profile"}
-          onPress={() => navigation.navigate("Home")}
         />
       </View>
       <Text style={styles.warning}>

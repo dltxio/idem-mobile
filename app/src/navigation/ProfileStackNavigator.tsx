@@ -35,13 +35,7 @@ const ProfileStackNavigator = () => {
         })}
         component={ProfileScreen}
       />
-      <Stack.Screen
-        name="PGP"
-        options={() => ({
-          headerShown: false
-        })}
-        component={PGPScreen}
-      />
+      <Stack.Screen name="PGP" options={{ title: "" }} component={PGPScreen} />
       <Stack.Screen
         name="Claim"
         options={(props) => {
