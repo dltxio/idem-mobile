@@ -17,9 +17,9 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "com.dltx.idem",
       "supportsTablet": true,
       "usesIcloudStorage": true,
-      "bundleIdentifier": "com.dltx.IDEM",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "IDEM accesses your photos to verify your claims",
         "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera",
