@@ -1,4 +1,5 @@
 import * as React from "react";
+import "expo-dev-client";
 import "react-native-get-random-values";
 import "@ethersproject/shims";
 import * as Linking from "expo-linking";
