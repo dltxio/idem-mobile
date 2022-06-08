@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Alert } from "react-native";
 import { useClaimsStore, useClaimValue } from "../context/ClaimsStore";
 import { Avatar } from "react-native-elements";
 import colors from "../styles/colors";
@@ -10,6 +10,8 @@ import { useDocumentStore } from "../context/DocumentStore";
 import { useNavigation } from "@react-navigation/native";
 import { ProfileStackNavigation } from "../types/navigation";
 import defaultProfilePicture from "../../assets/default-profile-picture.png";
+import { useMnemonic } from "../context/Mnemonic";
+import truncateEthAddress from "truncate-eth-address";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -24,6 +26,8 @@ const UserDetailsHeader: React.FC = () => {
   const { addClaim } = useClaimsStore();
   const { addFile, files } = useDocumentStore();
 
+  const { ethAddress } = useMnemonic();
+
   const profilePictureFile = files.find((file) => file.id === profileImageId);
 
   const addProfileImageClaim = async () => {
@@ -33,6 +37,10 @@ const UserDetailsHeader: React.FC = () => {
     }
     const fileId = await addFile("profile-image", file.uri);
     addClaim("ProfileImageCredential", { fileId }, []);
+  };
+
+  const showEthAddress = async () => {
+    Alert.alert("Your eth address", ethAddress);
   };
 
   return (
@@ -52,6 +60,9 @@ const UserDetailsHeader: React.FC = () => {
         <DetailOrPlaceholder value={email} placeholderWidth={150} />
         <Text onPress={() => navigation.navigate("PGP")}>
           Import your PGP/GPG key pair
+        </Text>
+        <Text onPress={showEthAddress}>
+          Wallet Address: {ethAddress ? truncateEthAddress(ethAddress) : ""}
         </Text>
       </View>
     </View>
