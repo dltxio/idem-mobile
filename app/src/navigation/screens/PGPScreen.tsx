@@ -6,10 +6,7 @@ import {
 } from "../../utils/local-storage";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
-import {
-  GDrive,
-  ListQueryBuilder
-} from "@robinbobin/react-native-google-drive-api-wrapper";
+import { GDrive, ListQueryBuilder } from "expo-google-drive-api-wrapper";
 import { Button } from "../../components";
 
 WebBrowser.maybeCompleteAuthSession();

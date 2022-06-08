@@ -1437,7 +1437,7 @@
     xcode "^3.0.1"
     xml2js "0.4.23"
 
-"@expo/config-plugins@4.1.5", "@expo/config-plugins@^4.0.2", "@expo/config-plugins@^4.1.5":
+"@expo/config-plugins@4.1.5", "@expo/config-plugins@^4.0.14", "@expo/config-plugins@^4.0.2", "@expo/config-plugins@^4.1.5":
   version "4.1.5"
   resolved "https://registry.npmjs.org/@expo/config-plugins/-/config-plugins-4.1.5.tgz"
   integrity sha512-RVvU40RtZt12HavuDAe+LDIq9lHj7sheOfMEHdmpJ/uTA8pgvkbc56XF6JHQD+yRr6+uhhb+JnAasGq49dsQbw==
@@ -1893,15 +1893,6 @@
     color "^3.1.3"
     warn-once "^0.1.0"
 
-"@robinbobin/react-native-google-drive-api-wrapper@^1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@robinbobin/react-native-google-drive-api-wrapper/-/react-native-google-drive-api-wrapper-1.2.2.tgz#0c862c8c2012a34989d2c83ff049932b8935b3dc"
-  integrity sha512-tausRpa9zU1l5P/PSrjbN2rvXLyjvjPNnVGYOsjFdB+tKRmN+NjQoK3pG0Iz0j9fg5d6Bt1CvUGJoKoXnK9X5g==
-  dependencies:
-    base64-js "^1.5.1"
-    simple-common-utils "^2.3.0"
-    utf8 "^3.0.0"
-
 "@sideway/address@^4.1.3":
   version "4.1.4"
   resolved "https://registry.npmjs.org/@sideway/address/-/address-4.1.4.tgz"
@@ -2012,6 +2003,11 @@
   version "0.16.2"
   resolved "https://registry.npmjs.org/@types/scheduler/-/scheduler-0.16.2.tgz"
   integrity sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==
+
+"@types/utf8@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@types/utf8/-/utf8-3.0.1.tgz#bf081663d4fff05ee63b41f377a35f8b189f7e5b"
+  integrity sha512-1EkWuw7rT3BMz2HpmcEOr/HL61mWNA6Ulr/KdbXR9AI0A55wD4Qfv8hizd8Q1DnknSIzzDvQmvvY/guvX7jjZA==
 
 "@types/yargs-parser@*":
   version "21.0.0"
@@ -3175,6 +3171,14 @@ expo-error-recovery@~3.0.5:
   resolved "https://registry.npmjs.org/expo-error-recovery/-/expo-error-recovery-3.0.5.tgz"
   integrity sha512-VM6OOecjt0aPu5/eCdGGJfNjvAZIemaQym0JF/+SA5IlLiPpEfbVCDTO/5yiS8Zb5fKpeABx+GCRmtfnFqvRRw==
 
+expo-file-system@latest:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/expo-file-system/-/expo-file-system-14.0.0.tgz#8367af10969a486fcba2f1e1c7cc0148f855e962"
+  integrity sha512-Asva7ehLUq/PIem6Y+/OQvoIqhFqYDd7l4l49yDRDgLSbK2I7Fr8qGhDeDpnUXrMVamg2uwt9zRGhyrjFNRhVw==
+  dependencies:
+    "@expo/config-plugins" "^4.0.14"
+    uuid "^3.4.0"
+
 expo-file-system@~13.1.3:
   version "13.1.4"
   resolved "https://registry.npmjs.org/expo-file-system/-/expo-file-system-13.1.4.tgz"
@@ -3189,6 +3193,14 @@ expo-font@~10.0.5:
   integrity sha512-x9YwM0xLkDdSvFjeNbyuh33Q1Hk3uc2jbMuuAN5W2ZVcUZqG0M8GCX/KV/D/7rYqdXKbliQA5r44MyDwZe/XRw==
   dependencies:
     fontfaceobserver "^2.1.0"
+
+expo-google-drive-api-wrapper@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/expo-google-drive-api-wrapper/-/expo-google-drive-api-wrapper-1.0.2.tgz#2951efb8f7cc0132ed3def70ef0bf0fd730f1042"
+  integrity sha512-H4yaYxpDq6puhCsqMcwITCiZi86ZHDKZHiM4DzXA0BmjLom+RUzHixP5oTeQUFGdd8zoSGhDs5StfLAhiQsd+w==
+  dependencies:
+    expo-file-system latest
+    simple-common-utils latest
 
 expo-image-picker@~12.0.1:
   version "12.0.2"
@@ -5879,7 +5891,7 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   resolved "https://registry.npmjs.org/signal-exit/-/signal-exit-3.0.7.tgz"
   integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
 
-simple-common-utils@^2.3.0:
+simple-common-utils@latest:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/simple-common-utils/-/simple-common-utils-2.6.0.tgz#457f126c20c82ba10212427886f4c8ebe86cc6d7"
   integrity sha512-K0gtyfMQ1+iDQvZKgdY2L+pbaG0MHp1ke6ho7IL6UKR8f59st+QJgw27FADF+3Hut19C3WUb7IhgENdY/OJG8w==
@@ -6363,11 +6375,6 @@ use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.npmjs.org/use/-/use-3.1.1.tgz"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
-
-utf8@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/utf8/-/utf8-3.0.0.tgz#f052eed1364d696e769ef058b183df88c87f69d1"
-  integrity sha512-E8VjFIQ/TyQgp+TZfS6l8yp/xWppSAHzidGiRrqe4bK4XP9pTRyKFgGJpO3SN7zdX4DeomTrwaseCHovfpFcqQ==
 
 util-deprecate@~1.0.1:
   version "1.0.2"
