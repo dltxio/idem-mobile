@@ -14,7 +14,7 @@ const VendorsScreen: React.FC = () => {
   const getVendors = async () => {
     try {
       const { data: vendors }: GetVendorsResponse = await axios.get(
-        "https://raw.githubusercontent.com/dltxio/idem-mobile/IDEM-35/data/sites.json"
+        "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/sites.json"
       );
       setVendors(vendors);
     } catch (error) {
