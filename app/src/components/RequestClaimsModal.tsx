@@ -55,6 +55,7 @@ const RequestClaimsModal: React.FC<Props> = ({ claimRequest, onClose }) => {
         console.error(err?.response?.data || error);
       }
     };
+    //USE THIS TO POST THE CLAIM TO GPIB API
 
     const buttons: AlertButton[] = [
       {
