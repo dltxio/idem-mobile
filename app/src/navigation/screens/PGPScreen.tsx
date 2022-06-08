@@ -93,6 +93,11 @@ const PGPScreen: React.FC = () => {
         NOTE: Importing your keys saves them to your local storage. IDEM does
         not have access to the keys you import.
       </Text>
+      <View style={styles.buttonWrapper}>
+        <View style={styles.button}>
+          <Button title={"Import my Private Key"} onPress={importPGP} />
+        </View>
+      </View>
     </View>
   );
 };
@@ -121,6 +126,14 @@ const styles = StyleSheet.create({
   verifyButton: {
     marginVertical: 5,
     width: Dimensions.get("window").width
+  },
+  buttonWrapper: {
+    justifyContent: "flex-end",
+    height: Dimensions.get("window").height * 0.28
+  },
+  button: {
+    marginVertical: 5,
+    width: Dimensions.get("window").width * 0.9
   },
   warning: {
     width: Dimensions.get("window").width * 0.8,
