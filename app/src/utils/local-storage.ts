@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ClaimData } from "../types/claim";
-import { File } from "../types/document";
+import { File, KeyStore } from "../types/document";
 import { PGP, Wallet } from "../types/wallet";
 
 type LocalStorage<T> = {
@@ -42,6 +42,11 @@ export const claimsLocalStorage = createLocalStorage<ClaimData[]>(
 );
 
 export const fileLocalStorage = createLocalStorage<File[]>("FILES", true);
+
+export const keyStoreLocalStorage = createLocalStorage<KeyStore>(
+  "KEYSTORE",
+  true
+);
 
 export const mnemonicLocalStorage = createLocalStorage<Wallet>(
   "MNEMONIC",

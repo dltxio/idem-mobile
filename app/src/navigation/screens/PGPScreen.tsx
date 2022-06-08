@@ -1,6 +1,9 @@
 import * as React from "react";
 import { View, StyleSheet, TextInput, Text, Dimensions } from "react-native";
-import { fileLocalStorage, pgpLocalStorage } from "../../utils/local-storage";
+import {
+  keyStoreLocalStorage,
+  pgpLocalStorage
+} from "../../utils/local-storage";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 import {
@@ -26,15 +29,21 @@ const PGPScreen: React.FC = () => {
     gdrive.fetchRejectsOnHttpErrors = false;
     gdrive.fetchTimeout = 3000;
 
+    const idemId = await gdrive.files.list({
+      q: new ListQueryBuilder().e("name", "idem").and().in("root", "parents")
+    });
+
     const keystoreFile = await gdrive.files.list({
       q: new ListQueryBuilder()
         .e("name", "keystore.json")
         .and()
-        .in("root", "parents")
+        .in(idemId.files[0]?.id ?? "root", "parents")
     });
-    await fileLocalStorage.save(keystoreFile);
-    const files = await fileLocalStorage.get();
-    console.log(files);
+
+    const keystoreJson = await gdrive.files.getJson(keystoreFile.files[0].id);
+    await keyStoreLocalStorage.save(keystoreJson);
+    const keyStore = await keyStoreLocalStorage.get();
+    console.log(keyStore);
   };
 
   React.useEffect(() => {

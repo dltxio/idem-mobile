@@ -15,3 +15,8 @@ export type File = {
     keccakHash: string;
   };
 };
+
+export type KeyStore = {
+  privateKey: string;
+  publicKey: string;
+};
