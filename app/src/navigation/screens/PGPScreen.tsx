@@ -1,21 +1,10 @@
-import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  Text,
-  Dimensions,
-  Button
-} from "react-native";
-import { ProfileStackNavigation } from "../../types/navigation";
+import { View, StyleSheet, TextInput, Text, Dimensions } from "react-native";
+import { Button } from "../../components";
 import { pgpLocalStorage } from "../../utils/local-storage";
-
-type Navigation = ProfileStackNavigation<"Home">;
 
 const PGPScreen: React.FC = () => {
   const [keytext, setKeytext] = React.useState<string | undefined>();
-  const navigation = useNavigation<Navigation>();
 
   React.useEffect(() => {
     (async () => {
@@ -46,19 +35,15 @@ const PGPScreen: React.FC = () => {
         multiline={true}
         selectionColor={"white"}
       />
-      <View style={styles.verifyButton}>
-        <Button title={"Import my Private Key"} onPress={importPGP} />
-      </View>
-      <View style={styles.verifyButton}>
-        <Button
-          title={"Back to my profile"}
-          onPress={() => navigation.navigate("Home")}
-        />
-      </View>
       <Text style={styles.warning}>
         NOTE: Importing your keys saves them to your local storage. IDEM does
         not have access to the keys you import.
       </Text>
+      <View style={styles.buttonWrapper}>
+        <View style={styles.button}>
+          <Button title={"Import my Private Key"} onPress={importPGP} />
+        </View>
+      </View>
     </View>
   );
 };
@@ -84,10 +69,13 @@ const styles = StyleSheet.create({
     overflow: "scroll",
     width: Dimensions.get("window").width
   },
-  verifyButton: {
-    marginTop: 20,
-    marginBottom: 20,
-    width: Dimensions.get("window").width
+  buttonWrapper: {
+    justifyContent: "flex-end",
+    height: Dimensions.get("window").height * 0.28
+  },
+  button: {
+    marginVertical: 5,
+    width: Dimensions.get("window").width * 0.9
   },
   warning: {
     width: Dimensions.get("window").width * 0.8,
