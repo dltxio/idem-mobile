@@ -1,12 +1,11 @@
 {
   "name": "idem",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
   "license": "MIT",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "eject": "expo eject",
     "build": "tsc --build"
@@ -38,6 +37,7 @@
     "react-native-datepicker": "^1.7.2",
     "react-native-document-picker": "^8.1.0",
     "react-native-elements": "^3.4.2",
+    "react-native-fast-openpgp": "^2.2.3",
     "react-native-gesture-handler": "~2.1.0",
     "react-native-get-random-values": "^1.8.0",
     "react-native-hash": "^2.0.3",
@@ -46,7 +46,8 @@
     "react-native-screens": "~3.10.1",
     "react-native-uuid": "^2.0.1",
     "react-native-web": "0.17.1",
-    "react-native-webview": "^11.21.1"
+    "react-native-webview": "^11.21.1",
+    "expo-splash-screen": "~0.14.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
