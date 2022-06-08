@@ -24,6 +24,7 @@ import { useDocumentStore } from "../../context/DocumentStore";
 import { pgpLocalStorage } from "../../utils/local-storage";
 import axios, { AxiosError } from "axios";
 import { getDocumentFromDocumentId } from "../../utils/document-utils";
+import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -230,6 +231,7 @@ const ClaimScreen: React.FC = () => {
         loading={loading}
         style={styles.verifyButton}
       />
+      <BottomNavBarSpacer />
     </ScrollView>
   );
 };

@@ -78,7 +78,8 @@ const claims: Claim[] = [
       { id: "streetType", title: "Street Type", type: "text" },
       { id: "suburb", title: "Suburb", type: "text" },
       { id: "postCode", title: "Post Code", type: "text" },
-      { id: "state", title: "State", type: "text" }
+      { id: "state", title: "State", type: "text" },
+      { id: "country", title: "Country", type: "text" }
     ],
     verificationDocuments: ["drivers-license"]
   },
