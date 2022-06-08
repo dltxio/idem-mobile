@@ -1,53 +1,59 @@
 import * as React from "react";
-import { View } from "react-native";
-import axios from "axios";
-import { Vendor } from "../../types/general";
+import { View, StyleSheet, Dimensions, Text } from "react-native";
 import { ListItem } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
+import { VendorStackNavigation } from "../../types/navigation";
+import useVendorsList from "../../hooks/useVendorsList";
 
-type GetVendorsResponse = {
-  data: Vendor[];
-};
+type Navigation = VendorStackNavigation<"VendorsList">;
 
 const VendorsScreen: React.FC = () => {
-  const [vendors, setVendors] = React.useState<Vendor[]>([]);
-
-  const getVendors = async () => {
-    try {
-      const { data: vendors }: GetVendorsResponse = await axios.get(
-        "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/sites.json"
-      );
-      setVendors(vendors);
-    } catch (error) {
-      const err = error as any;
-      console.error(err?.response?.data || error);
-    }
-  };
-
-  React.useLayoutEffect(() => {
-    getVendors();
-  }, []);
+  const navigation = useNavigation<Navigation>();
+  const { vendors } = useVendorsList();
 
   return (
-    <View>
-      {vendors.map((vendor) => {
-        const vendorList = getVendors();
+    <View style={[styles.container, { marginTop: 70 }]}>
+      <Text style={styles.header}>Supported Exchanges</Text>
+      {vendors.length > 0 &&
+        vendors.map((vendor) => {
+          const content = (
+            <>
+              <ListItem.Content style={styles.container}>
+                <ListItem.Title>{vendor.name}</ListItem.Title>
+              </ListItem.Content>
+            </>
+          );
 
-        if (!vendorList) {
-          return null;
-        }
-
-        const content = (
-          <>
-            <ListItem.Content>
-              <ListItem.Title>{vendor.name}</ListItem.Title>
-            </ListItem.Content>
-          </>
-        );
-
-        return <ListItem key={vendor.website}>{content}</ListItem>;
-      })}
+          return (
+            <ListItem
+              key={vendor.name}
+              style={styles.container}
+              onPress={() =>
+                navigation.navigate("VendorDetails", {
+                  vendorId: vendor.name
+                })
+              }
+            >
+              {content}
+            </ListItem>
+          );
+        })}
     </View>
   );
 };
 
 export default VendorsScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: "flex-start",
+    alignItems: "center",
+    width: Dimensions.get("window").width
+  },
+
+  header: {
+    color: "black",
+    fontSize: 30,
+    marginBottom: 10
+  }
+});
