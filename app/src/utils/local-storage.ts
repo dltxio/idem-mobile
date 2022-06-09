@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ClaimData } from "../types/claim";
 import { File } from "../types/document";
-import { Exchange } from "../types/Exchange";
+import { Exchange } from "../types/exchange";
 import { PGP, Wallet } from "../types/wallet";
 
 type LocalStorage<T> = {
