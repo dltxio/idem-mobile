@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ProfileStackNavigation } from "../types/navigation";
 import defaultProfilePicture from "../../assets/default-profile-picture.png";
 import { useMnemonic } from "../context/Mnemonic";
-import truncateEthAddress from "truncate-eth-address";
+import { truncateAddress } from "../utils/wallet-utils";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -62,7 +62,7 @@ const UserDetailsHeader: React.FC = () => {
           Import your PGP/GPG key pair
         </Text>
         <Text onPress={showEthAddress}>
-          Wallet Address: {ethAddress ? truncateEthAddress(ethAddress) : ""}
+          Wallet Address: {ethAddress ? truncateAddress(ethAddress) : ""}
         </Text>
       </View>
     </View>
