@@ -1,6 +1,7 @@
 import * as React from "react";
 import { View, StyleSheet, TextInput, Text, Dimensions } from "react-native";
 import { Button } from "../../components";
+import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { pgpLocalStorage } from "../../utils/local-storage";
 
 const PGPScreen: React.FC = () => {
@@ -44,6 +45,7 @@ const PGPScreen: React.FC = () => {
           <Button title={"Import my Private Key"} onPress={importPGP} />
         </View>
       </View>
+      <BottomNavBarSpacer />
     </View>
   );
 };
