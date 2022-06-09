@@ -96,13 +96,22 @@ const DocumentsScreen: React.FC = () => {
         </Text>
         <Text style={styles.label}>Document type</Text>
 
-        <Button title="Take A Photo" onPress={takePhoto} />
+        <Button
+          title="Take A Photo"
+          onPress={takePhoto}
+          style={styles.button}
+        />
         <Button
           title="Select From Camera Roll"
           onPress={pickPhotoFromLibrary}
+          style={styles.button}
         />
 
-        <Button title="Select From Device" onPress={uploadFile} />
+        <Button
+          title="Select From Device"
+          onPress={uploadFile}
+          style={styles.button}
+        />
       </View>
     </View>
   );
@@ -123,5 +132,8 @@ const styles = StyleSheet.create({
   },
   label: {
     marginTop: 10
+  },
+  button: {
+    marginVertical: 5
   }
 });

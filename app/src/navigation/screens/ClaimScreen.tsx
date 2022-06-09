@@ -7,7 +7,8 @@ import {
   Keyboard,
   Text,
   Alert,
-  ScrollView
+  ScrollView,
+  Dimensions
 } from "react-native";
 import { Input, Switch } from "react-native-elements";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -156,81 +157,83 @@ const ClaimScreen: React.FC = () => {
 
   return (
     <ScrollView style={[commonStyles.screen, commonStyles.screenContent]}>
-      {claim.fields.map((field) => {
-        const onChange = (value: string) => {
-          setFormState((previous) => ({
-            ...previous,
-            [field.id]: value
-          }));
-        };
+      <View style={styles.container}>
+        {claim.fields.map((field) => {
+          const onChange = (value: string) => {
+            setFormState((previous) => ({
+              ...previous,
+              [field.id]: value
+            }));
+          };
 
-        if (field.type === "text") {
-          return (
-            <View key={field.id}>
+          if (field.type === "text") {
+            return (
+              <View key={field.id}>
+                <Input
+                  label={field.title}
+                  clearButtonMode="always"
+                  value={formState[field.id]}
+                  onChangeText={onChange}
+                />
+                {field.id === "email" ? (
+                  <Text
+                    onPress={() => verifyEmail(formState[field.id])}
+                    style={{ paddingBottom: 10 }}
+                  >
+                    Verify your email
+                  </Text>
+                ) : (
+                  <Text></Text>
+                )}
+              </View>
+            );
+          }
+
+          if (field.type === "date") {
+            return (
               <Input
-                label={field.title}
-                clearButtonMode="always"
                 value={formState[field.id]}
-                onChangeText={onChange}
+                key={field.id}
+                label={field.title}
+                ref={(ref) =>
+                  (dateRefs.current = {
+                    [field.id]: ref
+                  })
+                }
+                onFocus={() => showDatePickerFor(field.id)}
               />
-              {field.id === "email" ? (
-                <Text
-                  onPress={() => verifyEmail(formState[field.id])}
-                  style={{ paddingBottom: 10 }}
-                >
-                  Verify your email
-                </Text>
-              ) : (
-                <Text></Text>
-              )}
-            </View>
-          );
-        }
+            );
+          }
 
-        if (field.type === "date") {
-          return (
-            <Input
-              value={formState[field.id]}
-              key={field.id}
-              label={field.title}
-              ref={(ref) =>
-                (dateRefs.current = {
-                  [field.id]: ref
-                })
-              }
-              onFocus={() => showDatePickerFor(field.id)}
-            />
-          );
-        }
-
-        if (field.type === "boolean") {
-          return (
-            <View key={field.id} style={{ paddingVertical: 20 }}>
-              <Text style={{ marginBottom: 20 }}>{field.title}</Text>
-              <Switch
-                value={formState[field.id] === "true"}
-                onValueChange={(value) => onChange(value ? "true" : "false")}
-              />
-            </View>
-          );
-        }
-      })}
-      {showDatePickerForFieldId && (
-        <DateTimePickerModal
-          isVisible={true}
-          mode="date"
-          onConfirm={onDateSelect}
-          onCancel={hideDatePicker}
+          if (field.type === "boolean") {
+            return (
+              <View key={field.id} style={{ paddingVertical: 20 }}>
+                <Text style={{ marginBottom: 20 }}>{field.title}</Text>
+                <Switch
+                  value={formState[field.id] === "true"}
+                  onValueChange={(value) => onChange(value ? "true" : "false")}
+                />
+              </View>
+            );
+          }
+        })}
+        {showDatePickerForFieldId && (
+          <DateTimePickerModal
+            isVisible={true}
+            mode="date"
+            onConfirm={onDateSelect}
+            onCancel={hideDatePicker}
+          />
+        )}
+        {documentList}
+        <Button
+          title={isVerifying ? "Save & Verify" : "Save"}
+          disabled={!canSave}
+          onPress={onSave}
+          loading={loading}
+          style={styles.verifyButton}
         />
-      )}
-      {documentList}
-      <Button
-        title={isVerifying ? "Save & Verify" : "Save"}
-        disabled={!canSave}
-        onPress={onSave}
-        loading={loading}
-        style={styles.verifyButton}
-      />
+      </View>
       <BottomNavBarSpacer />
     </ScrollView>
   );
@@ -245,7 +248,13 @@ const styles = StyleSheet.create({
   verifyButton: {
     marginTop: 20,
     marginBottom: 20,
-    paddingBottom: 20
+    paddingBottom: 20,
+    bottom: 0
+  },
+
+  container: {
+    height: Dimensions.get("window").height,
+    overflow: "scroll"
   }
 });
 
