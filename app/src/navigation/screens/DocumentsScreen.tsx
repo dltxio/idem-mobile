@@ -9,6 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/image-utils";
 import useSelectPhoto from "../../hooks/useSelectPhoto";
 import * as DocumentPicker from "expo-document-picker";
+import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 
 type Navigation = DocumentsStackNavigation<"Documents">;
 
@@ -112,6 +113,7 @@ const DocumentsScreen: React.FC = () => {
           onPress={uploadFile}
           style={styles.button}
         />
+        <BottomNavBarSpacer />
       </View>
     </View>
   );
@@ -128,7 +130,7 @@ const styles = StyleSheet.create({
   },
   bottomSection: {
     justifyContent: "flex-end",
-    height: Dimensions.get("window").height * 0.35
+    height: Dimensions.get("window").height * 0.4
   },
   label: {
     marginTop: 10

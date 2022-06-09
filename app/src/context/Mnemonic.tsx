@@ -5,9 +5,12 @@ import { mnemonicLocalStorage } from "../utils/local-storage";
 
 export type MnemonicValue = {
   mnemonic: string | undefined;
-  createMnemonic: () => Promise<string | undefined>;
-  loadingMnemonic: boolean;
+  ethAddress: string | undefined;
+  createMnemonic: () => Promise<
+    { mnemonic: string | undefined; ethAddress: string | undefined } | undefined
+  >;
   reset: () => void;
+  loadingMnemonic: boolean;
 };
 
 export const MnemonicContext = React.createContext<MnemonicValue | undefined>(
@@ -18,6 +21,7 @@ export const MnemonicProvider: React.FC<{
   children: React.ReactNode;
 }> = (props) => {
   const [mnemonic, setMnemonic] = React.useState<string | undefined>();
+  const [ethAddress, setEthAddress] = React.useState<string | undefined>();
   const [loadingMnemonic, setLoadingMnemonic] = React.useState<boolean>(true);
 
   React.useEffect(() => {
@@ -27,6 +31,7 @@ export const MnemonicProvider: React.FC<{
 
       if (initialMnemonic) {
         setMnemonic(initialMnemonic.mnemonic);
+        setEthAddress(initialMnemonic.ethAddress);
       }
       setLoadingMnemonic(false);
     })();
@@ -35,9 +40,13 @@ export const MnemonicProvider: React.FC<{
   const createMnemonic = async () => {
     try {
       const wallet = ethers.Wallet.createRandom();
-      await mnemonicLocalStorage.save({ mnemonic: wallet.mnemonic.phrase });
+      await mnemonicLocalStorage.save({
+        mnemonic: wallet.mnemonic.phrase,
+        ethAddress: wallet.address
+      });
       setMnemonic(wallet.mnemonic.phrase);
-      return mnemonic;
+      setEthAddress(wallet.address);
+      return { mnemonic, ethAddress };
     } catch (error) {
       console.log(error);
     }
@@ -46,16 +55,18 @@ export const MnemonicProvider: React.FC<{
   const reset = () => {
     mnemonicLocalStorage.clear();
     setMnemonic("");
+    setEthAddress("");
   };
 
   const value = React.useMemo(
     () => ({
       mnemonic,
+      ethAddress,
       createMnemonic,
       reset,
       loadingMnemonic
     }),
-    [mnemonic, createMnemonic, reset]
+    [mnemonic, ethAddress, createMnemonic, reset]
   );
 
   return (
