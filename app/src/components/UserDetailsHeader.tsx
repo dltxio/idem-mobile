@@ -62,7 +62,7 @@ const UserDetailsHeader: React.FC = () => {
           Import your PGP/GPG key pair
         </Text>
         <Text onPress={showEthAddress}>
-          Wallet Address: {ethAddress ? truncateAddress(ethAddress) : ""}
+          {ethAddress ? truncateAddress(ethAddress) : ""}
         </Text>
       </View>
     </View>
