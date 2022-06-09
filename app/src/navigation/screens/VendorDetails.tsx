@@ -1,81 +1,25 @@
 import { useRoute } from "@react-navigation/native";
 import * as React from "react";
-import { View, Image, StyleSheet, Text, Dimensions, Alert } from "react-native";
+import { View, Image, StyleSheet, Text, Dimensions } from "react-native";
 import { Button } from "../../components";
 import useVendorsList from "../../hooks/useVendorsList";
 import { VendorStackNavigationRoute } from "../../types/navigation";
+import { useExchange } from "../../context/Exchange";
 import { useClaimValue } from "../../context/ClaimsStore";
-import axios from "axios";
-import * as password from "secure-random-password";
 
 const VendorDetailsScreen: React.FC = () => {
   const { vendors } = useVendorsList();
+  const { makeGpibUser } = useExchange();
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
-
+  const name = useClaimValue("FullNameCredential");
+  console.log(name, "name");
+  const email = useClaimValue("EmailCredential");
+  console.log(email, "email");
   const vendor = vendors.find((v) => v.name === route.params.vendorId);
 
   if (!vendor) {
     return null;
   }
-
-  const shareDetailsAlert = () => {
-    Alert.alert(
-      "Share Details",
-      "You have just signed up with GPIB, your temporary password is" +
-        randomTempPassword,
-      [
-        {
-          text: "OK",
-          onPress: () => console.log(""),
-          style: "destructive"
-        },
-        {
-          text: "Cancel",
-          style: "cancel"
-        }
-      ],
-      {
-        cancelable: true
-      }
-    );
-  };
-
-  const name = useClaimValue("FullNameCredential");
-  const email = useClaimValue("EmailCredential");
-  const randomTempPassword = password.randomPassword({
-    length: 10,
-    characters: [password.lower, password.upper, password.digits]
-  });
-
-  const body = JSON.stringify({
-    fullName: name,
-    email: email,
-    password: randomTempPassword,
-    referralCode: " ",
-    trackAddress: " ",
-    CreateAddress: " "
-  });
-
-  const makeGpibUser = async () => {
-    console.log("GMGMGMGMGMGMG" + name);
-    if (name && email) {
-      const respone = await axios.post(
-        "https://testapi.getpaidinbitcoin.com.au/user",
-        body,
-        {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
-      );
-      console.log(respone);
-      // const res = makeGpibUser();
-      // if (res && res.type === "success") {
-      shareDetailsAlert();
-    }
-  };
-  //   }
-  // }
 
   return (
     <View style={styles.container} key={vendor.name}>
@@ -83,7 +27,7 @@ const VendorDetailsScreen: React.FC = () => {
       <Text style={styles.description}>{vendor.description}</Text>
       <Image source={{ uri: vendor.logo }} style={styles.logo} />
       <View style={styles.button}>
-        <Button onPress={() => makeGpibUser} title="Sign Up" />
+        <Button onPress={() => makeGpibUser(name, email)} title="Sign Up" />
       </View>
     </View>
   );
