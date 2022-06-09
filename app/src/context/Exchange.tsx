@@ -88,6 +88,8 @@ export const ExchangeProvider: React.FC<{
           await exchangeLocalStorage.save(userID);
           shareDetailsAlert();
         }
+        if (name && email === undefined) {
+        }
       } catch (error: any) {
         console.log(error.response.data);
         Alert.alert(error.response.data);
@@ -120,7 +122,7 @@ export const useExchange = () => {
   const context = React.useContext(ExchangeContext);
 
   if (context === undefined) {
-    throw new Error("uh oh error time");
+    throw new Error("useExchange must be used within a ExchangeProvider");
   }
 
   return context;
