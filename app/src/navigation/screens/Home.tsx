@@ -1,12 +1,18 @@
 import * as React from "react";
-import { StyleSheet, View, ScrollView, Text } from "react-native";
+import { StyleSheet, View, ScrollView, Text, Alert } from "react-native";
 import commonStyles from "../../styles/styles";
 import { ProfileStackNavigation } from "../../types/navigation";
-import { ClaimsList, UserDetailsHeader } from "../../components";
+import { Button, ClaimsList, UserDetailsHeader } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useNavigation } from "@react-navigation/native";
 import { ClaimType } from "../../types/claim";
 import CreateMnemonicController from "../../components/CreateMnemonicController";
+import {
+  claimsLocalStorage,
+  fileLocalStorage,
+  mnemonicLocalStorage,
+  pgpLocalStorage
+} from "../../utils/local-storage";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -16,6 +22,27 @@ const Home: React.FC = () => {
 
   const navigateToClaim = (claimType: ClaimType) => {
     navigation.navigate("Claim", { claimType });
+  };
+
+  const resetAlert = () => {
+    const resetData = async () => {
+      await claimsLocalStorage.clear();
+      await fileLocalStorage.clear();
+      await mnemonicLocalStorage.clear();
+      await pgpLocalStorage.clear();
+    };
+    Alert.alert(
+      "WARNING:",
+      "This will reset all of your app data, including wallet, documents, and claims. Would you like to continue?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => resetData() }
+      ]
+    );
   };
 
   return (
@@ -46,6 +73,7 @@ const Home: React.FC = () => {
             />
           </>
         ) : null}
+        <Button onPress={resetAlert} title="Reset Profile" />
       </ScrollView>
     </View>
   );
