@@ -88,8 +88,6 @@ export const ExchangeProvider: React.FC<{
           await exchangeLocalStorage.save(userID);
           shareDetailsAlert();
         }
-        if (name && email === undefined) {
-        }
       } catch (error: any) {
         console.log(error.response.data);
         Alert.alert(error.response.data);
