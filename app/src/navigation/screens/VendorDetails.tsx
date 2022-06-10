@@ -27,7 +27,11 @@ const VendorDetailsScreen: React.FC = () => {
       <Text style={styles.description}>{vendor.description}</Text>
       <Image source={{ uri: vendor.logo }} style={styles.logo} />
       <View style={styles.button}>
-        <Button onPress={() => makeGpibUser(name, email)} title="Sign Up" />
+        <Button
+          onPress={() => makeGpibUser(name, email)}
+          title="Sign Up"
+          disabled={name && email}
+        />
       </View>
     </View>
   );
