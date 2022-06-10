@@ -104,8 +104,8 @@ const DocumentsScreen: React.FC = () => {
         />
 
         <Button title="Select From Device" onPress={uploadFile} />
-        <BottomNavBarSpacer />
       </View>
+      <BottomNavBarSpacer />
     </View>
   );
 };
