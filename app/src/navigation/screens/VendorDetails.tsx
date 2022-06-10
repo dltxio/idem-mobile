@@ -30,7 +30,7 @@ const VendorDetailsScreen: React.FC = () => {
         <Button
           onPress={() => makeGpibUser(name, email)}
           title="Sign Up"
-          disabled={name && email}
+          disabled={name && email ? false : true}
         />
       </View>
     </View>
