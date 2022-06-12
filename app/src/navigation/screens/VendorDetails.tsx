@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    width: Dimensions.get("window").width,
-    marginTop: Dimensions.get("window").height * 0.2
+    width: Dimensions.get("window").width * 0.9,
+    marginTop: Dimensions.get("window").height / 2.5
   }
 });
 
