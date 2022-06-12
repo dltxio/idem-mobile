@@ -12,9 +12,7 @@ const VendorDetailsScreen: React.FC = () => {
   const { makeGpibUser } = useExchange();
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
   const name = useClaimValue("FullNameCredential");
-  console.log(name, "name");
   const email = useClaimValue("EmailCredential");
-  console.log(email, "email");
   const vendor = vendors.find((v) => v.name === route.params.vendorId);
 
   if (!vendor) {
