@@ -17,12 +17,13 @@ const VendorDetailsScreen: React.FC = () => {
   }
 
   return (
-    <View style={styles.container} key={vendor.name}>
+    <View
+      style={[styles.container, { backgroundColor: vendor.backgroundColor }]}
+      key={vendor.name}
+    >
       <Text style={styles.header}>{vendor.name}</Text>
       <Text style={styles.description}>{vendor.description}</Text>
-      <View style={{ backgroundColor: vendor.backgroundColor }}>
-        <Image source={{ uri: vendor.logo }} style={styles.logo} />
-      </View>
+      <Image source={{ uri: vendor.logo }} style={styles.logo} />
       <View style={styles.button}>
         <Button
           onPress={() => Linking.openURL(vendor.signup)}
