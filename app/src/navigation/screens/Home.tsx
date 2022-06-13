@@ -7,6 +7,7 @@ import { useClaimsStore } from "../../context/ClaimsStore";
 import { useNavigation } from "@react-navigation/native";
 import { ClaimType } from "../../types/claim";
 import CreateMnemonicController from "../../components/CreateMnemonicController";
+import VerificationFiles from "../../components/VerifyClaims";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -47,6 +48,23 @@ const Home: React.FC = () => {
           </>
         ) : null}
       </ScrollView>
+      <VerificationFiles
+        claim={{
+          type: "18+",
+          key: "",
+          nnemonic: "",
+          title: "",
+          description: "",
+          verificationAction: "document-upload",
+          fields: [],
+          verificationDocuments: [],
+          hideFromList: undefined
+        }}
+        selectedFileIds={[]}
+        onSelectFile={function (): void {
+          throw new Error("Function not implemented.");
+        }}
+      />
     </View>
   );
 };
