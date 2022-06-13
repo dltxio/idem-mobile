@@ -11,7 +11,7 @@
     "name": "Coin Stash",
     "tagline": "Crypto made Simple",
     "description": "",
-    "logo": "",
+    "logo": "https://cdn1.vectorstock.com/i/1000x1000/29/55/president-flat-graphic-emoji-icon-set-vector-30422955.jpg",
     "signup": "https://coinstash.com.au/auth/signup"
   },
   {
@@ -21,5 +21,13 @@
     "website": "https://example.com/",
     "logo": "https://pngset.com/images/dogecoin-wow-gold-gold-medal-trophy-money-transparent-png-1137773.png",
     "signup": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  },
+  {
+    "name": "Potato Exchange",
+    "tagline": "PR's and potatos",
+    "description": "You may be thinking... is this a real exchange? To answer your question, YES is it 100% REAL.",
+    "website": "https://example.com/",
+    "logo": "https://cdn2.vectorstock.com/i/1000x1000/63/46/error-404-with-the-cute-potato-mascot-vector-39106346.jpg",
+    "signup": "https://www.youtube.com/watch?v=q7uyKYeGPdE"
   }
 ]
