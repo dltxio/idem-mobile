@@ -17,7 +17,7 @@ const useVendorsList = (): Hooks => {
   const getVendors = async () => {
     try {
       const { data: vendors }: GetVendorsResponse = await axios.get(
-        "https://raw.githubusercontent.com/dltxio/idem-mobile/IDEM-91/data/sites.json"
+        "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/sites.json"
       );
       setVendors(vendors);
     } catch (error) {
