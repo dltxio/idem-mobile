@@ -4,12 +4,15 @@ import { View, Image, StyleSheet, Text, Dimensions } from "react-native";
 import { Button } from "../../components";
 import useVendorsList from "../../hooks/useVendorsList";
 import { VendorStackNavigationRoute } from "../../types/navigation";
-import * as Linking from "expo-linking";
+import { useExchange } from "../../context/Exchange";
+import { useClaimValue } from "../../context/ClaimsStore";
 
 const VendorDetailsScreen: React.FC = () => {
   const { vendors } = useVendorsList();
+  const { makeGpibUser } = useExchange();
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
-
+  const name = useClaimValue("FullNameCredential");
+  const email = useClaimValue("EmailCredential");
   const vendor = vendors.find((v) => v.name === route.params.vendorId);
 
   if (!vendor) {
@@ -23,8 +26,9 @@ const VendorDetailsScreen: React.FC = () => {
       <Image source={{ uri: vendor.logo }} style={styles.logo} />
       <View style={styles.button}>
         <Button
-          onPress={() => Linking.openURL(vendor.signup)}
+          onPress={() => makeGpibUser(name, email)}
           title="Sign Up"
+          disabled={name && email ? false : true}
         />
       </View>
     </View>
