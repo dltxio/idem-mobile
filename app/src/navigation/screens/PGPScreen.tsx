@@ -5,7 +5,8 @@ import {
   TextInput,
   Text,
   Dimensions,
-  Alert
+  Alert,
+  KeyboardAvoidingView
 } from "react-native";
 import { Button } from "../../components";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
@@ -42,7 +43,7 @@ const PGPScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container}>
       <Text style={styles.introText}>Import your Public Key:</Text>
       <TextInput
         placeholder="Paste your PUBLIC key here"
@@ -63,7 +64,7 @@ const PGPScreen: React.FC = () => {
         </View>
       </View>
       <BottomNavBarSpacer />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
