@@ -66,7 +66,7 @@ const DocumentsScreen: React.FC = () => {
       <View style={styles.documentsList}>
         <Text style={commonStyles.text.smallHeading}>Your documents</Text>
         {files.length ? (
-          files.length > 4 ? (
+          files.length > 3 ? (
             <View style={{ overflow: "scroll" }}>
               <FileList
                 files={files}
@@ -138,11 +138,11 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   documentsList: {
-    height: Dimensions.get("window").height * 0.45
+    height: Dimensions.get("window").height * 0.4
   },
   bottomSection: {
     justifyContent: "flex-end",
-    height: Dimensions.get("window").height * 0.4
+    height: Dimensions.get("window").height * 0.45
   },
   label: {
     marginTop: 10
