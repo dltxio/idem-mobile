@@ -1,6 +1,14 @@
 import * as React from "react";
-import { View, StyleSheet, TextInput, Text, Dimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  Text,
+  Dimensions,
+  Alert
+} from "react-native";
 import { Button } from "../../components";
+import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { pgpLocalStorage } from "../../utils/local-storage";
 
 const PGPScreen: React.FC = () => {
@@ -18,16 +26,26 @@ const PGPScreen: React.FC = () => {
 
   const importPGP = async () => {
     setKeytext(keytext);
-    await pgpLocalStorage.save({ keytext: keytext });
+    try {
+      await pgpLocalStorage.save({ keytext: keytext });
+      const checkKey = await pgpLocalStorage.get();
+      if (checkKey) {
+        Alert.alert("SUCCESS", "Your public key has been saved");
+      }
+    } catch (error) {
+      Alert.alert(
+        "UH-OH",
+        "There was a problem importing your public key. Please try again."
+      );
+      console.log(error);
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.introText}>
-        Import your Private Key to sign transactions:
-      </Text>
+      <Text style={styles.introText}>Import your Public Key:</Text>
       <TextInput
-        placeholder="Paste your PRIVATE key here"
+        placeholder="Paste your PUBLIC key here"
         placeholderTextColor={"black"}
         onChangeText={setKeytext}
         value={keytext}
@@ -41,9 +59,10 @@ const PGPScreen: React.FC = () => {
       </Text>
       <View style={styles.buttonWrapper}>
         <View style={styles.button}>
-          <Button title={"Import my Private Key"} onPress={importPGP} />
+          <Button title={"Import my Public Key"} onPress={importPGP} />
         </View>
       </View>
+      <BottomNavBarSpacer />
     </View>
   );
 };

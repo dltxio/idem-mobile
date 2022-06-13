@@ -8,11 +8,26 @@
     "signup": "https://portal.getpaidinbitcoin.com.au/register"
   },
   {
+    "name": "Coin Stash",
+    "tagline": "Crypto made Simple",
+    "description": "",
+    "logo": "https://cdn1.vectorstock.com/i/1000x1000/29/55/president-flat-graphic-emoji-icon-set-vector-30422955.jpg",
+    "signup": "https://coinstash.com.au/auth/signup"
+  },
+  {
     "name": "Test Exchange",
     "tagline": "Doge to the moon",
     "description": "Oh cool, we have a description. Guess I'll have to think of something to write there. Hmm, this could be tough. I could try to be clever and make it funny or I could just write some boring rubbish... Boring rubbish it is then.",
     "website": "https://example.com/",
     "logo": "https://pngset.com/images/dogecoin-wow-gold-gold-medal-trophy-money-transparent-png-1137773.png",
     "signup": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  },
+  {
+    "name": "Potato Exchange",
+    "tagline": "PR's and potatos",
+    "description": "You may be thinking... is this a real exchange? To answer your question, YES is it 100% REAL.",
+    "website": "https://example.com/",
+    "logo": "https://cdn2.vectorstock.com/i/1000x1000/63/46/error-404-with-the-cute-potato-mascot-vector-39106346.jpg",
+    "signup": "https://www.youtube.com/watch?v=q7uyKYeGPdE"
   }
 ]
