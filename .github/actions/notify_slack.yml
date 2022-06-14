@@ -1,0 +1,29 @@
+name: 'Notify Slack'
+description: 'Send a notification to Slack indicating the workflow status'
+inputs:
+  slack-channel:  # id of input
+    description: 'Slack channel name'
+    required: true
+    default: 'production-circle'
+runs:
+  using: "composite"
+  steps:
+    - name: Notify slack success
+      if: success()
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        channel: ${{ inputs.slack-channel }}
+        status: SUCCESS
+        color: good
+
+    - name: Notify slack fail
+      if: failure()
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        channel: ${{ inputs.slack-channel }}
+        status: FAILED
+        color: danger
