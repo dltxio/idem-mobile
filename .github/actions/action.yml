@@ -5,13 +5,16 @@ inputs:
     description: 'Slack channel name'
     required: true
     default: 'production-circle'
+  slack-bot-token:
+    description: 'Slack bot token'
+    required: true
 runs:
   using: "composite"
   steps:
     - name: Notify slack success
       if: success()
       env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+        SLACK_BOT_TOKEN: ${{ inputs.slack-bot-token }}
       uses: voxmedia/github-action-slack-notify-build@v1
       with:
         channel: ${{ inputs.slack-channel }}
@@ -21,7 +24,7 @@ runs:
     - name: Notify slack fail
       if: failure()
       env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+        SLACK_BOT_TOKEN: ${{ inputs.slack-bot-token }}
       uses: voxmedia/github-action-slack-notify-build@v1
       with:
         channel: ${{ inputs.slack-channel }}
