@@ -16,6 +16,14 @@ export type ExchangeValue = {
   ) => Promise<void>;
   gpibUserID: string | undefined;
   reset: () => void;
+  verifyOnExchange: (
+    userName: string | undefined,
+    password: string | undefined,
+    firstName: string | undefined,
+    lastName: string | undefined,
+    yob: string | undefined
+  ) => Promise<void>;
+  randomTempPassword: string | undefined;
 };
 
 export const ExchangeContext = React.createContext<ExchangeValue | undefined>(
@@ -67,35 +75,33 @@ export const ExchangeProvider: React.FC<{
     name: string | undefined,
     email: string | undefined
   ) => {
-    if (name && email) {
-      const body = JSON.stringify({
-        fullName: name,
-        email: email,
-        password: randomTempPassword,
-        referralCode: "",
-        trackAddress: true,
-        CreateAddress: true
-      });
+    const body = JSON.stringify({
+      fullName: name,
+      email: email,
+      password: randomTempPassword,
+      referralCode: "",
+      trackAddress: true,
+      CreateAddress: true
+    });
 
-      try {
-        const response = await axios.post(
-          "https://testapi.getpaidinbitcoin.com.au/user",
-          body,
-          {
-            headers: {
-              "Content-Type": "application/json"
-            }
+    try {
+      const response = await axios.post(
+        "https://testapi.getpaidinbitcoin.com.au/user",
+        body,
+        {
+          headers: {
+            "Content-Type": "application/json"
           }
-        );
-        if (response.status === 200) {
-          const userID = response.data;
-          await exchangeLocalStorage.save(userID);
-          shareDetailsAlert();
         }
-      } catch (error: any) {
-        console.log(error.response.data);
-        Alert.alert(error.response.data);
+      );
+      if (response.status === 200) {
+        const userID = response.data;
+        await exchangeLocalStorage.save(userID);
+        shareDetailsAlert();
       }
+    } catch (error: any) {
+      console.log(error.response.data);
+      Alert.alert(error.response.data);
     }
   };
 
@@ -127,6 +133,65 @@ export const ExchangeProvider: React.FC<{
     }
   };
 
+  const verifyOnExchange = async (
+    userName: string | undefined,
+    password: string | undefined,
+    firstName: string | undefined,
+    lastName: string | undefined,
+    yob: string | undefined
+  ) => {
+    const checkAuthBody = JSON.stringify({
+      userName: userName,
+      password: password
+    });
+    try {
+      const checkUserAuth = await axios.post(
+        "https://testapi.getpaidinbitcoin.com.au/user/authenticate",
+        checkAuthBody,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      if (checkUserAuth.status === 200) {
+        const userId = checkUserAuth.data.id;
+        const jwt = checkUserAuth.data.token;
+        const updatedBody = {
+          fees: 0,
+          firstName: firstName,
+          middleName: "string",
+          lastName: lastName,
+          signUpDate: "2022-06-14T01:45:33.358Z",
+          offerCode: "string",
+          randomCent: 0,
+          idVerificationStatus: 0,
+          idVerificationUrl: "string",
+          twoFactorSecret: "string",
+          yob: yob,
+          bankID: 0,
+          btcThreshold: 0,
+          id: 0,
+          userID: `${userId}`
+        };
+        console.log(updatedBody);
+        const updateUserInfo = await axios.put(
+          `https://testapi.getpaidinbitcoin.com.au/AccountInfoes/user/${userId}`,
+          updatedBody,
+          {
+            headers: {
+              Authorization: `Bearer ${jwt}`
+            }
+          }
+        );
+        console.log(updateUserInfo);
+      }
+    } catch (error: any) {
+      console.log(error);
+      Alert.alert(error.response.data);
+    }
+  };
+
   const reset = () => {
     exchangeLocalStorage.clear();
     setGpibUserID("");
@@ -137,9 +202,18 @@ export const ExchangeProvider: React.FC<{
       makeGpibUser,
       gpibUserID,
       reset,
-      makeCoinstashUser
+      makeCoinstashUser,
+      verifyOnExchange,
+      randomTempPassword
     }),
-    [makeGpibUser, gpibUserID, makeCoinstashUser, reset]
+    [
+      makeGpibUser,
+      gpibUserID,
+      makeCoinstashUser,
+      verifyOnExchange,
+      randomTempPassword,
+      reset
+    ]
   );
 
   return (

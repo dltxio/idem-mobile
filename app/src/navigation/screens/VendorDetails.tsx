@@ -13,13 +13,19 @@ import useVendorsList from "../../hooks/useVendorsList";
 import { VendorStackNavigationRoute } from "../../types/navigation";
 import { useClaimValue } from "../../context/ClaimsStore";
 import { useExchange } from "../../context/Exchange";
+import { findNames, findYOB } from "../../utils/formatters";
 
 const VendorDetailsScreen: React.FC = () => {
   const { vendors } = useVendorsList();
-  const { makeGpibUser, makeCoinstashUser } = useExchange();
+  const { makeGpibUser, makeCoinstashUser, verifyOnExchange } = useExchange();
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
   const name = useClaimValue("FullNameCredential");
   const email = useClaimValue("EmailCredential");
+  const dob = useClaimValue("DateOfBirthCredential");
+  const yob = findYOB(dob ? dob : "");
+  const splitName = findNames(name);
+  console.log(yob);
+
   const vendor = vendors.find((v) => v.name === route.params.vendorId);
 
   if (!vendor) {
@@ -31,10 +37,10 @@ const VendorDetailsScreen: React.FC = () => {
       <Text style={styles.header}>{vendor.name}</Text>
       <Text style={styles.description}>{vendor.description}</Text>
       <Image source={{ uri: vendor.logo }} style={styles.logo} />
-      <View style={styles.button}>
+      <View style={styles.buttonWrapper}>
         <Button
           onPress={() => {
-            vendor.name === "Get Paid in Bitcoin"
+            vendor.website === "https://getpaidinbitcoin.com.au"
               ? makeGpibUser(name, email)
               : vendor.name === "Coinstash"
               ? makeCoinstashUser(name, email)
@@ -42,7 +48,25 @@ const VendorDetailsScreen: React.FC = () => {
           }}
           title="Sign Up"
           disabled={name && email ? false : true}
+          style={styles.button}
         />
+        {vendor.website === "https://getpaidinbitcoin.com.au" ? (
+          <Button
+            title="Sync My Claims"
+            style={styles.button}
+            onPress={() =>
+              verifyOnExchange(
+                email,
+                "Test1234",
+                splitName?.firstName,
+                splitName?.lastName,
+                yob
+              )
+            }
+          />
+        ) : (
+          <Text></Text>
+        )}
       </View>
     </View>
   );
@@ -71,9 +95,13 @@ const styles = StyleSheet.create({
     backgroundColor: "gray"
   },
 
-  button: {
+  buttonWrapper: {
     width: Dimensions.get("window").width * 0.9,
-    marginTop: Dimensions.get("window").height / 2.5
+    marginTop: Dimensions.get("window").height / 2.5,
+    justifyContent: "space-around"
+  },
+  button: {
+    marginVertical: 5
   }
 });
 
