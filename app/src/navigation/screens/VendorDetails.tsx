@@ -27,7 +27,10 @@ const VendorDetailsScreen: React.FC = () => {
   }
 
   return (
-    <View style={styles.container} key={vendor.name}>
+    <View
+      style={[styles.container, { backgroundColor: vendor.backgroundColor }]}
+      key={vendor.name}
+    >
       <Text style={styles.header}>{vendor.name}</Text>
       <Text style={styles.description}>{vendor.description}</Text>
       <Image source={{ uri: vendor.logo }} style={styles.logo} />
@@ -67,8 +70,7 @@ const styles = StyleSheet.create({
 
   logo: {
     width: 170,
-    height: 120,
-    backgroundColor: "gray"
+    height: 120
   },
 
   button: {

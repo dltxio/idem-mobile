@@ -13,4 +13,5 @@ export type Vendor = {
   signup: string;
   tagline: string;
   website: string;
+  backgroundColor: string;
 };
