@@ -35,5 +35,5 @@ jobs:
       - name: Notify Slack
         uses: ./.github/actions
         with:
-          slack-channel: 'C01H0NYBBQW'
+          slack-channel: 'idem'
           slack-bot-token: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
