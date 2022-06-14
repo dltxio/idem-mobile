@@ -34,6 +34,7 @@ jobs:
       - run: cd app && yarn build
 
       - name: Notify Slack
+        if: always()
         uses: ./.github/actions
         with:
           slack-channel: 'idem'
