@@ -5,7 +5,9 @@ import {
   TextInput,
   Text,
   Dimensions,
-  Alert
+  Alert,
+  KeyboardAvoidingView,
+  ScrollView
 } from "react-native";
 import { Button } from "../../components";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
@@ -42,28 +44,33 @@ const PGPScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.introText}>Import your Public Key:</Text>
-      <TextInput
-        placeholder="Paste your PUBLIC key here"
-        placeholderTextColor={"black"}
-        onChangeText={setKeytext}
-        value={keytext}
-        style={styles.input}
-        multiline={true}
-        selectionColor={"white"}
-      />
-      <Text style={styles.warning}>
-        NOTE: Importing your keys saves them to your local storage. IDEM does
-        not have access to the keys you import.
-      </Text>
-      <View style={styles.buttonWrapper}>
-        <View style={styles.button}>
-          <Button title={"Import my Public Key"} onPress={importPGP} />
+    <KeyboardAvoidingView>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.scrollContent}
+      >
+        <Text style={styles.introText}>Import your Public Key:</Text>
+        <TextInput
+          placeholder="Paste your PUBLIC key here"
+          placeholderTextColor={"black"}
+          onChangeText={setKeytext}
+          value={keytext}
+          style={styles.input}
+          multiline={true}
+          selectionColor={"white"}
+        />
+        <Text style={styles.warning}>
+          NOTE: Importing your keys saves them to your local storage. IDEM does
+          not have access to the keys you import.
+        </Text>
+        <View style={styles.buttonWrapper}>
+          <View style={styles.button}>
+            <Button title={"Import my Public Key"} onPress={importPGP} />
+          </View>
         </View>
-      </View>
-      <BottomNavBarSpacer />
-    </View>
+        <BottomNavBarSpacer />
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -71,11 +78,13 @@ export default PGPScreen;
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "flex-start",
-    alignItems: "center",
-    height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
     marginTop: 80
+  },
+  scrollContent: {
+    justifyContent: "flex-start",
+    alignItems: "center",
+    height: Dimensions.get("window").height
   },
   introText: {
     marginBottom: 10

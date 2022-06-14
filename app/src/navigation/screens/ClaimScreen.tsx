@@ -131,7 +131,7 @@ const ClaimScreen: React.FC = () => {
           }
         );
         Alert.alert(
-          `EMAIL SENT`,
+          `Email Sent`,
           `Please check your email for instructions from keys.openpgp.org on how to verify your claim.`,
           [
             {
