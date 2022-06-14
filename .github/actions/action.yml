@@ -20,7 +20,7 @@ runs:
   using: "composite"
   steps:
     - name: Notify slack success
-      if: ${{ inputs.success }}
+      if: ${{ inputs.success == 'true' }}
       env:
         SLACK_BOT_TOKEN: ${{ inputs.slack-bot-token }}
       uses: voxmedia/github-action-slack-notify-build@v1
@@ -30,7 +30,7 @@ runs:
         color: good
 
     - name: Notify slack fail
-      if: ${{ !inputs.success }}
+      if: ${{ inputs.success != 'true' }}
       env:
         SLACK_BOT_TOKEN: ${{ inputs.slack-bot-token }}
       uses: voxmedia/github-action-slack-notify-build@v1
