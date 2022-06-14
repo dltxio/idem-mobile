@@ -138,11 +138,11 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   documentsList: {
-    height: Dimensions.get("window").height * 0.4
+    height: Dimensions.get("window").height * 0.28
   },
   bottomSection: {
     justifyContent: "flex-end",
-    height: Dimensions.get("window").height * 0.45
+    height: Dimensions.get("window").height * 0.6
   },
   label: {
     marginTop: 10
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     marginVertical: 5
   },
   picker: {
-    height: 50
+    height: 150
   },
   pickerItem: {
     fontSize: 12
