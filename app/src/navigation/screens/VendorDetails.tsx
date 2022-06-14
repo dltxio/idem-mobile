@@ -6,7 +6,8 @@ import {
   StyleSheet,
   Text,
   Dimensions,
-  Linking
+  Linking,
+  Alert
 } from "react-native";
 import { Button } from "../../components";
 import useVendorsList from "../../hooks/useVendorsList";
@@ -21,6 +22,8 @@ const VendorDetailsScreen: React.FC = () => {
   const name = useClaimValue("FullNameCredential");
   const email = useClaimValue("EmailCredential");
   const vendor = vendors.find((v) => v.name === route.params.vendorId);
+  //MY CODE
+  // const [password] = React.useState("GPIBpassword");
 
   if (!vendor) {
     return null;
@@ -45,6 +48,21 @@ const VendorDetailsScreen: React.FC = () => {
           }}
           title="Sign Up"
           disabled={name && email ? false : true}
+        />
+        <Button
+          onPress={() => {
+            Alert.prompt("Enter password your GPIB password", "", [
+              {
+                text: "Cancel",
+                style: "cancel"
+              },
+              {
+                text: "OK",
+                onPress: () => console.log("")
+              }
+            ]);
+          }}
+          title="Sync Details"
         />
       </View>
     </View>
