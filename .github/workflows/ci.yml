@@ -29,14 +29,17 @@ jobs:
           node-version: ${{ steps.package-engines-versions.outputs.nodeVersion }}
 
       - run: yarn install
-      - run: yarn lint
-      - run: yarn build
-      - run: cd app && yarn build
+
+      - name: Run Lint and Build
+        id: build
+        run: |
+          yarn lint
+          yarn build
+        continue-on-error: true
 
       - name: Notify Slack
-        if: always()
         uses: ./.github/actions
         with:
           slack-channel: 'idem'
           slack-bot-token: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
-          success: ${{ success() }}
+          success: ${{ steps.build.outputs.status == 'success' }}
