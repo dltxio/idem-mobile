@@ -15,15 +15,31 @@ jobs:
     steps:
       - name: Checkout Branch
         uses: actions/checkout@v3
+
       - name: Read package.json node and npm engines version
         uses: skjnldsv/read-package-engines-version-actions@v1.2
         id: package-engines-versions
+
       - name: Show node version number
         run: echo "Node version is ${{ steps.package-engines-versions.outputs.nodeVersion }}"
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.2.0
         with:
           node-version: ${{ steps.package-engines-versions.outputs.nodeVersion }}
+
       - run: yarn install
-      - run: yarn lint
-      - run: yarn build
+
+      - name: Run Lint and Build
+        id: build
+        run: |
+          yarn lint
+          yarn build
+
+      - name: Notify Slack
+        if: always()
+        uses: ./.github/actions
+        with:
+          slack-channel: 'idem'
+          slack-bot-token: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+          outcome: ${{ steps.build.outcome }}
