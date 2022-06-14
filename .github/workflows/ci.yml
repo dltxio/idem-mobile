@@ -31,6 +31,7 @@ jobs:
       - run: yarn install
       - run: yarn lint
       - run: yarn build
+      - run: cd app && yarn build
 
       - name: Notify Slack
         uses: ./.github/actions
