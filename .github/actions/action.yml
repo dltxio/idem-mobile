@@ -17,7 +17,7 @@ runs:
         SLACK_BOT_TOKEN: ${{ inputs.slack-bot-token }}
       uses: voxmedia/github-action-slack-notify-build@v1
       with:
-        channel: ${{ inputs.slack-channel }}
+        channel_id: ${{ inputs.slack-channel }}
         status: SUCCESS
         color: good
 
@@ -27,6 +27,6 @@ runs:
         SLACK_BOT_TOKEN: ${{ inputs.slack-bot-token }}
       uses: voxmedia/github-action-slack-notify-build@v1
       with:
-        channel: ${{ inputs.slack-channel }}
+        channel_id: ${{ inputs.slack-channel }}
         status: FAILED
         color: danger
