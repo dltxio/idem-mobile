@@ -6,7 +6,8 @@ import {
   StyleSheet,
   Text,
   Dimensions,
-  Linking
+  Linking,
+  Alert
 } from "react-native";
 import { Button } from "../../components";
 import useVendorsList from "../../hooks/useVendorsList";
@@ -18,6 +19,7 @@ import { findNames, findYOB } from "../../utils/formatters";
 const VendorDetailsScreen: React.FC = () => {
   const { vendors } = useVendorsList();
   const { makeGpibUser, makeCoinstashUser, verifyOnExchange } = useExchange();
+  const [gpibPassword, setGpibPassword] = React.useState<string>("");
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
   const name = useClaimValue("FullNameCredential");
   const email = useClaimValue("EmailCredential");
@@ -52,17 +54,27 @@ const VendorDetailsScreen: React.FC = () => {
         />
         {vendor.website === "https://getpaidinbitcoin.com.au" ? (
           <Button
-            title="Sync My Claims"
-            style={styles.button}
-            onPress={() =>
-              verifyOnExchange(
-                email,
-                "Test1234",
-                splitName?.firstName,
-                splitName?.lastName,
-                yob
-              )
-            }
+            onPress={() => {
+              Alert.prompt("Enter password your GPIB password", "", [
+                {
+                  text: "OK",
+                  onPress: (value) => {
+                    if (value) {
+                      setGpibPassword(value);
+                      return gpibPassword;
+                    }
+                    verifyOnExchange(
+                      email,
+                      gpibPassword,
+                      splitName?.firstName,
+                      splitName?.lastName,
+                      yob
+                    );
+                  }
+                }
+              ]);
+            }}
+            title="Sync Details"
           />
         ) : (
           <Text></Text>

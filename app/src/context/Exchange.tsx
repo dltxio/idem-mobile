@@ -158,21 +158,9 @@ export const ExchangeProvider: React.FC<{
         const userId = checkUserAuth.data.id;
         const jwt = checkUserAuth.data.token;
         const updatedBody = {
-          fees: 0,
           firstName: firstName,
-          middleName: "string",
           lastName: lastName,
-          signUpDate: "2022-06-14T01:45:33.358Z",
-          offerCode: "string",
-          randomCent: 0,
-          idVerificationStatus: 0,
-          idVerificationUrl: "string",
-          twoFactorSecret: "string",
-          yob: yob,
-          bankID: 0,
-          btcThreshold: 0,
-          id: 0,
-          userID: `${userId}`
+          yob: yob
         };
         console.log(updatedBody);
         const updateUserInfo = await axios.put(
@@ -184,7 +172,9 @@ export const ExchangeProvider: React.FC<{
             }
           }
         );
-        console.log(updateUserInfo);
+        if (updateUserInfo.status === 204) {
+          Alert.alert("Success!", `Details updated: ${updatedBody}`);
+        }
       }
     } catch (error: any) {
       console.log(error);
