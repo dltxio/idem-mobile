@@ -13,6 +13,8 @@ import useVendorsList from "../../hooks/useVendorsList";
 import { VendorStackNavigationRoute } from "../../types/navigation";
 import { useClaimValue } from "../../context/ClaimsStore";
 import { useExchange } from "../../context/Exchange";
+import { ScrollView } from "react-native-gesture-handler";
+import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 
 const VendorDetailsScreen: React.FC = () => {
   const { vendors } = useVendorsList();
@@ -27,9 +29,10 @@ const VendorDetailsScreen: React.FC = () => {
   }
 
   return (
-    <View
+    <ScrollView
       style={[styles.container, { backgroundColor: vendor.backgroundColor }]}
       key={vendor.name}
+      contentContainerStyle={styles.scrollContent}
     >
       <Text style={styles.header}>{vendor.name}</Text>
       <Text style={styles.description}>{vendor.description}</Text>
@@ -47,15 +50,19 @@ const VendorDetailsScreen: React.FC = () => {
           disabled={name && email ? false : true}
         />
       </View>
-    </View>
+      <BottomNavBarSpacer />
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "flex-start",
-    alignItems: "center",
     height: Dimensions.get("window").height
+  },
+
+  scrollContent: {
+    justifyContent: "flex-start",
+    alignItems: "center"
   },
 
   header: {

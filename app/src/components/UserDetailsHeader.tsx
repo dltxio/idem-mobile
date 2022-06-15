@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Alert } from "react-native";
+import { View, StyleSheet, Text, Alert, Pressable } from "react-native";
 import { useClaimsStore, useClaimValue } from "../context/ClaimsStore";
 import { Avatar } from "react-native-elements";
 import colors from "../styles/colors";
@@ -56,8 +56,21 @@ const UserDetailsHeader: React.FC = () => {
         onPress={addProfileImageClaim}
       />
       <View style={styles.userDetails}>
-        <DetailOrPlaceholder value={name} bold={true} placeholderWidth={90} />
-        <DetailOrPlaceholder value={email} placeholderWidth={150} />
+        <DetailOrPlaceholder
+          value={name}
+          bold={true}
+          placeholderWidth={90}
+          onPress={() =>
+            navigation.navigate("Claim", { claimType: "FullNameCredential" })
+          }
+        />
+        <DetailOrPlaceholder
+          value={email}
+          placeholderWidth={150}
+          onPress={() =>
+            navigation.navigate("Claim", { claimType: "EmailCredential" })
+          }
+        />
         <Text onPress={() => navigation.navigate("PGP")}>
           Import your PGP/GPG key pair
         </Text>
@@ -71,18 +84,24 @@ const UserDetailsHeader: React.FC = () => {
 
 const DetailOrPlaceholder: React.FC<{
   value: string | undefined;
-  placeholderWidth: number;
   bold?: boolean;
-}> = ({ value, placeholderWidth, bold }) => {
+  placeholderWidth: number;
+  onPress: () => void;
+}> = ({ value, placeholderWidth, bold, onPress }) => {
   if (!value) {
     return (
-      <View
+      <Pressable
+        onPress={onPress}
         style={[styles.userDetailPlaceholder, { width: placeholderWidth }]}
       />
     );
   }
 
-  return <Text style={bold && styles.boldText}>{value}</Text>;
+  return (
+    <Text style={bold && styles.boldText} onPress={onPress}>
+      {value}
+    </Text>
+  );
 };
 
 const styles = StyleSheet.create({
