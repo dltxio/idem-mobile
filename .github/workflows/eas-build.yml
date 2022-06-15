@@ -45,7 +45,6 @@ jobs:
         run: yarn
 
       - name: Build on EAS
-        id: build
         run: EXPO_APPLE_APP_SPECIFIC_PASSWORD=${{ secrets.EXPO_APPLE_APP_SPECIFIC_PASSWORD }} npx eas-cli build --platform ios --non-interactive --auto-submit --no-wait --profile uat
         working-directory: ./app
 
@@ -53,6 +52,7 @@ jobs:
         run: git pull
 
       - name: Bump Version Number
+        id: bump
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Bump version number
@@ -63,4 +63,4 @@ jobs:
         with:
           slack-channel: "idem"
           slack-bot-token: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
-          outcome: ${{ steps.build.outcome }}
+          outcome: ${{ steps.bump.outcome }}
