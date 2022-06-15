@@ -7,12 +7,32 @@
       "developmentClient": true,
       "distribution": "internal"
     },
-    "preview": {
-      "distribution": "internal"
+    "uat": {
+      "ios": {
+        "autoIncrement": "version"
+      },
+      "android": {
+        "autoIncrement": "versionCode"
+      }
     },
-    "production": {}
+    "production": {
+      "ios": {
+        "autoIncrement": "version"
+      },
+      "android": {
+        "autoIncrement": "versionCode"
+      }
+    }
   },
   "submit": {
-    "production": {}
+    "uat": {
+      "android": {
+        "track": "internal",
+        "releaseStatus": "draft"
+      },
+      "ios": {
+        "ascAppId": "1629782138"
+      }
+    }
   }
 }
