@@ -1,7 +1,7 @@
-import Index from "./src/App";
+import _App from "./src/App";
 
 const App = () => {
-  return Index;
+  return _App;
 };
 
 export default App;
