@@ -2,7 +2,7 @@ name: EAS PIPELINE
 on:
   push:
     branches:
-      - IDEM-57
+      - main
 
 concurrency:
   group: build_app
@@ -58,7 +58,7 @@ jobs:
           commit_message: Bump version number
 
       - name: Notify Slack
-        if: always()
+        if: ${{ always() && github.ref == 'refs/heads/main' }}
         uses: ./.github/actions
         with:
           slack-channel: "idem"
