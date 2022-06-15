@@ -22,7 +22,7 @@ File: A file is a digital representation of a document, such as jpgs, pngs, pdfs
 
 Document: A document is a file that a user has uploaded and labeled with a document type. Documents can be used as evidence for various claim.
 
-Claim: A claim is a statement that the user is asserting as true. A claim can be verified at true by attaching evidence to it and completing the relevant verification process.
+Claim: A claim is a statement that the user is asserting as true. A claim can be verified as true by attaching evidence to it and completing the relevant verification process.
 
 ## What is Idem?
 
