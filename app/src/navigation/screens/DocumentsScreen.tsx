@@ -42,7 +42,6 @@ const DocumentsScreen: React.FC = () => {
 
   const takePhoto = async () => {
     const result = await selectPhotoFromCamera();
-
     if (result && !result.cancelled) {
       addFile(selectedDocumentId, result.uri);
     }
