@@ -31,9 +31,7 @@
         "releaseStatus": "draft"
       },
       "ios": {
-        "appleId": "accounts@dltx.io",
-        "appleTeamId": "FRG84WT9XZ",
-        "ascAppId": "1629782138"
+
       }
     }
   }
