@@ -7,7 +7,8 @@ import {
   Keyboard,
   Text,
   Alert,
-  ScrollView
+  ScrollView,
+  Dimensions
 } from "react-native";
 import { Input, Switch } from "react-native-elements";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -88,7 +89,22 @@ const ClaimScreen: React.FC = () => {
   };
 
   const verifyEmail = async (email: string) => {
+    setIsVerifying(true);
     const armoredKey = await pgpLocalStorage.get();
+    if (!armoredKey || armoredKey === null) {
+      Alert.alert(
+        `ERROR`,
+        `Please go to your profile and import your private key first!`,
+        [
+          {
+            text: "Ok",
+            onPress: () => console.log("invalid pgp"),
+            style: "cancel"
+          }
+        ]
+      );
+      return;
+    }
     try {
       const uploadResponse = await axios.post<UploadPGPKeyResponse>(
         "https://keys.openpgp.org/vks/v1/upload",
@@ -115,7 +131,7 @@ const ClaimScreen: React.FC = () => {
           }
         );
         Alert.alert(
-          `EMAIL SENT`,
+          `Email Sent`,
           `Please check your email for instructions from keys.openpgp.org on how to verify your claim.`,
           [
             {
@@ -133,6 +149,7 @@ const ClaimScreen: React.FC = () => {
       const err = error as AxiosError;
       console.error(err?.response?.data || error);
     }
+    setIsVerifying(false);
   };
 
   const documentList =
@@ -155,84 +172,91 @@ const ClaimScreen: React.FC = () => {
     ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
 
   return (
-    <ScrollView style={[commonStyles.screen, commonStyles.screenContent]}>
-      {claim.fields.map((field) => {
-        const onChange = (value: string) => {
-          setFormState((previous) => ({
-            ...previous,
-            [field.id]: value
-          }));
-        };
+    <View style={commonStyles.screen}>
+      <ScrollView style={commonStyles.screenContent}>
+        <View>
+          {claim.fields.map((field) => {
+            const onChange = (value: string) => {
+              setFormState((previous) => ({
+                ...previous,
+                [field.id]: value
+              }));
+            };
 
-        if (field.type === "text") {
-          return (
-            <View key={field.id}>
-              <Input
-                label={field.title}
-                clearButtonMode="always"
-                value={formState[field.id]}
-                onChangeText={onChange}
-              />
-              {field.id === "email" ? (
-                <Text
-                  onPress={() => verifyEmail(formState[field.id])}
-                  style={{ paddingBottom: 10 }}
-                >
-                  Verify your email
-                </Text>
-              ) : (
-                <Text></Text>
-              )}
-            </View>
-          );
-        }
+            if (field.type === "text") {
+              return (
+                <View key={field.id}>
+                  <Input
+                    label={field.title}
+                    clearButtonMode="always"
+                    value={formState[field.id]}
+                    onChangeText={onChange}
+                  />
+                  {field.id === "email" ? (
+                    <View style={{ marginTop: 385 }}>
+                      <Button
+                        onPress={() => verifyEmail(formState[field.id])}
+                        title="Verify Email Claim"
+                      />
+                    </View>
+                  ) : (
+                    <Text></Text>
+                  )}
+                </View>
+              );
+            }
 
-        if (field.type === "date") {
-          return (
-            <Input
-              value={formState[field.id]}
-              key={field.id}
-              label={field.title}
-              ref={(ref) =>
-                (dateRefs.current = {
-                  [field.id]: ref
-                })
-              }
-              onFocus={() => showDatePickerFor(field.id)}
+            if (field.type === "date") {
+              return (
+                <Input
+                  value={formState[field.id]}
+                  key={field.id}
+                  label={field.title}
+                  ref={(ref) =>
+                    (dateRefs.current = {
+                      [field.id]: ref
+                    })
+                  }
+                  onFocus={() => showDatePickerFor(field.id)}
+                />
+              );
+            }
+
+            if (field.type === "boolean") {
+              return (
+                <View key={field.id} style={{ paddingVertical: 20 }}>
+                  <Text style={{ marginBottom: 20 }}>{field.title}</Text>
+                  <Switch
+                    value={formState[field.id] === "true"}
+                    onValueChange={(value) =>
+                      onChange(value ? "true" : "false")
+                    }
+                  />
+                </View>
+              );
+            }
+          })}
+          {showDatePickerForFieldId && (
+            <DateTimePickerModal
+              isVisible={true}
+              mode="date"
+              onConfirm={onDateSelect}
+              onCancel={hideDatePicker}
             />
-          );
-        }
-
-        if (field.type === "boolean") {
-          return (
-            <View key={field.id} style={{ paddingVertical: 20 }}>
-              <Text style={{ marginBottom: 20 }}>{field.title}</Text>
-              <Switch
-                value={formState[field.id] === "true"}
-                onValueChange={(value) => onChange(value ? "true" : "false")}
-              />
-            </View>
-          );
-        }
-      })}
-      {showDatePickerForFieldId && (
-        <DateTimePickerModal
-          isVisible={true}
-          mode="date"
-          onConfirm={onDateSelect}
-          onCancel={hideDatePicker}
+          )}
+          {documentList}
+        </View>
+        <BottomNavBarSpacer />
+      </ScrollView>
+      <View style={styles.buttonWrapper}>
+        <Button
+          title={isVerifying ? "Save & Verify" : "Save"}
+          disabled={!canSave}
+          onPress={onSave}
+          loading={loading}
         />
-      )}
-      {documentList}
-      <Button
-        title={isVerifying ? "Save & Verify" : "Save"}
-        disabled={!canSave}
-        onPress={onSave}
-        loading={loading}
-        style={styles.verifyButton}
-      />
-      <BottomNavBarSpacer />
-    </ScrollView>
+      </View>
+    </View>
   );
 };
 
@@ -242,10 +266,10 @@ const styles = StyleSheet.create({
   introText: {
     marginBottom: 10
   },
-  verifyButton: {
-    marginTop: 20,
-    marginBottom: 20,
-    paddingBottom: 20
+  buttonWrapper: {
+    bottom: 0,
+    width: Dimensions.get("window").width - 40,
+    margin: 20
   }
 });
 
