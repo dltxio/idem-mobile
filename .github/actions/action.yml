@@ -1,21 +1,21 @@
 # Action prerequisite - Slack channel installation instructions
-# 1) Open the target DLTx slack channel info modal 
+# 1) Open the target DLTx slack channel info modal
 # 2) On the Integration tab click 'Add apps'
 # 3) Select 'GitHub Action' app already in the workspace
 # 4) Verify there is a message from the app in the channel
-name: 'Notify Slack'
-description: 'Send a notification to Slack indicating the workflow status'
+name: "Notify Slack"
+description: "Send a notification to Slack indicating the workflow status"
 inputs:
-  slack-channel:  # id of input
-    description: 'Slack channel name'
+  slack-channel: # id of input
+    description: "Slack channel name"
     required: true
   slack-bot-token:
-    description: 'Slack bot token'
+    description: "Slack bot token"
     required: true
   outcome:
-    description: 'Either a success or failure notification will be sent'
+    description: "Either a success or failure notification will be sent"
     required: false
-    default: 'failure'
+    default: "failure"
 runs:
   using: "composite"
   steps:
