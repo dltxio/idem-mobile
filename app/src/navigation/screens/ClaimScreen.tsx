@@ -89,7 +89,22 @@ const ClaimScreen: React.FC = () => {
   };
 
   const verifyEmail = async (email: string) => {
+    setIsVerifying(true);
     const armoredKey = await pgpLocalStorage.get();
+    if (!armoredKey || armoredKey === null) {
+      Alert.alert(
+        `ERROR`,
+        `Please go to your profile and import your private key first!`,
+        [
+          {
+            text: "Ok",
+            onPress: () => console.log("invalid pgp"),
+            style: "cancel"
+          }
+        ]
+      );
+      return;
+    }
     try {
       const uploadResponse = await axios.post<UploadPGPKeyResponse>(
         "https://keys.openpgp.org/vks/v1/upload",
@@ -116,7 +131,7 @@ const ClaimScreen: React.FC = () => {
           }
         );
         Alert.alert(
-          `EMAIL SENT`,
+          `Email Sent`,
           `Please check your email for instructions from keys.openpgp.org on how to verify your claim.`,
           [
             {
@@ -134,6 +149,7 @@ const ClaimScreen: React.FC = () => {
       const err = error as AxiosError;
       console.error(err?.response?.data || error);
     }
+    setIsVerifying(false);
   };
 
   const documentList =
@@ -177,12 +193,12 @@ const ClaimScreen: React.FC = () => {
                     onChangeText={onChange}
                   />
                   {field.id === "email" ? (
-                    <Text
-                      onPress={() => verifyEmail(formState[field.id])}
-                      style={{ paddingBottom: 10 }}
-                    >
-                      Verify your email
-                    </Text>
+                    <View style={{ marginTop: 385 }}>
+                      <Button
+                        onPress={() => verifyEmail(formState[field.id])}
+                        title="Verify Email Claim"
+                      />
+                    </View>
                   ) : (
                     <Text></Text>
                   )}
