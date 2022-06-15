@@ -18,7 +18,7 @@ yarn start
 
 Document Type: Each file can be associated with a document type, or category, such as "Driver's License" or "Passport".
 
-File: A file is an upload from a user's device, such as a jpg or pdf.
+File: A file is a digital representation of a document, such as jpgs, pngs, pdfs, etc. In IDEM, users can upload jpg and pdf files.
 
 Document: A document is a file that a user has uploaded and labeled with a document type. Documents can be used as evidence for various claim.
 
