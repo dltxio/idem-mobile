@@ -155,7 +155,6 @@ export const ExchangeProvider: React.FC<{
         }
       );
       if (checkUserAuth.status === 200) {
-        const userId = checkUserAuth.data.id;
         const jwt = checkUserAuth.data.token;
         const updatedBody = {
           firstName: firstName,
@@ -164,15 +163,16 @@ export const ExchangeProvider: React.FC<{
         };
         console.log(updatedBody);
         const updateUserInfo = await axios.put(
-          `https://testapi.getpaidinbitcoin.com.au/AccountInfoes/user/${userId}`,
+          `https://testapi.getpaidinbitcoin.com.au/AccountInfoes`,
           updatedBody,
           {
             headers: {
+              "Content-Type": "application/json",
               Authorization: `Bearer ${jwt}`
             }
           }
         );
-        if (updateUserInfo.status === 204) {
+        if (updateUserInfo.status === 200) {
           Alert.alert("Success!", `Details updated: ${updatedBody}`);
         }
       }
