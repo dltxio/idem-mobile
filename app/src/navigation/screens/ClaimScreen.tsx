@@ -22,10 +22,11 @@ import { Claim, UploadPGPKeyResponse, VerifyEmail } from "../../types/claim";
 import { FileList, Button } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
-import { pgpLocalStorage } from "../../utils/local-storage";
+import { claimsLocalStorage, pgpLocalStorage } from "../../utils/local-storage";
 import axios, { AxiosError } from "axios";
 import { getDocumentFromDocumentId } from "../../utils/document-utils";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
+import { stringToDate } from "../../utils/formatter";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -33,13 +34,12 @@ const ClaimScreen: React.FC = () => {
   const route = useRoute<ProfileStackNavigationRoute<"Claim">>();
   const claim = getClaimFromType(route.params.claimType);
   const { addClaim, usersClaims } = useClaimsStore();
-
   const userClaim = usersClaims.find((c) => c.type === claim.type);
-
-  const navigation = useNavigation<Navigation>();
   const [formState, setFormState] = React.useState<{ [key: string]: string }>(
     userClaim?.value || {}
   );
+
+  const navigation = useNavigation<Navigation>();
   const dateRefs = React.useRef<{ [key: string]: any }>({});
   const [showDatePickerForFieldId, setShowDatePickerForFieldId] =
     React.useState<string>();
@@ -69,6 +69,59 @@ const ClaimScreen: React.FC = () => {
     }
 
     hideDatePicker();
+  };
+
+  const save18Claim = async () => {
+    setLoading(true);
+    await addClaim("18+", "true", selectedFileIds);
+    Alert.alert(
+      `Over 18`,
+      `Your claim for being over 18 years of age has been saved.`,
+      [
+        {
+          text: "OK",
+          onPress: () => console.log(""),
+          style: "cancel"
+        }
+      ]
+    );
+    setLoading(false);
+  };
+
+  const saveAndCheckBirthday = async () => {
+    setLoading(true);
+    const claims = await claimsLocalStorage.get();
+    const findBirthday = claims?.map((claim) => {
+      if (claim.type === "DateOfBirthCredential") {
+        const userBirthday = claim.value;
+        const dateBirthday = stringToDate(userBirthday.dob);
+        const today = Date.now();
+        const eightteenYearsAgo = today - 568025136000;
+        if (dateBirthday <= eightteenYearsAgo) {
+          Alert.alert(
+            "18+ detected",
+            "IDEM has detected that your are over 18. Would you like to update your 18+ claim accordingly?",
+            [
+              {
+                text: "OK",
+                onPress: save18Claim
+              },
+              {
+                text: "Cancel",
+                style: "cancel"
+              }
+            ],
+            {
+              cancelable: true
+            }
+          );
+        }
+        return userBirthday;
+      }
+      return null;
+    });
+    setLoading(false);
+    return findBirthday;
   };
 
   const onSave = async () => {
@@ -228,9 +281,10 @@ const ClaimScreen: React.FC = () => {
                   <Text style={{ marginBottom: 20 }}>{field.title}</Text>
                   <Switch
                     value={formState[field.id] === "true"}
-                    onValueChange={(value) =>
-                      onChange(value ? "true" : "false")
-                    }
+                    onValueChange={(value) => {
+                      onChange(value ? "true" : "false");
+                      console.log();
+                    }}
                   />
                 </View>
               );
@@ -242,6 +296,8 @@ const ClaimScreen: React.FC = () => {
               mode="date"
               onConfirm={onDateSelect}
               onCancel={hideDatePicker}
+              display="inline"
+              isDarkModeEnabled={true}
             />
           )}
           {documentList}
@@ -252,7 +308,11 @@ const ClaimScreen: React.FC = () => {
         <Button
           title={isVerifying ? "Save & Verify" : "Save"}
           disabled={!canSave}
-          onPress={onSave}
+          onPress={
+            claim.type === "DateOfBirthCredential"
+              ? saveAndCheckBirthday
+              : onSave
+          }
           loading={loading}
         />
       </View>
@@ -270,6 +330,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: Dimensions.get("window").width - 40,
     margin: 20
+  },
+  datePicker: {
+    height: 500
   }
 });
 
