@@ -26,7 +26,7 @@ import { claimsLocalStorage, pgpLocalStorage } from "../../utils/local-storage";
 import axios, { AxiosError } from "axios";
 import { getDocumentFromDocumentId } from "../../utils/document-utils";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
-import { stringToDate } from "../../utils/formatter";
+import { check18Plus } from "../../utils/birthday-utils";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -93,11 +93,7 @@ const ClaimScreen: React.FC = () => {
     const claims = await claimsLocalStorage.get();
     const findBirthday = claims?.map((claim) => {
       if (claim.type === "DateOfBirthCredential") {
-        const userBirthday = claim.value;
-        const dateBirthday = stringToDate(userBirthday.dob);
-        const today = Date.now();
-        const eightteenYearsAgo = today - 568025136000;
-        if (dateBirthday <= eightteenYearsAgo) {
+        if (check18Plus(claim)) {
           Alert.alert(
             "18+ detected",
             "IDEM has detected that your are over 18. Would you like to update your 18+ claim accordingly?",
@@ -116,7 +112,6 @@ const ClaimScreen: React.FC = () => {
             }
           );
         }
-        return userBirthday;
       }
       return null;
     });
