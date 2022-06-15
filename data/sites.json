@@ -6,7 +6,8 @@
     "website": "https://getpaidinbitcoin.com.au",
     "logo": "https://images.squarespace-cdn.com/content/v1/5f5990cc9e792617828214ae/1600921877148-3ISFDDENM1N89GLGAIKI/GBIB+Logo_5%402x.png?format=1500w",
     "signup": "https://portal.getpaidinbitcoin.com.au/register",
-    "useProxy": false
+    "useProxy": false,
+    "backgroundColor": "#be2596"
   },
   {
     "name": "Coin Stash",
@@ -14,7 +15,8 @@
     "description": "",
     "logo": "https://cdn1.vectorstock.com/i/1000x1000/29/55/president-flat-graphic-emoji-icon-set-vector-30422955.jpg",
     "signup": "https://coinstash.com.au/auth/signup",
-    "useProxy": false
+    "useProxy": false,
+    "backgroundColor": "rgba(186, 105, 151, 0.96)"
   },
   {
     "name": "Test Exchange",
@@ -23,7 +25,8 @@
     "website": "https://example.com/",
     "logo": "https://pngset.com/images/dogecoin-wow-gold-gold-medal-trophy-money-transparent-png-1137773.png",
     "signup": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "useProxy": false
+    "useProxy": false,
+    "backgroundColor": "blue"
   },
   {
     "name": "Potato Exchange",
