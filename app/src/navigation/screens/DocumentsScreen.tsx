@@ -73,6 +73,7 @@ const DocumentsScreen: React.FC = () => {
                 onFilePress={navigateToFile}
                 isCheckList={false}
                 onDeleteFile={deleteFile}
+                documentId={selectedDocumentId}
               />
             </View>
           ) : (
@@ -81,6 +82,7 @@ const DocumentsScreen: React.FC = () => {
               onFilePress={navigateToFile}
               isCheckList={false}
               onDeleteFile={deleteFile}
+              documentId={selectedDocumentId}
             />
           )
         ) : (
