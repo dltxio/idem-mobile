@@ -7,6 +7,7 @@ import { getImageFileName } from "../utils/document-utils";
 import { fileLocalStorage } from "../utils/local-storage";
 import { keccak256 } from "ethers/lib/utils";
 import { Buffer } from "buffer";
+import { Alert } from "react-native";
 
 export type DocumentsValue = {
   files: File[];
@@ -34,11 +35,36 @@ export const DocumentProvider: React.FC<{
     })();
   }, []);
 
+  const checkFileTypes = async (documentId: string) => {
+    const files = await fileLocalStorage.get();
+    const fileCheck = files?.map((file) => {
+      const fileType = file.documentId;
+      if (fileType === documentId) {
+        Alert.alert(
+          "Warning!",
+          `You just added another ${documentId}. Please be sure your documents are up to date.`,
+          [
+            {
+              text: "OK",
+              style: "cancel"
+            }
+          ],
+          {
+            cancelable: true
+          }
+        );
+      }
+    });
+    return fileCheck;
+  };
+
   const addFile = async (
     documentId: DocumentId,
     uri: string
   ): Promise<string> => {
     const name = getImageFileName(uri);
+
+    checkFileTypes(documentId);
 
     if (!name) {
       throw new Error("Could not get filename from file uri");
