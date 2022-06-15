@@ -1,8 +1,8 @@
 export const findYOB = (dob: string) => {
-  const dobArray = dob.split(" ");
+  const dobArray = dob.split("");
   const findYob = dobArray.slice(6, 10);
   const yob = findYob.join("");
-  return yob.toString();
+  return yob;
 };
 
 export const findNames = (fullname: string | undefined) => {

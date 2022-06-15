@@ -159,21 +159,22 @@ export const ExchangeProvider: React.FC<{
         const updatedBody = {
           firstName: firstName,
           lastName: lastName,
-          yob: yob
+          yob: Number(yob)
         };
-        console.log(updatedBody);
         const updateUserInfo = await axios.put(
           `https://testapi.getpaidinbitcoin.com.au/AccountInfoes`,
           updatedBody,
           {
             headers: {
-              "Content-Type": "application/json",
               Authorization: `Bearer ${jwt}`
             }
           }
         );
         if (updateUserInfo.status === 200) {
-          Alert.alert("Success!", `Details updated: ${updatedBody}`);
+          Alert.alert(
+            "Success!",
+            `Details updated: first name, last name, year of birth`
+          );
         }
       }
     } catch (error: any) {

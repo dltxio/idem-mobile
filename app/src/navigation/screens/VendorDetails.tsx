@@ -19,14 +19,12 @@ import { findNames, findYOB } from "../../utils/formatters";
 const VendorDetailsScreen: React.FC = () => {
   const { vendors } = useVendorsList();
   const { makeGpibUser, makeCoinstashUser, verifyOnExchange } = useExchange();
-  const [gpibPassword, setGpibPassword] = React.useState<string>("");
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
   const name = useClaimValue("FullNameCredential");
   const email = useClaimValue("EmailCredential");
   const dob = useClaimValue("DateOfBirthCredential");
   const yob = findYOB(dob ? dob : "");
   const splitName = findNames(name);
-  console.log(yob);
 
   const vendor = vendors.find((v) => v.name === route.params.vendorId);
 
@@ -61,14 +59,10 @@ const VendorDetailsScreen: React.FC = () => {
               Alert.prompt("Enter password your GPIB password", "", [
                 {
                   text: "OK",
-                  onPress: (value) => {
-                    if (value) {
-                      setGpibPassword(value);
-                      return gpibPassword;
-                    }
-                    verifyOnExchange(
+                  onPress: async (value: string | undefined) => {
+                    await verifyOnExchange(
                       email,
-                      gpibPassword,
+                      value,
                       splitName?.firstName,
                       splitName?.lastName,
                       yob
