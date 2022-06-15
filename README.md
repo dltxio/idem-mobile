@@ -14,6 +14,16 @@ cd app
 yarn start
 ```
 
+## Glossary of Terms
+
+Document Type: Each file can be associated with a document type, or category, such as "Driver's License" or "Passport".
+
+File: A file is an upload from a user's device, such as a jpg or pdf.
+
+Document: A document is a file that a user has uploaded and labeled with a document type. Documents can be used as evidence for various claim.
+
+Claim: A claim is a statement that the user is asserting as true. A claim can be verified at true by attaching evidence to it and completing the relevant verification process.
+
 ## What is Idem?
 
 Idem (_Idem_, from now on) is an open source cross-platform mobile application based on the [Decentralised Identity Foundation's DID protocol](https://identity.foundation). The application will give individuals control of their digital identities by establishing trust in an interaction between two individuals or entities that do not know each other. For trust to happen, the offering party will present credentials to the receiving parties, which can verify that the credentials are from an issuer that they trust. _Idem_ is designed to be used by third parties who require their customers to be KYC'd, such as cryptocurrency exchanges (e.g. [Get Paid In Bitcoin](https://portal.getpaidinbitcoin.com.au)).
