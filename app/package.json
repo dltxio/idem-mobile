@@ -59,8 +59,5 @@
     "@types/secure-random-password": "^0.2.1",
     "typescript": "~4.3.5"
   },
-  "engines": {
-    "node": "16.14.2"
-  },
   "private": true
 }
