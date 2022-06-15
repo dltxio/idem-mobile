@@ -1,45 +1,59 @@
 import * as React from "react";
-import { View, Alert } from "react-native";
-import { Button } from "../../components";
-import { useClaimsStore } from "../../context/ClaimsStore";
-import { useDocumentStore } from "../../context/DocumentStore";
-import commonStyles from "../../styles/styles";
+import { View, StyleSheet, Dimensions, Text } from "react-native";
+import { ListItem } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
+import { VendorStackNavigation } from "../../types/navigation";
+import useVendorsList from "../../hooks/useVendorsList";
+
+type Navigation = VendorStackNavigation<"VendorsList">;
 
 const VendorsScreen: React.FC = () => {
-  const { reset: resetDocuments } = useDocumentStore();
-  const { reset: resetClaims } = useClaimsStore();
-
-  const showAlert = () =>
-    Alert.alert(
-      "CAUTION",
-      "You are about to reset your data, including claims and files. Would you like to continue?",
-      [
-        {
-          text: "OK",
-          onPress: onReset,
-          style: "destructive"
-        },
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        }
-      ],
-      {
-        cancelable: true
-      }
-    );
-
-  const onReset = () => {
-    resetDocuments();
-    resetClaims();
-  };
+  const navigation = useNavigation<Navigation>();
+  const { vendors } = useVendorsList();
 
   return (
-    <View style={commonStyles.screen}>
-      <Button title="Reset data" onPress={showAlert} />
+    <View style={[styles.container, { marginTop: 70 }]}>
+      <Text style={styles.header}>Supported Exchanges</Text>
+      {vendors.length > 0 &&
+        vendors.map((vendor) => {
+          const content = (
+            <>
+              <ListItem.Content style={styles.container}>
+                <ListItem.Title>{vendor.name}</ListItem.Title>
+              </ListItem.Content>
+            </>
+          );
+
+          return (
+            <ListItem
+              key={vendor.name}
+              style={styles.container}
+              onPress={() =>
+                navigation.navigate("VendorDetails", {
+                  vendorId: vendor.name
+                })
+              }
+            >
+              {content}
+            </ListItem>
+          );
+        })}
     </View>
   );
 };
 
 export default VendorsScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: "flex-start",
+    alignItems: "center",
+    width: Dimensions.get("window").width
+  },
+
+  header: {
+    color: "black",
+    fontSize: 30,
+    marginBottom: 10
+  }
+});

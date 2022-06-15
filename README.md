@@ -9,8 +9,8 @@ React native mobile app for Idem
 To run the app
 
 ```bash
-cd app
 yarn install
+cd app
 yarn start
 ```
 
@@ -43,7 +43,7 @@ So that I don't have to resupply all my information again and again and again!
 Given an Idem user,
 When they visit the demo.idem.com.au registration page,
 And they scan the QR code via the app,
-And click 'Ok' on the app,
+And click 'OK' on the app,
 Then they are registered on demo.idem.com.au,
 And their ID is verified,
 And they are redirected to demo.idem.com.au's home page.
@@ -98,6 +98,14 @@ Note that for MVP purposes (see below), the claims required will all already hav
 ## Verification Workflow Diagram
 
 The flowchart below is a verification workflow diagram for third-party developers to integrate a website (such as an exchange) with _Idem_. It works as follows:
+
+1. A user creates account on the website, typically with a email and password.
+2. When the user signs up, an account is created.
+3. The new user may then be assed to supply more information to meet KYC obligations. This could be meta data such as Full Name, Date of Birth and Phyiscal address. These are what Idem referrers to as _Claims_. To capture this data, the website can either
+4. - Get the user to fill out a form
+5. - Present a self documenting QR code requesting the claims required, and the callback URL for the website. This is similar to a PayPal IPN or an OAuth2 callback URL.
+6. The user is asked to confirm they're happy to proceed with sharing those specific claims to the website.
+7. IDEM then posts the claims in DID format to the websites specified callback URL, which it can then add to the users profile.
 
 <img src="https://user-images.githubusercontent.com/91101134/141231224-ad845a7c-d336-43cb-b9ea-a2d7c3f1a021.jpeg" width=100% height=100%>
 

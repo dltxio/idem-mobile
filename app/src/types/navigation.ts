@@ -2,6 +2,7 @@ import { ParamListBase, RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ProfileStackParamList } from "../navigation/ProfileStackNavigator";
 import { DocumentsStackParamList } from "../navigation/DocumentsStackNavigator";
+import { VendorStackParamList } from "../navigation/VendorsStackNavigator";
 
 type StackNavigationNavigation<
   T extends ParamListBase,
@@ -15,6 +16,12 @@ export type ProfileStackNavigation<K extends keyof ProfileStackParamList> =
 
 export type ProfileStackNavigationRoute<K extends keyof ProfileStackParamList> =
   Route<ProfileStackParamList, K>;
+
+export type VendorStackNavigation<K extends keyof VendorStackParamList> =
+  StackNavigationNavigation<VendorStackParamList, K>;
+
+export type VendorStackNavigationRoute<K extends keyof VendorStackParamList> =
+  Route<VendorStackParamList, K>;
 
 export type DocumentsStackNavigation<K extends keyof DocumentsStackParamList> =
   StackNavigationNavigation<DocumentsStackParamList, K>;

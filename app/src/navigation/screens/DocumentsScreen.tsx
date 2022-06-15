@@ -1,14 +1,16 @@
 import * as React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Dimensions } from "react-native";
 import commonStyles from "../../styles/styles";
 import { Button, FileList } from "../../components";
 import allDocuments from "../../data/documents";
 import { useDocumentStore } from "../../context/DocumentStore";
 import { DocumentsStackNavigation } from "../../types/navigation";
 import { useNavigation } from "@react-navigation/native";
-import { Picker } from "@react-native-picker/picker";
 import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/image-utils";
 import useSelectPhoto from "../../hooks/useSelectPhoto";
+import * as DocumentPicker from "expo-document-picker";
+import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
+import { Picker } from "@react-native-picker/picker";
 
 type Navigation = DocumentsStackNavigation<"Documents">;
 
@@ -34,7 +36,7 @@ const DocumentsScreen: React.FC = () => {
     const file = await selectPhotoFromCameraRoll();
 
     if (!file.cancelled) {
-      addFile(selectedDocumentId, file);
+      addFile(selectedDocumentId, file.uri);
     }
   };
 
@@ -42,33 +44,55 @@ const DocumentsScreen: React.FC = () => {
     const result = await selectPhotoFromCamera();
 
     if (result && !result.cancelled) {
-      addFile(selectedDocumentId, result);
+      addFile(selectedDocumentId, result.uri);
+    }
+  };
+
+  const uploadFile = async () => {
+    try {
+      const res = await DocumentPicker.getDocumentAsync({
+        type: "*/*"
+      });
+      if (res && res.type !== "cancel") {
+        addFile(selectedDocumentId, res.uri);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   return (
-    <View
-      style={[commonStyles.screen, commonStyles.screenContent, styles.screen]}
-    >
-      <View style={styles.section}>
+    <View style={commonStyles.screenContent}>
+      <View style={styles.documentsList}>
         <Text style={commonStyles.text.smallHeading}>Your documents</Text>
         {files.length ? (
-          <FileList
-            files={files}
-            onFilePress={navigateToFile}
-            isCheckList={false}
-            onDeleteFile={deleteFile}
-          />
+          files.length > 3 ? (
+            <View style={{ overflow: "scroll" }}>
+              <FileList
+                files={files}
+                onFilePress={navigateToFile}
+                isCheckList={false}
+                onDeleteFile={deleteFile}
+              />
+            </View>
+          ) : (
+            <FileList
+              files={files}
+              onFilePress={navigateToFile}
+              isCheckList={false}
+              onDeleteFile={deleteFile}
+            />
+          )
         ) : (
           <View>
-            <Text style={styles.emptyClaimsText}>
+            <Text style={styles.documentsList}>
               You haven't attached any files yet. Get started by selecting a
               document below.
             </Text>
           </View>
         )}
       </View>
-      <View style={[styles.section, styles.bottomSection]}>
+      <View style={styles.bottomSection}>
         <Text style={commonStyles.text.smallHeading}>
           Attach a file from your device
         </Text>
@@ -87,20 +111,21 @@ const DocumentsScreen: React.FC = () => {
 
         <Button
           title="Take A Photo"
-          style={styles.photoButton}
           onPress={takePhoto}
+          style={styles.button}
         />
         <Button
           title="Select From Camera Roll"
-          style={styles.photoButton}
           onPress={pickPhotoFromLibrary}
+          style={styles.button}
         />
 
         <Button
           title="Select From Device"
-          style={styles.photoButton}
-          onPress={takePhoto}
+          onPress={uploadFile}
+          style={styles.button}
         />
+        <BottomNavBarSpacer />
       </View>
     </View>
   );
@@ -109,30 +134,21 @@ const DocumentsScreen: React.FC = () => {
 export default DocumentsScreen;
 
 const styles = StyleSheet.create({
-  screen: {
-    justifyContent: "space-between",
-    marginBottom: 30
-  },
   introText: {
     marginBottom: 10
   },
-  verifyButton: {
-    marginTop: 20
-  },
-  emptyClaimsText: {
-    marginBottom: 10
-  },
-  photoButton: {
-    marginTop: 10
-  },
-  section: {
-    height: "50%"
+  documentsList: {
+    height: Dimensions.get("window").height * 0.28
   },
   bottomSection: {
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
+    height: Dimensions.get("window").height * 0.6
   },
   label: {
     marginTop: 10
+  },
+  button: {
+    marginVertical: 5
   },
   picker: {
     height: 150

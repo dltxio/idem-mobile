@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 import * as Crypto from "expo-crypto";
 import uuid from "react-native-uuid";
 import { DocumentId, File } from "../types/document";
@@ -10,10 +10,7 @@ import { Buffer } from "buffer";
 
 export type DocumentsValue = {
   files: File[];
-  addFile: (
-    documentId: DocumentId,
-    file: ImagePicker.ImageInfo
-  ) => Promise<string>;
+  addFile: (documentId: DocumentId, uri: string) => Promise<string>;
   deleteFile: (fileId: string) => void;
   reset: () => void;
 };
@@ -39,23 +36,24 @@ export const DocumentProvider: React.FC<{
 
   const addFile = async (
     documentId: DocumentId,
-    file: ImagePicker.ImageInfo
+    uri: string
   ): Promise<string> => {
-    const name = getImageFileName(file.uri);
+    const name = getImageFileName(uri);
+
     if (!name) {
       throw new Error("Could not get filename from file uri");
     }
 
-    if (!file.base64) {
-      throw new Error("No base64");
-    }
+    const base64 = await FileSystem.readAsStringAsync(uri, {
+      encoding: "base64"
+    });
 
     const sha256 = await Crypto.digestStringAsync(
       Crypto.CryptoDigestAlgorithm.SHA256,
-      file.base64
+      base64
     );
 
-    const buffer = Buffer.from(file.base64, "base64");
+    const buffer = Buffer.from(base64, "base64");
     const keccakHash = keccak256(buffer);
 
     // todo -  replace uuid with hash?
@@ -65,7 +63,7 @@ export const DocumentProvider: React.FC<{
       id,
       documentId,
       name,
-      uri: file.uri,
+      uri: uri,
       hashes: {
         sha256,
         keccakHash
