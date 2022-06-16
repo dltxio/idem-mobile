@@ -1,0 +1,40 @@
+{
+  "cli": {
+    "version": ">= 0.51.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "uat": {
+      "ios": {
+        "autoIncrement": "version"
+      },
+      "android": {
+        "autoIncrement": "versionCode"
+      }
+    },
+    "production": {
+      "ios": {
+        "autoIncrement": "version"
+      },
+      "android": {
+        "autoIncrement": "versionCode"
+      }
+    }
+  },
+  "submit": {
+    "uat": {
+      "android": {
+        "track": "internal",
+        "releaseStatus": "draft"
+      },
+      "ios": {
+        "appleId": "accounts@dltx.io",
+        "appleTeamId": "FRG84WT9XZ",
+        "ascAppId": "1629782138"
+      }
+    }
+  }
+}
