@@ -6,6 +6,7 @@
     "website": "https://getpaidinbitcoin.com.au",
     "logo": "https://images.squarespace-cdn.com/content/v1/5f5990cc9e792617828214ae/1600921877148-3ISFDDENM1N89GLGAIKI/GBIB+Logo_5%402x.png?format=1500w",
     "signup": "https://portal.getpaidinbitcoin.com.au/register",
+    "useProxy": false,
     "backgroundColor": "#be2596"
   },
   {
@@ -14,6 +15,7 @@
     "description": "",
     "logo": "https://cdn1.vectorstock.com/i/1000x1000/29/55/president-flat-graphic-emoji-icon-set-vector-30422955.jpg",
     "signup": "https://coinstash.com.au/auth/signup",
+    "useProxy": false,
     "backgroundColor": "rgba(186, 105, 151, 0.96)"
   },
   {
@@ -23,6 +25,7 @@
     "website": "https://example.com/",
     "logo": "https://pngset.com/images/dogecoin-wow-gold-gold-medal-trophy-money-transparent-png-1137773.png",
     "signup": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "useProxy": false,
     "backgroundColor": "blue"
   },
   {
@@ -31,6 +34,7 @@
     "description": "You may be thinking... is this a real exchange? To answer your question, YES is it 100% REAL.",
     "website": "https://example.com/",
     "logo": "https://cdn2.vectorstock.com/i/1000x1000/63/46/error-404-with-the-cute-potato-mascot-vector-39106346.jpg",
-    "signup": "https://www.youtube.com/watch?v=q7uyKYeGPdE"
+    "signup": "https://www.youtube.com/watch?v=q7uyKYeGPdE",
+    "useProxy": false
   }
 ]

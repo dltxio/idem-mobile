@@ -4,6 +4,7 @@ import { exchangeLocalStorage } from "../utils/local-storage";
 import { Alert } from "react-native";
 import axios from "axios";
 import * as password from "secure-random-password";
+import { VerifyUserRequestBody } from "../types/exchange";
 
 export type ExchangeValue = {
   makeGpibUser: (
@@ -16,6 +17,8 @@ export type ExchangeValue = {
   ) => Promise<void>;
   gpibUserID: string | undefined;
   reset: () => void;
+  verifyOnExchange: (body: VerifyUserRequestBody) => Promise<void>;
+  randomTempPassword: string | undefined;
 };
 
 export const ExchangeContext = React.createContext<ExchangeValue | undefined>(
@@ -67,35 +70,33 @@ export const ExchangeProvider: React.FC<{
     name: string | undefined,
     email: string | undefined
   ) => {
-    if (name && email) {
-      const body = JSON.stringify({
-        fullName: name,
-        email: email,
-        password: randomTempPassword,
-        referralCode: "",
-        trackAddress: true,
-        CreateAddress: true
-      });
+    const body = JSON.stringify({
+      fullName: name,
+      email: email,
+      password: randomTempPassword,
+      referralCode: "",
+      trackAddress: true,
+      CreateAddress: true
+    });
 
-      try {
-        const response = await axios.post(
-          "https://testapi.getpaidinbitcoin.com.au/user",
-          body,
-          {
-            headers: {
-              "Content-Type": "application/json"
-            }
+    try {
+      const response = await axios.post(
+        "https://testapi.getpaidinbitcoin.com.au/user",
+        body,
+        {
+          headers: {
+            "Content-Type": "application/json"
           }
-        );
-        if (response.status === 200) {
-          const userID = response.data;
-          await exchangeLocalStorage.save(userID);
-          shareDetailsAlert();
         }
-      } catch (error: any) {
-        console.log(error.response.data);
-        Alert.alert(error.response.data);
+      );
+      if (response.status === 200) {
+        const userID = response.data;
+        await exchangeLocalStorage.save(userID);
+        shareDetailsAlert();
       }
+    } catch (error: any) {
+      console.log(error.response.data);
+      Alert.alert(error.response.data);
     }
   };
 
@@ -127,6 +128,50 @@ export const ExchangeProvider: React.FC<{
     }
   };
 
+  const verifyOnExchange = async (body: VerifyUserRequestBody) => {
+    const checkAuthBody = JSON.stringify({
+      userName: body.userName,
+      password: body.password
+    });
+    try {
+      const checkUserAuth = await axios.post(
+        "https://testapi.getpaidinbitcoin.com.au/user/authenticate",
+        checkAuthBody,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      if (checkUserAuth.status === 200) {
+        const jwt = checkUserAuth.data.token;
+        const updatedBody = {
+          firstName: body.firstName,
+          lastName: body.lastName,
+          yob: Number(body.yob)
+        };
+        const updateUserInfo = await axios.put(
+          `https://testapi.getpaidinbitcoin.com.au/AccountInfoes`,
+          updatedBody,
+          {
+            headers: {
+              Authorization: `Bearer ${jwt}`
+            }
+          }
+        );
+        if (updateUserInfo.status === 200) {
+          Alert.alert(
+            "Success!",
+            `Details updated: first name, last name, year of birth`
+          );
+        }
+      }
+    } catch (error: any) {
+      console.log(error);
+      Alert.alert(error.response.data);
+    }
+  };
+
   const reset = () => {
     exchangeLocalStorage.clear();
     setGpibUserID("");
@@ -137,9 +182,18 @@ export const ExchangeProvider: React.FC<{
       makeGpibUser,
       gpibUserID,
       reset,
-      makeCoinstashUser
+      makeCoinstashUser,
+      verifyOnExchange,
+      randomTempPassword
     }),
-    [makeGpibUser, gpibUserID, makeCoinstashUser, reset]
+    [
+      makeGpibUser,
+      gpibUserID,
+      makeCoinstashUser,
+      verifyOnExchange,
+      randomTempPassword,
+      reset
+    ]
   );
 
   return (
