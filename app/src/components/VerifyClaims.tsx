@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, StyleSheet, Text, Alert } from "react-native";
+import { View, StyleSheet, Text, Alert, Dimensions } from "react-native";
 import { Claim } from "../types/claim";
 import { Button, FileList } from ".";
 import { useDocumentStore } from "../context/DocumentStore";
@@ -26,27 +26,40 @@ const VerificationFiles: React.FC<{
   }));
 
   const validDocumentNames = claim.verificationDocuments.map((document) => {
-    return `\n- ${getDocumentFromDocumentId(document).title}`;
+    const documentTitle = getDocumentFromDocumentId(document).title;
+    return `\n- ${documentTitle}`;
   });
 
+  const name = getClaimFromType("FullNameCredential");
+  const birthday = getClaimFromType("DateOfBirthCredential");
+  const email = getClaimFromType("EmailCredential");
+  const address = getClaimFromType("AddressCredential");
+
+  const documentsBody = {
+    name: [name.verificationDocuments],
+    birthday: [birthday.verificationDocuments],
+    email: [email.verificationDocuments],
+    address: [address.verificationDocuments]
+  };
+
   const verifyClaims = async () => {
-    const name = getClaimFromType("FullNameCredential");
-    const birthday = getClaimFromType("DateOfBirthCredential");
-    const email = getClaimFromType("EmailCredential");
-    const address = getClaimFromType("AddressCredential");
-    const documentsBody = {
-      name: name.verificationDocuments,
-      birthday: birthday.verificationDocuments,
-      email: email.verificationDocuments,
-      address: address.verificationDocuments
-    };
     const body = JSON.stringify(documentsBody);
-    console.log(body);
     try {
       setIsVerifying(true);
       if (body) {
-        axios.post(body, "https://proxy.idem.com.au/verify");
+        const response = await axios.post(
+          body,
+          "https://proxy.idem.com.au/user/verify"
+        );
+        console.log(response);
+        if (response.statusText === "true") {
+          console.log("yay");
+        }
       }
+      Alert.alert(
+        "Success!",
+        "Your name, date of birth, email, and address have been verified!"
+      );
       setIsVerifying(false);
     } catch (error) {
       console.log(error);
@@ -56,9 +69,13 @@ const VerificationFiles: React.FC<{
   React.useLayoutEffect(() => {
     if (isVerifying && filesThatCanBeUsedToVerify.length === 0) {
       setIsVerifying(false);
+      const alertMessage =
+        validDocumentNames == [""]
+          ? `Please add one of the following: ${validDocumentNames}`
+          : `Please make sure you have completed your name, date of birth, email, and address claims and attached either a driver's license or passport to these claims.`;
       Alert.alert(
-        "No valid documents",
-        `Please add one of the following: ${validDocumentNames}`,
+        "Cannot verify claims",
+        alertMessage,
         [
           {
             text: "OK",
@@ -74,7 +91,11 @@ const VerificationFiles: React.FC<{
 
   return (
     <View>
-      <Button title="Verify your claims with IDEM" onPress={verifyClaims} />
+      {name.type && (
+        <View style={styles.button}>
+          <Button title="Verify your claims with IDEM" onPress={verifyClaims} />
+        </View>
+      )}
       {isVerifying ? (
         <>
           <Text style={styles.introText}>
@@ -97,5 +118,11 @@ export default VerificationFiles;
 const styles = StyleSheet.create({
   introText: {
     fontSize: 12
+  },
+
+  button: {
+    width: Dimensions.get("window").width * 0.9,
+    alignSelf: "center",
+    marginBottom: 10
   }
 });

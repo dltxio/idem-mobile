@@ -318,7 +318,7 @@ const VerificationFiles: React.FC<{
         }
       );
     }
-  }, [isVerifying]);
+  }, []);
 
   return (
     <View>
@@ -330,19 +330,20 @@ const VerificationFiles: React.FC<{
           value={isVerifying}
           onValueChange={setIsVerifying}
         />
-        <Text>I would like to verify my claim</Text>
+        <Text>Attach a document to this claim</Text>
       </View>
       {isVerifying ? (
         <>
           <Text style={styles.introText}>
             The following documents can be used to verify your{" "}
-            {claim.title.toLowerCase()} claim.
+            {claim.title.toLowerCase()} claim:
           </Text>
           <FileList
             files={filesWithSelected}
             onFilePress={onSelectFile}
             isCheckList={true}
           />
+          <BottomNavBarSpacer />
         </>
       ) : null}
     </View>
