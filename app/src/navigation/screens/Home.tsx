@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, ScrollView, Text } from "react-native";
+import { StyleSheet, View, ScrollView, Text, Dimensions } from "react-native";
 import commonStyles from "../../styles/styles";
 import { ProfileStackNavigation } from "../../types/navigation";
 import { Button, ClaimsList, UserDetailsHeader } from "../../components";
@@ -22,12 +22,10 @@ const Home: React.FC = () => {
 
   const userClaims = {
     name: useClaimValue("FullNameCredential"),
-    birthday: useClaimValue("DateOfBirthCredential"),
+    dob: useClaimValue("DateOfBirthCredential"),
     email: useClaimValue("EmailCredential"),
     address: useClaimValue("AddressCredential")
   };
-
-  console.log(userClaims);
 
   return (
     <View style={commonStyles.screen}>
@@ -58,10 +56,12 @@ const Home: React.FC = () => {
           </>
         ) : null}
       </ScrollView>
-      <Button
-        title="Verify My Claims"
-        onPress={() => verifyClaims(userClaims)}
-      />
+      <View style={styles.buttonWrapper}>
+        <Button
+          title="Verify My Claims"
+          onPress={() => verifyClaims(userClaims)}
+        />
+      </View>
     </View>
   );
 };
@@ -71,5 +71,9 @@ export default Home;
 const styles = StyleSheet.create({
   emptyClaimsText: {
     marginBottom: 10
+  },
+  buttonWrapper: {
+    alignSelf: "center",
+    width: Dimensions.get("window").width * 0.9
   }
 });

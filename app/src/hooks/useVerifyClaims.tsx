@@ -8,15 +8,8 @@ type Hooks = {
 
 const useVerifyClaims = (): Hooks => {
   const verifyClaims = async (proxyBody: VerifyOnProxy) => {
-    const body = JSON.stringify(proxyBody);
     try {
-      if (body) {
-        const response = await axios.post(
-          body,
-          "https://proxy.idem.com.au/user/verify"
-        );
-        console.log(response);
-      }
+      await axios.post("https://proxy.idem.com.au/user/verify", proxyBody);
       Alert.alert(
         "Success!",
         "Your name, date of birth, email, and address have been verified!"
