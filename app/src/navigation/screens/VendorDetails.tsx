@@ -15,6 +15,7 @@ import { useClaimValue } from "../../context/ClaimsStore";
 import { useExchange } from "../../context/Exchange";
 import { ScrollView } from "react-native-gesture-handler";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
+import { IExchange } from "../../interfaces/exchange-interface";
 
 const VendorDetailsScreen: React.FC = () => {
   const { vendors } = useVendorsList();
@@ -28,6 +29,11 @@ const VendorDetailsScreen: React.FC = () => {
     return null;
   }
 
+  const idToIExchange: { [id: number]: IExchange } = {
+    1: makeGpibUser,
+    2: makeCoinstashUser
+  };
+
   return (
     <ScrollView
       style={[styles.container, { backgroundColor: vendor.backgroundColor }]}
@@ -40,11 +46,14 @@ const VendorDetailsScreen: React.FC = () => {
       <View style={styles.button}>
         <Button
           onPress={() => {
-            vendor.id === 1
-              ? makeGpibUser(name, email)
-              : vendor.id === 2
-              ? makeCoinstashUser(name, email)
-              : Linking.openURL(vendor.signup);
+            const makeUser = idToIExchange[vendor.id];
+            if (!makeUser) {
+              Linking.openURL(vendor.signup);
+              return;
+            }
+            if (name && email) {
+              makeUser.signUp(name, email);
+            }
           }}
           title="Sign Up"
           disabled={name && email ? false : true}
