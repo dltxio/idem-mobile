@@ -38,3 +38,13 @@ runs:
         channel: ${{ inputs.slack-channel }}
         status: FAILED
         color: danger
+
+    - name: Notify slack skip
+      if: ${{ inputs.outcome == 'skipped' }}
+      env:
+        SLACK_BOT_TOKEN: ${{ inputs.slack-bot-token }}
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        channel: ${{ inputs.slack-channel }}
+        status: SKIPPED
+        color: danger

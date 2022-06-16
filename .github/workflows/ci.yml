@@ -37,7 +37,7 @@ jobs:
           yarn build
 
       - name: Notify Slack
-        if: always()
+        if: ${{ always() && github.ref == 'refs/heads/main' }}
         uses: ./.github/actions
         with:
           slack-channel: 'idem'
