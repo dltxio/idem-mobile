@@ -3,7 +3,7 @@
     "name": "idemID",
     "slug": "IDEM",
     "version": "1.0.0",
-    "entryPoint": "./src/App.tsx",
+    "entryPoint": "./App.tsx",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
