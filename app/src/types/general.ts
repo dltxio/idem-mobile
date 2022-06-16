@@ -15,3 +15,10 @@ export type Vendor = {
   website: string;
   backgroundColor: string;
 };
+
+export type VerifyOnProxy = {
+  name: string | undefined;
+  birthday: string | undefined;
+  email: string | undefined;
+  address: string | undefined;
+};

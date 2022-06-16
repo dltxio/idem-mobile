@@ -3,7 +3,7 @@ import { StyleSheet, View, ScrollView, Text } from "react-native";
 import commonStyles from "../../styles/styles";
 import { ProfileStackNavigation } from "../../types/navigation";
 import { Button, ClaimsList, UserDetailsHeader } from "../../components";
-import { useClaimsStore } from "../../context/ClaimsStore";
+import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import { useNavigation } from "@react-navigation/native";
 import { ClaimType } from "../../types/claim";
 import CreateMnemonicController from "../../components/CreateMnemonicController";
@@ -19,6 +19,15 @@ const Home: React.FC = () => {
   const navigateToClaim = (claimType: ClaimType) => {
     navigation.navigate("Claim", { claimType });
   };
+
+  const userClaims = {
+    name: useClaimValue("FullNameCredential"),
+    birthday: useClaimValue("DateOfBirthCredential"),
+    email: useClaimValue("EmailCredential"),
+    address: useClaimValue("AddressCredential")
+  };
+
+  console.log(userClaims);
 
   return (
     <View style={commonStyles.screen}>
@@ -49,7 +58,10 @@ const Home: React.FC = () => {
           </>
         ) : null}
       </ScrollView>
-      <Button title="Verify My Claims" onPress={verifyClaims} />
+      <Button
+        title="Verify My Claims"
+        onPress={() => verifyClaims(userClaims)}
+      />
     </View>
   );
 };
