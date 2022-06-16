@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "IDEM",
+    "name": "idemID",
     "slug": "IDEM",
     "version": "1.0.0",
-    "entryPoint": "./src/App.tsx",
+    "entryPoint": "./App.tsx",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -17,15 +17,27 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "com.dltx.idem",
       "supportsTablet": true,
       "usesIcloudStorage": true,
-      "bundleIdentifier": "com.dltx.IDEM"
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "IDEM accesses your photos to verify your claims",
+        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera",
+        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.dltx.idem"
     },
     "web": {
       "favicon": "./assets/favicon.png"
