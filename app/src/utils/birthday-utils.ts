@@ -1,13 +1,13 @@
 import { ClaimData } from "../types/claim";
-import { stringToDate } from "./formatter";
+import moment from "moment";
+import { reformatDate } from "./formatter";
 
 export const check18Plus = (claim: ClaimData): boolean => {
   if (claim.type === "DateOfBirthCredential") {
-    const userBirthday = claim.value;
-    const dateBirthday = stringToDate(userBirthday.dob);
-    const today = Date.now();
-    const eightteenYearsAgo = today - 568025136000;
-    if (dateBirthday <= eightteenYearsAgo) {
+    const userBirthday = reformatDate(claim.value);
+    const age = moment(userBirthday, "YYYYMMDD").fromNow();
+    const yearsAgo = age.split("").slice(0, 2).join("");
+    if (Number(yearsAgo) >= 18) {
       return true;
     }
   }

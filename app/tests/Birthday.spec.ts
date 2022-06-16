@@ -1,8 +1,6 @@
 import { expect } from "chai";
 import { check18Plus } from "../src/utils/birthday-utils";
 
-//SET UP ENVIRONMENT-- Inititalize global variables
-
 describe("Check if I'm 18", async () => {
   it("should return true if I am 18", () => {
     expect(
@@ -27,15 +25,6 @@ describe("Check if I'm 18", async () => {
       check18Plus({
         type: "DateOfBirthCredential",
         value: "14/06/2018"
-      })
-    ).to.equal(false);
-  });
-
-  it("should return false if I am !", () => {
-    expect(
-      check18Plus({
-        type: "DateOfBirthCredential",
-        value: "!"
       })
     ).to.equal(false);
   });
