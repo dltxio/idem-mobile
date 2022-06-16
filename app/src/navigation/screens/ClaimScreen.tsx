@@ -121,15 +121,16 @@ const ClaimScreen: React.FC = () => {
       });
       try {
         const body = JSON.stringify(verifyEmailRequest);
-        await axios.post(
-          "https://keys.openpgp.org/vks/v1/request-verify",
-          body,
-          {
-            headers: {
-              "Content-Type": "application/json"
-            }
-          }
-        );
+        const config = {
+          method: "post",
+          url: "https://keys.openpgp.org/vks/v1/upload",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          data: body
+        };
+
+        await axios(config);
         Alert.alert(
           `Email Sent`,
           `Please check your email for instructions from keys.openpgp.org on how to verify your claim.`,
