@@ -42,7 +42,7 @@ const VendorDetailsScreen: React.FC = () => {
           onPress={() => {
             vendor.name === "Get Paid in Bitcoin"
               ? makeGpibUser(name, email)
-              : vendor.name === "Coinstash"
+              : vendor.name === "Coin Stash"
               ? makeCoinstashUser(name, email)
               : Linking.openURL(vendor.signup);
           }}

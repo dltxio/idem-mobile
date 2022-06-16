@@ -2,17 +2,18 @@ import * as React from "react";
 import { StyleSheet, View, ScrollView, Text } from "react-native";
 import commonStyles from "../../styles/styles";
 import { ProfileStackNavigation } from "../../types/navigation";
-import { ClaimsList, UserDetailsHeader } from "../../components";
+import { Button, ClaimsList, UserDetailsHeader } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useNavigation } from "@react-navigation/native";
 import { ClaimType } from "../../types/claim";
 import CreateMnemonicController from "../../components/CreateMnemonicController";
-import VerificationFiles from "../../components/VerifyClaims";
+import useVerifyClaims from "../../hooks/useVerifyClaims";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
 const Home: React.FC = () => {
   const { usersClaims, unclaimedClaims } = useClaimsStore();
+  const { verifyClaims } = useVerifyClaims();
   const navigation = useNavigation<Navigation>();
 
   const navigateToClaim = (claimType: ClaimType) => {
@@ -48,23 +49,7 @@ const Home: React.FC = () => {
           </>
         ) : null}
       </ScrollView>
-      <VerificationFiles
-        claim={{
-          type: "18+",
-          key: "",
-          nnemonic: "",
-          title: "",
-          description: "",
-          verificationAction: "document-upload",
-          fields: [],
-          verificationDocuments: [],
-          hideFromList: undefined
-        }}
-        selectedFileIds={[]}
-        onSelectFile={function (): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
+      <Button title="Verify My Claims" onPress={verifyClaims} />
     </View>
   );
 };
