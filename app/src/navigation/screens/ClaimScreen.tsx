@@ -46,8 +46,7 @@ const ClaimScreen: React.FC = () => {
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [selectedFileIds, setSelectedFileIds] = React.useState<string[]>([]);
-  const [verifyEmailRequest, setVerifyEmailRequest] =
-    React.useState<VerifyEmail>();
+  const [, setVerifyEmailRequest] = React.useState<VerifyEmail>();
 
   const showDatePickerFor = (fieldId: string) => {
     Keyboard.dismiss();
@@ -120,17 +119,11 @@ const ClaimScreen: React.FC = () => {
         addresses: [email]
       });
       try {
-        const body = JSON.stringify(verifyEmailRequest);
-        const config = {
-          method: "post",
-          url: "https://keys.openpgp.org/vks/v1/upload",
+        await axios.post("https://keys.openpgp.org/vks/v1/upload", armoredKey, {
           headers: {
             "Content-Type": "application/json"
-          },
-          data: body
-        };
-
-        await axios(config);
+          }
+        });
         Alert.alert(
           `Email Sent`,
           `Please check your email for instructions from keys.openpgp.org on how to verify your claim.`,
