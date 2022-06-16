@@ -1,20 +1,20 @@
 import * as React from "react";
 import "react-native-get-random-values";
 import "@ethersproject/shims";
-import { registerRootComponent } from "expo";
 import * as Linking from "expo-linking";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import TabNavigator from "./navigation/MainTabNavigator";
-import { ClaimsProvider } from "./context/ClaimsStore";
+import TabNavigator from "./src/navigation/MainTabNavigator";
+import { ClaimsProvider } from "./src/context/ClaimsStore";
 import { useEffect } from "react";
-import { ClaimRequest } from "./types/claim";
-import { parseClaimRequest } from "./utils/claim-utils";
-import { RequestClaimsModal } from "./components";
-import { DocumentProvider } from "./context/DocumentStore";
-import { MnemonicProvider } from "./context/Mnemonic";
-import { ExchangeProvider } from "./context/Exchange";
+import { ClaimRequest } from "./src/types/claim";
+import { parseClaimRequest } from "./src/utils/claim-utils";
+import RequestClaimsModal from "./src/components/RequestClaimsModal";
+import { DocumentProvider } from "./src/context/DocumentStore";
+import { MnemonicProvider } from "./src/context/Mnemonic";
+import { ExchangeProvider } from "./src/context/Exchange";
+import { registerRootComponent } from "expo";
 
 const App = () => {
   const initialURL = Linking.useURL();

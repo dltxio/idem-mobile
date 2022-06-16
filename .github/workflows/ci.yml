@@ -40,6 +40,6 @@ jobs:
         if: ${{ always() && github.ref == 'refs/heads/main' }}
         uses: ./.github/actions
         with:
-          slack-channel: 'idem'
+          slack-channel: "idem"
           slack-bot-token: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
           outcome: ${{ steps.build.outcome }}
