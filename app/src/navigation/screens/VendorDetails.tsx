@@ -63,13 +63,13 @@ const VendorDetailsScreen: React.FC = () => {
                 {
                   text: "OK",
                   onPress: async (value: string | undefined) => {
-                    await verifyOnExchange(
-                      email,
-                      value,
-                      splitName?.firstName,
-                      splitName?.lastName,
+                    await verifyOnExchange({
+                      userName: email,
+                      password: value,
+                      firstName: splitName?.firstName,
+                      lastName: splitName?.lastName,
                       yob
-                    );
+                    });
                   }
                 }
               ]);

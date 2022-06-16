@@ -4,6 +4,7 @@ import { exchangeLocalStorage } from "../utils/local-storage";
 import { Alert } from "react-native";
 import axios from "axios";
 import * as password from "secure-random-password";
+import { VerifyUserRequestBody } from "../types/exchange";
 
 export type ExchangeValue = {
   makeGpibUser: (
@@ -16,13 +17,7 @@ export type ExchangeValue = {
   ) => Promise<void>;
   gpibUserID: string | undefined;
   reset: () => void;
-  verifyOnExchange: (
-    userName: string | undefined,
-    password: string | undefined,
-    firstName: string | undefined,
-    lastName: string | undefined,
-    yob: string | undefined
-  ) => Promise<void>;
+  verifyOnExchange: (body: VerifyUserRequestBody) => Promise<void>;
   randomTempPassword: string | undefined;
 };
 
@@ -133,16 +128,10 @@ export const ExchangeProvider: React.FC<{
     }
   };
 
-  const verifyOnExchange = async (
-    userName: string | undefined,
-    password: string | undefined,
-    firstName: string | undefined,
-    lastName: string | undefined,
-    yob: string | undefined
-  ) => {
+  const verifyOnExchange = async (body: VerifyUserRequestBody) => {
     const checkAuthBody = JSON.stringify({
-      userName: userName,
-      password: password
+      userName: body.userName,
+      password: body.password
     });
     try {
       const checkUserAuth = await axios.post(
@@ -157,9 +146,9 @@ export const ExchangeProvider: React.FC<{
       if (checkUserAuth.status === 200) {
         const jwt = checkUserAuth.data.token;
         const updatedBody = {
-          firstName: firstName,
-          lastName: lastName,
-          yob: Number(yob)
+          firstName: body.firstName,
+          lastName: body.lastName,
+          yob: Number(body.yob)
         };
         const updateUserInfo = await axios.put(
           `https://testapi.getpaidinbitcoin.com.au/AccountInfoes`,
