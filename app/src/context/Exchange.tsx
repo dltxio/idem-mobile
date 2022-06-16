@@ -5,12 +5,15 @@ import { Alert } from "react-native";
 import axios from "axios";
 import * as password from "secure-random-password";
 import { IExchange } from "../interfaces/exchange-interface";
+import { VerifyUserRequestBody } from "../types/exchange";
 
 export type ExchangeValue = {
   makeGpibUser: IExchange;
   makeCoinstashUser: IExchange;
   gpibUserID: string | undefined;
   reset: () => void;
+  verifyOnExchange: (body: VerifyUserRequestBody) => Promise<void>;
+  randomTempPassword: string | undefined;
 };
 
 export const ExchangeContext = React.createContext<ExchangeValue | undefined>(
@@ -116,6 +119,50 @@ export const ExchangeProvider: React.FC<{
     }
   };
 
+  const verifyOnExchange = async (body: VerifyUserRequestBody) => {
+    const checkAuthBody = JSON.stringify({
+      userName: body.userName,
+      password: body.password
+    });
+    try {
+      const checkUserAuth = await axios.post(
+        "https://testapi.getpaidinbitcoin.com.au/user/authenticate",
+        checkAuthBody,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      if (checkUserAuth.status === 200) {
+        const jwt = checkUserAuth.data.token;
+        const updatedBody = {
+          firstName: body.firstName,
+          lastName: body.lastName,
+          yob: Number(body.yob)
+        };
+        const updateUserInfo = await axios.put(
+          `https://testapi.getpaidinbitcoin.com.au/AccountInfoes`,
+          updatedBody,
+          {
+            headers: {
+              Authorization: `Bearer ${jwt}`
+            }
+          }
+        );
+        if (updateUserInfo.status === 200) {
+          Alert.alert(
+            "Success!",
+            `Details updated: first name, last name, year of birth`
+          );
+        }
+      }
+    } catch (error: any) {
+      console.log(error);
+      Alert.alert(error.response.data);
+    }
+  };
+
   const reset = () => {
     exchangeLocalStorage.clear();
     setGpibUserID("");
@@ -126,9 +173,18 @@ export const ExchangeProvider: React.FC<{
       makeGpibUser,
       gpibUserID,
       reset,
-      makeCoinstashUser
+      makeCoinstashUser,
+      verifyOnExchange,
+      randomTempPassword
     }),
-    [makeGpibUser, gpibUserID, makeCoinstashUser, reset]
+    [
+      makeGpibUser,
+      gpibUserID,
+      makeCoinstashUser,
+      verifyOnExchange,
+      randomTempPassword,
+      reset
+    ]
   );
 
   return (
