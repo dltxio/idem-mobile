@@ -1,6 +1,4 @@
-import * as React from "react";
-import { View, StyleSheet, Alert, Dimensions } from "react-native";
-import { Button } from "../components";
+import { Alert } from "react-native";
 import { getClaimFromType } from "../utils/claim-utils";
 import axios from "axios";
 
