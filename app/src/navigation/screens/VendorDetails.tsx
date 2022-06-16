@@ -40,9 +40,9 @@ const VendorDetailsScreen: React.FC = () => {
       <View style={styles.button}>
         <Button
           onPress={() => {
-            vendor.name === "Get Paid in Bitcoin"
+            vendor.id === 1
               ? makeGpibUser(name, email)
-              : vendor.name === "Coinstash"
+              : vendor.id === 2
               ? makeCoinstashUser(name, email)
               : Linking.openURL(vendor.signup);
           }}
