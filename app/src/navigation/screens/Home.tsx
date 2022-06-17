@@ -57,11 +57,9 @@ const Home: React.FC = () => {
         address: address
       };
       await verifyClaims(userClaims);
-      console.log("here");
     }
     if (expoPushToken) {
       await postTokenToProxy(expoPushToken);
-      console.log("there");
     }
   };
 
