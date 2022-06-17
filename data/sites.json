@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "name": "Get Paid In Bitcoin",
     "tagline": "The easiest way to get paid in Bitcoin",
     "description": "",
@@ -10,6 +11,7 @@
     "backgroundColor": "#be2596"
   },
   {
+    "id": 2,
     "name": "Coin Stash",
     "tagline": "Crypto made Simple",
     "description": "",
@@ -19,6 +21,7 @@
     "backgroundColor": "rgba(186, 105, 151, 0.96)"
   },
   {
+    "id": 3,
     "name": "Test Exchange",
     "tagline": "Doge to the moon",
     "description": "Oh cool, we have a description. Guess I'll have to think of something to write there. Hmm, this could be tough. I could try to be clever and make it funny or I could just write some boring rubbish... Boring rubbish it is then.",
@@ -29,6 +32,7 @@
     "backgroundColor": "blue"
   },
   {
+    "id": 4,
     "name": "Potato Exchange",
     "tagline": "PR's and potatos",
     "description": "You may be thinking... is this a real exchange? To answer your question, YES is it 100% REAL.",
