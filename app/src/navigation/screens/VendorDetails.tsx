@@ -17,6 +17,7 @@ import { useExchange } from "../../context/Exchange";
 import { findNames, findYOB } from "../../utils/formatters";
 import { ScrollView } from "react-native-gesture-handler";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
+import { IExchange } from "../../interfaces/exchange-interface";
 
 const VendorDetailsScreen: React.FC = () => {
   const { vendors } = useVendorsList();
@@ -34,6 +35,11 @@ const VendorDetailsScreen: React.FC = () => {
     return null;
   }
 
+  const idToIExchange: { [id: number]: IExchange } = {
+    1: makeGpibUser,
+    2: makeCoinstashUser
+  };
+
   return (
     <ScrollView
       style={[styles.container, { backgroundColor: vendor.backgroundColor }]}
@@ -46,11 +52,14 @@ const VendorDetailsScreen: React.FC = () => {
       <View style={styles.buttonWrapper}>
         <Button
           onPress={() => {
-            vendor.website === "https://getpaidinbitcoin.com.au"
-              ? makeGpibUser(name, email)
-              : vendor.name === "Coin Stash"
-              ? makeCoinstashUser(name, email)
-              : Linking.openURL(vendor.signup);
+            const makeUser = idToIExchange[vendor.id];
+            if (!makeUser) {
+              Linking.openURL(vendor.signup);
+              return;
+            }
+            if (name && email) {
+              makeUser.signUp(name, email);
+            }
           }}
           title="Sign Up"
           disabled={name && email ? false : true}

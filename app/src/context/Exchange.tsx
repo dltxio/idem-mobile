@@ -4,17 +4,12 @@ import { exchangeLocalStorage } from "../utils/local-storage";
 import { Alert } from "react-native";
 import axios from "axios";
 import * as password from "secure-random-password";
+import { IExchange } from "../interfaces/exchange-interface";
 import { VerifyUserRequestBody } from "../types/exchange";
 
 export type ExchangeValue = {
-  makeGpibUser: (
-    name: string | undefined,
-    email: string | undefined
-  ) => Promise<void>;
-  makeCoinstashUser: (
-    name: string | undefined,
-    email: string | undefined
-  ) => Promise<void>;
+  makeGpibUser: IExchange;
+  makeCoinstashUser: IExchange;
   gpibUserID: string | undefined;
   reset: () => void;
   verifyOnExchange: (body: VerifyUserRequestBody) => Promise<void>;
@@ -66,54 +61,50 @@ export const ExchangeProvider: React.FC<{
     characters: [password.lower, password.upper, password.digits]
   });
 
-  const makeGpibUser = async (
-    name: string | undefined,
-    email: string | undefined
-  ) => {
-    const body = JSON.stringify({
-      fullName: name,
-      email: email,
-      password: randomTempPassword,
-      referralCode: "",
-      trackAddress: true,
-      CreateAddress: true
-    });
+  const makeGpibUser: IExchange = {
+    signUp: async (name: string, email: string) => {
+      const body = JSON.stringify({
+        fullName: name,
+        email: email,
+        password: randomTempPassword,
+        referralCode: "",
+        trackAddress: true,
+        CreateAddress: true
+      });
 
-    try {
-      const response = await axios.post(
-        "https://testapi.getpaidinbitcoin.com.au/user",
-        body,
-        {
-          headers: {
-            "Content-Type": "application/json"
+      try {
+        const response = await axios.post(
+          "https://testapi.getpaidinbitcoin.com.au/user",
+          body,
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
           }
+        );
+        if (response.status === 200) {
+          const userID = response.data;
+          await exchangeLocalStorage.save(userID);
+          shareDetailsAlert();
         }
-      );
-      if (response.status === 200) {
-        const userID = response.data;
-        await exchangeLocalStorage.save(userID);
-        shareDetailsAlert();
+      } catch (error: any) {
+        console.log(error.response.data);
+        Alert.alert(error.response.data);
       }
-    } catch (error: any) {
-      console.log(error.response.data);
-      Alert.alert(error.response.data);
     }
   };
 
-  const makeCoinstashUser = async (
-    name: string | undefined,
-    email: string | undefined
-  ) => {
-    const body = JSON.stringify({
-      email: email,
-      password: randomTempPassword,
-      acceptMarketing: true,
-      displayName: name,
-      country: "Australia",
-      token:
-        "03AGdBq27KVpnMB7gMZ5cFs1ldEgu1ojl7-8mE6_zjJC1xM3plgAfHcEPy6Pqa2HIqGmD2OBAUIC_9YWcgQTk-Gi0rKe-Xx9VTjcSUwxWXjxO5koYZSVrAw0zTUB7RPcEO1ZvudSyv4eu59iV-T-SpJNhsEMXuAYmzlvsUIBRmFJO1E3dVODRYeMoDtfV8f_MbcCYgqhfBJBQYll8df2D4BofGFelWpDF0KNdSFjdvGEhqZGF7hgy5qUJSjuxP6Ufs9f_8eYFiK1M8xeu6iO4OOIsksD0DdwKBQwa3JPLYOEwPerUwEVBcweuutJ82hpXEbtlMMBTzz2QDRbbQrPT6MEQ4Cj2scA2tS0jUpK_fYtkVUfzU7w4Y1upmAPL6XnPPRfSczdsBEaA1DtvchpkgFo2Zg5G1WoZrOkwnaxiSPw3RmDrHx1oLcfGWXBt8TkmfmjSI0-DFVgCN"
-    });
-    if (name && email) {
+  const makeCoinstashUser: IExchange = {
+    signUp: async (name: string, email: string) => {
+      const body = JSON.stringify({
+        email: email,
+        password: randomTempPassword,
+        acceptMarketing: true,
+        displayName: name,
+        country: "Australia",
+        token:
+          "03AGdBq27KVpnMB7gMZ5cFs1ldEgu1ojl7-8mE6_zjJC1xM3plgAfHcEPy6Pqa2HIqGmD2OBAUIC_9YWcgQTk-Gi0rKe-Xx9VTjcSUwxWXjxO5koYZSVrAw0zTUB7RPcEO1ZvudSyv4eu59iV-T-SpJNhsEMXuAYmzlvsUIBRmFJO1E3dVODRYeMoDtfV8f_MbcCYgqhfBJBQYll8df2D4BofGFelWpDF0KNdSFjdvGEhqZGF7hgy5qUJSjuxP6Ufs9f_8eYFiK1M8xeu6iO4OOIsksD0DdwKBQwa3JPLYOEwPerUwEVBcweuutJ82hpXEbtlMMBTzz2QDRbbQrPT6MEQ4Cj2scA2tS0jUpK_fYtkVUfzU7w4Y1upmAPL6XnPPRfSczdsBEaA1DtvchpkgFo2Zg5G1WoZrOkwnaxiSPw3RmDrHx1oLcfGWXBt8TkmfmjSI0-DFVgCN"
+      });
       try {
         await axios.post("https://coinstash.com.au/api/auth/signup", body, {
           headers: {

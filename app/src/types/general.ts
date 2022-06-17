@@ -7,6 +7,7 @@ export type Field = {
 };
 
 export type Vendor = {
+  id: number;
   description: string;
   logo: string;
   name: string;
