@@ -4,10 +4,9 @@ import { reformatDate } from "./formatter";
 
 export const check18Plus = (claim: ClaimData): boolean => {
   if (claim.type === "DateOfBirthCredential") {
-    const userBirthday = reformatDate(claim.value);
-    const age = moment(userBirthday, "YYYYMMDD").fromNow();
-    const yearsAgo = age.split("").slice(0, 2).join("");
-    if (Number(yearsAgo) >= 18) {
+    const userBirthday = reformatDate(claim.value.dob);
+    const age = moment(userBirthday).diff(moment(Date.now()));
+    if (age <= 18) {
       return true;
     }
   }
