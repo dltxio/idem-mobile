@@ -18,6 +18,7 @@ export type Claim = {
   nnemonic: string;
   title: string;
   description: string;
+  verified?: boolean;
   verificationAction: VerificationAction;
   fields: Field[];
   verificationDocuments: DocumentId[];

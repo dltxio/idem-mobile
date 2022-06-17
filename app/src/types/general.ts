@@ -16,3 +16,11 @@ export type Vendor = {
   website: string;
   backgroundColor: string;
 };
+
+export type VerifyOnProxy = {
+  firstName: string;
+  lastName: string;
+  dob: string;
+  email: string;
+  address: string;
+};
