@@ -48,7 +48,7 @@ const Home: React.FC = () => {
         );
         return hashedEmail;
       };
-      const userEmail = hashEmail();
+      const userEmail = await hashEmail();
       const userClaims = {
         firstName: splitName.firstName,
         lastName: splitName.lastName,
@@ -57,9 +57,11 @@ const Home: React.FC = () => {
         address: address
       };
       await verifyClaims(userClaims);
+      console.log("here");
     }
     if (expoPushToken) {
       await postTokenToProxy(expoPushToken);
+      console.log("there");
     }
   };
 

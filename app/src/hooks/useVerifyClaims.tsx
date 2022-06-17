@@ -17,12 +17,7 @@ const useVerifyClaims = (): Hooks => {
         "https://proxy.idem.com.au/user/verify",
         proxyBody
       );
-      console.log(response.data, "USER AUTH RESPONSE");
       await claimsLocalStorage.save(response.data);
-      Alert.alert(
-        "Success!",
-        "Your name, date of birth, email, and address have been sent to IDEM to be verified!"
-      );
     } catch (error) {
       console.log(error);
       Alert.alert("Error!", `${error}`);
@@ -31,16 +26,26 @@ const useVerifyClaims = (): Hooks => {
 
   const postTokenToProxy = async (expoToken: string) => {
     const claims = await claimsLocalStorage.get();
-    console.log(claims);
+    const body = JSON.stringify({ token: expoToken });
     try {
       const response = await axios.post(
         `https://proxy.idem.com.au/user/${claims}/token`,
-        expoToken
+        body,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      Alert.alert(
+        "Success!",
+        "Your name, date of birth, email, and address have been sent to IDEM to be verified!"
       );
       console.log(response.data, "TOKEN RESPONSE");
       return response;
     } catch (error) {
-      console.log(error);
+      Alert.alert("Error!", `${error}`);
+      console.log(error, "Boooooooooo");
     }
   };
   return {
