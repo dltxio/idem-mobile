@@ -28,7 +28,7 @@ const useVerifyClaims = (): Hooks => {
     const claims = await claimsLocalStorage.get();
     const body = JSON.stringify({ token: expoToken });
     try {
-      const response = await axios.post(
+      const response = await axios.put(
         `https://proxy.idem.com.au/user/${claims}/token`,
         body,
         {
@@ -41,11 +41,10 @@ const useVerifyClaims = (): Hooks => {
         "Success!",
         "Your name, date of birth, email, and address have been sent to IDEM to be verified!"
       );
-      console.log(response.data, "TOKEN RESPONSE");
       return response;
     } catch (error) {
       Alert.alert("Error!", `${error}`);
-      console.log(error, "Boooooooooo");
+      console.log(error);
     }
   };
   return {

@@ -16,7 +16,7 @@ import { ClaimType } from "../../types/claim";
 import CreateMnemonicController from "../../components/CreateMnemonicController";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
 import * as Crypto from "expo-crypto";
-import usePushNotifications from "../../hooks/usePushNotification";
+import usePushNotifications from "../../hooks/usePushNotifications";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { findNames } from "../../utils/formatters";
 
