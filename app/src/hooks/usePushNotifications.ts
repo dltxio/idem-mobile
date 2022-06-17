@@ -6,7 +6,6 @@ import { Platform } from "react-native";
 type Hooks = {
   expoPushToken: string | undefined;
   notification: Notifications.Notification | undefined;
-  sendPushNotification: (expoPushToken: string | undefined) => Promise<void>;
 };
 
 const usePushNotifications = (): Hooks => {
@@ -65,30 +64,9 @@ const usePushNotifications = (): Hooks => {
     return token;
   };
 
-  const sendPushNotification = async (expoPushToken: string | undefined) => {
-    const message = {
-      to: expoPushToken,
-      sound: "default",
-      title: "Success!",
-      body: "You have sent yourself a push notification!",
-      data: { someData: "My Data" }
-    };
-
-    await fetch("https://exp.host/--/api/v2/push/send", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Accept-encoding": "gzip, deflate",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(message)
-    });
-  };
-
   return {
     expoPushToken,
-    notification,
-    sendPushNotification
+    notification
   };
 };
 

@@ -44,7 +44,6 @@ const useVerifyClaims = (): Hooks => {
       return response;
     } catch (error) {
       Alert.alert("Error!", `${error}`);
-      console.log(error);
     }
   };
   return {

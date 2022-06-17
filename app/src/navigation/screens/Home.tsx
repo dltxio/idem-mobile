@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Text,
-  Dimensions,
-  Linking
-} from "react-native";
+import { StyleSheet, View, ScrollView, Text, Dimensions } from "react-native";
 import commonStyles from "../../styles/styles";
 import { ProfileStackNavigation } from "../../types/navigation";
 import { Button, ClaimsList, UserDetailsHeader } from "../../components";
@@ -26,8 +19,7 @@ const Home: React.FC = () => {
   const { usersClaims, unclaimedClaims } = useClaimsStore();
   const { verifyClaims, postTokenToProxy } = useVerifyClaims();
   const navigation = useNavigation<Navigation>();
-  const { expoPushToken, notification, sendPushNotification } =
-    usePushNotifications();
+  const { expoPushToken } = usePushNotifications();
 
   const navigateToClaim = (claimType: ClaimType) => {
     navigation.navigate("Claim", { claimType });
@@ -91,47 +83,6 @@ const Home: React.FC = () => {
             />
           </>
         ) : null}
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "space-around"
-          }}
-        >
-          <Text style={{ fontWeight: "bold" }}>Push Notications:</Text>
-          <Text>
-            You can also try sending a notification from{" "}
-            <Text
-              style={{ color: "blue" }}
-              onPress={() => {
-                Linking.openURL(`https://expo.dev/notifications`);
-              }}
-            >
-              https://expo.dev/notifications
-            </Text>{" "}
-            using your expo push token.
-          </Text>
-          <Text>Your expo push token: {expoPushToken}</Text>
-          <View style={{ alignItems: "center", justifyContent: "center" }}>
-            <Text>
-              Title: {notification && notification.request.content.title}{" "}
-            </Text>
-            <Text>
-              Body: {notification && notification.request.content.body}
-            </Text>
-            <Text>
-              Data:{" "}
-              {notification &&
-                JSON.stringify(notification.request.content.data)}
-            </Text>
-          </View>
-          <Button
-            title="Send a Push Notification"
-            onPress={async () => {
-              await sendPushNotification(expoPushToken);
-            }}
-          />
-        </View>
         <BottomNavBarSpacer />
       </ScrollView>
       {name && dob && address && email && (
