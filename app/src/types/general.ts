@@ -17,8 +17,9 @@ export type Vendor = {
 };
 
 export type VerifyOnProxy = {
-  name: string | undefined;
-  dob: string | undefined;
-  email: string | undefined;
-  address: string | undefined;
+  firstName: string;
+  lastName: string;
+  dob: string;
+  email: string;
+  address: string;
 };
