@@ -1,11 +1,9 @@
 export const reformatDate = (date: string) => {
-  const dateArray = date.split("");
-  console.log(date.split(""));
-  const day = Number(dateArray.slice(0, 2).join(""));
-  let month = dateArray.slice(3, 5).join("");
-  const year = Number(dateArray.slice(6, 10).join(""));
-  if (Number(month) < 10) {
-    month = `0${Number(month)}`;
+  if (date) {
+    const dateArray = date.split("");
+    const day = Number(dateArray.slice(0, 2).join(""));
+    const month = dateArray.slice(3, 5).join("");
+    const year = Number(dateArray.slice(6, 10).join(""));
+    return `${year}${month}${day}`;
   }
-  return `${year}${month}${day}`;
 };
