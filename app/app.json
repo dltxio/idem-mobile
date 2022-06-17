@@ -2,7 +2,7 @@
   "expo": {
     "name": "idemID",
     "slug": "IDEM",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "entryPoint": "./index.js",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -36,7 +36,8 @@
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.RECORD_AUDIO"
-      ]
+      ],
+      "package": "com.dltx.idem"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -1,4 +1,7 @@
 package com.dltx.idem;
+import expo.modules.devmenu.react.DevMenuAwareReactActivity;
+import android.content.Intent;
+import expo.modules.devlauncher.DevLauncherController;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -9,7 +12,16 @@ import com.facebook.react.ReactRootView;
 
 import expo.modules.ReactActivityDelegateWrapper;
 
-public class MainActivity extends ReactActivity {
+public class MainActivity extends DevMenuAwareReactActivity {
+
+  @Override
+  public void onNewIntent(Intent intent) {
+    if (DevLauncherController.tryToHandleIntent(this, intent)) {
+      return;
+    }
+    super.onNewIntent(intent);
+  }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     // Set the theme to AppTheme BEFORE onCreate to support 
@@ -30,9 +42,9 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected ReactActivityDelegate createReactActivityDelegate() {
-    return new ReactActivityDelegateWrapper(this,
+    return DevLauncherController.wrapReactActivityDelegate(this, () -> new ReactActivityDelegateWrapper(this,
       new ReactActivityDelegate(this, getMainComponentName())
-    );
+    ));
   }
 
   /**
