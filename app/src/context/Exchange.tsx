@@ -6,6 +6,7 @@ import axios from "axios";
 import * as password from "secure-random-password";
 import { IExchange } from "../interfaces/exchange-interface";
 import { VerifyUserRequestBody } from "../types/exchange";
+import { findNames } from "../utils/formatters";
 
 export type ExchangeValue = {
   makeGpibUser: IExchange;
@@ -63,8 +64,10 @@ export const ExchangeProvider: React.FC<{
 
   const makeGpibUser: IExchange = {
     signUp: async (name: string, email: string) => {
+      const splitName = findNames(name);
       const body = JSON.stringify({
-        fullName: name,
+        firstName: splitName?.firstName,
+        lastName: splitName?.lastName,
         email: email,
         password: randomTempPassword,
         referralCode: "",
