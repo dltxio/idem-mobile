@@ -29,6 +29,11 @@ jobs:
         with:
           ref: "BUILD"
 
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.14.2
+
       - name: Setup Expo
         uses: expo/expo-github-action@v7
         with:
@@ -47,6 +52,15 @@ jobs:
         run: git pull
 
       - name: Bump Version Number
+        id: bump
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Bump version number
+
+      - name: Notify Slack
+        if: ${{ always() && github.ref == 'refs/heads/main' }}
+        uses: ./.github/actions
+        with:
+          slack-channel: "idem"
+          slack-bot-token: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+          outcome: ${{ steps.bump.outcome }}

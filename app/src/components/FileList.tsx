@@ -1,6 +1,6 @@
 import React from "react";
 import { ListItem, Button } from "react-native-elements";
-import { File } from "../types/document";
+import { DocumentId, File } from "../types/document";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
@@ -19,6 +19,7 @@ type Props = {
   onFilePress: (fileId: string) => void;
   onDeleteFile?: (fileId: string) => void;
   isCheckList: boolean;
+  documentId?: DocumentId;
 };
 
 const DELETE_ICON = { name: "delete", color: "white" };
@@ -27,7 +28,8 @@ const FileList: React.FC<Props> = ({
   isCheckList,
   files,
   onFilePress,
-  onDeleteFile
+  onDeleteFile,
+  documentId
 }) => {
   const navigation = useNavigation<Navigation>();
   return (
@@ -41,61 +43,57 @@ const FileList: React.FC<Props> = ({
             return null;
           }
 
-          const content = (
-            <>
-              <ListItem.Content>
-                <ListItem.Title>{document.title}</ListItem.Title>
-                <ListItem.Subtitle>{file.name}</ListItem.Subtitle>
-              </ListItem.Content>
-              {!isCheckList ? (
-                <AntDesign name="right" style={styles.icon} />
-              ) : file.selected ? (
-                <MaterialIcons
-                  name="radio-button-checked"
-                  style={styles.icon}
-                />
-              ) : (
-                <MaterialIcons
-                  name="radio-button-unchecked"
-                  style={styles.icon}
-                />
-              )}
-            </>
-          );
-
-          if (onDeleteFile) {
-            return (
-              <ListItem.Swipeable
-                key={file.id}
-                onPress={() => onFilePress(file.id)}
-                rightContent={
-                  <Button
-                    title="Delete"
-                    onPress={() => onDeleteFile(file.id)}
-                    icon={DELETE_ICON}
-                    buttonStyle={styles.deleteDocumentButton}
+          if (documentId === file.documentId) {
+            const content = (
+              <>
+                <ListItem.Content key={file.documentId}>
+                  <ListItem.Title>{document.title}</ListItem.Title>
+                  <ListItem.Subtitle>{file.name}</ListItem.Subtitle>
+                </ListItem.Content>
+                {!isCheckList ? (
+                  <AntDesign name="right" style={styles.icon} />
+                ) : file.selected ? (
+                  <MaterialIcons
+                    name="radio-button-checked"
+                    style={styles.icon}
                   />
-                }
-                leftContent={
-                  <Button
-                    title="View"
-                    onPress={() =>
-                      navigation.navigate("ViewFile", { fileId: file.id })
-                    }
-                    buttonStyle={styles.viewDocumentButton}
+                ) : (
+                  <MaterialIcons
+                    name="radio-button-unchecked"
+                    style={styles.icon}
                   />
-                }
-              >
-                {content}
-              </ListItem.Swipeable>
+                )}
+              </>
             );
-          }
 
-          return (
-            <ListItem key={file.id} onPress={() => onFilePress(file.id)}>
-              {content}
-            </ListItem>
-          );
+            if (onDeleteFile) {
+              return (
+                <ListItem.Swipeable
+                  key={file.id}
+                  onPress={() => onFilePress(file.id)}
+                  rightContent={
+                    <Button
+                      title="Delete"
+                      onPress={() => onDeleteFile(file.id)}
+                      icon={DELETE_ICON}
+                      buttonStyle={styles.deleteDocumentButton}
+                    />
+                  }
+                  leftContent={
+                    <Button
+                      title="View"
+                      onPress={() =>
+                        navigation.navigate("ViewFile", { fileId: file.id })
+                      }
+                      buttonStyle={styles.viewDocumentButton}
+                    />
+                  }
+                >
+                  {content}
+                </ListItem.Swipeable>
+              );
+            }
+          }
         })}
       </View>
     </ScrollView>
