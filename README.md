@@ -6,13 +6,44 @@ React native mobile app for Idem
 
 ![build status main branch](https://github.com/dltxio/idem-mobile/workflows/CI/badge.svg?branch=main)
 
-To run the app
+# To run the app
 
 ```bash
 yarn install
 cd app
 yarn start
 ```
+
+### Android Emulator
+
+1. Download .apk to computer from https://expo.dev/accounts/dltx/projects/IDEM/builds/6a46f152-fdff-4d8f-9675-88bf3fe8e131
+2. Launch emulator
+3. Drag apk into emulator to install
+
+### Android Physical
+
+1. Download .apk to phone from https://expo.dev/accounts/dltx/projects/IDEM/builds/6a46f152-fdff-4d8f-9675-88bf3fe8e131
+2. Follow install instructions on device
+
+### iOS Simulator
+
+1. Download .tar.gz file to computer from https://expo.dev/accounts/dltx/projects/IDEM/builds/50bd631d-83d5-42d1-8f68-a94df368fb74
+2. Decompress .tar.gz (decompressed file should be called idemID.app)
+3. Launch simulator
+4. Drag idemID.app onto simulator to install
+
+### iOS Physical
+
+1. On iOS device go to https://expo.dev/register-device/56f0712e-ff59-4c1f-ae0e-11a96262f650
+2. Follow instructions on page to install ad hoc provisioning profile
+3. Run: `eas build --profile development -p ios`
+4. Log into dltx developer apple account
+5. Choose to reselect devices to provision
+6. Using left/right arrow keys, enable all available devices
+7. Don't set up push notifications
+8. Wait for build to finish
+9. When build is finished download to iOS device
+10. Follow install instructions on device
 
 ## Glossary of Terms
 
