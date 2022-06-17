@@ -14,7 +14,6 @@ import RequestClaimsModal from "./src/components/RequestClaimsModal";
 import { DocumentProvider } from "./src/context/DocumentStore";
 import { MnemonicProvider } from "./src/context/Mnemonic";
 import { ExchangeProvider } from "./src/context/Exchange";
-import { registerRootComponent } from "expo";
 
 const App = () => {
   const initialURL = Linking.useURL();
@@ -75,4 +74,4 @@ const App = () => {
   );
 };
 
-registerRootComponent(App);
+export default App;
