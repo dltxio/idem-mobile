@@ -7,6 +7,7 @@ export type Field = {
 };
 
 export type Vendor = {
+  id: number;
   description: string;
   logo: string;
   name: string;
@@ -14,4 +15,12 @@ export type Vendor = {
   tagline: string;
   website: string;
   backgroundColor: string;
+};
+
+export type VerifyOnProxy = {
+  firstName: string;
+  lastName: string;
+  dob: string;
+  email: string;
+  address: string;
 };

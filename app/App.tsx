@@ -14,6 +14,15 @@ import RequestClaimsModal from "./src/components/RequestClaimsModal";
 import { DocumentProvider } from "./src/context/DocumentStore";
 import { MnemonicProvider } from "./src/context/Mnemonic";
 import { ExchangeProvider } from "./src/context/Exchange";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false
+  })
+});
 
 const App = () => {
   const initialURL = Linking.useURL();

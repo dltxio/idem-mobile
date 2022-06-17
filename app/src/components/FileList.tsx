@@ -20,6 +20,7 @@ type Props = {
   onDeleteFile?: (fileId: string) => void;
   isCheckList: boolean;
   documentId?: DocumentId;
+  style?: object;
 };
 
 const DELETE_ICON = { name: "delete", color: "white" };
