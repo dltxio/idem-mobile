@@ -1,8 +1,7 @@
+import moment from "moment";
+
 export const findYOB = (dob: string) => {
-  const dobArray = dob.split("");
-  const findYob = dobArray.slice(6, 10);
-  const yob = findYob.join("");
-  return yob;
+  return moment(dob, "DD/MM/YYYY").year();
 };
 
 export const findNames = (fullname: string | undefined) => {
@@ -14,4 +13,14 @@ export const findNames = (fullname: string | undefined) => {
     return { firstName, lastName };
   }
   return null;
+};
+
+export const reformatDate = (date: string) => {
+  if (date) {
+    const dateArray = date.split("");
+    const day = Number(dateArray.slice(0, 2).join(""));
+    const month = dateArray.slice(3, 5).join("");
+    const year = Number(dateArray.slice(6, 10).join(""));
+    return `${year}${month}${day}`;
+  }
 };
