@@ -17,8 +17,11 @@
     "prepare-backend-for-production": "cp package.json yarn.lock ./build && cp ./app/package.json ./app/yarn.lock ./build/app && cd ./build && yarn --ignore-scripts && yarn yarn-sub-projects"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.1",
+    "@types/mocha": "^9.1.1",
     "@typescript-eslint/eslint-plugin": "^5.8.0",
     "@typescript-eslint/parser": "^5.8.0",
+    "chai": "^4.3.6",
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
