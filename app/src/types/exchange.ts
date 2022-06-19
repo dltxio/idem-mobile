@@ -7,5 +7,5 @@ export type VerifyUserRequestBody = {
   password: string | undefined;
   firstName: string | undefined;
   lastName: string | undefined;
-  yob: string | undefined;
+  yob: number;
 };

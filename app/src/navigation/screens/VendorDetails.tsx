@@ -26,7 +26,7 @@ const VendorDetailsScreen: React.FC = () => {
   const name = useClaimValue("FullNameCredential");
   const email = useClaimValue("EmailCredential");
   const dob = useClaimValue("DateOfBirthCredential");
-  const yob = findYOB(dob ? dob : "");
+  const yob = findYOB(dob || "");
   const splitName = findNames(name);
 
   const vendor = vendors.find((v) => v.name === route.params.vendorId);
