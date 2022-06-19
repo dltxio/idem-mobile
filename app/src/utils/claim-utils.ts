@@ -66,7 +66,7 @@ export const displayClaimValue = (claim: ClaimWithValue): string => {
   const formatters: { [key in ClaimType]: (value: any) => string } = {
     "18+": (value: any) => value.over18,
     DateOfBirthCredential: (value: any) => value.dob,
-    FullNameCredential: (value: any) => value.firstName + " " + value.lastName,
+    FullNameCredential: (value: any) => `${value.firstName} ${value.lastName}`,
     EmailCredential: (value: any) => value.email,
     MobileNumberCredential: (value: any) => value.mobileNumber,
     AddressCredential: (value: any) =>
