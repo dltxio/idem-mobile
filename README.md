@@ -218,10 +218,10 @@ There may be cases where the _idem-api_ module is able to request the website's 
 ### Table of claims
 
 | CredentialSubject   | Mnemonic     | Standard            | Description            |
-| ------------------- | ------------ | ------------------- | ---------------------- | --------------- |
+| ------------------- | ------------ | ------------------- | ---------------------- |
 | AdultCredential     | eighteenplus | 18 Plus             | 18 Plus                |
 | BirthCredential     | dob          | YYYY-MM-DD ISO 8601 | Users date of birth    |
-| NameCredential      | fullname     | Firstname Lastname  |                        | Users full name |
+| NameCredential      | fullname     | Firstname Lastname  | Users full name        |
 | EmailCredential     | email        | Email               | Users email address    |
 | MobileCredential    | mobilenumber | Mobile Number       | Users mobile number    |
 | AddressCredential   | address      | Physical Address    | Users physical address |
@@ -229,10 +229,10 @@ There may be cases where the _idem-api_ module is able to request the website's 
 
 ### Table of documents
 
-| Key  | Document                     | Details                                                                                                                                                              |
-| ---- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0x00 | Australian birth certificate | A full birth certificate in your name or former name issued by State Authority of Births, Deaths and Marriages. We cannot accept birth extracts or birth cards.      |
-| 0x01 | Australian driver licence    | A current driver licence with your photo issued in your name. This includes physical and digital driver licences, current learner permits, and provisional licences. |
+| Key  | Document                     | Details |
+| ---- | ---------------------------- | ------- |
+| 0x00 | Australian birth certificate | A full birth certificate in your name or former name issued by State Authority of Births, Deaths and Marriages. We cannot accept birth extracts or birth cards. |
+| 0x01 | Australian driver licence    | A current driver licence with your photo issued in your name. This includes physical and digital driver licences, current learner permits, and provisional licences.|
 
 ### Trusted ID verification providers
 
