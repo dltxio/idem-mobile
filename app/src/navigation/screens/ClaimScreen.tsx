@@ -22,11 +22,11 @@ import { Claim, UploadPGPKeyResponse, VerifyEmail } from "../../types/claim";
 import { FileList, Button } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
-import { claimsLocalStorage, pgpLocalStorage } from "../../utils/local-storage";
+import { pgpLocalStorage } from "../../utils/local-storage";
 import axios, { AxiosError } from "axios";
 import { getDocumentFromDocumentId } from "../../utils/document-utils";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
-import { check18Plus } from "../../utils/birthday-utils";
+import useClaimScreen from "../../hooks/useClaimScreen";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -44,9 +44,16 @@ const ClaimScreen: React.FC = () => {
   const [showDatePickerForFieldId, setShowDatePickerForFieldId] =
     React.useState<string>();
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [selectedFileIds, setSelectedFileIds] = React.useState<string[]>([]);
   const [, setVerifyEmailRequest] = React.useState<VerifyEmail>();
+
+  const {
+    loading,
+    setLoading,
+    saveAndCheckBirthday,
+    onSelectFile,
+    selectedFileIds,
+    setSelectedFileIds
+  } = useClaimScreen();
 
   const showDatePickerFor = (fieldId: string) => {
     Keyboard.dismiss();
@@ -70,53 +77,6 @@ const ClaimScreen: React.FC = () => {
     hideDatePicker();
   };
 
-  const save18Claim = async () => {
-    setLoading(true);
-    await addClaim("18+", "true", selectedFileIds);
-    Alert.alert(
-      `Over 18`,
-      `Your claim for being over 18 years of age has been saved.`,
-      [
-        {
-          text: "OK",
-          onPress: () => console.log(""),
-          style: "cancel"
-        }
-      ]
-    );
-    setLoading(false);
-  };
-  const saveAndCheckBirthday = async () => {
-    setLoading(true);
-    const claims = await claimsLocalStorage.get();
-    const findBirthday = claims?.map((claim) => {
-      if (claim.type === "DateOfBirthCredential") {
-        if (check18Plus(claim)) {
-          Alert.alert(
-            "18+ detected",
-            "IDEM has detected that your are over 18. Would you like to update your 18+ claim accordingly?",
-            [
-              {
-                text: "OK",
-                onPress: save18Claim
-              },
-              {
-                text: "Cancel",
-                style: "cancel"
-              }
-            ],
-            {
-              cancelable: true
-            }
-          );
-        }
-      }
-      return null;
-    });
-    setLoading(false);
-    return findBirthday;
-  };
-
   const onSave = async () => {
     setLoading(true);
     await addClaim(claim.type, formState, selectedFileIds);
@@ -124,14 +84,6 @@ const ClaimScreen: React.FC = () => {
       routes: [{ name: "Home" }]
     });
     setLoading(false);
-  };
-
-  const onSelectFile = (fileId: string) => {
-    if (!selectedFileIds.includes(fileId)) {
-      setSelectedFileIds([...selectedFileIds, fileId]);
-    } else {
-      setSelectedFileIds(selectedFileIds.filter((id) => id !== fileId));
-    }
   };
 
   const verifyEmail = async (email: string) => {
