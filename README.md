@@ -258,6 +258,6 @@ https://en.bitcoin.it/wiki/Seed_phrase
 https://docs.microsoft.com/en-us/dotnet/api/system.security.claims.claim?view=net-5.0
 Transactions on the Ethereum Test Network "Kovan" will be signed with the ETH account `0xE4ed9ceF6989CFE9da7c1Eec8c2299141dD9e7cC`
 
-## (Removed Diagrams)
+### (Removed Diagrams)
 
 https://user-images.githubusercontent.com/91101134/141231143-676d3413-ac01-462a-9fac-ee0b4fd509a3.jpeg
