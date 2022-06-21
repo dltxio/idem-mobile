@@ -26,6 +26,7 @@ export const MnemonicProvider: React.FC<{
 
   React.useEffect(() => {
     (async () => {
+      await mnemonicLocalStorage.clear();
       setLoadingMnemonic(true);
       const initialMnemonic = await mnemonicLocalStorage.get();
 

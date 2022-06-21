@@ -27,6 +27,7 @@ export const DocumentProvider: React.FC<{
 
   React.useEffect(() => {
     (async () => {
+      await fileLocalStorage.clear();
       const initialDocuments = await fileLocalStorage.get();
 
       if (initialDocuments) {

@@ -17,19 +17,57 @@ import { useExchange } from "../../context/Exchange";
 import { findNames, findYOB } from "../../utils/formatters";
 import { ScrollView } from "react-native-gesture-handler";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
-import { IExchange } from "../../interfaces/exchange-interface";
+import { claimStatus, IExchange } from "../../interfaces/exchange-interface";
+import useVerifyClaims from "../../hooks/useVerifyClaims";
+import * as Crypto from "expo-crypto";
+import usePushNotifications from "../../hooks/usePushNotifications";
 
 const VendorDetailsScreen: React.FC = () => {
   const { vendors } = useVendorsList();
+  const { expoPushToken } = usePushNotifications();
   const { makeGpibUser, makeCoinstashUser, verifyOnExchange } = useExchange();
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
   const name = useClaimValue("FullNameCredential");
+  const address = useClaimValue("AddressCredential");
   const email = useClaimValue("EmailCredential");
   const dob = useClaimValue("DateOfBirthCredential");
   const yob = findYOB(dob ? dob : "");
   const splitName = findNames(name);
-
+  const { verifyClaims, postTokenToProxy } = useVerifyClaims();
+  const [status, setStatus] = React.useState<string>();
   const vendor = vendors.find((v) => v.name === route.params.vendorId);
+
+  const verifyOnProxyRequestBody = async () => {
+    const splitName = findNames(name);
+    if (splitName && dob && address && email) {
+      Alert.alert(
+        "Claims Sent",
+        "Please wait while your claims are being verified",
+        [
+          {
+            text: "OK",
+            style: "destructive"
+          }
+        ]
+      );
+      const userEmail = await Crypto.digestStringAsync(
+        Crypto.CryptoDigestAlgorithm.SHA256,
+        email
+      );
+      const userClaims = {
+        firstName: splitName.firstName,
+        lastName: splitName.lastName,
+        dob: dob,
+        email: userEmail.toString(),
+        address: address
+      };
+      await verifyClaims(userClaims);
+    }
+    if (expoPushToken) {
+      await postTokenToProxy(expoPushToken);
+    }
+    setStatus(claimStatus.PENDING);
+  };
 
   if (!vendor) {
     return null;
@@ -50,6 +88,19 @@ const VendorDetailsScreen: React.FC = () => {
       <Text style={styles.description}>{vendor.description}</Text>
       <Image source={{ uri: vendor.logo }} style={styles.logo} />
       <View style={styles.buttonWrapper}>
+        {name && dob && address && email && (
+          <View style={styles.buttonWrapper}>
+            <Button
+              title={
+                status === claimStatus.PENDING ? "Pending" : "Verify My Claim"
+              }
+              disabled={status === claimStatus.PENDING ? true : false}
+              onPress={async () => {
+                verifyOnProxyRequestBody();
+              }}
+            />
+          </View>
+        )}
         <Button
           onPress={() => {
             const makeUser = idToIExchange[vendor.id];
@@ -121,7 +172,7 @@ const styles = StyleSheet.create({
 
   buttonWrapper: {
     width: Dimensions.get("window").width * 0.9,
-    marginTop: Dimensions.get("window").height / 2.5,
+    marginTop: Dimensions.get("window").height / 6,
     justifyContent: "space-around"
   },
   button: {

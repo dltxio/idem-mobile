@@ -71,6 +71,7 @@ export const displayClaimValue = (claim: ClaimWithValue): string => {
     MobileNumberCredential: (value: any) => value.mobileNumber,
     AddressCredential: (value: any) =>
       `${value.houseNumber} ${value.street} ${value.suburb}, ${value.postCode} ${value.state} ${value.country}`,
+    //HERE
     ProfileImageCredential: (value: any) => value.fileId
   };
 

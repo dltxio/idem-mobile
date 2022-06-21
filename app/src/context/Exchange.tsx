@@ -28,6 +28,7 @@ export const ExchangeProvider: React.FC<{
 
   React.useEffect(() => {
     (async () => {
+      await exchangeLocalStorage.clear();
       const initialGpibUserID = await exchangeLocalStorage.get();
 
       if (initialGpibUserID) {
