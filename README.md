@@ -130,10 +130,9 @@ Eg: `did://callback=https://demo.idem.com.au/callback/?nonce=8b5c66c0-bceb-40b4-
 
 <img src=https://user-images.githubusercontent.com/8411406/171374486-f2112f4e-f45e-43c2-be09-b1bb58b8f463.png width=25% height=25%>
 
-
 ### 2. Verifying the claims
 
-_Idem_ will then check to see if it already has those claims. If it does, skip to step 4. If it doesn't, it will use the _idem-api_ module to obtain the relevant credentials which are verified by third-party KYC vendors and who return an X-509 SSL certificate signed JSON object that can then be reused. Each vendor has a different process for onboarding and the app will maintain these different business requirements. N.b. for the MVP we will only be using [greenId](https://gbg-greenid.com/).
+_Idem_ will then check to see if it already has those claims. If it does, skip to step 4. If it doesn't, it will use the _idem-api_ module to obtain the relevant credentials which are verified by third-party KYC vendors and who return an X-509 SSL certificate signed JSON object that can then be reused. Each vendor has a different process for onboarding and the app will maintain these different business requirements.
 
 <img src="https://user-images.githubusercontent.com/91101134/174712724-32f42982-344a-4d62-bb0b-8dc61824b837.png" width=100% height=100%>
 
@@ -201,7 +200,7 @@ c# Verifiable Credential model
 
 ### 4. Posting the signed data back to the exchange
 
-Finally, _Idem_ sends the credentials payload back to the website. Upon receipt of the credentials, the website authenticates the signature against the payload and shows a success message to the user. Obviously, it's up to the website to handle the success or failure of the verification of the user in whatver way it sees fit.
+Finally, _Idem_ sends the credentials payload back to the website. Upon receipt of the credentials, the website authenticates the signature against the payload and shows a success message to the user. Obviously, it's up to the website to handle the success or failure of the verification of the user in whatever way it sees fit.
 
 ## Demo/MVP
 
@@ -217,20 +216,25 @@ There may be cases where the _idem-api_ module is able to request the website's 
 
 | CredentialSubject   | Mnemonic     | Standard            | Description            |
 | ------------------- | ------------ | ------------------- | ---------------------- |
-| AdultCredential     | eighteenplus | 18 Plus             | 18 Plus                |
-| BirthCredential     | dob          | YYYY-MM-DD ISO 8601 | Users date of birth    |
-| NameCredential      | fullname     | Firstname Lastname  | Users full name        |
-| EmailCredential     | email        | Email               | Users email address    |
-| MobileCredential    | mobilenumber | Mobile Number       | Users mobile number    |
-| AddressCredential   | address      | Physical Address    | Users physical address |
-| BirthYearCredential | birthyear    | YYYY ISO 8601       | Users year of birth    |
+| AdultCredential     | eighteenplus | 18 Plus                             | 18 Plus                |
+| BirthCredential     | dob          | YYYY-MM-DD ISO 8601                 | Users date of birth    |
+| NameCredential      | fullname     | given,name, family name, middle name| Users full name        |
+| EmailCredential     | email        | email@email.email                   | Users email address    |
+| MobileCredential    | mobilenumber | Mobile Number                       | Users mobile number    |
+| AddressCredential   | address      | Physical Address                    | Users physical address |
+| BirthYearCredential | birthyear    | YYYY ISO 8601                       | Users year of birth    |
+| TaxCredential       | taxnumber    | 9 digit number                      | Users tax file number  |
 
 ### Table of documents
-
-| Key  | Document                     | Details |
-| ---- | ---------------------------- | ------- |
-| 0x00 | Australian birth certificate | A full birth certificate in your name or former name issued by State Authority of Births, Deaths and Marriages. We cannot accept birth extracts or birth cards. |
-| 0x01 | Australian driver licence    | A current driver licence with your photo issued in your name. This includes physical and digital driver licences, current learner permits, and provisional licences.|
+| **Key**  | **Document**                 | **Details**                                                                                                                                                          | **Document contents**                                                                  | **Document type** | **Has photo ID?** |
+|----------|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|-------------------|-------------------|
+| **0x00** | Australian driver licence    | A driver licence with your photo issued in your name. This includes physical and digital driver licences, learner permits and provisional licences.                  | Given name, middle, family name, dob, license number, residential address              | Primary           | Yes               |
+| **0x01** | Australian passport          | A passport issued by a country.                                                                                                                                      | Given name, middle name, family name, residential address, DOB, passport number        | Primary           | Yes               |
+| **0x02** | Australian birth certificate | A full birth certificate in your name or former name issued by Births, Deaths and Marriages. We can’t accept birth extracts or birth cards.                          | Given name, middle name, family name, DOB                                              | Primary           | No                |
+| **0x03** | Bank statement               | A bank statement issued in your name. Must be issued within the last 3 months.                                                                                       | Given name, middle name, family name, residential address                              | Secondary         | No                |
+| **0x04** | Rates notice                 | A paid rates notice issued in your name with your address that is less than 12 months old.                                                                           | Given name, middle name, family name, residential address                              | Secondary         | No                |
+| **0x05** | Utility account              | Water, gas, electricity or phone account with a receipt number. This must be in your name, show your address and be less than 12 months old. Must be a paid account. | Given name, middle name, family name, residential address                              | Secondary         | No                |
+| **0x06** | Medicare Card                | A current Medicare Card issued in your name.                                                                                                                         | Given name, middle name, family name, medicare number, expiry date, position in family | Secondary         | No                | 
 
 ### Trusted ID verification providers
 
