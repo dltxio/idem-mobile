@@ -85,7 +85,7 @@ A user downlooads _Idem_ on their mobile device and creates a new local profile 
 
 ### 2: New private key
 
-_Idem_ can automatically create a 256-bit private key on the device or it can allow the user to import a mnemonic seed phrase (based on the bitcoin BIP39 standard) of their choice. This will be used to sign and verify requests (using elliptic curve crytography - Secp256k1) to third parties.
+_Idem_ can automatically create a 256-bit private key on the device the user to import a mnemonic seed phrase (based on the bitcoin BIP39 standard) of their choice. This will be used to sign and verify requests (using elliptic curve crytography - Secp256k1) to third parties.
 
 ### 3: Upload data
 
@@ -99,23 +99,20 @@ Here are two common scenarios involving a user and a participating third-party w
 
 The user initiates the registration process by entering their email address and a password into the website. The use of Recaptchas on most websites rules out a full-fledged _Idem_ registration, although _Idem_ could be used to fill the email address and generate a password on behalf of the user. From here, the user can use _Idem_ to complete the verification process by allowing _Idem_ to supply the claims the website requires.
 
-### 2. Existing (to the website) user
+### 2. Existing (to the website) non-verified user
 
-An existing user can log into the website by scanning the QR code (using _Idem_) the website displays, Recaptcha allowing. Otherwise, the user can simply log in manually and enjoy the benefits of the website, having already presented their credentials using _Idem_.
-
-Note that for MVP purposes (see below), the claims required will all already have been saved to the user's device during their initial _Idem_ set-up. _Idem_ will also be able to update any claims the website requires, such as date of birth, name, or address, or provide extra credentials if the user wanted to access a new part of the site.
+An existing user can log into the website, given the user is using the same email address as their claim in IDEM, the user will receive an alert stating "Would you like to use IDEM to verify with the website?" If the user accepts this alert they will be verified on the platform once their claims have been verified.
 
 ## Verification Workflow Diagram
 
 The flowchart below is a verification workflow diagram for third-party developers to integrate a website (such as an exchange) with _Idem_. It works as follows:
 
 1. A user creates account on the website, typically with a email and password.
-2. When the user signs up, an account is created.
-3. The new user may then be assed to supply more information to meet KYC obligations. This could be meta data such as Full Name, Date of Birth and Phyiscal address. These are what Idem referrers to as _Claims_. To capture this data, the website can either
-4. - Get the user to fill out a form
-5. - Present a self documenting QR code requesting the claims required, and the callback URL for the website. This is similar to a PayPal IPN or an OAuth2 callback URL.
-6. The user is asked to confirm they're happy to proceed with sharing those specific claims to the website.
-7. IDEM then posts the claims in DID format to the websites specified callback URL, which it can then add to the users profile.
+2. The new user may then be assed to supply more information to meet KYC obligations. This could be meta data such as Full Name, Date of Birth and Phyiscal address. These are what Idem referrers to as _Claims_. To capture this data, the website can either
+  - Get the user to fill out a form
+  - Present a self documenting QR code requesting the claims required, and the callback URL for the website. This is similar to a PayPal IPN or an OAuth2 callback URL.
+5. The user is asked to confirm they're happy to proceed with sharing those specific claims to the website.
+6. IDEM then posts the claims in DID format to the websites specified callback URL, which it can then add to the users profile.
 
 <img src="https://user-images.githubusercontent.com/91101134/141231224-ad845a7c-d336-43cb-b9ea-a2d7c3f1a021.jpeg" width=100% height=100%>
 
@@ -123,7 +120,7 @@ The flowchart below is a verification workflow diagram for third-party developer
 
 ### 1. Onboarding on Third-Party Sites
 
-The site "demo.idem.com.au" creates a unique deeplink url with the url schema `did://` along with the claims it requires:
+The site "idem.com.au/demo" creates a unique deeplink url with the url schema `did://` along with the claims it requires:
 
 - callback: URL
 - nonce: UUID (also used in challenge)
@@ -131,13 +128,14 @@ The site "demo.idem.com.au" creates a unique deeplink url with the url schema `d
 
 Eg: `did://callback=https://demo.idem.com.au/callback/?nonce=8b5c66c0-bceb-40b4-b099-d31b127bf7b3&claims=EmailCredential,NameCredential`
 
-![idem](https://user-images.githubusercontent.com/8411406/171374486-f2112f4e-f45e-43c2-be09-b1bb58b8f463.png)
+<img src=https://user-images.githubusercontent.com/8411406/171374486-f2112f4e-f45e-43c2-be09-b1bb58b8f463.png width=25% height=25%>
+
 
 ### 2. Verifying the claims
 
 _Idem_ will then check to see if it already has those claims. If it does, skip to step 4. If it doesn't, it will use the _idem-api_ module to obtain the relevant credentials which are verified by third-party KYC vendors and who return an X-509 SSL certificate signed JSON object that can then be reused. Each vendor has a different process for onboarding and the app will maintain these different business requirements. N.b. for the MVP we will only be using [greenId](https://gbg-greenid.com/).
 
-<img src="https://user-images.githubusercontent.com/91101134/141231805-bbbfc5e8-341e-4d7e-b2f9-ff8015652fd1.jpeg" width=100% height=100%>
+<img src="https://user-images.githubusercontent.com/91101134/174712724-32f42982-344a-4d62-bb0b-8dc61824b837.png" width=100% height=100%>
 
 ### 3. Shaping the response from the API
 
