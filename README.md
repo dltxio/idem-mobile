@@ -108,7 +108,7 @@ An existing user can log into the website, given the user is using the same emai
 The flowchart below is a verification workflow diagram for third-party developers to integrate a website (such as an exchange) with _Idem_. It works as follows:
 
 1. A user creates account on the website, typically with a email and password.
-2. The new user may then be assed to supply more information to meet KYC obligations. This could be meta data such as Full Name, Date of Birth and Phyiscal address. These are what Idem referrers to as _Claims_. To capture this data, the website can either
+2. The new user may then be assed to supply more information to meet KYC obligations. This could be meta data such as Full Name, Date of Birth and Phyiscal address. These are what IDEM referrers to as _Claims_. To capture this data, the website can either.
   - Get the user to fill out a form
   - Present a self documenting QR code requesting the claims required, and the callback URL for the website. This is similar to a PayPal IPN or an OAuth2 callback URL.
 5. The user is asked to confirm they're happy to proceed with sharing those specific claims to the website.
