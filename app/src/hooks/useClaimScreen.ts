@@ -16,6 +16,7 @@ type Hooks = {
   setSelectedFileIds: (selectedFileIds: string[]) => void;
   verifyEmail: (email: string) => void;
 };
+
 const useClaimScreen = (): Hooks => {
   const { addClaim } = useClaimsStore();
   const [loading, setLoading] = useState<boolean>(false);
