@@ -2,7 +2,7 @@
   "expo": {
     "name": "idemID",
     "slug": "IDEM",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "entryPoint": "./index.js",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -47,6 +47,13 @@
         "expo-image-picker",
         {
           "photosPermission": "IDEM accesses your photos to verify your claims"
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#ffffff"
         }
       ]
     ]
