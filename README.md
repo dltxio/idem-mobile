@@ -85,7 +85,7 @@ A user downlooads _Idem_ on their mobile device and creates a new local profile 
 
 ### 2: New private key
 
-_Idem_ can automatically create a 256-bit private key on the device the user to import a mnemonic seed phrase (based on the bitcoin BIP39 standard) of their choice. This will be used to sign and verify requests (using elliptic curve crytography - Secp256k1) to third parties.
+_Idem_ can automatically create a 256-bit private key on the device or the user can import a mnemonic seed phrase (based on the bitcoin BIP39 standard) of their choice. This will be used to sign and verify requests (using elliptic curve crytography - Secp256k1) to third parties.
 
 ### 3: Upload data
 
