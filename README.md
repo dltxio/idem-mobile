@@ -222,7 +222,6 @@ There may be cases where the _idem-api_ module is able to request the website's 
 | EmailCredential     | email        | email@email.email                   | Users email address    |
 | MobileCredential    | mobilenumber | Mobile Number                       | Users mobile number    |
 | AddressCredential   | address      | Physical Address                    | Users physical address |
-| BirthYearCredential | birthyear    | YYYY ISO 8601                       | Users year of birth    |
 | TaxCredential       | taxnumber    | 9 digit number                      | Users tax file number  |
 
 ### Table of documents
