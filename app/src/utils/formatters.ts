@@ -18,13 +18,14 @@ export const findNames = (fullname: string | undefined) => {
 
 // export const findAddress = (address: string | undefined) => {
 //   if (address) {
-//      "country": "Australia",
-// const houseNumber = "53",
-// const postCode = "4557",
-// const state = "QLD",
-// const street = "Lamatia dr",
-// const suburb = "Mountain creek",
-//     return { formatedAddress };
+// const fullAddressArray = address(" ");
+// const country = fullAddressArray.join();
+// const houseNumber = fullAddressArray.join();
+// const postCode = fullAddressArray.join();
+// const state = fullAddressArray.join();
+// const street = fullAddressArray.join();
+// const suburb = fullAddressArray.join();
+//     return { fullAddressArray };
 //   }
 //   return null;
 // };
