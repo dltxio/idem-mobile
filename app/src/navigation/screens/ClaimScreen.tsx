@@ -186,11 +186,10 @@ const ClaimScreen: React.FC = () => {
         <Button
           title={isVerifying ? "Save & Verify" : "Save"}
           disabled={!canSave}
-          onPress={
-            claim.type === "DateOfBirthCredential"
-              ? saveAndCheckBirthday
-              : onSave
-          }
+          onPress={() => {
+            if (claim.type === "DateOfBirthCredential") saveAndCheckBirthday();
+            onSave();
+          }}
           loading={loading}
         />
       </View>
