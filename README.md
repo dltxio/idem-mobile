@@ -111,8 +111,8 @@ The flowchart below is a verification workflow diagram for third-party developer
 2. The new user may be asked to supply more information to meet KYC obligations. This could be meta data such as Full Name, Date of Birth and Phyiscal address. These are what IDEM referrers to as _Claims_. To capture this data, the website can either.
   - Get the user to fill out a form.
   - Present a self documenting QR code requesting the claims required, and the callback URL for the website. This is similar to a PayPal IPN or an OAuth2 callback URL.
-5. The user is asked to confirm they're happy to proceed with sharing those specific claims to the website.
-6. IDEM then posts the claims in DID format to the websites specified callback URL, which it can then add to the users profile.
+3. The user is asked to confirm they're happy to proceed with sharing those specific claims to the website.
+4. IDEM then posts the claims in DID format to the websites specified callback URL, which it can then add to the users profile.
 
 OUT OF DATE, TO BE REPLACED: <img src="https://user-images.githubusercontent.com/91101134/141231224-ad845a7c-d336-43cb-b9ea-a2d7c3f1a021.jpeg" width=100% height=100%>
 
