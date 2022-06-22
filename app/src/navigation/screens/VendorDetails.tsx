@@ -33,11 +33,13 @@ const VendorDetailsScreen: React.FC = () => {
   const dob = useClaimValue("DateOfBirthCredential");
   const yob = findYOB(dob ? dob : "");
   const splitName = findNames(name);
+  // const joinAddress = findAddress(address);
   const { verifyClaims, postTokenToProxy } = useVerifyClaims();
   const [status, setStatus] = React.useState<string>();
   const vendor = vendors.find((v) => v.name === route.params.vendorId);
 
   const verifyOnProxyRequestBody = async () => {
+    // const joinAddress = findAddress(address);
     const splitName = findNames(name);
     if (splitName && dob && address && email) {
       Alert.alert(

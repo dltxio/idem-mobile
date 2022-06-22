@@ -15,3 +15,16 @@ export const findNames = (fullname: string | undefined) => {
   }
   return null;
 };
+
+// export const findAddress = (address: string | undefined) => {
+//   if (address) {
+//      "country": "Australia",
+// const houseNumber = "53",
+// const postCode = "4557",
+// const state = "QLD",
+// const street = "Lamatia dr",
+// const suburb = "Mountain creek",
+//     return { formatedAddress };
+//   }
+//   return null;
+// };
