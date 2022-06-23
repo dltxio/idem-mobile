@@ -18,14 +18,13 @@ import {
   ProfileStackNavigationRoute
 } from "../../types/navigation";
 import { getClaimFromType } from "../../utils/claim-utils";
-import { Claim, UploadPGPKeyResponse, VerifyEmail } from "../../types/claim";
+import { Claim } from "../../types/claim";
 import { FileList, Button } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
-import { pgpLocalStorage } from "../../utils/local-storage";
-import axios, { AxiosError } from "axios";
 import { getDocumentFromDocumentId } from "../../utils/document-utils";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
+import useClaimScreen from "../../hooks/useClaimScreen";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -33,20 +32,26 @@ const ClaimScreen: React.FC = () => {
   const route = useRoute<ProfileStackNavigationRoute<"Claim">>();
   const claim = getClaimFromType(route.params.claimType);
   const { addClaim, usersClaims } = useClaimsStore();
-
   const userClaim = usersClaims.find((c) => c.type === claim.type);
-
-  const navigation = useNavigation<Navigation>();
   const [formState, setFormState] = React.useState<{ [key: string]: string }>(
     userClaim?.value || {}
   );
+
+  const navigation = useNavigation<Navigation>();
   const dateRefs = React.useRef<{ [key: string]: any }>({});
   const [showDatePickerForFieldId, setShowDatePickerForFieldId] =
     React.useState<string>();
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [selectedFileIds, setSelectedFileIds] = React.useState<string[]>([]);
-  const [, setVerifyEmailRequest] = React.useState<VerifyEmail>();
+
+  const {
+    loading,
+    saveAndCheckBirthday,
+    onSelectFile,
+    verifyEmail,
+    selectedFileIds,
+    setLoading,
+    setSelectedFileIds
+  } = useClaimScreen();
 
   const showDatePickerFor = (fieldId: string) => {
     Keyboard.dismiss();
@@ -77,73 +82,6 @@ const ClaimScreen: React.FC = () => {
       routes: [{ name: "Home" }]
     });
     setLoading(false);
-  };
-
-  const onSelectFile = (fileId: string) => {
-    if (!selectedFileIds.includes(fileId)) {
-      setSelectedFileIds([...selectedFileIds, fileId]);
-    } else {
-      setSelectedFileIds(selectedFileIds.filter((id) => id !== fileId));
-    }
-  };
-
-  const verifyEmail = async (email: string) => {
-    setIsVerifying(true);
-    const armoredKey = await pgpLocalStorage.get();
-    if (!armoredKey || armoredKey === null) {
-      Alert.alert(
-        `ERROR`,
-        `Please go to your profile and import your private key first!`,
-        [
-          {
-            text: "Ok",
-            onPress: () => console.log("invalid pgp"),
-            style: "cancel"
-          }
-        ]
-      );
-      return;
-    }
-    try {
-      const uploadResponse = await axios.post<UploadPGPKeyResponse>(
-        "https://keys.openpgp.org/vks/v1/upload",
-        armoredKey,
-        {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
-      );
-      setVerifyEmailRequest({
-        token: uploadResponse.data.token,
-        addresses: [email]
-      });
-      try {
-        await axios.post("https://keys.openpgp.org/vks/v1/upload", armoredKey, {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        });
-        Alert.alert(
-          `Email Sent`,
-          `Please check your email for instructions from keys.openpgp.org on how to verify your claim.`,
-          [
-            {
-              text: "OK",
-              onPress: () => console.log(""),
-              style: "cancel"
-            }
-          ]
-        );
-      } catch (error) {
-        const err = error as AxiosError;
-        console.error(err?.response?.data || error);
-      }
-    } catch (error) {
-      const err = error as AxiosError;
-      console.error(err?.response?.data || error);
-    }
-    setIsVerifying(false);
   };
 
   const documentList =
@@ -222,9 +160,9 @@ const ClaimScreen: React.FC = () => {
                   <Text style={{ marginBottom: 20 }}>{field.title}</Text>
                   <Switch
                     value={formState[field.id] === "true"}
-                    onValueChange={(value) =>
-                      onChange(value ? "true" : "false")
-                    }
+                    onValueChange={(value) => {
+                      onChange(value ? "true" : "false");
+                    }}
                   />
                 </View>
               );
@@ -236,6 +174,8 @@ const ClaimScreen: React.FC = () => {
               mode="date"
               onConfirm={onDateSelect}
               onCancel={hideDatePicker}
+              display="inline"
+              isDarkModeEnabled={true}
             />
           )}
           {documentList}
@@ -246,7 +186,10 @@ const ClaimScreen: React.FC = () => {
         <Button
           title={isVerifying ? "Save & Verify" : "Save"}
           disabled={!canSave}
-          onPress={onSave}
+          onPress={() => {
+            if (claim.type === "DateOfBirthCredential") saveAndCheckBirthday();
+            onSave();
+          }}
           loading={loading}
         />
       </View>
@@ -264,6 +207,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: Dimensions.get("window").width - 40,
     margin: 20
+  },
+  datePicker: {
+    height: 500
   }
 });
 
