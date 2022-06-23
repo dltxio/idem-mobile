@@ -87,7 +87,7 @@ export const ExchangeProvider: React.FC<{
         );
         if (response.status === 200) {
           const userID = response.data;
-          await exchangeLocalStorage.save(userID);
+          await exchangeLocalStorage.save({ gpibUserID: userID });
           shareDetailsAlert();
         }
       } catch (error: any) {

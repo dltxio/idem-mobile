@@ -175,7 +175,7 @@ const ClaimScreen: React.FC = () => {
               onConfirm={onDateSelect}
               onCancel={hideDatePicker}
               display="inline"
-              isDarkModeEnabled={true}
+              isDarkModeEnabled={false}
             />
           )}
           {documentList}

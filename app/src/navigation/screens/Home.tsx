@@ -12,6 +12,8 @@ import * as Crypto from "expo-crypto";
 import usePushNotifications from "../../hooks/usePushNotifications";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { findNames } from "../../utils/formatters";
+import { VerifyOnProxy } from "../../types/general";
+import { exchangeLocalStorage } from "../../utils/local-storage";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -28,6 +30,10 @@ const Home: React.FC = () => {
   const name = useClaimValue("FullNameCredential");
   const dob = useClaimValue("DateOfBirthCredential");
   const address = useClaimValue("AddressCredential");
+  const addressValue = usersClaims.find(
+    (claim) => claim.type === "AddressCredential"
+  )?.value;
+
   const email = useClaimValue("EmailCredential");
 
   const verifyOnProxyRequestBody = async () => {
@@ -41,13 +47,21 @@ const Home: React.FC = () => {
         return hashedEmail;
       };
       const userEmail = await hashEmail();
+      const gpibUserID = await exchangeLocalStorage.get();
+
       const userClaims = {
         firstName: splitName.firstName,
         lastName: splitName.lastName,
         dob: dob,
         email: userEmail.toString(),
-        address: address
-      };
+        houseNumber: addressValue.houseNumber,
+        street: addressValue.street,
+        suburb: addressValue.suburb,
+        postcode: addressValue.postCode,
+        state: addressValue.state,
+        country: addressValue.country,
+        userId: gpibUserID?.gpibUserID
+      } as VerifyOnProxy;
       await verifyClaims(userClaims);
     }
     if (expoPushToken) {

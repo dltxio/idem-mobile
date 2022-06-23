@@ -1,7 +1,8 @@
 import { Alert } from "react-native";
 import axios, { AxiosResponse } from "axios";
 import { VerifyOnProxy } from "../types/general";
-import { claimsLocalStorage } from "../utils/local-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { VerificationResponse } from "../interfaces/exchange-interface";
 
 type Hooks = {
   verifyClaims: (proxyBody: VerifyOnProxy) => Promise<void>;
@@ -15,9 +16,14 @@ const useVerifyClaims = (): Hooks => {
     try {
       const response = await axios.post(
         "https://proxy.idem.com.au/user/verify",
-        proxyBody
+        proxyBody,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
       );
-      await claimsLocalStorage.save(response.data);
+      await AsyncStorage.setItem("GPIB", JSON.stringify(response.data));
     } catch (error) {
       console.log(error);
       Alert.alert("Error!", `${error}`);
@@ -25,25 +31,30 @@ const useVerifyClaims = (): Hooks => {
   };
 
   const postTokenToProxy = async (expoToken: string) => {
-    const claims = await claimsLocalStorage.get();
-    const body = JSON.stringify({ token: expoToken });
-    try {
-      const response = await axios.put(
-        `https://proxy.idem.com.au/user/${claims}/token`,
-        body,
-        {
-          headers: {
-            "Content-Type": "application/json"
+    const claim = await AsyncStorage.getItem("GPIB");
+    console.log(claim);
+    if (claim) {
+      const claimObject = JSON.parse(claim) as VerificationResponse;
+
+      const body = JSON.stringify({ token: expoToken });
+      try {
+        const response = await axios.put(
+          `https://proxy.idem.com.au/user/${claimObject.userId}/token`,
+          body,
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
           }
-        }
-      );
-      Alert.alert(
-        "Success!",
-        "Your name, date of birth, email, and address have been sent to IDEM to be verified!"
-      );
-      return response;
-    } catch (error) {
-      Alert.alert("Error!", `${error}`);
+        );
+        Alert.alert(
+          "Success!",
+          "Your name, date of birth, email, and address have been sent to IDEM to be verified!"
+        );
+        return response;
+      } catch (error) {
+        Alert.alert("Error!", `${error}`);
+      }
     }
   };
   return {
