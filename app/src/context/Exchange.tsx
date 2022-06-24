@@ -162,7 +162,11 @@ export const ExchangeProvider: React.FC<{
       }
     } catch (error: any) {
       console.log(error);
-      Alert.alert(error.response.data);
+      if (error.response.data === "Username or password is incorrect") {
+        Alert.alert("Password is incorrect");
+      } else {
+        Alert.alert(error.response.data);
+      }
     }
   };
 
