@@ -2,7 +2,7 @@ import moment from "moment";
 
 export const findYOB = (dob: string) => {
   const _dob = moment(dob, "DD/MM/YYYY");
-  return _dob.year;
+  return _dob.year.toString();
 };
 
 export const findNames = (fullname: string | undefined) => {
