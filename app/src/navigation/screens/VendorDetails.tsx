@@ -61,7 +61,7 @@ const VendorDetailsScreen: React.FC = () => {
               makeUser.signUp(name, email);
             }
           }}
-          title="Sign Up"
+          title="Register"
           disabled={name && email ? false : true}
           style={styles.button}
         />
