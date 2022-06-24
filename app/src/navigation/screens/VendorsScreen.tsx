@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { VendorStackNavigation } from "../../types/navigation";
 import useVendorsList from "../../hooks/useVendorsList";
 
-type Navigation = VendorStackNavigation<"VendorsList">;
+type Navigation = VendorStackNavigation<"Back">;
 
 const VendorsScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();

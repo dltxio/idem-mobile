@@ -44,7 +44,7 @@ export const ExchangeProvider: React.FC<{
 
   const shareDetailsAlert = (randomTempPassword: string) => {
     Alert.alert(
-      "Share Details",
+      "Sign Up",
       `Sign up successful, your temporary password is ${randomTempPassword}`,
       [
         {
@@ -165,7 +165,11 @@ export const ExchangeProvider: React.FC<{
       }
     } catch (error: any) {
       console.log(error);
-      Alert.alert(error.response.data);
+      if (error.response.data === "Username or password is incorrect") {
+        Alert.alert("Invalid password");
+      } else {
+        Alert.alert(error.response.data);
+      }
     }
   };
 

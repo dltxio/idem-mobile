@@ -15,10 +15,10 @@
     "name": "Coin Stash",
     "tagline": "Crypto made Simple",
     "description": "",
-    "logo": "https://cdn1.vectorstock.com/i/1000x1000/29/55/president-flat-graphic-emoji-icon-set-vector-30422955.jpg",
+    "logo": "https://res.cloudinary.com/birchal/image/fetch/c_fit,w_300,h_150,f_auto/https://storage.googleapis.com/birchal-uploads/b14019ae-8db6-4b04-be15-b079f026bfdb/b14019ae-8db6-4b04-be15-b079f026bfdb@300x300.png",
     "signup": "https://coinstash.com.au/auth/signup",
     "useProxy": false,
-    "backgroundColor": "rgba(186, 105, 151, 0.96)"
+    "backgroundColor": "blue"
   },
   {
     "id": 3,
