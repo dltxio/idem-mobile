@@ -69,6 +69,7 @@ const CreateMnemonicController: React.FC = () => {
       }
     );
   };
+  
   if (showMnemonic) {
     return (
       <Modal style={commonStyles.screen}>

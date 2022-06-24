@@ -40,6 +40,7 @@ const useClaimScreen = (): Hooks => {
     );
     setLoading(false);
   };
+  
   const saveAndCheckBirthday = async () => {
     setLoading(true);
     const claims = await claimsLocalStorage.get();
