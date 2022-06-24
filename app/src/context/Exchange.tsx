@@ -38,7 +38,7 @@ export const ExchangeProvider: React.FC<{
 
   const shareDetailsAlert = () => {
     Alert.alert(
-      "Share Details",
+      "Register",
       `Sign up successful, your temporary password is ${randomTempPassword}`,
       [
         {
