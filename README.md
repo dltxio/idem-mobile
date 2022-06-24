@@ -6,13 +6,59 @@ React native mobile app for Idem
 
 ![build status main branch](https://github.com/dltxio/idem-mobile/workflows/CI/badge.svg?branch=main)
 
-To run the app
+# To run the app
 
 ```bash
 yarn install
 cd app
 yarn start
 ```
+
+## Install dev client
+
+### Android Emulator
+
+1. Download the latest "IDEM Android internal distribution build" apk file from https://expo.dev/accounts/dltx/projects/IDEM/builds
+2. Launch emulator
+3. Drag apk into emulator to install
+
+### Android Physical
+
+1. Find the latest "IDEM Android internal distribution build" from https://expo.dev/accounts/dltx/projects/IDEM/builds
+2. Clicking install will bring a QR code to access the page on your phone.
+3. Download .apk to phone
+4. Follow install instructions on device
+
+### iOS Simulator
+
+1. Find the latest "IDEM iOS simulator build" from https://expo.dev/accounts/dltx/projects/IDEM/builds
+2. Download .tar.gz file to computer
+3. Decompress .tar.gz (decompressed file should be called idemID.app)
+4. Launch simulator
+5. Drag idemID.app onto simulator to install
+
+### iOS Physical
+
+1. On iOS device go to https://expo.dev/register-device/56f0712e-ff59-4c1f-ae0e-11a96262f650
+2. Follow instructions on page to install ad hoc provisioning profile
+3. Run: `eas build --profile development -p ios`
+4. Log into dltx developer apple account
+5. Choose to reselect devices to provision
+6. Using left/right arrow keys, enable all available devices
+7. Don't set up push notifications
+8. Wait for build to finish
+9. When build is finished download to iOS device
+10. Follow install instructions on device
+
+## Build app
+
+1. Open idemId app on phone
+
+- Close idemId app on phone
+- Connect expo to device by either scanning the qr code or using the expo console
+- If the app isn't loading try closing the app on your phone and relaunching with expo repeatedly
+
+## If a new package is added to the project a new build will need to be made and everyone will need to download the newest internal distribution build
 
 ## Glossary of Terms
 
@@ -229,10 +275,10 @@ There may be cases where the _idem-api_ module is able to request the website's 
 
 ### Table of documents
 
-| Key  | Document                     | Details |
-| ---- | ---------------------------- | ------- |
-| 0x00 | Australian birth certificate | A full birth certificate in your name or former name issued by State Authority of Births, Deaths and Marriages. We cannot accept birth extracts or birth cards. |
-| 0x01 | Australian driver licence    | A current driver licence with your photo issued in your name. This includes physical and digital driver licences, current learner permits, and provisional licences.|
+| Key  | Document                     | Details                                                                                                                                                              |
+| ---- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0x00 | Australian birth certificate | A full birth certificate in your name or former name issued by State Authority of Births, Deaths and Marriages. We cannot accept birth extracts or birth cards.      |
+| 0x01 | Australian driver licence    | A current driver licence with your photo issued in your name. This includes physical and digital driver licences, current learner permits, and provisional licences. |
 
 ### Trusted ID verification providers
 

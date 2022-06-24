@@ -44,7 +44,7 @@ export const ExchangeProvider: React.FC<{
 
   const shareDetailsAlert = (randomTempPassword: string) => {
     Alert.alert(
-      "Sign Up",
+      "Register",
       `Sign up successful, your temporary password is ${randomTempPassword}`,
       [
         {
@@ -89,7 +89,7 @@ export const ExchangeProvider: React.FC<{
         );
         if (response.status === 200) {
           const userID = response.data;
-          await exchangeLocalStorage.save(userID);
+          await exchangeLocalStorage.save({ gpibUserID: userID });
           shareDetailsAlert(randomTempPassword);
         }
       } catch (error: any) {
@@ -159,14 +159,14 @@ export const ExchangeProvider: React.FC<{
         if (updateUserInfo.status === 200) {
           Alert.alert(
             "Success!",
-            `Details updated: first name, last name, year of birth`
+            `Details updated: first name, last name, date of birth`
           );
         }
       }
     } catch (error: any) {
       console.log(error);
       if (error.response.data === "Username or password is incorrect") {
-        Alert.alert("Invalid password");
+        Alert.alert("Password is incorrect");
       } else {
         Alert.alert(error.response.data);
       }
