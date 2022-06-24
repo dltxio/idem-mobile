@@ -156,7 +156,7 @@ export const ExchangeProvider: React.FC<{
         if (updateUserInfo.status === 200) {
           Alert.alert(
             "Success!",
-            `Details updated: first name, last name, year of birth`
+            `Details updated: first name, last name, date of birth`
           );
         }
       }
