@@ -1,8 +1,8 @@
+import moment from "moment";
+
 export const findYOB = (dob: string) => {
-  const dobArray = dob.split("");
-  const findYob = dobArray.slice(6, 10);
-  const yob = findYob.join("");
-  return yob;
+  const _dob = moment(dob, "DD/MM/YYYY");
+  return _dob.year;
 };
 
 export const findNames = (fullname: string | undefined) => {
