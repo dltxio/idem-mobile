@@ -14,12 +14,18 @@ export type ExchangeValue = {
   gpibUserID: string | undefined;
   reset: () => void;
   verifyOnExchange: (body: VerifyUserRequestBody) => Promise<void>;
-  randomTempPassword: string | undefined;
 };
 
 export const ExchangeContext = React.createContext<ExchangeValue | undefined>(
   undefined
 );
+
+export const createRandomPassword = () => {
+  return password.randomPassword({
+    length: 10,
+    characters: [password.lower, password.upper, password.digits]
+  });
+};
 
 export const ExchangeProvider: React.FC<{
   children: React.ReactNode;
@@ -36,9 +42,9 @@ export const ExchangeProvider: React.FC<{
     })();
   }, []);
 
-  const shareDetailsAlert = () => {
+  const shareDetailsAlert = (randomTempPassword: string) => {
     Alert.alert(
-      "Share Details",
+      "Sign Up",
       `Sign up successful, your temporary password is ${randomTempPassword}`,
       [
         {
@@ -57,13 +63,9 @@ export const ExchangeProvider: React.FC<{
     );
   };
 
-  const randomTempPassword = password.randomPassword({
-    length: 10,
-    characters: [password.lower, password.upper, password.digits]
-  });
-
   const makeGpibUser: IExchange = {
     signUp: async (name: string, email: string) => {
+      const randomTempPassword = createRandomPassword();
       const splitName = findNames(name);
       const body = JSON.stringify({
         firstName: splitName?.firstName,
@@ -88,7 +90,7 @@ export const ExchangeProvider: React.FC<{
         if (response.status === 200) {
           const userID = response.data;
           await exchangeLocalStorage.save({ gpibUserID: userID });
-          shareDetailsAlert();
+          shareDetailsAlert(randomTempPassword);
         }
       } catch (error: any) {
         console.log(error.response.data);
@@ -99,6 +101,7 @@ export const ExchangeProvider: React.FC<{
 
   const makeCoinstashUser: IExchange = {
     signUp: async (name: string, email: string) => {
+      const randomTempPassword = createRandomPassword();
       const body = JSON.stringify({
         email: email,
         password: randomTempPassword,
@@ -114,7 +117,7 @@ export const ExchangeProvider: React.FC<{
             "Content-Type": "application/json"
           }
         });
-        shareDetailsAlert();
+        shareDetailsAlert(randomTempPassword);
       } catch (error: any) {
         console.log(error.response.data);
         Alert.alert(error.response.data);
@@ -162,7 +165,11 @@ export const ExchangeProvider: React.FC<{
       }
     } catch (error: any) {
       console.log(error);
-      Alert.alert(error.response.data);
+      if (error.response.data === "Username or password is incorrect") {
+        Alert.alert("Invalid password");
+      } else {
+        Alert.alert(error.response.data);
+      }
     }
   };
 
@@ -177,17 +184,9 @@ export const ExchangeProvider: React.FC<{
       gpibUserID,
       reset,
       makeCoinstashUser,
-      verifyOnExchange,
-      randomTempPassword
+      verifyOnExchange
     }),
-    [
-      makeGpibUser,
-      gpibUserID,
-      makeCoinstashUser,
-      verifyOnExchange,
-      randomTempPassword,
-      reset
-    ]
+    [makeGpibUser, gpibUserID, makeCoinstashUser, verifyOnExchange, reset]
   );
 
   return (
