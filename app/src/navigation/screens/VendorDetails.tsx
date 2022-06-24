@@ -61,14 +61,14 @@ const VendorDetailsScreen: React.FC = () => {
               makeUser.signUp(name, email);
             }
           }}
-          title="Sign Up"
+          title="Register"
           disabled={name && email ? false : true}
           style={styles.button}
         />
         {vendor.website === "https://getpaidinbitcoin.com.au" ? (
           <Button
             onPress={() => {
-              Alert.prompt("Enter password your GPIB password", "", [
+              Alert.prompt("Enter your GPIB password", "", [
                 {
                   text: "OK",
                   onPress: async (value: string | undefined) => {

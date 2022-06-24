@@ -61,7 +61,11 @@ const usePushNotifications = (): Hooks => {
         alert("Failed to get push token for push notification!");
         return;
       }
-      token = (await Notifications.getExpoPushTokenAsync()).data;
+      token = (
+        await Notifications.getExpoPushTokenAsync({
+          experienceId: "@dltx/IDEM"
+        })
+      ).data;
     } else {
       Alert.alert("Must use physical device for Push Notifications");
     }
