@@ -53,10 +53,9 @@ yarn start
 ## Build app
 
 1. Open idemId app on phone
-
-- Close idemId app on phone
-- Connect expo to device by either scanning the qr code or using the expo console
-- If the app isn't loading try closing the app on your phone and relaunching with expo repeatedly
+2. Close idemId app on phone
+3. Connect expo to device by either scanning the qr code or using the expo console
+4. If the app isn't loading try closing the app on your phone and relaunching with expo repeatedly
 
 **If a new package is added to the project a new build will need to be made and everyone will need to download the newest internal distribution build**
 
