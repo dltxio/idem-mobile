@@ -6,7 +6,7 @@ React native mobile app for Idem
 
 ![build status main branch](https://github.com/dltxio/idem-mobile/workflows/CI/badge.svg?branch=main)
 
-# To run the app
+## To run the app
 
 ```bash
 yarn install
