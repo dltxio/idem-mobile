@@ -40,5 +40,16 @@
     "logo": "https://cdn2.vectorstock.com/i/1000x1000/63/46/error-404-with-the-cute-potato-mascot-vector-39106346.jpg",
     "signup": "https://www.youtube.com/watch?v=q7uyKYeGPdE",
     "useProxy": false
+  },
+  {
+    "id": 5,
+    "name": "Coin Tree",
+    "tagline": "Buy, sell and trade on Australia's best crypto exchange",
+    "description": "Buy, sell and trade on Australia's best crypto exchange",
+    "website": "https://cointree.com/",
+    "logo": "",
+    "signup": "https://auth.cointree.com/Account/Register?registerwith=${email}",
+    "useProxy": false,
+    "backgroundColor": "white"
   }
 ]
