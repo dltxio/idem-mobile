@@ -162,7 +162,7 @@ The flowchart below is a verification workflow diagram for third-party developer
 6. The user is asked to confirm they're happy to proceed with sharing those specific claims to the website.
 7. IDEM then posts the claims in DID format to the websites specified callback URL, which it can then add to the users profile.
 
-<img src="https://user-images.githubusercontent.com/91101134/141231224-ad845a7c-d336-43cb-b9ea-a2d7c3f1a021.jpeg" width=100% height=100%>
+<img src="https://user-images.githubusercontent.com/91101134/141231224-ad845a7c-d336-43cb-b9ea-a2d7c3f1a021.jpeg" width=200px height=200px>
 
 ## Implementation
 
@@ -198,7 +198,7 @@ The claims will be packaged by the _idem-api_ module as a (Verifiable Presentati
     "proofPurpose": "authentication",
     "verificationMethod": "did:idem:0x8444F8EF5694F09110B5191fCfab012f2E974135",
     "challenge": "8b5c66c0-bceb-40b4-b099-d31b127bf7b3",
-    "domain": "https://demo.idem.com.au",
+    "domain": "https://idem.com.au",
     "jws": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..kTCYt5XsITJX1CxPCT8yAV-TVIw5WEuts01mq-pQy7UJiN5mgREEMGlv50aqzpqh4Qq_PbChOMqsLfRoPsnsgxD-WUcX16dUOqV0G_zS245-kronKb78cPktb3rk-BuQy72IFLN25DYuNzVBAh4vGHSrQyHUGlcTwLtjPAnKb78"
   },
   "verifiableCredential": [
