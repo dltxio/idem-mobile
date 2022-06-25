@@ -269,7 +269,7 @@ There may be cases where the _idem-api_ module is able to request the website's 
 | BirthCredential     | dob          | YYYY-MM-DD ISO 8601 | Users date of birth    |
 | NameCredential      | fullname     | Firstname Lastname  | Users full name        |
 | EmailCredential     | email        | Email               | Users email address    |
-| MobileCredential    | mobilenumber | Mobile Number       | Users mobile number    |
+| MobileCredential    | mobilenumber | /^(\+\d{1,3}[- ]?)?\d{10}$/       | Users mobile number    |
 | AddressCredential   | address      | Physical Address    | Users physical address |
 | BirthYearCredential | birthyear    | YYYY ISO 8601       | Users year of birth    |
 
