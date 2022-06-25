@@ -51,5 +51,16 @@
     "signup": "https://auth.cointree.com/Account/Register?registerwith=${email}",
     "useProxy": false,
     "backgroundColor": "white"
+  },
+    {
+    "id": 6,
+    "name": "Easy Crypto",
+    "tagline": "We make it easy for Aussies to buy and sell crypto",
+    "description": "Buy and sell instantly with Australia's fastest and safest crypto retailer. Deliver to any wallet address or withdraw to your bank account in as little as two minutes. Easy!",
+    "website": "https://easycrypto.com/au",
+    "logo": "",
+    "signup": "https://easycrypto.com/au"",
+    "useProxy": false,
+    "backgroundColor": "6438da"
   }
 ]
