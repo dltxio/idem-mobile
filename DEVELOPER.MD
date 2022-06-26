@@ -1,5 +1,3 @@
-## Developer Notes
-
 ### Android Emulator
 
 1. Download the latest "IDEM Android internal distribution build" apk file from https://expo.dev/accounts/dltx/projects/IDEM/builds
@@ -42,3 +40,4 @@
 4. If the app isn't loading try closing the app on your device and relaunching with expo repeatedly
 
 **If a new package is added to the project, a new build will need to be made and everyone will need to download the newest internal distribution build**
+
