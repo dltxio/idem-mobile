@@ -2,13 +2,16 @@
 
 The React native mobile app for IDEM.
 
+![build status main branch](https://github.com/dltxio/idem-mobile/workflows/CI/badge.svg?branch=main)
+
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-![build status main branch](https://github.com/dltxio/idem-mobile/workflows/CI/badge.svg?branch=main)
 
 ## Introduction
 
 IDEM facilitates users to register on a customers website, such as a crytpo exchange without having the user to manually enter onboarding information such as email, password and personal meta data which we call claims.
+
+**Note: Data is securely stored on your device.  IDEM does not have a server!**
 
 
 ## Running the app
@@ -31,7 +34,7 @@ Each time an exchange requests an ID from a new user, the KYC provider charges t
 
 _Idem_ uses a number of cryptographic protocols to sign and encrypt data. _PGP/GPG_ encryption is used to securely store data on a device, while the _Ethereum Elliptic Curve (ECDSA)_ is used to sign claims which conform to the DID foundation's verifiable claims schema. Anyone can verify that interactions involving _Idem_ are valid. Furthermore, verification doesn't involve the user's private key (which is never known by _Idem_).
 
-IDEMs public keys can be found at `https://idem.com.au/publickey`
+IDEMs public keys can be found at `https://idem.com.au/keys`
 
 ## User Flow Experience - Customer Point of View
 
@@ -40,41 +43,28 @@ Here are two common scenarios involving a user and a participating third-party w
 1. Onboarding / registering new users who do not have an account on a website (User Story 1)
 2. Verifying existing users (User Story 2)
 
-### User Story 2: Verify an already registered user
+However, I must complete their profile on the app prior to any third party interactions.
 
-```text
-As an existing unverified customer of demo.idem.com.au,
-I want to verify my KYC requirements via Idem,
-So that I don't need to complete yet another KYC process.
-```
+### Creating your profile on the IDEM app
 
-```text
-Given an Idem user,
-When they visit demo.idem.com.au,
-And they scan the QR code via the app,
-And agree to share data on the app to demo.idem.com.au,
-Then their ID is posted from the app to demo.idem.com.au's API,
-And their Idem signature is verified,
-And their personal data is updated at demo.idem.com.au
-```
+#### 1: New IDEM profile creation
 
-## Creating a profile on your IDEM app
+A user downloads the _Idem_ app on their mobile device and creates a new local profile. Their email address is their unique identifier.  The user creates their profile with all relevant claims, such as phone number and date of birth.  _See claims table for a full list._
 
-### 1: New IDEM registration
-
-A user downloads the _Idem_ app on their mobile device and creates a new local profile. Their email address is their unique identifier.
-
-### 2: New private key
+#### 2: Setting a private key
 
 _Idem_ can automatically create a 256-bit private key on the device or it can allow the user to import a mnemonic seed phrase (based on the bitcoin BIP39 standard) of their choice. This will be used to sign and verify requests (using elliptic curve crytography - Secp256k1) to third parties.
 
-### 3: Attaching documents
+#### 3: Attaching documents
 
 The user can choose certain types of claims to verify such as _18+_, _Date of Birth_ or _Address_. They have to substantiate those claims with supporting evidence such as a government-issued document (passport, drivers license, etc.), a utilities bill, etc. The documents are encrypted and stored in the local storage of the device.
 
-### 1. New (to the website or exchange) user
 
-User Story 1
+Once the following is completed, IDEM users can now onboard to websites or exchanges in a few methods!
+
+### User Story 1. New (to the website or exchange) user
+
+The user initiates the registration process by entering their email address and a password into the website. The use of Recaptchas on most websites rules out a full-fledged _Idem_ registration, although _Idem_ could be used to fill the email address and generate a password on behalf of the user. From here, the user can use _Idem_ to complete the verification process by allowing _Idem_ to supply the claims the website requires.
 
 ```text
 As a frustrated crypto customer,
@@ -92,7 +82,25 @@ And their ID is verified,
 And they are redirected to demo.idem.com.au's home page.
 ```
 
-IDEM users can onboard to websites or exchanges in a few methods.
+### User Story 2: Verify an already registered user
+
+An existing user can log into the website by scanning the QR code (using _Idem_) the website displays, Recaptcha allowing. Otherwise, the user can simply log in manually and enjoy the benefits of the website, having already presented their credentials using _Idem_.
+
+```text
+As an existing unverified customer of demo.idem.com.au,
+I want to verify my KYC requirements via Idem,
+So that I don't need to complete yet another KYC process.
+```
+
+```text
+Given an IDEM user,
+When they visit demo.idem.com.au,
+And they scan the QR code via the app,
+And agree to share data on the app to demo.idem.com.au,
+Then their ID is posted from the app to demo.idem.com.au's API,
+And their Idem signature is verified,
+And their personal data is updated at demo.idem.com.au
+```
 
 #### Via a notification
 
