@@ -22,7 +22,7 @@ To run the application locally by using the expo dev-client
 yarn install
 cd app
 yarn start
-```
+```bash
 
 ## What is IDEM?
 
@@ -51,16 +51,15 @@ However, I must complete their profile on the app prior to any third party inter
 
 A user downloads the _Idem_ app on their mobile device and creates a new local profile. Their email address is their unique identifier.  The user creates their profile with all relevant claims, such as phone number and date of birth.  _See claims table for a full list._
 
-#### 2: Setting a private key
+#### 2: Setting or creating a private key
 
 _Idem_ can automatically create a 256-bit private key on the device or it can allow the user to import a mnemonic seed phrase (based on the bitcoin BIP39 standard) of their choice. This will be used to sign and verify requests (using elliptic curve crytography - Secp256k1) to third parties.
 
-#### 3: Attaching documents
+#### 3: Attaching documents to claims
 
 The user can choose certain types of claims to verify such as _18+_, _Date of Birth_ or _Address_. They have to substantiate those claims with supporting evidence such as a government-issued document (passport, drivers license, etc.), a utilities bill, etc. The documents are encrypted and stored in the local storage of the device.
 
-
-Once the following is completed, IDEM users can now onboard to websites or exchanges in a few methods!
+Once the following is completed, IDEM users can now onboard to websites or exchanges in the following ways!
 
 ### User Story 1. New (to the website or exchange) user
 
@@ -70,7 +69,7 @@ The user initiates the registration process by entering their email address and 
 As a frustrated crypto customer,
 I want to onboard to an exchange via the Idem app,
 So that I don't have to resupply all my information again and again and again!
-```
+```text
 
 ```text
 Given an IDEM user,
@@ -80,27 +79,9 @@ And click 'OK' on the app,
 Then they are registered on demo.idem.com.au,
 And their ID is verified,
 And they are redirected to demo.idem.com.au's home page.
-```
-
-### User Story 2: Verify an already registered user
-
-An existing user can log into the website by scanning the QR code (using _Idem_) the website displays, Recaptcha allowing. Otherwise, the user can simply log in manually and enjoy the benefits of the website, having already presented their credentials using _Idem_.
-
 ```text
-As an existing unverified customer of demo.idem.com.au,
-I want to verify my KYC requirements via Idem,
-So that I don't need to complete yet another KYC process.
-```
 
-```text
-Given an IDEM user,
-When they visit demo.idem.com.au,
-And they scan the QR code via the app,
-And agree to share data on the app to demo.idem.com.au,
-Then their ID is posted from the app to demo.idem.com.au's API,
-And their Idem signature is verified,
-And their personal data is updated at demo.idem.com.au
-```
+Websites or exchanges can interatct with _Idem_ users in the following ways;
 
 #### Via a notification
 
@@ -109,33 +90,50 @@ An IDEM user initiates the registration process by entering their email address 
 Should that user be known to IDEM, the exchange request the claims of the user to complete their registration.  See claims table below.
 
 ```bash
-curl
-```
+curl https://proxy.idem.com.au
+```bash
 
-#### Vai QR code
+#### Vai a QR code
 
 Instead of the user having to complete a registration process on the website or exchange, the website or exchange can ask for the IDEMs users claims via a QR code.  The QR code speicifs
 
 
 ### Via the app
 
+Websites and exchange who have integrated with IDEM, can list their site on the "supported exchanges" tab on the app.  See the How To guide for businesses on how to integrate.
 
-### 2. Existing (to the website or exchange) user
 
-An existing user can log into the website by scanning the QR code (using _Idem_) that the website displays. Otherwise, the user can simply log in manually and enjoy the benefits of the website, having already presented their credentials using _Idem_.
+### User Story 2. Existing (to the website or exchange) user
 
-Note that for MVP purposes (see below), the claims required will all already have been saved to the user's device during their initial _Idem_ set-up. _Idem_ will also be able to update any claims the website requires, such as date of birth, name, or address, or provide extra credentials if the user wanted to access a new part of the site.
+An existing website user can log into the website and is then shown a QR code on their profile page or similar.  The QR code specifies the claims the website requires in their profile.  Once the user can scans the QR code (using _Idem_) and they confirm the claims they want to share, the app then POSTs the claims to the websites API in the WC3 VC format for the website to validate and save.
+
+```text
+As an existing unverified customer of the website,
+I want to update my profile with verified claims,
+So that I don't need to complete yet another KYC process.
+```text
+
+```text
+Given an IDEM user,
+When they visit the website,
+And they login with their existing account details,
+And they scan the QR code via the app,
+And agree to share data on the app to the website,
+Then their ID is posted from the app to the website's API,
+And the Idem signature is verified,
+And their personal data is updated at the website
+```text
 
 #### Verification Workflow Diagram
 
-The flowchart below is a verification workflow diagram for third-party developers to integrate a website (such as an exchange) with _Idem_. It works as follows:
+The flowchart below is a verification workflow diagram (User story 2) for third-party developers to integrate a website (such as an exchange) with _Idem_. It works as follows:
 
-1. A user creates account on the website, typically with an email and password.
-2. The new user may then be assed to supply more information to meet KYC obligations. This could be meta data such as Full Name, Date of Birth and Phyiscal address. These are what Idem referrers to as _Claims_. To capture this data, the website can either
-3. - Get the user to fill out a form
-4. - Present a self documenting QR code requesting the claims required, and the callback URL for the website. This is similar to a PayPal IPN or an OAuth2 callback URL.
-5. The user is asked to confirm they're happy to proceed with sharing those specific claims to the website.
-6. IDEM then posts the claims in DID format to the websites specified callback URL, which it can then add to the users profile.
+1. A user creates an account on the website, typically with an email and password.
+2. The new user may then be asked to supply more information to meet KYC obligations. This could be meta data such as Full Name, Date of Birth and Physical address. These are what Idem referrers to as _Claims_. To capture this data, the website can either;
+- Get the user to fill out a form or,
+- Present a self documenting QR code requesting the claims required, and the callback URL for the website. This is similar to a PayPal IPN or an OAuth2 callback URL.
+3. The user is asked to confirm they're happy to proceed with sharing those specific claims to the website.
+4. IDEM then POSTs the claims in WC3 VC format to the websites specified callback URL, which it can then add to the users profile.
 
 <img src="https://user-images.githubusercontent.com/91101134/141231224-ad845a7c-d336-43cb-b9ea-a2d7c3f1a021.jpeg" width=100% height=100%>
 
@@ -215,7 +213,7 @@ The claims will be packaged by the _idem-api_ module as a (Verifiable Presentati
     }
   ]
 }
-```
+```json
 
 ![vc](https://user-images.githubusercontent.com/8411406/161453157-9ef4942f-4ebe-40d1-98e1-16abeb204047.png)
 
@@ -225,13 +223,8 @@ c# Verifiable Credential model
 
 Finally, _Idem_ sends the credentials payload back to the website. Upon receipt of the credentials, the website authenticates the signature against the payload and shows a success message to the user. Obviously, it's up to the website to handle the success or failure of the verification of the user in whatever way it sees fit.
 
-## Demo/MVP
 
-For the sake of getting things done, parts of the workflow mentioned here will be left out of early versions of the project. For an MVP scenario, the website will only request claims that _Idem_ already has, thus obviating the involvement of the _idem-api_ module (and therefore the credentials issuers themselves). This is probably what will happen the vast majority of the time, though - users will set themselves up in advnace with whatever they are likely to need to register with an exchange, rather than leave it to when they are actually trying to verify to an exchange.
-
-Note that this 'happy path' will still require _Idem_ to obtain credentials from an issuer for a once-off initial verification.
-
-### Table of claims
+## Table of claims
 
 | CredentialSubject   | Mnemonic     | Standard            | Description            |
 | ------------------- | ------------ | ------------------- | ---------------------- |
@@ -243,7 +236,7 @@ Note that this 'happy path' will still require _Idem_ to obtain credentials from
 | AddressCredential   | address      | Physical Address    | Users physical address |
 | BirthYearCredential | birthyear    | YYYY ISO 8601       | Users year of birth    |
 
-### Table of documents
+## Table of documents
 
 | Key  | Document                     | Details                                                                                                                                                              |
 | ---- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
