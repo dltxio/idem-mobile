@@ -22,7 +22,7 @@ To run the application locally by using the expo dev-client
 yarn install
 cd app
 yarn start
-```bash
+```
 
 ## What is IDEM?
 
@@ -69,7 +69,7 @@ The user initiates the registration process by entering their email address and 
 As a frustrated crypto customer,
 I want to onboard to an exchange via the Idem app,
 So that I don't have to resupply all my information again and again and again!
-```text
+```
 
 ```text
 Given an IDEM user,
@@ -79,7 +79,7 @@ And click 'OK' on the app,
 Then they are registered on demo.idem.com.au,
 And their ID is verified,
 And they are redirected to demo.idem.com.au's home page.
-```text
+```
 
 Websites or exchanges can interatct with _Idem_ users in the following ways;
 
@@ -91,7 +91,7 @@ Should that user be known to IDEM, the exchange request the claims of the user t
 
 ```bash
 curl https://proxy.idem.com.au
-```bash
+```
 
 #### Vai a QR code
 
@@ -111,7 +111,7 @@ An existing website user can log into the website and is then shown a QR code on
 As an existing unverified customer of the website,
 I want to update my profile with verified claims,
 So that I don't need to complete yet another KYC process.
-```text
+```
 
 ```text
 Given an IDEM user,
@@ -122,7 +122,7 @@ And agree to share data on the app to the website,
 Then their ID is posted from the app to the website's API,
 And the Idem signature is verified,
 And their personal data is updated at the website
-```text
+```
 
 #### Verification Workflow Diagram
 
@@ -213,7 +213,7 @@ The claims will be packaged by the _idem-api_ module as a (Verifiable Presentati
     }
   ]
 }
-```json
+```
 
 ![vc](https://user-images.githubusercontent.com/8411406/161453157-9ef4942f-4ebe-40d1-98e1-16abeb204047.png)
 
