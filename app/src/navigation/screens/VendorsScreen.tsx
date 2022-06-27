@@ -1,11 +1,11 @@
 import * as React from "react";
 import { View, StyleSheet, Dimensions, Text } from "react-native";
-import { ListItem } from "react-native-elements";
+import { ListItem } from "@rneui/themed";
 import { useNavigation } from "@react-navigation/native";
 import { VendorStackNavigation } from "../../types/navigation";
 import useVendorsList from "../../hooks/useVendorsList";
 
-type Navigation = VendorStackNavigation<"VendorsList">;
+type Navigation = VendorStackNavigation<"Back">;
 
 const VendorsScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();

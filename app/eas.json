@@ -7,6 +7,13 @@
       "developmentClient": true,
       "distribution": "internal"
     },
+    "dev-simulator": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      }
+    },
     "uat": {
       "ios": {
         "autoIncrement": "version"

@@ -14,7 +14,6 @@ import RequestClaimsModal from "./src/components/RequestClaimsModal";
 import { DocumentProvider } from "./src/context/DocumentStore";
 import { MnemonicProvider } from "./src/context/Mnemonic";
 import { ExchangeProvider } from "./src/context/Exchange";
-import { registerRootComponent } from "expo";
 import * as Notifications from "expo-notifications";
 
 Notifications.setNotificationHandler({
@@ -84,4 +83,4 @@ const App = () => {
   );
 };
 
-registerRootComponent(App);
+export default App;

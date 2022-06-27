@@ -15,10 +15,10 @@
     "name": "Coin Stash",
     "tagline": "Crypto made Simple",
     "description": "",
-    "logo": "https://cdn1.vectorstock.com/i/1000x1000/29/55/president-flat-graphic-emoji-icon-set-vector-30422955.jpg",
+    "logo": "https://res.cloudinary.com/dcisquypm/image/upload/v1651057203/validator-logos/ykib0ji0gekmjfcjhp48.png",
     "signup": "https://coinstash.com.au/auth/signup",
     "useProxy": false,
-    "backgroundColor": "rgba(186, 105, 151, 0.96)"
+    "backgroundColor": "#0012d0"
   },
   {
     "id": 3,
@@ -40,5 +40,27 @@
     "logo": "https://cdn2.vectorstock.com/i/1000x1000/63/46/error-404-with-the-cute-potato-mascot-vector-39106346.jpg",
     "signup": "https://www.youtube.com/watch?v=q7uyKYeGPdE",
     "useProxy": false
+  },
+  {
+    "id": 5,
+    "name": "Coin Tree",
+    "tagline": "Buy, sell and trade on Australia's best crypto exchange",
+    "description": "Buy, sell and trade on Australia's best crypto exchange",
+    "website": "https://cointree.com/",
+    "logo": "",
+    "signup": "https://auth.cointree.com/Account/Register?registerwith=${email}",
+    "useProxy": false,
+    "backgroundColor": "white"
+  },
+  {
+    "id": 6,
+    "name": "Easy Crypto",
+    "tagline": "We make it easy for Aussies to buy and sell crypto",
+    "description": "Buy and sell instantly with Australia's fastest and safest crypto retailer. Deliver to any wallet address or withdraw to your bank account in as little as two minutes. Easy!",
+    "website": "https://easycrypto.com/au",
+    "logo": "",
+    "signup": "https://easycrypto.com/au",
+    "useProxy": false,
+    "backgroundColor": "6438da"
   }
 ]

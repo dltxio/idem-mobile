@@ -10,7 +10,7 @@ import {
   ScrollView,
   Dimensions
 } from "react-native";
-import { Input, Switch } from "react-native-elements";
+import { Input, Switch } from "@rneui/themed";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import commonStyles from "../../styles/styles";
 import {
@@ -175,7 +175,7 @@ const ClaimScreen: React.FC = () => {
               onConfirm={onDateSelect}
               onCancel={hideDatePicker}
               display="inline"
-              isDarkModeEnabled={true}
+              isDarkModeEnabled={false}
             />
           )}
           {documentList}
@@ -186,11 +186,10 @@ const ClaimScreen: React.FC = () => {
         <Button
           title={isVerifying ? "Save & Verify" : "Save"}
           disabled={!canSave}
-          onPress={
-            claim.type === "DateOfBirthCredential"
-              ? saveAndCheckBirthday
-              : onSave
-          }
+          onPress={() => {
+            if (claim.type === "DateOfBirthCredential") saveAndCheckBirthday();
+            onSave();
+          }}
           loading={loading}
         />
       </View>
