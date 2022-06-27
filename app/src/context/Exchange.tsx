@@ -14,7 +14,7 @@ export type ExchangeValue = {
   makeEasyCryptoUser: IExchange;
   gpibUserID: string | undefined;
   reset: () => void;
-  verifyOnExchange: (body: VerifyUserRequestBody) => Promise<void>;
+  verifyOnGpib: (body: VerifyUserRequestBody) => Promise<void>;
 };
 
 export const ExchangeContext = React.createContext<ExchangeValue | undefined>(
@@ -56,7 +56,7 @@ export const ExchangeProvider: React.FC<{
       }
     );
   };
-
+  // MAKE GPIB USER
   const makeGpibUser: IExchange = {
     signUp: async (name: string, email: string) => {
       const randomTempPassword = createRandomPassword();
@@ -93,6 +93,61 @@ export const ExchangeProvider: React.FC<{
     }
   };
 
+  // MAKE EASY CRPYTO USER
+  const makeEasyCryptoUser: IExchange = {
+    signUp: async (email: string) => {
+      const randomTempPassword = createRandomPassword();
+      const bodyEasyCrypto = JSON.stringify({
+        email: email,
+        password: randomTempPassword,
+        returnSecureToken: true
+      });
+      try {
+        const checkUserAuthEasyCrypto = await axios.post(
+          "https://api.easycrypto.com.au/api/user.php",
+          bodyEasyCrypto,
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        );
+        if (checkUserAuthEasyCrypto.status === 200) {
+          const jwtEasy = checkUserAuthEasyCrypto.data.token;
+          const updatedEasyBody = {
+            firstName: body.firstName,
+            lastName: body.lastName,
+            yob: Number(body.yob),
+            mobile: body.mobile,
+            extraIdNumber: null,
+            action: "checkExisting",
+            version: 2,
+            siteVersion: "8.16.3"
+          };
+          const updateUserInfo = await axios.post(
+            `https://api.easycrypto.com.au/apiv2/verify.php`,
+            updatedEasyBody,
+            {
+              headers: {
+                Authorization: `Bearer ${jwtEasy}`
+              }
+            }
+          );
+          if (updateUserInfo.status === 200) {
+            Alert.alert(
+              "Success!",
+              `You have signed up to Easy Crypto successfully. Your temporary password is ${randomTempPassword}`
+            );
+          }
+        }
+      } catch (error: any) {
+        console.log(error);
+        Alert.alert(error.response.data);
+      }
+    }
+  };
+
+  // MAKE COINSTASH USER
   const makeCoinstashUser: IExchange = {
     signUp: async (name: string, email: string) => {
       const randomTempPassword = createRandomPassword();
@@ -119,7 +174,8 @@ export const ExchangeProvider: React.FC<{
     }
   };
 
-  const verifyOnExchange = async (body: VerifyUserRequestBody) => {
+  //VARIFY GPIB USER
+  const verifyOnGpib = async (body: VerifyUserRequestBody) => {
     const checkAuthBody = JSON.stringify({
       userName: body.userName,
       password: body.password
@@ -178,9 +234,17 @@ export const ExchangeProvider: React.FC<{
       gpibUserID,
       reset,
       makeCoinstashUser,
-      verifyOnExchange
+      makeEasyCryptoUser,
+      verifyOnGpib
     }),
-    [makeGpibUser, gpibUserID, makeCoinstashUser, verifyOnExchange, reset]
+    [
+      makeGpibUser,
+      gpibUserID,
+      makeCoinstashUser,
+      verifyOnGpib,
+      makeEasyCryptoUser,
+      reset
+    ]
   );
 
   return (

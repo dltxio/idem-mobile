@@ -25,7 +25,7 @@ const VendorDetailsScreen: React.FC = () => {
     makeGpibUser,
     makeCoinstashUser,
     makeEasyCryptoUser,
-    verifyOnExchange     
+    verifyOnGpib    
   } = useExchange();
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
   const name = useClaimValue("FullNameCredential");
@@ -78,7 +78,7 @@ const VendorDetailsScreen: React.FC = () => {
                 {
                   text: "OK",
                   onPress: async (value: string | undefined) => {
-                    await verifyOnExchange({
+                    await verifyOnGpib({
                       userName: email,
                       password: value,
                       firstName: splitName?.firstName,
