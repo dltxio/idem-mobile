@@ -8,4 +8,4 @@ export type VerifyUserRequestBody = {
   firstName: string | undefined;
   lastName: string | undefined;
   yob: string | undefined;
-};
+};   

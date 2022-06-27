@@ -11,6 +11,7 @@ import { createRandomPassword } from "../utils/randomPassword-utils";
 export type ExchangeValue = {
   makeGpibUser: IExchange;
   makeCoinstashUser: IExchange;
+  makeEasyCryptoUser: IExchange;
   gpibUserID: string | undefined;
   reset: () => void;
   verifyOnExchange: (body: VerifyUserRequestBody) => Promise<void>;

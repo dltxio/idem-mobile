@@ -21,7 +21,12 @@ import { IExchange } from "../../interfaces/exchange-interface";
 
 const VendorDetailsScreen: React.FC = () => {
   const { vendors } = useVendorsList();
-  const { makeGpibUser, makeCoinstashUser, verifyOnExchange } = useExchange();
+  const {
+    makeGpibUser,
+    makeCoinstashUser,
+    makeEasyCryptoUser,
+    verifyOnExchange     
+  } = useExchange();
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
   const name = useClaimValue("FullNameCredential");
   const email = useClaimValue("EmailCredential");
@@ -37,7 +42,8 @@ const VendorDetailsScreen: React.FC = () => {
 
   const idToIExchange: { [id: number]: IExchange } = {
     1: makeGpibUser,
-    2: makeCoinstashUser
+    2: makeCoinstashUser,
+    3: makeEasyCryptoUser
   };
 
   return (

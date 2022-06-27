@@ -47,7 +47,7 @@ const Home: React.FC = () => {
         return hashedEmail;
       };
       const userEmail = await hashEmail();
-      const gpibUserID = await exchangeLocalStorage.get();
+      const gpibUserID = await exchangeLocalStorage.get();      
 
       const userClaims = {
         firstName: splitName.firstName,
