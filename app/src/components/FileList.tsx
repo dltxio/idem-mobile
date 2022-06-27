@@ -1,5 +1,5 @@
 import React from "react";
-import { ListItem, Button } from "react-native-elements";
+import { ListItem, Button } from "@rneui/themed";
 import { DocumentId, File } from "../types/document";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";

@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text, Alert, Pressable } from "react-native";
 import { useClaimsStore, useClaimValue } from "../context/ClaimsStore";
-import { Avatar } from "react-native-elements";
+import { Avatar } from "@rneui/themed";
 import colors from "../styles/colors";
 import commonStyles from "../styles/styles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
