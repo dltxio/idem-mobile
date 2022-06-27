@@ -16,7 +16,7 @@ yarn start
 
 ## Glossary of Terms
 
-Document Type: Each file can be associated with a document type, or category, such as "Driver's License" or "Passport".
+Document Type: Each file can be associated with a document type, or category, such as "Drivers License" or "Passport".
 
 File: A file is a digital representation of a document, such as jpgs, pngs, pdfs, etc. In IDEM, users can upload jpg and pdf files.
 
@@ -81,7 +81,7 @@ And their personal data is updated at demo.idem.com.au
 
 ### 1: New IDEM registration
 
-A user downlooads _Idem_ on their mobile device and creates a new local profile on the app. Their email address is their unique identifier.
+A user download _Idem_ on my mobile device and create a new local profile on the app. My email address is my unique identifier.
 
 ### 2: New private key
 
@@ -233,7 +233,7 @@ There may be cases where the _idem-api_ module is able to request the website's 
 | **0x03** | Bank statement               | A bank statement issued in your name. Must be issued within the last 3 months.                                                                                       | Given name, middle name, family name, residential address                              | Secondary         | No                | NameCredential, AddressCredential                                    |
 | **0x04** | Rates notice                 | A paid rates notice issued in your name with your address that is less than 12 months old.                                                                           | Given name, middle name, family name, residential address                              | Secondary         | No                | NameCredential, AddressCredential                                    |
 | **0x05** | Utility account              | Water, gas, electricity or phone account with a receipt number. This must be in your name, show your address and be less than 12 months old. Must be a paid account. | Given name, middle name, family name, residential address                              | Secondary         | No                | AddressCredential                                                    |
-| **0x06** | Medicare Card                | A current Medicare Card issued in your name.                                                                                                                         | Given name, middle name, family name, medicare number, expiry date, position in family | Secondary         | No                | NameCredential                                                       |
+| **0x06** | Medicare Card                | A current Medicare Card issued in your name.                                                                                                                         | Given name, middle name, family name, medicare number, position in family | Secondary         | No                | NameCredential                                                       |
 
 
 ### Trusted ID verification providers
