@@ -3,10 +3,10 @@ import * as React from "react";
 import { exchangeLocalStorage } from "../utils/local-storage";
 import { Alert } from "react-native";
 import axios from "axios";
-import * as password from "secure-random-password";
 import { IExchange } from "../interfaces/exchange-interface";
 import { VerifyUserRequestBody } from "../types/exchange";
 import { findNames } from "../utils/formatters";
+import { createRandomPassword } from "../utils/randomPassword-utils";
 
 export type ExchangeValue = {
   makeGpibUser: IExchange;
@@ -19,13 +19,6 @@ export type ExchangeValue = {
 export const ExchangeContext = React.createContext<ExchangeValue | undefined>(
   undefined
 );
-
-export const createRandomPassword = () => {
-  return password.randomPassword({
-    length: 10,
-    characters: [password.lower, password.upper, password.digits]
-  });
-};
 
 export const ExchangeProvider: React.FC<{
   children: React.ReactNode;
