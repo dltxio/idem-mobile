@@ -187,9 +187,7 @@ const ClaimScreen: React.FC = () => {
         <Button
           title={isVerifying ? "Save & Verify" : "Save"}
           disabled={!canSave}
-          onPress={() => {
-            onSave();
-          }}
+          onPress={onSave}
           loading={loading}
         />
       </View>
