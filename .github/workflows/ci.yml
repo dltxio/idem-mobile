@@ -6,7 +6,7 @@ on:
       - main
   push:
     branches:
-      - IDEM-172
+      - main
 
 jobs:
   build-and-lint:
@@ -35,7 +35,9 @@ jobs:
         run: |
           yarn lint
           yarn build
-          yarn test
+
+      - name: Run unit test
+        run: yarn test
 
       - name: Notify Slack
         if: ${{ always() && github.ref == 'refs/heads/main' }}
