@@ -78,6 +78,7 @@ const ClaimScreen: React.FC = () => {
   const onSave = async () => {
     setLoading(true);
     await addClaim(claim.type, formState, selectedFileIds);
+    saveAndCheckBirthday();
     navigation.reset({
       routes: [{ name: "Home" }]
     });
@@ -187,7 +188,6 @@ const ClaimScreen: React.FC = () => {
           title={isVerifying ? "Save & Verify" : "Save"}
           disabled={!canSave}
           onPress={() => {
-            if (claim.type === "DateOfBirthCredential") saveAndCheckBirthday();
             onSave();
           }}
           loading={loading}
