@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-lint:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     name: Build and Lint
     steps:
       - name: Checkout Branch
@@ -35,6 +35,9 @@ jobs:
         run: |
           yarn lint
           yarn build
+
+      - name: Run unit test
+        run: yarn test
 
       - name: Notify Slack
         if: ${{ always() && github.ref == 'refs/heads/main' }}
