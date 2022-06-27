@@ -81,7 +81,7 @@ And their personal data is updated at demo.idem.com.au
 
 ### 1: New IDEM registration
 
-A user download _Idem_ on my mobile device and create a new local profile on the app. My email address is my unique identifier.
+As a user I download _Idem_ on my mobile device and create a new local profile on the app. My email address is my unique identifier.
 
 ### 2: New private key
 
