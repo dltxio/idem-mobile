@@ -1,6 +1,6 @@
 import { AntDesign } from "@expo/vector-icons";
 import { View, StyleSheet } from "react-native";
-import { ListItem } from "react-native-elements";
+import { ListItem } from "@rneui/themed";
 import { Claim, ClaimType, ClaimWithValue } from "../types/claim";
 import { displayClaimValue } from "../utils/claim-utils";
 

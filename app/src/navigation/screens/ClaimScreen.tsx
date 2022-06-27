@@ -10,7 +10,7 @@ import {
   ScrollView,
   Dimensions
 } from "react-native";
-import { Input, Switch } from "react-native-elements";
+import { Input, Switch } from "@rneui/themed";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import commonStyles from "../../styles/styles";
 import {
