@@ -1,6 +1,5 @@
 import { useRoute } from "@react-navigation/native";
 import * as React from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   View,
   Image,
@@ -47,8 +46,6 @@ const VendorDetailsScreen: React.FC = () => {
   const vendor = vendors.find((v) => v.name === route.params.vendorId);
   const [signed, setSigned] = React.useState<boolean>(false);
 
-
-  
   const verifyOnProxyRequestBody = async () => {
     if (vendor) {
       const splitName = findNames(name);
