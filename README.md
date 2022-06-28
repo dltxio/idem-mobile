@@ -28,14 +28,14 @@ yarn start
 ## What is IDEM?
 
 
-IDEM (_Idem_, from now on) is an open-source cross-platform mobile application based on the [Decentralised Identity Foundation's DID protocol](https://identity.foundation). The application gives individuals control of their digital identities by establishing trust in an interaction between two individuals or entities that do not know each other. For trust to happen, the offering party will present credentials to the receiving parties, which can verify that the credentials are from an issuer that they trust. _Idem_ is designed to be used by third parties who require their customers to be KYC'd, such as cryptocurrency exchanges (e.g. [Get Paid In Bitcoin](https://portal.getpaidinbitcoin.com.au)).
+IDEM (_IDEM_, from now on) is an open-source cross-platform mobile application based on the [Decentralised Identity Foundation's DID protocol](https://identity.foundation). The application gives individuals control of their digital identities by establishing trust in an interaction between two individuals or entities that do not know each other. For trust to happen, the offering party will present credentials to the receiving parties, which can verify that the credentials are from an issuer that they trust. _IDEM_ is designed to be used by third parties who require their customers to be KYC'd, such as cryptocurrency exchanges (e.g. [Get Paid In Bitcoin](https://portal.getpaidinbitcoin.com.au)).
 
 
 Each time an exchange requests an ID from a new user, the KYC provider charges the exchange a fee. Users are required to provide KYC information and have it verified for each and every exchange onboarding instead of being able to reuse verification from a trusted provider. By locally storing users' verified information with a cryptographic signature, we can enhance the onboarding experience and reduce costs incurred by vendors.
 
 ## The Tech
 
-_Idem_ uses several cryptographic protocols to sign and encrypt data. _PGP/GPG_ encryption is used to securely store data on a device, while the _Ethereum Elliptic Curve (ECDSA)_ is used to sign claims which conform to the DID foundation's verifiable claims schema. Anyone can verify that interactions involving _Idem_ are valid. Furthermore, verification doesn't involve the user's private key (which is never known by _Idem_).
+_IDEM_ uses several cryptographic protocols to sign and encrypt data. _PGP/GPG_ encryption is used to securely store data on a device, while the _Ethereum Elliptic Curve (ECDSA)_ is used to sign claims which conform to the DID foundation's verifiable claims schema. Anyone can verify that interactions involving _IDEM_ are valid. Furthermore, verification doesn't involve the user's private key (which is never known by _IDEM_).
 
 IDEM's public keys can be found at `https://idem.com.au/keys`
 
@@ -52,11 +52,11 @@ However, I must complete their profile on the app before any third-party interac
 
 #### 1: New IDEM profile creation
 
-A user downloads the _Idem_ app on their mobile device and creates a new local profile. Their email address is their unique identifier.  The user creates their profile with all relevant claims, such as phone number and date of birth.  _See claims table for a full list._
+A user downloads the _IDEM_ app on their mobile device and creates a new local profile. Their email address is their unique identifier.  The user creates their profile with all relevant claims, such as phone number and date of birth.  _See claims table for a full list._
 
 #### 2: Setting or creating a private key
 
-_Idem_ can automatically create a 256-bit private key on the device or it can allow the user to import a mnemonic seed phrase (based on the bitcoin BIP39 standard) of their choice. This will be used to sign and verify requests (using elliptic curve cryptography - Secp256k1) to third parties.
+_IDEM_ can automatically create a 256-bit private key on the device or it can allow the user to import a mnemonic seed phrase (based on the bitcoin BIP39 standard) of their choice. This will be used to sign and verify requests (using elliptic curve cryptography - Secp256k1) to third parties.
 
 #### 3: Attaching documents to claims
 
@@ -66,11 +66,11 @@ Once the following is completed, IDEM users can now onboard to websites or excha
 
 ### User Story 1. New (to the website or exchange) user
 
-The user initiates the registration process by entering their email address and a password into the website. The use of Recaptchas on most websites rules out a full-fledged _Idem_ registration, although _Idem_ could be used to fill the email address and generate a password on behalf of the user. From here, the user can use _Idem_ to complete the verification process by allowing _Idem_ to supply the claims the website requires.
+The user initiates the registration process by entering their email address and a password into the website. The use of Recaptchas on most websites rules out a full-fledged _IDEM_ registration, although _IDEM_ could be used to fill the email address and generate a password on behalf of the user. From here, the user can use _IDEM_ to complete the verification process by allowing _IDEM_ to supply the claims the website requires.
 
 ```text
 As a frustrated crypto customer,
-I want to onboard to an exchange via the Idem app,
+I want to onboard to an exchange via the IDEM app,
 So that I don't have to resupply all my information again and again and again!
 ```
 
@@ -84,7 +84,7 @@ And their ID is verified,
 And they are redirected to demo.idem.com.au's home page.
 ```
 
-Websites or exchanges can interact with _Idem_ users in the following ways;
+Websites or exchanges can interact with _IDEM_ users in the following ways;
 
 #### Via a notification
 
@@ -110,7 +110,7 @@ Websites and exchange who have integrated with IDEM, can list their site on the 
 
 ### User Story 2. Existing (to the website or exchange) user
 
-An existing website user can log into the website and is then shown a QR code on their profile page or similar.  The QR code specifies the claims the website requires in their profile.  Once the user can scan the QR code (using _Idem_) and they confirm the claims they want to share, the app then POSTs the claims to the website's API in the WC3 VC format for the website to validate and save.
+An existing website user can log into the website and is then shown a QR code on their profile page or similar.  The QR code specifies the claims the website requires in their profile.  Once the user can scan the QR code (using _IDEM_) and they confirm the claims they want to share, the app then POSTs the claims to the website's API in the WC3 VC format for the website to validate and save.
 
 ```text
 As an existing unverified customer of the website,
@@ -125,15 +125,15 @@ And they login with their existing account details,
 And they scan the QR code via the app,
 And agree to share data on the app to the website,
 Then their ID is posted from the app to the website's API,
-And the Idem signature is verified,
+And the IDEM signature is verified,
 And their personal data is updated on the website
 ```
 #### Verification Workflow Diagram
 
-The flowchart below is a verification workflow diagram (User story 2) for third-party developers to integrate a website (such as an exchange) with _Idem_. It works as follows:
+The flowchart below is a verification workflow diagram (User story 2) for third-party developers to integrate a website (such as an exchange) with _IDEM_. It works as follows:
 
 1. A user creates an account on the website, typically with an email and password.
-2. The new user may then be asked to supply more information to meet KYC obligations. This could be metadata such as Full Name, Date of Birth and Physical address. These are what Idem refers to as _Claims_. To capture this data, the website can either;
+2. The new user may then be asked to supply more information to meet KYC obligations. This could be metadata such as Full Name, Date of Birth and Physical address. These are what IDEM refers to as _Claims_. To capture this data, the website can either;
 - Get the user to fill out a form or,
 - Present a self documenting QR code requesting the claims required, and the callback URL for the website. This is similar to a PayPal IPN or an OAuth2 callback URL.
 3. The user is asked to confirm they're happy to proceed with sharing those specific claims to the website.
@@ -158,13 +158,13 @@ Eg: `did://callback=https://demo.idem.com.au/callback/?nonce=8b5c66c0-bceb-40b4-
 
 ### 2. Verifying the claims
 
-_Idem_ will then check to see if it already has those claims. If it does, skip to step 4. If it doesn't, it will use the _idem-api_ module to obtain the relevant credentials which are verified by third-party KYC vendors and who return an X-509 SSL certificate signed JSON object that can then be reused. Each vendor has a different process for onboarding and the app will maintain these different business requirements.
+_IDEM_ will then check to see if it already has those claims. If it does, skip to step 4. If it doesn't, it will use the _idem-api_ module to obtain the relevant credentials which are verified by third-party KYC vendors and who return an X-509 SSL certificate signed JSON object that can then be reused. Each vendor has a different process for onboarding and the app will maintain these different business requirements.
 
 <img src="https://user-images.githubusercontent.com/91101134/174712724-32f42982-344a-4d62-bb0b-8dc61824b837.png" width=100% height=100%>
 
 ### 3. Shaping the response from the API
 
-The claims will be packaged by the _idem-api_ module as a (Verifiable Presentation)[https://www.w3.org/TR/vc-data-model/#presentations], which is just a wrapped collection of credentials conforming to the W3C Verifiable Credentials Data Model (see JSON model below) and returned, having been signed using Secp256k1, to _Idem_. _Idem_ then caches the signed presentation for subsequent requests.
+The claims will be packaged by the _idem-api_ module as a (Verifiable Presentation)[https://www.w3.org/TR/vc-data-model/#presentations], which is just a wrapped collection of credentials conforming to the W3C Verifiable Credentials Data Model (see JSON model below) and returned, having been signed using Secp256k1, to _IDEN_. _IDEM_ then caches the signed presentation for subsequent requests.
 
 ```json
 {
@@ -226,7 +226,7 @@ c# Verifiable Credential model
 
 ### 4. Posting the signed data back to the exchange
 
-Finally, _Idem_ sends the credentials payload back to the website. Upon receipt of the credentials, the website authenticates the signature against the payload and shows a success message to the user. Obviously, it's up to the website to handle the success or failure of the verification of the user in whatever way it sees fit.
+Finally, _IDEM_ sends the credentials payload back to the website. Upon receipt of the credentials, the website authenticates the signature against the payload and shows a success message to the user. Obviously, it's up to the website to handle the success or failure of the verification of the user in whatever way it sees fit.
 
 ## Table of claims
 
@@ -268,7 +268,7 @@ BIP39 seed `excite hospital vast lounge please rebel evolve limit planet taste b
 
 | Name  | Address                                    | Private Key                                                        |
 | ----- | ------------------------------------------ | ------------------------------------------------------------------ |
-| Idem  | 0x645cD9fE9620649BF71a806bE803695B02f697Aa | 0xcaf6a36710a30e92d8ae27d2110772f14d077a813183091d16af04c71b93bb96 |
+| IDEM  | 0x645cD9fE9620649BF71a806bE803695B02f697Aa | 0xcaf6a36710a30e92d8ae27d2110772f14d077a813183091d16af04c71b93bb96 |
 | Alice | 0x8444F8EF5694F09110B5191fCfab012f2E974135 | 0x409f3c9850a095fb1e3967bb55507df2b85bc647d9bc601528d5eb1094deeacc |
 
 ## References
