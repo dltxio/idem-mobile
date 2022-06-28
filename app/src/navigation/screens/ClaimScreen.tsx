@@ -8,7 +8,7 @@ import {
   Text,
   Alert,
   ScrollView,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import { Input, Switch } from "@rneui/themed";
 import DateTimePickerModal from "react-native-modal-datetime-picker";

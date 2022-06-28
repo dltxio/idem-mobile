@@ -1,5 +1,6 @@
 import { useRoute } from "@react-navigation/native";
 import * as React from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   View,
   Image,
@@ -44,37 +45,51 @@ const VendorDetailsScreen: React.FC = () => {
   const { verifyClaims, postTokenToProxy } = useVerifyClaims();
 
   const vendor = vendors.find((v) => v.name === route.params.vendorId);
+  const [signed, setSigned] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    async () => {
+      if (vendor) {
+        const storage = await AsyncStorage.getItem(vendor.name);
+        if (storage) {
+          setSigned(true);
+        }
+      }
+    };
+  }, [vendor]);
 
   const verifyOnProxyRequestBody = async () => {
-    const splitName = findNames(name);
-    if (splitName && dob && address && email) {
-      const hashEmail = async () => {
-        const hashedEmail = await Crypto.digestStringAsync(
-          Crypto.CryptoDigestAlgorithm.SHA256,
-          email
-        );
-        return hashedEmail;
-      };
+    if (vendor) {
+      const splitName = findNames(name);
+      if (splitName && dob && address && email) {
+        const hashEmail = async () => {
+          const hashedEmail = await Crypto.digestStringAsync(
+            Crypto.CryptoDigestAlgorithm.SHA256,
+            email
+          );
+          return hashedEmail;
+        };
 
-      const userEmail = await hashEmail();
-      const gpibUserID = await exchangeLocalStorage.get();
-      const userClaims = {
-        firstName: splitName.firstName,
-        lastName: splitName.lastName,
-        dob: dob,
-        email: userEmail.toString(),
-        houseNumber: addressValue.houseNumber,
-        street: addressValue.street,
-        suburb: addressValue.suburb,
-        postcode: addressValue.postCode,
-        state: addressValue.state,
-        country: addressValue.country,
-        userId: gpibUserID?.gpibUserID
-      } as VerifyOnProxy;
-      await verifyClaims(userClaims);
-    }
-    if (expoPushToken) {
-      await postTokenToProxy(expoPushToken);
+        const userEmail = await hashEmail();
+        const gpibUserID = await exchangeLocalStorage.get();
+        const userClaims = {
+          firstName: splitName.firstName,
+          lastName: splitName.lastName,
+          dob: dob,
+          email: userEmail.toString(),
+          houseNumber: addressValue.houseNumber,
+          street: addressValue.street,
+          suburb: addressValue.suburb,
+          postcode: addressValue.postCode,
+          state: addressValue.state,
+          country: addressValue.country,
+          userId: gpibUserID?.gpibUserID
+        } as VerifyOnProxy;
+        await verifyClaims(userClaims, vendor);
+      }
+      if (expoPushToken) {
+        await postTokenToProxy(expoPushToken, vendor);
+      }
     }
   };
 
@@ -97,6 +112,7 @@ const VendorDetailsScreen: React.FC = () => {
           <View style={styles.buttonWrapper}>
             <Button
               title="Verify My Claims"
+              disabled={signed ? false : true}
               onPress={async () => {
                 verifyOnProxyRequestBody();
               }}
@@ -114,10 +130,11 @@ const VendorDetailsScreen: React.FC = () => {
               if (name && email) {
                 makeUser.signUp(name, email);
               }
+              setSigned(true);
             }
           }}
           title="Sign Up"
-          disabled={name && email ? false : true}
+          disabled={signed ? true : false}
           style={styles.button}
         />
         {vendor?.website === "https://getpaidinbitcoin.com.au" ? (
