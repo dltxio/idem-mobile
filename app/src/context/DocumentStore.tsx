@@ -22,7 +22,7 @@ export const DocumentsContext = React.createContext<DocumentsValue | undefined>(
 
 export const DocumentProvider: React.FC<{
   children: React.ReactNode;
-}> = (props) => {
+}> = (props) => {    
   const [files, setFiles] = React.useState<File[]>([]);
 
   React.useEffect(() => {

@@ -7,6 +7,7 @@ import { IExchange } from "../interfaces/exchange-interface";
 import { VerifyUserRequestBody } from "../types/exchange";
 import { findNames } from "../utils/formatters";
 import { createRandomPassword } from "../utils/randomPassword-utils";
+import { signUpUserRequestBody } from "../types/exchange";
 
 export type ExchangeValue = {
   makeGpibUser: IExchange;
@@ -94,8 +95,8 @@ export const ExchangeProvider: React.FC<{
   };
 
   // MAKE EASY CRPYTO USER
-  const makeEasyCryptoUser: IExchange = {
-    signUp: async (email: string) => {
+   const makeEasyCryptoUser: IExchange = (bod: signUpUserRequestBody) => {
+    const signUp: async (email: string) => {
       const randomTempPassword = createRandomPassword();
       const bodyEasyCrypto = JSON.stringify({
         email: email,
@@ -114,11 +115,12 @@ export const ExchangeProvider: React.FC<{
         );
         if (checkUserAuthEasyCrypto.status === 200) {
           const jwtEasy = checkUserAuthEasyCrypto.data.token;
+          const splitName = findNames(bod);
           const updatedEasyBody = {
-            firstName: body.firstName,
-            lastName: body.lastName,
-            yob: Number(body.yob),
-            mobile: body.mobile,
+            firstName: bod.firstName,
+            lastName: bod.lastName,
+            yob: Number(bod.yob),
+            mobile: bod.mobile,
             extraIdNumber: null,
             action: "checkExisting",
             version: 2,
@@ -144,7 +146,7 @@ export const ExchangeProvider: React.FC<{
         console.log(error);
         Alert.alert(error.response.data);
       }
-    }
+    };
   };
 
   // MAKE COINSTASH USER
