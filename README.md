@@ -9,7 +9,7 @@ The React native mobile app for IDEM.
 
 ## Introduction
 
-IDEM facilitates users to register on a customers website, such as a crytpo exchange without having the user to manually enter onboarding information such as email, password and personal meta data which we call claims.
+IDEM facilitates users to register on a customer's website, such as a crypto exchange without having the user to manually enter onboarding information such as email, password and personal metadata which we call claims.
 
 **Note: Data is securely stored on your device.  IDEM does not have a server!**
 
@@ -28,16 +28,16 @@ yarn start
 ## What is IDEM?
 
 
-IDEM (_Idem_, from now on) is an open source cross-platform mobile application based on the [Decentralised Identity Foundation's DID protocol](https://identity.foundation). The application gives individuals control of their digital identities by establishing trust in an interaction between two individuals or entities that do not know each other. For trust to happen, the offering party will present credentials to the receiving parties, which can verify that the credentials are from an issuer that they trust. _Idem_ is designed to be used by third parties who require their customers to be KYC'd, such as cryptocurrency exchanges (e.g. [Get Paid In Bitcoin](https://portal.getpaidinbitcoin.com.au)).
+IDEM (_Idem_, from now on) is an open-source cross-platform mobile application based on the [Decentralised Identity Foundation's DID protocol](https://identity.foundation). The application gives individuals control of their digital identities by establishing trust in an interaction between two individuals or entities that do not know each other. For trust to happen, the offering party will present credentials to the receiving parties, which can verify that the credentials are from an issuer that they trust. _Idem_ is designed to be used by third parties who require their customers to be KYC'd, such as cryptocurrency exchanges (e.g. [Get Paid In Bitcoin](https://portal.getpaidinbitcoin.com.au)).
 
 
 Each time an exchange requests an ID from a new user, the KYC provider charges the exchange a fee. Users are required to provide KYC information and have it verified for each and every exchange onboarding instead of being able to reuse verification from a trusted provider. By locally storing users' verified information with a cryptographic signature, we can enhance the onboarding experience and reduce costs incurred by vendors.
 
 ## The Tech
 
-_Idem_ uses a number of cryptographic protocols to sign and encrypt data. _PGP/GPG_ encryption is used to securely store data on a device, while the _Ethereum Elliptic Curve (ECDSA)_ is used to sign claims which conform to the DID foundation's verifiable claims schema. Anyone can verify that interactions involving _Idem_ are valid. Furthermore, verification doesn't involve the user's private key (which is never known by _Idem_).
+_Idem_ uses several cryptographic protocols to sign and encrypt data. _PGP/GPG_ encryption is used to securely store data on a device, while the _Ethereum Elliptic Curve (ECDSA)_ is used to sign claims which conform to the DID foundation's verifiable claims schema. Anyone can verify that interactions involving _Idem_ are valid. Furthermore, verification doesn't involve the user's private key (which is never known by _Idem_).
 
-IDEMs public keys can be found at `https://idem.com.au/keys`
+IDEM's public keys can be found at `https://idem.com.au/keys`
 
 ## User Flow Experience - Customer Point of View
 
@@ -46,7 +46,7 @@ Here are two common scenarios involving a user and a participating third-party w
 1. Onboarding / registering new users who do not have an account on a website (User Story 1)
 2. Verifying existing users (User Story 2)
 
-However, I must complete their profile on the app prior to any third party interactions.
+However, I must complete their profile on the app before any third-party interactions.
 
 ### Creating your profile on the IDEM app
 
@@ -56,11 +56,11 @@ A user downloads the _Idem_ app on their mobile device and creates a new local p
 
 #### 2: Setting or creating a private key
 
-_Idem_ can automatically create a 256-bit private key on the device or it can allow the user to import a mnemonic seed phrase (based on the bitcoin BIP39 standard) of their choice. This will be used to sign and verify requests (using elliptic curve crytography - Secp256k1) to third parties.
+_Idem_ can automatically create a 256-bit private key on the device or it can allow the user to import a mnemonic seed phrase (based on the bitcoin BIP39 standard) of their choice. This will be used to sign and verify requests (using elliptic curve cryptography - Secp256k1) to third parties.
 
 #### 3: Attaching documents to claims
 
-The user can choose certain types of claims to verify such as _18+_, _Date of Birth_ or _Address_. They have to substantiate those claims with supporting evidence such as a government-issued document (passport, drivers license, etc.), a utilities bill, etc. The documents are encrypted and stored in the local storage of the device.
+The user can choose certain types of claims to verify such as _18+_, _Date of Birth_ or _Address_. They have to substantiate those claims with supporting evidence such as a government-issued document (passport, driver's license, etc.), a utility bill, etc. The documents are encrypted and stored in the local storage of the device.
 
 Once the following is completed, IDEM users can now onboard to websites or exchanges in the following ways!
 
@@ -84,7 +84,7 @@ And their ID is verified,
 And they are redirected to demo.idem.com.au's home page.
 ```
 
-Websites or exchanges can interatct with _Idem_ users in the following ways;
+Websites or exchanges can interact with _Idem_ users in the following ways;
 
 #### Via a notification
 
@@ -100,7 +100,7 @@ curl https://proxy.idem.com.au
 
 #### Vai a QR code
 
-Instead of the user having to complete a registration process on the website or exchange, the website or exchange can ask for the IDEMs users claims via a QR code.  The QR code speicifs
+Instead of the user having to complete a registration process on the website or exchange, the website or exchange can ask for users IDEM claims via a QR code.
 
 
 ### Via the app
@@ -110,7 +110,7 @@ Websites and exchange who have integrated with IDEM, can list their site on the 
 
 ### User Story 2. Existing (to the website or exchange) user
 
-An existing website user can log into the website and is then shown a QR code on their profile page or similar.  The QR code specifies the claims the website requires in their profile.  Once the user can scans the QR code (using _Idem_) and they confirm the claims they want to share, the app then POSTs the claims to the websites API in the WC3 VC format for the website to validate and save.
+An existing website user can log into the website and is then shown a QR code on their profile page or similar.  The QR code specifies the claims the website requires in their profile.  Once the user can scan the QR code (using _Idem_) and they confirm the claims they want to share, the app then POSTs the claims to the website's API in the WC3 VC format for the website to validate and save.
 
 ```text
 As an existing unverified customer of the website,
@@ -126,14 +126,14 @@ And they scan the QR code via the app,
 And agree to share data on the app to the website,
 Then their ID is posted from the app to the website's API,
 And the Idem signature is verified,
-And their personal data is updated at the website
+And their personal data is updated on the website
 ```
 #### Verification Workflow Diagram
 
 The flowchart below is a verification workflow diagram (User story 2) for third-party developers to integrate a website (such as an exchange) with _Idem_. It works as follows:
 
 1. A user creates an account on the website, typically with an email and password.
-2. The new user may then be asked to supply more information to meet KYC obligations. This could be meta data such as Full Name, Date of Birth and Physical address. These are what Idem referrers to as _Claims_. To capture this data, the website can either;
+2. The new user may then be asked to supply more information to meet KYC obligations. This could be metadata such as Full Name, Date of Birth and Physical address. These are what Idem refers to as _Claims_. To capture this data, the website can either;
 - Get the user to fill out a form or,
 - Present a self documenting QR code requesting the claims required, and the callback URL for the website. This is similar to a PayPal IPN or an OAuth2 callback URL.
 3. The user is asked to confirm they're happy to proceed with sharing those specific claims to the website.
@@ -154,7 +154,7 @@ The site "idem.com.au/demo" creates a unique deeplink url with the url schema `d
 Eg: `did://callback=https://demo.idem.com.au/callback/?nonce=8b5c66c0-bceb-40b4-b099-d31b127bf7b3&claims=EmailCredential,NameCredential`
 
 
-![idem](https://user-images.githubusercontent.com/8411406/171374486-f2112f4e-f45e-43c2-be09-b1bb58b8f463.png|width=100px)
+<img src="https://user-images.githubusercontent.com/8411406/171374486-f2112f4e-f45e-43c2-be09-b1bb58b8f463.png" width=200px>
 
 ### 2. Verifying the claims
 
