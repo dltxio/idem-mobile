@@ -128,7 +128,7 @@ const VendorDetailsScreen: React.FC = () => {
         {vendor?.website === "https://getpaidinbitcoin.com.au" ? (
           <Button
             onPress={() => {
-              Alert.prompt("Enter password your GPIB password", "", [
+              Alert.prompt("Enter your GPIB password", "", [
                 {
                   text: "OK",
                   onPress: async (value: string | undefined) => {
