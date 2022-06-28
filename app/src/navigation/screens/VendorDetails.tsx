@@ -47,17 +47,7 @@ const VendorDetailsScreen: React.FC = () => {
   const vendor = vendors.find((v) => v.name === route.params.vendorId);
   const [signed, setSigned] = React.useState<boolean>(false);
 
-  React.useEffect(() => {
-    const fetchVendor = async () => {
-      if (vendor) {
-        const storage = await AsyncStorage.getItem(vendor.name);
-        if (storage) {
-          setSigned(true);
-        }
-      }
-    };
-    fetchVendor();
-  }, [vendor]);
+
   
   const verifyOnProxyRequestBody = async () => {
     if (vendor) {
