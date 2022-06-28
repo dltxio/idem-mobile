@@ -48,7 +48,7 @@ const VendorDetailsScreen: React.FC = () => {
   const [signed, setSigned] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    async () => {
+    const fetchVendor = async () => {
       if (vendor) {
         const storage = await AsyncStorage.getItem(vendor.name);
         if (storage) {
@@ -56,8 +56,9 @@ const VendorDetailsScreen: React.FC = () => {
         }
       }
     };
+    fetchVendor();
   }, [vendor]);
-
+  
   const verifyOnProxyRequestBody = async () => {
     if (vendor) {
       const splitName = findNames(name);
