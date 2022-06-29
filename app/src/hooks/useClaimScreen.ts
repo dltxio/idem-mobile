@@ -43,32 +43,15 @@ const useClaimScreen = (): Hooks => {
   const saveAndCheckBirthday = async () => {
     setLoading(true);
     const claims = await claimsLocalStorage.get();
-    const findBirthday = claims?.map((claim) => {
-      if (claim.type === "DateOfBirthCredential") {
-        if (check18Plus(claim)) {
-          Alert.alert(
-            "18+ detected",
-            "IDEM has detected that your are over 18. Would you like to update your 18+ claim accordingly?",
-            [
-              {
-                text: "OK",
-                onPress: save18Claim
-              },
-              {
-                text: "Cancel",
-                style: "cancel"
-              }
-            ],
-            {
-              cancelable: true
-            }
-          );
+    claims?.map((claim) => {
+      if (claim.type === "DateOfBirthCredential" && check18Plus(claim)) {
+        const findAge = claims.find((c) => c.type === "18+");
+        if (!findAge || findAge.value === "false") {
+          save18Claim();
         }
       }
-      return null;
     });
     setLoading(false);
-    return findBirthday;
   };
 
   const onSelectFile = (fileId: string) => {
