@@ -5,7 +5,7 @@ import commonStyles from "../../styles/styles";
 import { useDocumentStore } from "../../context/DocumentStore";
 import { ProfileStackNavigationRoute } from "../../types/navigation";
 import { useRoute } from "@react-navigation/native";
-import { getDocumentFromDocumentId } from "../../utils/document-utils";
+import { getDocumentFromDocumentType } from "../../utils/document-utils";
 
 const ViewFile: React.FC = () => {
   const { files } = useDocumentStore();
@@ -17,7 +17,7 @@ const ViewFile: React.FC = () => {
     return null;
   }
 
-  const document = getDocumentFromDocumentId(file.documentId);
+  const document = getDocumentFromDocumentType(file.documentType);
 
   return (
     <ScrollView style={[commonStyles.screen, commonStyles.screenContent]}>
