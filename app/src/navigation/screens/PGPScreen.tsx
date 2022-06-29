@@ -32,7 +32,7 @@ const PGPScreen: React.FC = () => {
       await pgpLocalStorage.save({ keytext: keytext });
       const checkKey = await pgpLocalStorage.get();
       if (checkKey) {
-        Alert.alert("SUCCESS", "Your public key has been saved");
+        Alert.alert("Success!", "Your public key has been saved");
       }
     } catch (error) {
       Alert.alert(
@@ -49,9 +49,8 @@ const PGPScreen: React.FC = () => {
         style={styles.container}
         contentContainerStyle={styles.scrollContent}
       >
-        <Text style={styles.introText}>Import your Public Key:</Text>
         <TextInput
-          placeholder="Paste your PUBLIC key here"
+          placeholder="Paste your PGP/GPG PUBLIC key here"
           placeholderTextColor={"black"}
           onChangeText={setKeytext}
           value={keytext}

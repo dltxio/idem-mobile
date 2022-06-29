@@ -32,7 +32,6 @@ const useVerifyClaims = (): Hooks => {
 
   const postTokenToProxy = async (expoToken: string) => {
     const claim = await AsyncStorage.getItem("GPIB");
-    console.log(claim);
     if (claim) {
       const claimObject = JSON.parse(claim) as VerificationResponse;
 
