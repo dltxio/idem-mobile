@@ -5,7 +5,7 @@
     "version": "1.0.48",
     "entryPoint": "./src/App.tsx",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Bee-Logo.jpg",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -31,7 +31,7 @@
     "android": {
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/Bee-Logo.jpg",
         "backgroundColor": "#FFFFFF"
       },
       "permissions": [
@@ -55,7 +55,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/icon.png",
+          "icon": "./assets/Bee-Logo.jpg",
           "color": "#ffffff"
         }
       ]
