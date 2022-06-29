@@ -50,11 +50,10 @@ const VendorDetailsScreen: React.FC = () => {
     if (vendor) {
       if (splitName && dob && address && email) {
         const hashEmail = async () => {
-          const hashedEmail = await Crypto.digestStringAsync(
+          return Crypto.digestStringAsync(
             Crypto.CryptoDigestAlgorithm.SHA256,
             email
           );
-          return hashedEmail;
         };
 
         const userEmail = await hashEmail();
