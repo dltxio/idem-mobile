@@ -33,7 +33,6 @@ const useVerifyClaims = (): Hooks => {
 
   const postTokenToProxy = async (expoToken: string, vendor: Vendor) => {
     const claim = await AsyncStorage.getItem(vendor.name);
-    console.log(claim);
     if (claim) {
       const claimObject = JSON.parse(claim) as VerificationResponse;
 
