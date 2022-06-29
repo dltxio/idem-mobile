@@ -53,7 +53,7 @@ const VendorDetailsScreen: React.FC = () => {
 
     const userClaimMnemonicMap = usersClaims.reduce(
       (acc, claim) => {
-        acc[claim.nnemonic] = true;
+        acc[claim.mnemonic] = true;
         return acc;
       },
       {} as {
