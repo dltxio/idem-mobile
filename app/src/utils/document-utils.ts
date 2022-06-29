@@ -1,8 +1,10 @@
 import allDocuments from "../data/documents";
-import { Document, DocumentId } from "../types/document";
+import { Document, DocumentType } from "../types/document";
 
-export const getDocumentFromDocumentId = (documentId: DocumentId): Document => {
-  const document = allDocuments.find((doc) => doc.id === documentId);
+export const getDocumentFromDocumentType = (
+  documentType: DocumentType
+): Document => {
+  const document = allDocuments.find((doc) => doc.type === documentType);
   if (document) return document;
   throw Error("Document not found");
 };

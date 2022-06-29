@@ -4,11 +4,11 @@ import { File } from "../types/document";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
-import { getDocumentFromDocumentId } from "../utils/document-utils";
 import { StyleSheet, View } from "react-native";
 import colors from "../styles/colors";
 import { DocumentsStackNavigation } from "../types/navigation";
 import { useNavigation } from "@react-navigation/native";
+import { getDocumentFromDocumentType } from "../utils/document-utils";
 
 type FileItem = File & { selected?: boolean };
 
@@ -36,7 +36,7 @@ const FileList: React.FC<Props> = ({
       {/* this view is here because without it the swipeable list item explodes */}
       <View>
         {files.map((file) => {
-          const document = getDocumentFromDocumentId(file.documentId);
+          const document = getDocumentFromDocumentType(file.documentType);
 
           if (!document) {
             return null;
