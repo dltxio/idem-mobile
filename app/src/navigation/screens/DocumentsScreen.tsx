@@ -69,30 +69,33 @@ const DocumentsScreen: React.FC = () => {
     <View style={commonStyles.screenContent}>
       <View style={styles.documentsList}>
         <Text style={commonStyles.text.smallHeading}>Your documents</Text>
-        {selectedDocuments.length ? (
-          selectedDocuments.length > 3 ? (
-            <View style={{ overflow: "scroll" }}>
-              <FileList
-                files={selectedDocuments}
-                onFilePress={navigateToFile}
-                isCheckList={false}
-                onDeleteFile={deleteFile}
-              />
-            </View>
-          ) : (
+
+        {selectedDocuments.length === 0 && (
+          <View>
+            <Text style={styles.documentsList}>
+              You haven't attached any files yet. Get started by selecting a
+              document below.
+            </Text>
+          </View>
+        )}
+
+        {selectedDocuments.length > 0 && selectedDocuments.length < 3 && (
+          <FileList
+            files={selectedDocuments}
+            onFilePress={navigateToFile}
+            isCheckList={false}
+            onDeleteFile={deleteFile}
+          />
+        )}
+
+        {selectedDocuments.length >= 3 && (
+          <View style={{ overflow: "scroll" }}>
             <FileList
               files={selectedDocuments}
               onFilePress={navigateToFile}
               isCheckList={false}
               onDeleteFile={deleteFile}
             />
-          )
-        ) : (
-          <View>
-            <Text style={styles.documentsList}>
-              You haven't attached any files yet. Get started by selecting a
-              document below.
-            </Text>
           </View>
         )}
       </View>
