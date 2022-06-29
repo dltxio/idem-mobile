@@ -1,18 +1,19 @@
 import { Alert } from "react-native";
 import axios, { AxiosResponse } from "axios";
-import { VerifyOnProxy } from "../types/general";
+import { Vendor, VerifyOnProxy } from "../types/general";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { VerificationResponse } from "../interfaces/exchange-interface";
 
 type Hooks = {
-  verifyClaims: (proxyBody: VerifyOnProxy) => Promise<void>;
+  verifyClaims: (proxyBody: VerifyOnProxy, vendor: Vendor) => Promise<void>;
   postTokenToProxy: (
-    expoToken: string
+    expoToken: string,
+    vendor: Vendor
   ) => Promise<AxiosResponse<any, any> | undefined>;
 };
 
 const useVerifyClaims = (): Hooks => {
-  const verifyClaims = async (proxyBody: VerifyOnProxy) => {
+  const verifyClaims = async (proxyBody: VerifyOnProxy, vendor: Vendor) => {
     try {
       const response = await axios.post(
         "https://proxy.idem.com.au/user/verify",
@@ -23,15 +24,15 @@ const useVerifyClaims = (): Hooks => {
           }
         }
       );
-      await AsyncStorage.setItem("GPIB", JSON.stringify(response.data));
+      await AsyncStorage.setItem(vendor.name, JSON.stringify(response.data));
     } catch (error) {
       console.log(error);
       Alert.alert("Error!", `${error}`);
     }
   };
 
-  const postTokenToProxy = async (expoToken: string) => {
-    const claim = await AsyncStorage.getItem("GPIB");
+  const postTokenToProxy = async (expoToken: string, vendor: Vendor) => {
+    const claim = await AsyncStorage.getItem(vendor.name);
     if (claim) {
       const claimObject = JSON.parse(claim) as VerificationResponse;
 

@@ -35,6 +35,7 @@
   "dependencies": {
     "nodejs-nodemailer-outlook": "^1.2.4",
     "react-native-modal": "^13.0.1",
-    "ts-node": "^10.8.1"
+    "ts-node": "^10.8.1",
+    "@types/react": "^17.0.41"
   }
 }

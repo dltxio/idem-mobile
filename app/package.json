@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.18.5",
-    "@types/react": "~18.0.14",
+    "@types/react": "^18.0.14",
     "@types/react-native": "~0.69.0",
     "@types/secure-random-password": "^0.2.1",
     "ts-node": "^10.8.1",
