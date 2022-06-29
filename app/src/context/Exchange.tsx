@@ -3,7 +3,7 @@ import * as React from "react";
 import { exchangeLocalStorage } from "../utils/local-storage";
 import { Alert } from "react-native";
 import axios from "axios";
-import { IExchange } from "../interfaces/exchange-interface";
+import { IExchange, stuff } from "../interfaces/exchange-interface";
 import { VerifyUserRequestBody } from "../types/exchange";
 import { findNames } from "../utils/formatters";
 import { createRandomPassword } from "../utils/randomPassword-utils";
@@ -95,11 +95,11 @@ export const ExchangeProvider: React.FC<{
   };
 
   // MAKE EASY CRPYTO USER
-  const makeEasyCryptoUser: IExchange = (bod: signUpUserRequestBody) => {
+ const makeEasyCryptoUser: IExchange = {
     signUp: async (email: string) => {
       const randomTempPassword = createRandomPassword();
       const bodyEasyCrypto = JSON.stringify({
-        email: email,
+        email: email, 
         password: randomTempPassword,
         returnSecureToken: true
       });
@@ -113,9 +113,9 @@ export const ExchangeProvider: React.FC<{
             }
           }
         );
+        const nameStuff = async (bod: stuff) => {
         if (checkUserAuthEasyCrypto.status === 200) {
           const jwtEasy = checkUserAuthEasyCrypto.data.token;
-          const splitName = findNames(bod);
           const updatedEasyBody = {
             firstName: bod.firstName,
             lastName: bod.lastName,
