@@ -21,7 +21,7 @@ import { IExchange } from "../../interfaces/exchange-interface";
 
 const VendorDetailsScreen: React.FC = () => {
   const { vendors } = useVendorsList();
-  const { makeGpibUser, makeCoinstashUser, verifyOnExchange } = useExchange();
+  const { signupGPIB, signupCoinstash, verifyOnExchange } = useExchange();
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
   const name = useClaimValue("FullNameCredential");
   const email = useClaimValue("EmailCredential");
@@ -36,8 +36,8 @@ const VendorDetailsScreen: React.FC = () => {
   }
 
   const idToIExchange: { [id: number]: IExchange } = {
-    1: makeGpibUser,
-    2: makeCoinstashUser
+    1: signupGPIB,
+    2: signupCoinstash
   };
 
   return (
@@ -80,6 +80,11 @@ const VendorDetailsScreen: React.FC = () => {
                       yob
                     });
                   }
+                },
+                {
+                  text: "Cancel",
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel"
                 }
               ]);
             }}

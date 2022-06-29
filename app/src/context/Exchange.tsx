@@ -7,10 +7,12 @@ import { IExchange } from "../interfaces/exchange-interface";
 import { VerifyUserRequestBody } from "../types/exchange";
 import { findNames } from "../utils/formatters";
 import { createRandomPassword } from "../utils/randomPassword-utils";
+import useApi from "../hooks/useApi";
+import { VenderEnum } from "../types/user";
 
 export type ExchangeValue = {
-  makeGpibUser: IExchange;
-  makeCoinstashUser: IExchange;
+  signupGPIB: IExchange;
+  signupCoinstash: IExchange;
   gpibUserID: string | undefined;
   reset: () => void;
   verifyOnExchange: (body: VerifyUserRequestBody) => Promise<void>;
@@ -24,6 +26,7 @@ export const ExchangeProvider: React.FC<{
   children: React.ReactNode;
 }> = (props) => {
   const [gpibUserID, setGpibUserID] = React.useState<string | undefined>();
+  const api = useApi();
 
   React.useEffect(() => {
     (async () => {
@@ -56,43 +59,33 @@ export const ExchangeProvider: React.FC<{
     );
   };
 
-  const makeGpibUser: IExchange = {
+  const signupGPIB: IExchange = {
     signUp: async (name: string, email: string) => {
       const randomTempPassword = createRandomPassword();
       const splitName = findNames(name);
-      const body = JSON.stringify({
-        firstName: splitName?.firstName,
-        lastName: splitName?.lastName,
-        email: email,
-        password: randomTempPassword,
-        referralCode: "",
-        trackAddress: true,
-        CreateAddress: true
-      });
-
-      try {
-        const response = await axios.post(
-          "https://testapi.getpaidinbitcoin.com.au/user",
-          body,
-          {
-            headers: {
-              "Content-Type": "application/json"
-            }
-          }
-        );
-        if (response.status === 200) {
-          const userID = response.data;
-          await exchangeLocalStorage.save({ gpibUserID: userID });
-          shareDetailsAlert(randomTempPassword);
-        }
-      } catch (error: any) {
-        console.log(error.response.data);
-        Alert.alert(error.response.data);
+      if (splitName?.firstName && splitName.lastName && randomTempPassword) {
+        api
+          .gpibSingup({
+            source: VenderEnum.GPIB,
+            firstName: splitName?.firstName,
+            lastName: splitName?.lastName,
+            email: email,
+            password: randomTempPassword
+          })
+          .then(async (userId) => {
+            await exchangeLocalStorage.save({ gpibUserID: userId });
+            Alert.alert(
+              `Sign up successful, your temporary password is ${randomTempPassword}`
+            );
+          })
+          .catch((error) => {
+            Alert.alert(error.message);
+          });
       }
     }
   };
 
-  const makeCoinstashUser: IExchange = {
+  const signupCoinstash: IExchange = {
     signUp: async (name: string, email: string) => {
       const randomTempPassword = createRandomPassword();
       const body = JSON.stringify({
@@ -119,37 +112,39 @@ export const ExchangeProvider: React.FC<{
   };
 
   const verifyOnExchange = async (body: VerifyUserRequestBody) => {
-    const checkAuthBody = JSON.stringify({
+    const auth = JSON.stringify({
       userName: body.userName,
       password: body.password
     });
     try {
       const checkUserAuth = await axios.post(
         "https://testapi.getpaidinbitcoin.com.au/user/authenticate",
-        checkAuthBody,
+        auth,
         {
           headers: {
             "Content-Type": "application/json"
           }
         }
       );
+      console.log(checkUserAuth);
       if (checkUserAuth.status === 200) {
         const jwt = checkUserAuth.data.token;
-        const updatedBody = {
+        const userInfo = {
           firstName: body.firstName,
           lastName: body.lastName,
           yob: Number(body.yob)
         };
-        const updateUserInfo = await axios.put(
+        console.log(userInfo);
+        const updatedUserInfo = await axios.put(
           `https://testapi.getpaidinbitcoin.com.au/AccountInfoes`,
-          updatedBody,
+          userInfo,
           {
             headers: {
               Authorization: `Bearer ${jwt}`
             }
           }
         );
-        if (updateUserInfo.status === 200) {
+        if (updatedUserInfo.status === 200) {
           Alert.alert(
             "Success!",
             `Details updated: first name, last name, date of birth`
@@ -173,13 +168,13 @@ export const ExchangeProvider: React.FC<{
 
   const value = React.useMemo(
     () => ({
-      makeGpibUser,
+      signupGPIB,
       gpibUserID,
       reset,
-      makeCoinstashUser,
+      signupCoinstash,
       verifyOnExchange
     }),
-    [makeGpibUser, gpibUserID, makeCoinstashUser, verifyOnExchange, reset]
+    [signupGPIB, gpibUserID, signupCoinstash, verifyOnExchange, reset]
   );
 
   return (
