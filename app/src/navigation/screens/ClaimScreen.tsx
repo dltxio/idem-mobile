@@ -11,7 +11,7 @@ import {
   Dimensions
 } from "react-native";
 import { Input, Switch } from "@rneui/themed";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import commonStyles from "../../styles/styles";
 import {
   ProfileStackNavigation,
@@ -43,6 +43,8 @@ const ClaimScreen: React.FC = () => {
     React.useState<string>();
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
 
+  const [rawDate, setRawDate] = React.useState<Date>();
+
   const {
     loading,
     saveAndCheckBirthday,
@@ -64,15 +66,15 @@ const ClaimScreen: React.FC = () => {
     Keyboard.dismiss();
   };
 
-  const onDateSelect = (date: Date) => {
+  const onDateSelect = (date: Date | undefined) => {
     if (showDatePickerForFieldId) {
+      hideDatePicker();
+      setRawDate(date);
       setFormState((previous) => ({
         ...previous,
         [showDatePickerForFieldId]: moment(date).format("DD/MM/YYYY")
       }));
     }
-
-    hideDatePicker();
   };
 
   const onSave = async () => {
@@ -170,13 +172,11 @@ const ClaimScreen: React.FC = () => {
             }
           })}
           {showDatePickerForFieldId && (
-            <DateTimePickerModal
-              isVisible={true}
+            <DateTimePicker
+              testID="Test"
+              onChange={(_event, date) => onDateSelect(date)}
               mode="date"
-              onConfirm={onDateSelect}
-              onCancel={hideDatePicker}
-              display="inline"
-              isDarkModeEnabled={false}
+              value={rawDate ?? new Date()}
             />
           )}
           {documentList}
