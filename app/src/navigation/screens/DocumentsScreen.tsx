@@ -26,6 +26,11 @@ const DocumentsScreen: React.FC = () => {
     DOCUMENT_IMAGE_OPTIONS
   );
 
+  const selectedDocuments = React.useMemo(
+    () => files.filter((file) => file.documentId === selectedDocumentId),
+    [files, selectedDocumentId]
+  );
+
   const navigateToFile = (fileId: string) => {
     navigation.navigate("ViewFile", {
       fileId
@@ -64,32 +69,33 @@ const DocumentsScreen: React.FC = () => {
     <View style={commonStyles.screenContent}>
       <View style={styles.documentsList}>
         <Text style={commonStyles.text.smallHeading}>Your documents</Text>
-        {files.length ? (
-          files.length > 3 ? (
-            <View style={{ overflow: "scroll" }}>
-              <FileList
-                files={files}
-                onFilePress={navigateToFile}
-                isCheckList={false}
-                onDeleteFile={deleteFile}
-                documentId={selectedDocumentId}
-              />
-            </View>
-          ) : (
-            <FileList
-              files={files}
-              onFilePress={navigateToFile}
-              isCheckList={false}
-              onDeleteFile={deleteFile}
-              documentId={selectedDocumentId}
-            />
-          )
-        ) : (
+
+        {selectedDocuments.length === 0 && (
           <View>
             <Text style={styles.documentsList}>
               You haven't attached any files yet. Get started by selecting a
               document below.
             </Text>
+          </View>
+        )}
+
+        {selectedDocuments.length > 0 && selectedDocuments.length < 3 && (
+          <FileList
+            files={selectedDocuments}
+            onFilePress={navigateToFile}
+            isCheckList={false}
+            onDeleteFile={deleteFile}
+          />
+        )}
+
+        {selectedDocuments.length >= 3 && (
+          <View style={{ overflow: "scroll" }}>
+            <FileList
+              files={selectedDocuments}
+              onFilePress={navigateToFile}
+              isCheckList={false}
+              onDeleteFile={deleteFile}
+            />
           </View>
         )}
       </View>
