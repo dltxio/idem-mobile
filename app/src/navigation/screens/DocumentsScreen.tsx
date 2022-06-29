@@ -26,6 +26,11 @@ const DocumentsScreen: React.FC = () => {
     DOCUMENT_IMAGE_OPTIONS
   );
 
+  const selectedDocuments = React.useMemo(
+    () => files.filter((file) => file.documentId === selectedDocumentId),
+    [files, selectedDocumentId]
+  );
+
   const navigateToFile = (fileId: string) => {
     navigation.navigate("ViewFile", {
       fileId
@@ -64,24 +69,22 @@ const DocumentsScreen: React.FC = () => {
     <View style={commonStyles.screenContent}>
       <View style={styles.documentsList}>
         <Text style={commonStyles.text.smallHeading}>Your documents</Text>
-        {files.length ? (
-          files.length > 3 ? (
+        {selectedDocuments.length ? (
+          selectedDocuments.length > 3 ? (
             <View style={{ overflow: "scroll" }}>
               <FileList
-                files={files}
+                files={selectedDocuments}
                 onFilePress={navigateToFile}
                 isCheckList={false}
                 onDeleteFile={deleteFile}
-                documentId={selectedDocumentId}
               />
             </View>
           ) : (
             <FileList
-              files={files}
+              files={selectedDocuments}
               onFilePress={navigateToFile}
               isCheckList={false}
               onDeleteFile={deleteFile}
-              documentId={selectedDocumentId}
             />
           )
         ) : (
