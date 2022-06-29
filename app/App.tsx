@@ -52,7 +52,7 @@ const App = () => {
       setNewUrl(false);
     }
 
-    if (path === "request-claims") {
+    if (path === "request-claims" && queryParams) {
       const request = parseClaimRequest(queryParams);
 
       if (request) {
