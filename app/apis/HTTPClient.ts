@@ -71,7 +71,7 @@ export default class HTTPClient {
     const error = e.response ? e.response.data : e;
 
     if (this.customOnError) {
-      this.customOnError(error);
+      this.customOnError(error as string);
     }
 
     throw error;
