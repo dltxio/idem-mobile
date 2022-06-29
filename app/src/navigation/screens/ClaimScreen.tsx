@@ -173,9 +173,7 @@ const ClaimScreen: React.FC = () => {
           })}
           {showDatePickerForFieldId && (
             <DateTimePicker
-              testID="Test"
               onChange={(_event, date) => onDateSelect(date)}
-              mode="date"
               value={rawDate ?? new Date()}
             />
           )}
