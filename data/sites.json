@@ -8,7 +8,8 @@
     "logo": "https://images.squarespace-cdn.com/content/v1/5f5990cc9e792617828214ae/1600921877148-3ISFDDENM1N89GLGAIKI/GBIB+Logo_5%402x.png?format=1500w",
     "signup": "https://portal.getpaidinbitcoin.com.au/register",
     "useProxy": false,
-    "backgroundColor": "#be2596"
+    "backgroundColor": "#be2596",
+    "requiredClaimNnemonics": ["email", "mobile"]
   },
   {
     "id": 2,
@@ -18,7 +19,8 @@
     "logo": "https://res.cloudinary.com/dcisquypm/image/upload/v1651057203/validator-logos/ykib0ji0gekmjfcjhp48.png",
     "signup": "https://coinstash.com.au/auth/signup",
     "useProxy": false,
-    "backgroundColor": "#0012d0"
+    "backgroundColor": "#0012d0",
+    "requiredClaimNnemonics": ["email", "mobile"]
   },
   {
     "id": 3,
@@ -29,7 +31,8 @@
     "logo": "https://pngset.com/images/dogecoin-wow-gold-gold-medal-trophy-money-transparent-png-1137773.png",
     "signup": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     "useProxy": false,
-    "backgroundColor": "blue"
+    "backgroundColor": "blue",
+    "requiredClaimNnemonics": ["email", "mobile", "eighteen"]
   },
   {
     "id": 4,

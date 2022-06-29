@@ -15,6 +15,7 @@ export type Vendor = {
   tagline: string;
   website: string;
   backgroundColor: string;
+  requiredClaimNnemonics: string[];
 };
 
 export type VerifyOnProxy = {
