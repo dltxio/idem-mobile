@@ -4,7 +4,7 @@ import axios, {
   AxiosResponse,
   AxiosInstance
 } from "axios";
-import appConfig from "../appConfigfig";
+import appConfig from "../appConfig";
 import { Buffer } from "buffer";
 
 export default class HTTPClient {
