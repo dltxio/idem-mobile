@@ -18,8 +18,8 @@ const DocumentsScreen: React.FC = () => {
   const { files, addFile, deleteFile } = useDocumentStore();
   const navigation = useNavigation<Navigation>();
 
-  const [selectedDocumentId, setSelectedDocumentId] = React.useState(
-    allDocuments[allDocuments.length - 1].id
+  const [selectedDocumentType, setSelectedDocumentType] = React.useState(
+    allDocuments[allDocuments.length - 1].type
   );
 
   const { selectPhotoFromCameraRoll, selectPhotoFromCamera } = useSelectPhoto(
@@ -27,8 +27,8 @@ const DocumentsScreen: React.FC = () => {
   );
 
   const selectedDocuments = React.useMemo(
-    () => files.filter((file) => file.documentId === selectedDocumentId),
-    [files, selectedDocumentId]
+    () => files.filter((file) => file.documentType === selectedDocumentType),
+    [files, selectedDocumentType]
   );
 
   const navigateToFile = (fileId: string) => {
@@ -41,14 +41,14 @@ const DocumentsScreen: React.FC = () => {
     const file = await selectPhotoFromCameraRoll();
 
     if (!file.cancelled) {
-      addFile(selectedDocumentId, file.uri);
+      addFile(selectedDocumentType, file.uri);
     }
   };
 
   const takePhoto = async () => {
     const result = await selectPhotoFromCamera();
     if (result && !result.cancelled) {
-      addFile(selectedDocumentId, result.uri);
+      addFile(selectedDocumentType, result.uri);
     }
   };
 
@@ -58,7 +58,7 @@ const DocumentsScreen: React.FC = () => {
         type: "*/*"
       });
       if (res && res.type !== "cancel") {
-        addFile(selectedDocumentId, res.uri);
+        addFile(selectedDocumentType, res.uri);
       }
     } catch (error) {
       console.log(error);
@@ -105,14 +105,14 @@ const DocumentsScreen: React.FC = () => {
         </Text>
         <Text style={styles.label}>Document type</Text>
         <Picker
-          selectedValue={selectedDocumentId}
-          onValueChange={(itemValue) => setSelectedDocumentId(itemValue)}
+          selectedValue={selectedDocumentType}
+          onValueChange={(itemValue) => setSelectedDocumentType(itemValue)}
           numberOfLines={2}
           style={styles.picker}
           itemStyle={styles.pickerItem}
         >
           {allDocuments.map((doc) => (
-            <Picker.Item key={doc.id} label={doc.title} value={doc.id} />
+            <Picker.Item key={doc.type} label={doc.title} value={doc.type} />
           ))}
         </Picker>
 

@@ -1,13 +1,12 @@
-export type DocumentId = "passport" | "drivers-license" | "profile-image";
-
+export type DocumentType = "passport" | "drivers-license" | "profile-image";
 export type Document = {
-  id: DocumentId;
+  type: DocumentType;
   title: string;
 };
 
 export type File = {
   id: string;
-  documentId: DocumentId;
+  documentType: DocumentType;
   name: string;
   uri: string;
   hashes: {
