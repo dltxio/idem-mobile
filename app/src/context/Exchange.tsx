@@ -141,7 +141,6 @@ export const ExchangeProvider: React.FC<{
           }
         }
       );
-      console.log(checkUserAuth);
       if (checkUserAuth.status === 200) {
         const jwt = checkUserAuth.data.token;
         const userInfo = {
