@@ -48,7 +48,6 @@ const VendorDetailsScreen: React.FC = () => {
 
   const verifyOnProxyRequestBody = async () => {
     if (vendor) {
-      const splitName = findNames(name);
       if (splitName && dob && address && email) {
         const hashEmail = async () => {
           const hashedEmail = await Crypto.digestStringAsync(
