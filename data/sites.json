@@ -9,7 +9,7 @@
     "signup": "https://portal.getpaidinbitcoin.com.au/register",
     "useProxy": false,
     "backgroundColor": "#be2596",
-    "requiredClaimNnemonics": ["email", "mobile"]
+    "requiredClaimMnemonics": ["email", "mobile"]
   },
   {
     "id": 2,
@@ -20,7 +20,7 @@
     "signup": "https://coinstash.com.au/auth/signup",
     "useProxy": false,
     "backgroundColor": "#0012d0",
-    "requiredClaimNnemonics": ["email", "mobile"]
+    "requiredClaimMnemonics": ["email", "mobile"]
   },
   {
     "id": 3,
@@ -32,7 +32,7 @@
     "signup": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     "useProxy": false,
     "backgroundColor": "blue",
-    "requiredClaimNnemonics": ["email", "mobile", "eighteen"]
+    "requiredClaimMnemonics": ["email", "mobile", "eighteen"]
   },
   {
     "id": 4,

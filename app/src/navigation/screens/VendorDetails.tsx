@@ -47,11 +47,11 @@ const VendorDetailsScreen: React.FC = () => {
   const [signed, setSigned] = React.useState<boolean>(false);
 
   const hasAllRequiredClaims = React.useMemo(() => {
-    if (!vendor || !vendor.requiredClaimNnemonics) {
+    if (!vendor || !vendor.requiredClaimMnemonics) {
       return true;
     }
 
-    const userClaimNnemonicMap = usersClaims.reduce(
+    const userClaimMnemonicMap = usersClaims.reduce(
       (acc, claim) => {
         acc[claim.nnemonic] = true;
         return acc;
@@ -61,8 +61,8 @@ const VendorDetailsScreen: React.FC = () => {
       }
     );
 
-    return vendor.requiredClaimNnemonics.every(
-      (nnemonic) => userClaimNnemonicMap[nnemonic]
+    return vendor.requiredClaimMnemonics.every(
+      (mnemonic) => userClaimMnemonicMap[mnemonic]
     );
   }, [usersClaims, vendor]);
 
