@@ -95,8 +95,8 @@ export const ExchangeProvider: React.FC<{
   };
 
   // MAKE EASY CRPYTO USER
-   const makeEasyCryptoUser: IExchange = (bod: signUpUserRequestBody) => {
-    const signUp: async (email: string) => {
+  const makeEasyCryptoUser: IExchange = (bod: signUpUserRequestBody) => {
+    signUp: async (email: string) => {
       const randomTempPassword = createRandomPassword();
       const bodyEasyCrypto = JSON.stringify({
         email: email,
