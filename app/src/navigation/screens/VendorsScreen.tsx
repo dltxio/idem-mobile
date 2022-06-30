@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
   tagLine: {
     textAlign: "left",
     fontSize: 14,
-    justifyContent: "flex-start",
-    marginLeft: 3
+    justifyContent: "flex-start"
   }
 });
