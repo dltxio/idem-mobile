@@ -61,7 +61,7 @@ const UserDetailsHeader: React.FC = () => {
           bold={true}
           placeholderWidth={90}
           onPress={() =>
-            navigation.navigate("Claim", { claimType: "FullNameCredential" })
+            navigation.navigate("Claim", { claimType: "NameCredential" })
           }
         />
         <DetailOrPlaceholder
