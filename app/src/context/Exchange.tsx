@@ -7,7 +7,6 @@ import { IExchange, stuff } from "../interfaces/exchange-interface";
 import { VerifyUserRequestBody } from "../types/exchange";
 import { findNames } from "../utils/formatters";
 import { createRandomPassword } from "../utils/randomPassword-utils";
-import { signUpUserRequestBody } from "../types/exchange";
 
 export type ExchangeValue = {
   makeGpibUser: IExchange;
@@ -113,8 +112,8 @@ export const ExchangeProvider: React.FC<{
             }
           }
         );
-        const nameStuff = async (bod: stuff) => {
         if (checkUserAuthEasyCrypto.status === 200) {
+          const nameStuff = async (bod: stuff) => {
           const jwtEasy = checkUserAuthEasyCrypto.data.token;
           const updatedEasyBody = {
             firstName: bod.firstName,
@@ -142,10 +141,11 @@ export const ExchangeProvider: React.FC<{
             );
           }
         }
+        }
       } catch (error: any) {
         console.log(error);
         Alert.alert(error.response.data);
-      }
+      }}
     };
   };
 
@@ -168,8 +168,7 @@ export const ExchangeProvider: React.FC<{
             "Content-Type": "application/json"
           }
         });
-
-        shareDetailsAlert(randomTempPassword);
+         shareDetailsAlert(randomTempPassword);
       } catch (error: any) {
         if (axios.isAxiosError(error)) {
           if (error.response) {
@@ -270,6 +269,7 @@ export const ExchangeProvider: React.FC<{
     </ExchangeContext.Provider>
   );
 };
+
 
 export const useExchange = () => {
   const context = React.useContext(ExchangeContext);
