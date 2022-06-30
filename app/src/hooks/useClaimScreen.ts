@@ -26,7 +26,7 @@ const useClaimScreen = (): Hooks => {
 
   const save18Claim = async () => {
     setLoading(true);
-    await addClaim("18+", "true", selectedFileIds);
+    await addClaim("AdultCredential", "true", selectedFileIds);
     Alert.alert(
       `Over 18`,
       `Your claim for being over 18 years of age has been saved.`,
@@ -44,7 +44,7 @@ const useClaimScreen = (): Hooks => {
     setLoading(true);
     const claims = await claimsLocalStorage.get();
     const findBirthday = claims?.map((claim) => {
-      if (claim.type === "DateOfBirthCredential") {
+      if (claim.type === "BirthCredential") {
         if (check18Plus(claim)) {
           Alert.alert(
             "18+ detected",

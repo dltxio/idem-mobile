@@ -64,13 +64,14 @@ export const parseClaimRequest = (
 
 export const displayClaimValue = (claim: ClaimWithValue): string => {
   const formatters: { [key in ClaimType]: (value: any) => string } = {
-    "18+": (value: any) => value.over18,
-    DateOfBirthCredential: (value: any) => value.dob,
-    FullNameCredential: (value: any) => value.firstName + " " + value.lastName,
+    AdultCredential: (value: any) => value.over18,
+    BirthCredential: (value: any) => value.dob,
+    NameCredential: (value: any) => value.firstName + " " + value.lastName,
     EmailCredential: (value: any) => value.email,
-    MobileNumberCredential: (value: any) => value.mobileNumber,
+    MobileCredential: (value: any) => value.mobileNumber,
     AddressCredential: (value: any) =>
       `${value.houseNumber} ${value.street} ${value.suburb}, ${value.postCode} ${value.state} ${value.country}`,
+    TaxCredential: (value: any) => value.taxFileNumber,
     ProfileImageCredential: (value: any) => value.fileId
   };
 

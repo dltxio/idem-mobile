@@ -2,12 +2,13 @@ import { Field } from "./general";
 import { DocumentType } from "./document";
 
 export type ClaimType =
-  | "18+"
-  | "DateOfBirthCredential"
-  | "FullNameCredential"
+  | "AdultCredential"
+  | "BirthCredential"
+  | "NameCredential"
   | "EmailCredential"
-  | "MobileNumberCredential"
+  | "MobileCredential"
   | "AddressCredential"
+  | "TaxCredential"
   | "ProfileImageCredential";
 
 export type VerificationAction = "document-upload" | "action";

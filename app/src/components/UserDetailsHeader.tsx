@@ -18,7 +18,7 @@ type Navigation = ProfileStackNavigation<"Home">;
 const UserDetailsHeader: React.FC = () => {
   const navigation = useNavigation<Navigation>();
   const insets = useSafeAreaInsets();
-  const name = useClaimValue("FullNameCredential");
+  const name = useClaimValue("NameCredential");
   const email = useClaimValue("EmailCredential");
   const profileImageId = useClaimValue("ProfileImageCredential");
 

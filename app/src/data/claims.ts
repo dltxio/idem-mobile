@@ -1,11 +1,11 @@
 import { Claim } from "../types/claim";
 const claims: Claim[] = [
   {
-    type: "18+",
+    type: "AdultCredential",
     key: "0x00",
-    nnemonic: "eighteen",
+    nnemonic: "eighteenplus",
     title: "18+",
-    description: "Older than 18",
+    description: "18 Plus",
     verificationAction: "document-upload",
     fields: [
       {
@@ -14,14 +14,14 @@ const claims: Claim[] = [
         type: "boolean"
       }
     ],
-    verificationDocuments: ["passport", "drivers-license"]
+    verificationDocuments: ["drivers-license"]
   },
   {
-    type: "DateOfBirthCredential",
+    type: "BirthCredential",
     key: "0x01",
-    nnemonic: "dateofbirth",
+    nnemonic: "dob",
     title: "Date Of Birth",
-    description: "Your date of birth",
+    description: "Users date of birth",
     verificationAction: "document-upload",
     fields: [
       {
@@ -30,37 +30,44 @@ const claims: Claim[] = [
         type: "date"
       }
     ],
-    verificationDocuments: ["passport", "drivers-license"]
+    verificationDocuments: ["drivers-license", "passport", "birth-certificate"]
   },
   {
-    type: "FullNameCredential",
+    type: "NameCredential",
     key: "0x02",
     nnemonic: "fullname",
     title: "Full Name",
-    description: "Your full name",
+    description: "Users full name",
     verificationAction: "document-upload",
     fields: [
       { id: "firstName", title: "First name", type: "text" },
       { id: "lastName", title: "Last name", type: "text" }
     ],
-    verificationDocuments: ["passport", "drivers-license"]
+    verificationDocuments: [
+      "drivers-license",
+      "passport",
+      "birth-certificate",
+      "bank-statement",
+      "rates-notice",
+      "medicare-card"
+    ]
   },
   {
     type: "EmailCredential",
     key: "0x03",
     nnemonic: "email",
     title: "Email",
-    description: "Your email address",
+    description: "Users email address",
     verificationAction: "action",
     fields: [{ id: "email", title: "Email", type: "text" }],
     verificationDocuments: []
   },
   {
-    type: "MobileNumberCredential",
+    type: "MobileCredential",
     key: "0x04",
-    nnemonic: "mobile",
+    nnemonic: "mobilenumber",
     title: "Mobile",
-    description: "Your mobile number",
+    description: "Users mobile number",
     verificationAction: "action",
     fields: [{ id: "mobileNumber", title: "Mobile number", type: "text" }],
     verificationDocuments: []
@@ -70,7 +77,7 @@ const claims: Claim[] = [
     key: "0x05",
     nnemonic: "address",
     title: "Address",
-    description: "Your home address",
+    description: "Users physical address",
     verificationAction: "document-upload",
     fields: [
       { id: "houseNumber", title: "House Number", type: "text" },
@@ -80,11 +87,27 @@ const claims: Claim[] = [
       { id: "state", title: "State", type: "text" },
       { id: "country", title: "Country", type: "text" }
     ],
-    verificationDocuments: ["drivers-license"]
+    verificationDocuments: [
+      "drivers-license",
+      "passport",
+      "bank-statement",
+      "rates-notice",
+      "utility-account"
+    ]
+  },
+  {
+    type: "TaxCredential",
+    key: "0x06",
+    nnemonic: "taxnumber",
+    title: "Tax Number",
+    description: "Users tax file number",
+    verificationAction: "action",
+    fields: [{ id: "taxFileNumber", title: "Tax File Number", type: "text" }],
+    verificationDocuments: []
   },
   {
     type: "ProfileImageCredential",
-    key: "0x06",
+    key: "0x07",
     nnemonic: "profileImage",
     title: "Profile image",
     description: "Your profile image",

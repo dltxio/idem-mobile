@@ -30,7 +30,7 @@ const VendorDetailsScreen: React.FC = () => {
   const { expoPushToken } = usePushNotifications();
   const { makeGpibUser, makeCoinstashUser, verifyOnExchange } = useExchange();
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
-  const name = useClaimValue("FullNameCredential");
+  const name = useClaimValue("NameCredential");
 
   const addressValue = usersClaims.find(
     (claim) => claim.type === "AddressCredential"
@@ -38,7 +38,7 @@ const VendorDetailsScreen: React.FC = () => {
 
   const address = useClaimValue("AddressCredential");
   const email = useClaimValue("EmailCredential");
-  const dob = useClaimValue("DateOfBirthCredential");
+  const dob = useClaimValue("BirthCredential");
   const yob = findYOB(dob ? dob : "");
   const splitName = findNames(name);
   const { verifyClaims, postTokenToProxy } = useVerifyClaims();
