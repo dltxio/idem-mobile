@@ -22,7 +22,7 @@ import { Claim } from "../../types/claim";
 import { FileList, Button } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
-import { getDocumentFromDocumentId } from "../../utils/document-utils";
+import { getDocumentFromDocumentType } from "../../utils/document-utils";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import useClaimScreen from "../../hooks/useClaimScreen";
 import { claimsLocalStorage } from "../../utils/local-storage";
@@ -175,9 +175,7 @@ const ClaimScreen: React.FC = () => {
           })}
           {showDatePickerForFieldId && (
             <DateTimePicker
-              testID="Test"
               onChange={(_event, date) => onDateSelect(date)}
-              mode="date"
               value={rawDate ?? new Date()}
             />
           )}
@@ -229,7 +227,7 @@ const VerificationFiles: React.FC<{
   const { files } = useDocumentStore();
 
   const filesThatCanBeUsedToVerify = files.filter((file) =>
-    claim.verificationDocuments.includes(file.documentId)
+    claim.verificationDocuments.includes(file.documentType)
   );
 
   const filesWithSelected = filesThatCanBeUsedToVerify.map((file) => ({
@@ -238,7 +236,7 @@ const VerificationFiles: React.FC<{
   }));
 
   const validDocumentNames = claim.verificationDocuments.map((document) => {
-    return `\n- ${getDocumentFromDocumentId(document).title}`;
+    return `\n- ${getDocumentFromDocumentType(document).title}`;
   });
 
   React.useLayoutEffect(() => {

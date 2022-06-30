@@ -2,7 +2,7 @@ import * as React from "react";
 import * as FileSystem from "expo-file-system";
 import * as Crypto from "expo-crypto";
 import uuid from "react-native-uuid";
-import { DocumentId, File } from "../types/document";
+import { DocumentType, File } from "../types/document";
 import { getImageFileName } from "../utils/document-utils";
 import { fileLocalStorage } from "../utils/local-storage";
 import { keccak256 } from "ethers/lib/utils";
@@ -11,7 +11,7 @@ import { Alert } from "react-native";
 
 export type DocumentsValue = {
   files: File[];
-  addFile: (documentId: DocumentId, uri: string) => Promise<string>;
+  addFile: (documentType: DocumentType, uri: string) => Promise<string>;
   deleteFile: (fileId: string) => void;
   reset: () => void;
 };
@@ -36,14 +36,14 @@ export const DocumentProvider: React.FC<{
     })();
   }, []);
 
-  const checkFileTypes = async (documentId: string) => {
+  const checkFileTypes = async (documentType: string) => {
     const files = await fileLocalStorage.get();
     const fileCheck = files?.map((file) => {
-      const fileType = file.documentId;
-      if (fileType === documentId) {
+      const fileType = file.documentType;
+      if (fileType === documentType) {
         Alert.alert(
           "Warning!",
-          `You just added another ${documentId}. Please be sure your documents are up to date.`,
+          `You just added another ${documentType}. Please be sure your documents are up to date.`,
           [
             {
               text: "OK",
@@ -60,12 +60,12 @@ export const DocumentProvider: React.FC<{
   };
 
   const addFile = async (
-    documentId: DocumentId,
+    documentType: DocumentType,
     uri: string
   ): Promise<string> => {
     const name = getImageFileName(uri);
 
-    checkFileTypes(documentId);
+    checkFileTypes(documentType);
 
     if (!name) {
       throw new Error("Could not get filename from file uri");
@@ -88,7 +88,7 @@ export const DocumentProvider: React.FC<{
 
     const newFile: File = {
       id,
-      documentId,
+      documentType,
       name,
       uri: uri,
       hashes: {
