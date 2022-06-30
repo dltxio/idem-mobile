@@ -15,6 +15,7 @@ import { DocumentProvider } from "./src/context/DocumentStore";
 import { MnemonicProvider } from "./src/context/Mnemonic";
 import { ExchangeProvider } from "./src/context/Exchange";
 import * as Notifications from "expo-notifications";
+import { ApiProvider } from "./providers/Api";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -63,22 +64,24 @@ const App = () => {
 
   return (
     <SafeAreaProvider>
-      <ClaimsProvider>
-        <DocumentProvider>
-          <MnemonicProvider>
-            <ExchangeProvider>
-              <NavigationContainer>
-                <StatusBar style="auto" />
-                <TabNavigator />
-                <RequestClaimsModal
-                  claimRequest={claimRequest}
-                  onClose={() => setClaimRequest(undefined)}
-                />
-              </NavigationContainer>
-            </ExchangeProvider>
-          </MnemonicProvider>
-        </DocumentProvider>
-      </ClaimsProvider>
+      <ApiProvider>
+        <ClaimsProvider>
+          <DocumentProvider>
+            <MnemonicProvider>
+              <ExchangeProvider>
+                <NavigationContainer>
+                  <StatusBar style="auto" />
+                  <TabNavigator />
+                  <RequestClaimsModal
+                    claimRequest={claimRequest}
+                    onClose={() => setClaimRequest(undefined)}
+                  />
+                </NavigationContainer>
+              </ExchangeProvider>
+            </MnemonicProvider>
+          </DocumentProvider>
+        </ClaimsProvider>
+      </ApiProvider>
     </SafeAreaProvider>
   );
 };

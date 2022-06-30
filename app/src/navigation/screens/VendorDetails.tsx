@@ -27,8 +27,8 @@ import usePushNotifications from "../../hooks/usePushNotifications";
 const VendorDetailsScreen: React.FC = () => {
   const { usersClaims } = useClaimsStore();
   const { vendors } = useVendorsList();
+  const { signupGPIB, signupCoinstash, verifyOnExchange } = useExchange();
   const { expoPushToken } = usePushNotifications();
-  const { makeGpibUser, makeCoinstashUser, verifyOnExchange } = useExchange();
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
   const name = useClaimValue("FullNameCredential");
 
@@ -100,8 +100,8 @@ const VendorDetailsScreen: React.FC = () => {
   };
 
   const idToIExchange: { [id: number]: IExchange } = {
-    1: makeGpibUser,
-    2: makeCoinstashUser
+    1: signupGPIB,
+    2: signupCoinstash
   };
 
   return (
@@ -163,6 +163,11 @@ const VendorDetailsScreen: React.FC = () => {
                       yob
                     });
                   }
+                },
+                {
+                  text: "Cancel",
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel"
                 }
               ]);
             }}
