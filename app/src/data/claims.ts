@@ -3,7 +3,7 @@ const claims: Claim[] = [
   {
     type: "18+",
     key: "0x00",
-    nnemonic: "eighteen",
+    mnemonic: "eighteen",
     title: "18+",
     description: "Older than 18",
     verificationAction: "document-upload",
@@ -19,7 +19,7 @@ const claims: Claim[] = [
   {
     type: "DateOfBirthCredential",
     key: "0x01",
-    nnemonic: "dateofbirth",
+    mnemonic: "dateofbirth",
     title: "Date Of Birth",
     description: "Your date of birth",
     verificationAction: "document-upload",
@@ -35,7 +35,7 @@ const claims: Claim[] = [
   {
     type: "FullNameCredential",
     key: "0x02",
-    nnemonic: "fullname",
+    mnemonic: "fullname",
     title: "Full Name",
     description: "Your full name",
     verificationAction: "document-upload",
@@ -48,7 +48,7 @@ const claims: Claim[] = [
   {
     type: "EmailCredential",
     key: "0x03",
-    nnemonic: "email",
+    mnemonic: "email",
     title: "Email",
     description: "Your email address",
     verificationAction: "action",
@@ -58,7 +58,7 @@ const claims: Claim[] = [
   {
     type: "MobileNumberCredential",
     key: "0x04",
-    nnemonic: "mobile",
+    mnemonic: "mobile",
     title: "Mobile",
     description: "Your mobile number",
     verificationAction: "action",
@@ -68,7 +68,7 @@ const claims: Claim[] = [
   {
     type: "AddressCredential",
     key: "0x05",
-    nnemonic: "address",
+    mnemonic: "address",
     title: "Address",
     description: "Your home address",
     verificationAction: "document-upload",
@@ -85,7 +85,7 @@ const claims: Claim[] = [
   {
     type: "ProfileImageCredential",
     key: "0x06",
-    nnemonic: "profileImage",
+    mnemonic: "profileImage",
     title: "Profile image",
     description: "Your profile image",
     verificationAction: "action",
