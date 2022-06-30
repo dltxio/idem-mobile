@@ -25,7 +25,7 @@ export type VerifyOnProxy = {
   email: string;
   houseNumber: string;
   street: string;
-  suburb: string;
+  suburb: string;   
   postcode: string;
   state: string;
   country: string;
