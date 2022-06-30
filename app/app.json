@@ -5,6 +5,7 @@
     "version": "1.0.0",
     "entryPoint": "./index.js",
     "orientation": "portrait",
+    "scheme": "idem",
     "icon": "./assets/Bee-Logo.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -15,7 +16,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "bundleIdentifier": "com.dltx.idem",
       "supportsTablet": true,

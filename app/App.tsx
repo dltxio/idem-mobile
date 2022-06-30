@@ -15,6 +15,7 @@ import { DocumentProvider } from "./src/context/DocumentStore";
 import { MnemonicProvider } from "./src/context/Mnemonic";
 import { ExchangeProvider } from "./src/context/Exchange";
 import * as Notifications from "expo-notifications";
+import LinkingConfiguration from "./src/navigation/LinkingConfiguration";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -67,7 +68,7 @@ const App = () => {
         <DocumentProvider>
           <MnemonicProvider>
             <ExchangeProvider>
-              <NavigationContainer>
+              <NavigationContainer linking={LinkingConfiguration}>
                 <StatusBar style="auto" />
                 <TabNavigator />
                 <RequestClaimsModal

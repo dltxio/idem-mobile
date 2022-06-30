@@ -7,7 +7,13 @@ import VendorsStackNavigator from "./VendorsStackNavigator";
 import { ParamListBase, RouteProp } from "@react-navigation/native";
 import colors from "../styles/colors";
 
-const Tab = createBottomTabNavigator();
+export type MainTabParamList = {
+  Profile: undefined;
+  SupportedExchanges: undefined;
+  DocumentsTab: undefined;
+};
+
+const Tab = createBottomTabNavigator<MainTabParamList>();
 
 const TabNavigator = () => (
   <Tab.Navigator
@@ -20,7 +26,7 @@ const TabNavigator = () => (
     })}
   >
     <Tab.Screen name="Profile" component={ProfileStackNavigator} />
-    <Tab.Screen name="Supported Exchanges" component={VendorsStackNavigator} />
+    <Tab.Screen name="SupportedExchanges" component={VendorsStackNavigator} />
     <Tab.Screen
       name="DocumentsTab"
       options={{
@@ -43,7 +49,7 @@ const renderTabIcon = (
 ) => {
   const iconFromRouteName: { [key: string]: string } = {
     Profile: "address-book",
-    "Supported Exchanges": "university",
+    SupportedExchanges: "university",
     DocumentsTab: "cog"
   };
 

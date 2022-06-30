@@ -1,19 +1,29 @@
 import { LinkingOptions } from "@react-navigation/native";
 import * as Linking from "expo-linking";
+import { MainTabParamList } from "./MainTabNavigator";
 
-import { RootStackParamList } from "../../types";
-
-const linking: LinkingOptions<RootStackParamList> = {
-  prefixes: [Linking.makeUrl("/")],
+const linking: LinkingOptions<MainTabParamList> = {
+  prefixes: [Linking.createURL("/")],
   config: {
     screens: {
       //Add screen
-      ExchangeDetail: "ExchangeDetail",
-      Root: {
+      Profile: {
         screens: {
-          Profile: "profile",
-          Exchange: "exchange",
-          Document: "Document"
+          Home: "profile/home",
+          PGP: "profile/pgp",
+          Claim: "profile/claim"
+        }
+      },
+      SupportedExchanges: {
+        screens: {
+          Back: "exchange/back",
+          VendorDetails: "exchange/vendors"
+        }
+      },
+      DocumentsTab: {
+        screens: {
+          Documents: "documents/documents",
+          ViewFile: "documnets/file"
         }
       }
     }
