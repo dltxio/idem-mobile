@@ -15,8 +15,3 @@ export const check18Plus = (claim: ClaimData): boolean => {
   }
   return false;
 };
-
-
-// WHEN THE USER ENTERS THEIR DOB CALC IF 18 OR NOT? 
-
-// IF THE CALC THE USER HAS ENTERERED IS 

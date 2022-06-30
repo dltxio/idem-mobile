@@ -3,13 +3,13 @@ import React from "react";
 import { useState } from "react";
 import { Alert } from "react-native";
 import { useClaimsStore } from "../context/ClaimsStore";
-import { UploadPGPKeyResponse, VerifyEmail } from "../types/claim";
+import { ClaimData, UploadPGPKeyResponse, VerifyEmail } from "../types/claim";
 import { check18Plus } from "../utils/birthday-utils";
-import { claimsLocalStorage, pgpLocalStorage } from "../utils/local-storage";
+import { pgpLocalStorage } from "../utils/local-storage";
 
 type Hooks = {
   loading: boolean;
-  saveAndCheckBirthday: () => void;
+  saveAndCheckBirthday: (claims: ClaimData[] | null) => void;
   onSelectFile: (fileId: string) => void;
   selectedFileIds: string[];
   setLoading: (loading: boolean) => void;
@@ -23,6 +23,20 @@ const useClaimScreen = (): Hooks => {
   const [selectedFileIds, setSelectedFileIds] = useState<string[]>([]);
   const [, setIsVerifying] = React.useState<boolean>(false);
   const [, setVerifyEmailRequest] = React.useState<VerifyEmail>();
+
+  const saveAndCheckBirthday = async (claims: ClaimData[] | null) => {
+    setLoading(true);
+    claims?.map((claim) => {
+      const findAge = claims.find((c) => c.type === "18+");
+      if (claim.type === "DateOfBirthCredential") {
+        if (findAge?.value.over18 !== check18Plus(claim).toString()) {
+          save18Claim();
+        }
+      }
+    });
+    setLoading(false);
+    return true;
+  };
 
   const save18Claim = async () => {
     setLoading(true);
@@ -38,19 +52,6 @@ const useClaimScreen = (): Hooks => {
         }
       ]
     );
-    setLoading(false);
-  };
-  const saveAndCheckBirthday = async () => {
-    setLoading(true);
-    const claims = await claimsLocalStorage.get();
-    claims?.map((claim) => {
-      if (claim.type === "DateOfBirthCredential" && check18Plus(claim)) {
-        const findAge = claims.find((c) => c.type === "18+");
-        if (!findAge || findAge.value === "false") {
-          save18Claim();
-        }
-      }
-    });
     setLoading(false);
   };
 

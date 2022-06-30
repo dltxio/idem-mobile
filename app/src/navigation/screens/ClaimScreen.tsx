@@ -8,7 +8,7 @@ import {
   Text,
   Alert,
   ScrollView,
-  Dimensions,
+  Dimensions
 } from "react-native";
 import { Input, Switch } from "@rneui/themed";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -25,6 +25,7 @@ import { useDocumentStore } from "../../context/DocumentStore";
 import { getDocumentFromDocumentId } from "../../utils/document-utils";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import useClaimScreen from "../../hooks/useClaimScreen";
+import { claimsLocalStorage } from "../../utils/local-storage";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -80,7 +81,8 @@ const ClaimScreen: React.FC = () => {
   const onSave = async () => {
     setLoading(true);
     await addClaim(claim.type, formState, selectedFileIds);
-    if (claim.type === "DateOfBirthCredential") saveAndCheckBirthday();
+    const claims = await claimsLocalStorage.get();
+    if (claim.type === "DateOfBirthCredential") saveAndCheckBirthday(claims);
     navigation.reset({
       routes: [{ name: "Home" }]
     });
