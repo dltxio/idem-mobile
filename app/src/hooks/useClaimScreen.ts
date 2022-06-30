@@ -27,13 +27,13 @@ const useClaimScreen = (): Hooks => {
   const saveAndCheckBirthday = async (claims: ClaimData[] | null) => {
     setLoading(true);
     claims?.map((claim) => {
-      const findAge = claims.find((c) => c.type === "18+");
-      if (claim.type === "DateOfBirthCredential") {
+      const findAge = claims.find((c) => c.type === "AdultCredential");
+      if (claim.type === "BirthCredential") {
         if (check18Plus(claim)) {
           save18Claim();
         }
         if (findAge?.value.over18 === "true" && !check18Plus(claim)) {
-          addClaim("18+", "false", selectedFileIds);
+          addClaim("AdultCredential", "false", selectedFileIds);
         }
       }
     });
@@ -42,7 +42,7 @@ const useClaimScreen = (): Hooks => {
   };
 
   const save18Claim = async () => {
-    await addClaim("18+", "true", selectedFileIds);
+    await addClaim("AdultCredential", "true", selectedFileIds);
     Alert.alert(
       `Over 18`,
       `Your claim for being over 18 years of age has been saved.`,
