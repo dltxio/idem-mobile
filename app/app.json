@@ -2,7 +2,7 @@
   "expo": {
     "name": "idemID",
     "slug": "IDEM",
-    "version": "1.0.58",
+    "version": "1.0.59",
     "entryPoint": "./src/App.tsx",
     "orientation": "portrait",
     "icon": "./assets/Bee-Logo.png",
