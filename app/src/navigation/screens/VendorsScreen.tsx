@@ -20,7 +20,7 @@ const VendorsScreen: React.FC = () => {
         vendors.map((vendor) => {
           const content = (
             <>
-              <ListItem.Content style={styles.listWrapper}>
+              <ListItem.Content>
                 <ListItem.Title style={styles.vendorName}>
                   {vendor.name}
                 </ListItem.Title>
@@ -59,8 +59,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     marginTop: 1
   },
-
-  listWrapper: {},
 
   icon: {
     color: colors.black,
