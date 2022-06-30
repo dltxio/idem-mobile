@@ -29,8 +29,11 @@ const useClaimScreen = (): Hooks => {
     claims?.map((claim) => {
       const findAge = claims.find((c) => c.type === "18+");
       if (claim.type === "DateOfBirthCredential") {
-        if (findAge?.value.over18 !== check18Plus(claim).toString()) {
+        if (check18Plus(claim)) {
           save18Claim();
+        }
+        if (findAge?.value.over18 === "true" && !check18Plus(claim)) {
+          addClaim("18+", "false", selectedFileIds);
         }
       }
     });
