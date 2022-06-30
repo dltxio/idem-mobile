@@ -42,7 +42,6 @@ const useClaimScreen = (): Hooks => {
   };
 
   const save18Claim = async () => {
-    setLoading(true);
     await addClaim("18+", "true", selectedFileIds);
     Alert.alert(
       `Over 18`,
@@ -55,7 +54,6 @@ const useClaimScreen = (): Hooks => {
         }
       ]
     );
-    setLoading(false);
   };
 
   const onSelectFile = (fileId: string) => {
