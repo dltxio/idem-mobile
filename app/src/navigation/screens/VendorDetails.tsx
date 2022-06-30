@@ -111,6 +111,7 @@ const VendorDetailsScreen: React.FC = () => {
       contentContainerStyle={styles.scrollContent}
     >
       <Text style={styles.header}>{vendor?.name}</Text>
+      <Text style={styles.tagLine}>{vendor?.tagline}</Text>
       <Text style={styles.description}>{vendor?.description}</Text>
       <Image source={{ uri: vendor?.logo }} style={styles.logo} />
       <View style={styles.buttonWrapper}>
@@ -206,6 +207,12 @@ const styles = StyleSheet.create({
     marginTop: Dimensions.get("window").height / 6,
     justifyContent: "space-around"
   },
+
+  tagLine: {
+    marginVertical: 5,
+    fontSize: 15
+  },
+
   button: {
     marginVertical: 5
   }
