@@ -17,17 +17,3 @@ export type Vendor = {
   backgroundColor: string;
   requiredClaimMnemonics: string[];
 };
-
-export type VerifyOnProxy = {
-  firstName: string;
-  lastName: string;
-  dob: string;
-  email: string;
-  houseNumber: string;
-  street: string;
-  suburb: string;   
-  postcode: string;
-  state: string;
-  country: string;
-  userId: string;
-};

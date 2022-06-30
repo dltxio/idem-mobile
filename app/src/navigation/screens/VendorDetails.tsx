@@ -15,7 +15,6 @@ import { VendorStackNavigationRoute } from "../../types/navigation";
 import { useExchange } from "../../context/Exchange";
 import { findNames, findYOB } from "../../utils/formatters";
 import { ScrollView } from "react-native-gesture-handler";
-import { VerifyOnProxy } from "../../types/general";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { IExchange } from "../../interfaces/exchange-interface";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
@@ -66,7 +65,7 @@ const VendorDetailsScreen: React.FC = () => {
     );
   }, [usersClaims, vendor]);
 
-  const verifyOnProxyRequestBody = async () => {
+  const verifyUserOnProxy = async () => {
     if (vendor) {
       if (splitName && dob && address && email) {
         const hashEmail = async () => {
@@ -121,7 +120,7 @@ const VendorDetailsScreen: React.FC = () => {
               title="Verify My Claims"
               disabled={signed ? false : true}
               onPress={async () => {
-                verifyOnProxyRequestBody();
+                verifyUserOnProxy();
               }}
             />
           </View>
