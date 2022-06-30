@@ -3,7 +3,7 @@ const claims: Claim[] = [
   {
     type: "AdultCredential",
     key: "0x00",
-    nnemonic: "eighteenplus",
+    mnemonic: "eighteenplus",
     title: "18+",
     description: "18 Plus",
     verificationAction: "document-upload",
@@ -19,7 +19,7 @@ const claims: Claim[] = [
   {
     type: "BirthCredential",
     key: "0x01",
-    nnemonic: "dob",
+    mnemonic: "dob",
     title: "Date Of Birth",
     description: "Users date of birth",
     verificationAction: "document-upload",
@@ -65,7 +65,7 @@ const claims: Claim[] = [
   {
     type: "MobileCredential",
     key: "0x04",
-    nnemonic: "mobilenumber",
+    mnemonic: "mobilenumber",
     title: "Mobile",
     description: "Users mobile number",
     verificationAction: "action",
@@ -98,7 +98,7 @@ const claims: Claim[] = [
   {
     type: "TaxCredential",
     key: "0x06",
-    nnemonic: "taxnumber",
+    mnemonic: "taxnumber",
     title: "Tax Number",
     description: "Users tax file number",
     verificationAction: "action",
@@ -108,7 +108,7 @@ const claims: Claim[] = [
   {
     type: "ProfileImageCredential",
     key: "0x07",
-    nnemonic: "profileImage",
+    mnemonic: "profileImage",
     title: "Profile image",
     description: "Your profile image",
     verificationAction: "action",
