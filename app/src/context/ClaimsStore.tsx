@@ -24,7 +24,6 @@ export const ClaimsProvider: React.FC<{
 
   React.useEffect(() => {
     (async () => {
-      await claimsLocalStorage.clear();
       const initialClaims = await claimsLocalStorage.get();
 
       if (initialClaims) {
