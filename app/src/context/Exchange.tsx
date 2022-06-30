@@ -7,10 +7,12 @@ import { IExchange, stuff } from "../interfaces/exchange-interface";
 import { VerifyUserRequestBody } from "../types/exchange";
 import { findNames } from "../utils/formatters";
 import { createRandomPassword } from "../utils/randomPassword-utils";
+import useApi from "../hooks/useApi";
+import { VenderEnum } from "../types/user";
 
 export type ExchangeValue = {
-  makeGpibUser: IExchange;
-  makeCoinstashUser: IExchange;
+  signupGPIB: IExchange;
+  signupCoinstash: IExchange;
   makeEasyCryptoUser: IExchange;
   gpibUserID: string | undefined;
   reset: () => void;
@@ -21,10 +23,11 @@ export const ExchangeContext = React.createContext<ExchangeValue | undefined>(
   undefined
 );
 
-export const ExchangeProvider: React.FC<{
-  children: React.ReactNode;
-}> = (props) => {
+export const ExchangeProvider: React.FC<{ children: React.ReactNode }> = (
+  props
+) => {
   const [gpibUserID, setGpibUserID] = React.useState<string | undefined>();
+  const api = useApi();
 
   React.useEffect(() => {
     (async () => {
@@ -56,49 +59,39 @@ export const ExchangeProvider: React.FC<{
       }
     );
   };
-  // MAKE GPIB USER
-  const makeGpibUser: IExchange = {
+
+  const signupGPIB: IExchange = {
     signUp: async (name: string, email: string) => {
       const randomTempPassword = createRandomPassword();
       const splitName = findNames(name);
-      const body = JSON.stringify({
-        firstName: splitName?.firstName,
-        lastName: splitName?.lastName,
-        email: email,
-        password: randomTempPassword,
-        referralCode: "",
-        trackAddress: true,
-        CreateAddress: true
-      });
-
-      try {
-        const response = await axios.post(
-          "https://testapi.getpaidinbitcoin.com.au/user",
-          body,
-          {
-            headers: {
-              "Content-Type": "application/json"
-            }
-          }
-        );
-        if (response.status === 200) {
-          const userID = response.data;
-          await exchangeLocalStorage.save({ gpibUserID: userID });
-          shareDetailsAlert(randomTempPassword);
-        }
-      } catch (error: any) {
-        console.log(error.response.data);
-        Alert.alert(error.response.data);
+      if (splitName?.firstName && splitName.lastName && randomTempPassword) {
+        api
+          .gpibSignup({
+            source: VenderEnum.GPIB,
+            firstName: splitName?.firstName,
+            lastName: splitName?.lastName,
+            email: email,
+            password: randomTempPassword
+          })
+          .then(async (userId) => {
+            await exchangeLocalStorage.save({ gpibUserID: userId });
+            Alert.alert(
+              `Sign up successful, your temporary password is ${randomTempPassword}`
+            );
+          })
+          .catch((error) => {
+            Alert.alert(error.message);
+          });
       }
     }
   };
 
   // MAKE EASY CRPYTO USER
- const makeEasyCryptoUser: IExchange = {
+  const makeEasyCryptoUser: IExchange = {
     signUp: async (email: string) => {
       const randomTempPassword = createRandomPassword();
       const bodyEasyCrypto = JSON.stringify({
-        email: email, 
+        email: email,
         password: randomTempPassword,
         returnSecureToken: true
       });
@@ -114,43 +107,43 @@ export const ExchangeProvider: React.FC<{
         );
         if (checkUserAuthEasyCrypto.status === 200) {
           const nameStuff = async (bod: stuff) => {
-          const jwtEasy = checkUserAuthEasyCrypto.data.token;
-          const updatedEasyBody = {
-            firstName: bod.firstName,
-            lastName: bod.lastName,
-            yob: Number(bod.yob),
-            mobile: bod.mobile,
-            extraIdNumber: null,
-            action: "checkExisting",
-            version: 2,
-            siteVersion: "8.16.3"
-          };
-          const updateUserInfo = await axios.post(
-            `https://api.easycrypto.com.au/apiv2/verify.php`,
-            updatedEasyBody,
-            {
-              headers: {
-                Authorization: `Bearer ${jwtEasy}`
+            const jwtEasy = checkUserAuthEasyCrypto.data.token;
+            const updatedEasyBody = {
+              firstName: bod.firstName,
+              lastName: bod.lastName,
+              yob: Number(bod.yob),
+              mobile: bod.mobile,
+              extraIdNumber: null,
+              action: "checkExisting",
+              version: 2,
+              siteVersion: "8.16.3"
+            };
+            const updateUserInfo = await axios.post(
+              `https://api.easycrypto.com.au/apiv2/verify.php`,
+              updatedEasyBody,
+              {
+                headers: {
+                  Authorization: `Bearer ${jwtEasy}`
+                }
               }
-            }
-          );
-          if (updateUserInfo.status === 200) {
-            Alert.alert(
-              "Success!",
-              `You have signed up to Easy Crypto successfully. Your temporary password is ${randomTempPassword}`
             );
-          }
-        }
+            if (updateUserInfo.status === 200) {
+              Alert.alert(
+                "Success!",
+                `You have signed up to Easy Crypto successfully. Your temporary password is ${randomTempPassword}`
+              );
+            }
+          };
         }
       } catch (error: any) {
         console.log(error);
         Alert.alert(error.response.data);
-      }}
-    };
+      }
+    }
   };
 
   // MAKE COINSTASH USER
-  const makeCoinstashUser: IExchange = {
+  const signupCoinstash: IExchange = {
     signUp: async (name: string, email: string) => {
       const randomTempPassword = createRandomPassword();
       const body = JSON.stringify({
@@ -168,7 +161,7 @@ export const ExchangeProvider: React.FC<{
             "Content-Type": "application/json"
           }
         });
-         shareDetailsAlert(randomTempPassword);
+        shareDetailsAlert(randomTempPassword);
       } catch (error: any) {
         if (axios.isAxiosError(error)) {
           if (error.response) {
@@ -208,21 +201,21 @@ export const ExchangeProvider: React.FC<{
       );
       if (checkUserAuth.status === 200) {
         const jwt = checkUserAuth.data.token;
-        const updatedBody = {
+        const userInfo = {
           firstName: body.firstName,
           lastName: body.lastName,
           yob: Number(body.yob)
         };
-        const updateUserInfo = await axios.put(
+        const updatedUserInfo = await axios.put(
           `https://testapi.getpaidinbitcoin.com.au/AccountInfoes`,
-          updatedBody,
+          userInfo,
           {
             headers: {
               Authorization: `Bearer ${jwt}`
             }
           }
         );
-        if (updateUserInfo.status === 200) {
+        if (updatedUserInfo.status === 200) {
           Alert.alert(
             "Success!",
             `Details updated: first name, last name, date of birth`
@@ -246,17 +239,17 @@ export const ExchangeProvider: React.FC<{
 
   const value = React.useMemo(
     () => ({
-      makeGpibUser,
+      signupGPIB,
       gpibUserID,
       reset,
-      makeCoinstashUser,
-      makeEasyCryptoUser,
-      verifyOnGpib
+      signupCoinstash,
+      verifyOnGpib,
+      makeEasyCryptoUser
     }),
     [
-      makeGpibUser,
+      signupGPIB,
       gpibUserID,
-      makeCoinstashUser,
+      signupCoinstash,
       verifyOnGpib,
       makeEasyCryptoUser,
       reset
@@ -269,7 +262,6 @@ export const ExchangeProvider: React.FC<{
     </ExchangeContext.Provider>
   );
 };
-
 
 export const useExchange = () => {
   const context = React.useContext(ExchangeContext);
