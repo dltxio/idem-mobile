@@ -7,7 +7,27 @@ const documents: Document[] = [
   },
   {
     type: "drivers-license",
-    title: "Driver's License"
+    title: "Driver License"
+  },
+  {
+    type: "birth-certificate",
+    title: "Birth Certificate"
+  },
+  {
+    type: "bank-statement",
+    title: "Bank Statement"
+  },
+  {
+    type: "rates-notice",
+    title: "Rates Notice"
+  },
+  {
+    type: "utility-account",
+    title: "Utility Account"
+  },
+  {
+    type: "medicare-card",
+    title: "Medicare Card"
   }
 ];
 
