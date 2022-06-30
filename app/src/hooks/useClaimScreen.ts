@@ -3,13 +3,13 @@ import React from "react";
 import { useState } from "react";
 import { Alert } from "react-native";
 import { useClaimsStore } from "../context/ClaimsStore";
-import { UploadPGPKeyResponse, VerifyEmail } from "../types/claim";
+import { ClaimData, UploadPGPKeyResponse, VerifyEmail } from "../types/claim";
 import { check18Plus } from "../utils/birthday-utils";
-import { claimsLocalStorage, pgpLocalStorage } from "../utils/local-storage";
+import { pgpLocalStorage } from "../utils/local-storage";
 
 type Hooks = {
   loading: boolean;
-  saveAndCheckBirthday: () => void;
+  saveAndCheckBirthday: (claims: ClaimData[] | null) => void;
   onSelectFile: (fileId: string) => void;
   selectedFileIds: string[];
   setLoading: (loading: boolean) => void;
@@ -24,8 +24,24 @@ const useClaimScreen = (): Hooks => {
   const [, setIsVerifying] = React.useState<boolean>(false);
   const [, setVerifyEmailRequest] = React.useState<VerifyEmail>();
 
-  const save18Claim = async () => {
+  const saveAndCheckBirthday = async (claims: ClaimData[] | null) => {
     setLoading(true);
+    claims?.map((claim) => {
+      const findAge = claims.find((c) => c.type === "18+");
+      if (claim.type === "DateOfBirthCredential") {
+        if (check18Plus(claim)) {
+          save18Claim();
+        }
+        if (findAge?.value.over18 === "true" && !check18Plus(claim)) {
+          addClaim("18+", "false", selectedFileIds);
+        }
+      }
+    });
+    setLoading(false);
+    return true;
+  };
+
+  const save18Claim = async () => {
     await addClaim("18+", "true", selectedFileIds);
     Alert.alert(
       `Over 18`,
@@ -38,37 +54,6 @@ const useClaimScreen = (): Hooks => {
         }
       ]
     );
-    setLoading(false);
-  };
-  const saveAndCheckBirthday = async () => {
-    setLoading(true);
-    const claims = await claimsLocalStorage.get();
-    const findBirthday = claims?.map((claim) => {
-      if (claim.type === "DateOfBirthCredential") {
-        if (check18Plus(claim)) {
-          Alert.alert(
-            "18+ detected",
-            "IDEM has detected that your are over 18. Would you like to update your 18+ claim accordingly?",
-            [
-              {
-                text: "OK",
-                onPress: save18Claim
-              },
-              {
-                text: "Cancel",
-                style: "cancel"
-              }
-            ],
-            {
-              cancelable: true
-            }
-          );
-        }
-      }
-      return null;
-    });
-    setLoading(false);
-    return findBirthday;
   };
 
   const onSelectFile = (fileId: string) => {

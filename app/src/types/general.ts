@@ -15,6 +15,7 @@ export type Vendor = {
   tagline: string;
   website: string;
   backgroundColor: string;
+  requiredClaimMnemonics: string[];
 };
 
 export type VerifyOnProxy = {
@@ -24,7 +25,7 @@ export type VerifyOnProxy = {
   email: string;
   houseNumber: string;
   street: string;
-  suburb: string;
+  suburb: string;   
   postcode: string;
   state: string;
   country: string;
