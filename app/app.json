@@ -53,7 +53,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/Bee-Logo.jpg",
+          "icon": "./assets/Bee-Logo.png",
           "color": "#ffffff"
         }
       ]
