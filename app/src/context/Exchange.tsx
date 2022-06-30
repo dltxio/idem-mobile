@@ -168,10 +168,25 @@ export const ExchangeProvider: React.FC<{
             "Content-Type": "application/json"
           }
         });
+
         shareDetailsAlert(randomTempPassword);
       } catch (error: any) {
-        console.log(error.response.data);
-        Alert.alert(error.response.data);
+        if (axios.isAxiosError(error)) {
+          if (error.response) {
+            console.log("axios error response :", error.response.data);
+          } else if (error.request) {
+            console.log("axios error request :", error.request);
+          } else {
+            console.log("axios other error :", error.message);
+          }
+        } else {
+          console.log("unknown error :", error);
+        }
+
+        Alert.alert(
+          "Unable to register with the provided credential",
+          "The email might already be in use"
+        );
       }
     }
   };

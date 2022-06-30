@@ -2,11 +2,11 @@ import { Document } from "../types/document";
 
 const documents: Document[] = [
   {
-    id: "passport",
+    type: "passport",
     title: "Passport"
   },
   {
-    id: "drivers-license",
+    type: "drivers-license",
     title: "Driver's License"
   }
 ];

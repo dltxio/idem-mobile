@@ -1,5 +1,5 @@
 import { Field } from "./general";
-import { DocumentId } from "./document";
+import { DocumentType } from "./document";
 
 export type ClaimType =
   | "18+"
@@ -21,7 +21,7 @@ export type Claim = {
   verified?: boolean;
   verificationAction: VerificationAction;
   fields: Field[];
-  verificationDocuments: DocumentId[];
+  verificationDocuments: DocumentType[];
   hideFromList?: boolean;
 };
 

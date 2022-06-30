@@ -11,7 +11,7 @@ import {
   Dimensions
 } from "react-native";
 import { Input, Switch } from "@rneui/themed";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import commonStyles from "../../styles/styles";
 import {
   ProfileStackNavigation,
@@ -22,9 +22,10 @@ import { Claim } from "../../types/claim";
 import { FileList, Button } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
-import { getDocumentFromDocumentId } from "../../utils/document-utils";
+import { getDocumentFromDocumentType } from "../../utils/document-utils";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import useClaimScreen from "../../hooks/useClaimScreen";
+import { claimsLocalStorage } from "../../utils/local-storage";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -42,6 +43,8 @@ const ClaimScreen: React.FC = () => {
   const [showDatePickerForFieldId, setShowDatePickerForFieldId] =
     React.useState<string>();
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
+
+  const [rawDate, setRawDate] = React.useState<Date>();
 
   const {
     loading,
@@ -64,21 +67,22 @@ const ClaimScreen: React.FC = () => {
     Keyboard.dismiss();
   };
 
-  const onDateSelect = (date: Date) => {
+  const onDateSelect = (date: Date | undefined) => {
     if (showDatePickerForFieldId) {
+      hideDatePicker();
+      setRawDate(date);
       setFormState((previous) => ({
         ...previous,
         [showDatePickerForFieldId]: moment(date).format("DD/MM/YYYY")
       }));
     }
-
-    hideDatePicker();
   };
 
   const onSave = async () => {
     setLoading(true);
     await addClaim(claim.type, formState, selectedFileIds);
-    if (claim.type === "DateOfBirthCredential") saveAndCheckBirthday();
+    const claims = await claimsLocalStorage.get();
+    if (claim.type === "DateOfBirthCredential") saveAndCheckBirthday(claims);
     navigation.reset({
       routes: [{ name: "Home" }]
     });
@@ -170,13 +174,9 @@ const ClaimScreen: React.FC = () => {
             }
           })}
           {showDatePickerForFieldId && (
-            <DateTimePickerModal
-              isVisible={true}
-              mode="date"
-              onConfirm={onDateSelect}
-              onCancel={hideDatePicker}
-              display="inline"
-              isDarkModeEnabled={false}
+            <DateTimePicker
+              onChange={(_event, date) => onDateSelect(date)}
+              value={rawDate ?? new Date()}
             />
           )}
           {documentList}
@@ -227,7 +227,7 @@ const VerificationFiles: React.FC<{
   const { files } = useDocumentStore();
 
   const filesThatCanBeUsedToVerify = files.filter((file) =>
-    claim.verificationDocuments.includes(file.documentId)
+    claim.verificationDocuments.includes(file.documentType)
   );
 
   const filesWithSelected = filesThatCanBeUsedToVerify.map((file) => ({
@@ -236,7 +236,7 @@ const VerificationFiles: React.FC<{
   }));
 
   const validDocumentNames = claim.verificationDocuments.map((document) => {
-    return `\n- ${getDocumentFromDocumentId(document).title}`;
+    return `\n- ${getDocumentFromDocumentType(document).title}`;
   });
 
   React.useLayoutEffect(() => {
