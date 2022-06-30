@@ -3,6 +3,6 @@ import { truncateAddress } from "../src/utils/wallet-utils";
 
 describe("Wallet utils", async () => {
   it("should truncate an ETH address", () => {
-    expect(truncateAddress("29/04/2000")).to.equal("2000");
+    expect(truncateAddress("0xfa0B65413E3E81FAF7321f85b2AfdD0EffF13Ef5")).to.equal("0xfa0B65413E...dD0EffF13Ef5");
   });
 });
