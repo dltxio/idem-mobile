@@ -46,6 +46,26 @@ const VendorDetailsScreen: React.FC = () => {
   const vendor = vendors.find((v) => v.name === route.params.vendorId);
   const [signed, setSigned] = React.useState<boolean>(false);
 
+  const hasAllRequiredClaims = React.useMemo(() => {
+    if (!vendor || !vendor.requiredClaimMnemonics) {
+      return true;
+    }
+
+    const userClaimMnemonicMap = usersClaims.reduce(
+      (acc, claim) => {
+        acc[claim.mnemonic] = true;
+        return acc;
+      },
+      {} as {
+        [key: string]: boolean;
+      }
+    );
+
+    return vendor.requiredClaimMnemonics.every(
+      (mnemonic) => userClaimMnemonicMap[mnemonic]
+    );
+  }, [usersClaims, vendor]);
+
   const verifyOnProxyRequestBody = async () => {
     if (vendor) {
       if (splitName && dob && address && email) {
@@ -106,7 +126,7 @@ const VendorDetailsScreen: React.FC = () => {
           </View>
         )}
         <Button
-          onPress={() => {
+          onPress={async () => {
             if (vendor) {
               const makeUser = idToIExchange[vendor.id];
               if (!makeUser) {
@@ -114,13 +134,18 @@ const VendorDetailsScreen: React.FC = () => {
                 return;
               }
               if (name && email) {
-                makeUser.signUp(name, email);
+                await makeUser.signUp(name, email);
+                setSigned(true);
+              } else {
+                Alert.alert(
+                  "Missing Credentials",
+                  "Please provide your name and email claims to sign up"
+                );
               }
-              setSigned(true);
             }
           }}
           title="Sign Up"
-          disabled={signed ? true : false}
+          disabled={signed || !hasAllRequiredClaims}
           style={styles.button}
         />
         {vendor?.website === "https://getpaidinbitcoin.com.au" ? (
