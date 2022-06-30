@@ -35,7 +35,7 @@ const claims: Claim[] = [
   {
     type: "NameCredential",
     key: "0x02",
-    nnemonic: "fullname",
+    mnemonic: "fullname",
     title: "Full Name",
     description: "Users full name",
     verificationAction: "document-upload",
@@ -55,7 +55,7 @@ const claims: Claim[] = [
   {
     type: "EmailCredential",
     key: "0x03",
-    nnemonic: "email",
+    mnemonic: "email",
     title: "Email",
     description: "Users email address",
     verificationAction: "action",
@@ -75,7 +75,7 @@ const claims: Claim[] = [
   {
     type: "AddressCredential",
     key: "0x05",
-    nnemonic: "address",
+    mnemonic: "address",
     title: "Address",
     description: "Users physical address",
     verificationAction: "document-upload",

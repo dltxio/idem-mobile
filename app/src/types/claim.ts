@@ -16,7 +16,7 @@ export type VerificationAction = "document-upload" | "action";
 export type Claim = {
   type: ClaimType;
   key: string;
-  nnemonic: string;
+  mnemonic: string;
   title: string;
   description: string;
   verified?: boolean;
