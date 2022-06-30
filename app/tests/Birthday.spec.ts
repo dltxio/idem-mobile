@@ -5,7 +5,7 @@ describe("Check if I'm 18", async () => {
   it("should return true if I am 18", () => {
     expect(
       check18Plus({
-        type: "DateOfBirthCredential",
+        type: "BirthCredential",
         value: { dob: "14/06/2004" }
       })
     ).to.equal(true);
@@ -14,7 +14,7 @@ describe("Check if I'm 18", async () => {
   it("should return true if I am 69", () => {
     expect(
       check18Plus({
-        type: "DateOfBirthCredential",
+        type: "BirthCredential",
         value: { dob: "14/06/1953" }
       })
     ).to.equal(true);
@@ -23,7 +23,7 @@ describe("Check if I'm 18", async () => {
   it("should return false if I am 4", () => {
     expect(
       check18Plus({
-        type: "DateOfBirthCredential",
+        type: "BirthCredential",
         value: { dob: "14/06/2016" }
       })
     ).to.equal(false);
@@ -32,7 +32,7 @@ describe("Check if I'm 18", async () => {
   it("should return false if I am -1000", () => {
     expect(
       check18Plus({
-        type: "DateOfBirthCredential",
+        type: "BirthCredential",
         value: { dob: "14/06/3022" }
       })
     ).to.equal(false);
