@@ -148,7 +148,6 @@ export const ExchangeProvider: React.FC<{
           lastName: body.lastName,
           yob: Number(body.yob)
         };
-        console.log(userInfo);
         const updatedUserInfo = await axios.put(
           `https://testapi.getpaidinbitcoin.com.au/AccountInfoes`,
           userInfo,
