@@ -54,4 +54,4 @@ export const exchangeLocalStorage = createLocalStorage<Exchange>(
   true
 );
 
-export const pgpLocalStorage = createLocalStorage<PGP>("PGP", true);
+export const pgpLocalStorage = createLocalStorage<string>("PGP", false);
