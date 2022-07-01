@@ -3,7 +3,7 @@ import * as React from "react";
 import { exchangeLocalStorage } from "../utils/local-storage";
 import { Alert } from "react-native";
 import axios from "axios";
-import { IExchange, stuff } from "../interfaces/exchange-interface";
+import { IExchange } from "../interfaces/exchange-interface";
 import { VerifyUserRequestBody } from "../types/exchange";
 import { findNames } from "../utils/formatters";
 import { createRandomPassword } from "../utils/randomPassword-utils";
@@ -13,10 +13,9 @@ import { VenderEnum } from "../types/user";
 export type ExchangeValue = {
   signupGPIB: IExchange;
   signupCoinstash: IExchange;
-  makeEasyCryptoUser: IExchange;
   gpibUserID: string | undefined;
   reset: () => void;
-  verifyOnGpib: (body: VerifyUserRequestBody) => Promise<void>;
+  verifyOnExchange: (body: VerifyUserRequestBody) => Promise<void>;
 };
 
 export const ExchangeContext = React.createContext<ExchangeValue | undefined>(
@@ -86,62 +85,6 @@ export const ExchangeProvider: React.FC<{ children: React.ReactNode }> = (
     }
   };
 
-  // MAKE EASY CRPYTO USER
-  const makeEasyCryptoUser: IExchange = {
-    signUp: async (email: string) => {
-      const randomTempPassword = createRandomPassword();
-      const bodyEasyCrypto = JSON.stringify({
-        email: email,
-        password: randomTempPassword,
-        returnSecureToken: true
-      });
-      try {
-        const checkUserAuthEasyCrypto = await axios.post(
-          "https://api.easycrypto.com.au/api/user.php",
-          bodyEasyCrypto,
-          {
-            headers: {
-              "Content-Type": "application/json"
-            }
-          }
-        );
-        if (checkUserAuthEasyCrypto.status === 200) {
-          const nameStuff = async (bod: stuff) => {
-            const jwtEasy = checkUserAuthEasyCrypto.data.token;
-            const updatedEasyBody = {
-              firstName: bod.firstName,
-              lastName: bod.lastName,
-              yob: Number(bod.yob),
-              mobile: bod.mobile,
-              extraIdNumber: null,
-              action: "checkExisting",
-              version: 2,
-              siteVersion: "8.16.3"
-            };
-            const updateUserInfo = await axios.post(
-              `https://api.easycrypto.com.au/apiv2/verify.php`,
-              updatedEasyBody,
-              {
-                headers: {
-                  Authorization: `Bearer ${jwtEasy}`
-                }
-              }
-            );
-            if (updateUserInfo.status === 200) {
-              Alert.alert(
-                "Success!",
-                `You have signed up to Easy Crypto successfully. Your temporary password is ${randomTempPassword}`
-              );
-            }
-          };
-        }
-      } catch (error: any) {
-        console.log(error);
-        Alert.alert(error.response.data);
-      }
-    }
-  };
-
   // MAKE COINSTASH USER
   const signupCoinstash: IExchange = {
     signUp: async (name: string, email: string) => {
@@ -184,7 +127,7 @@ export const ExchangeProvider: React.FC<{ children: React.ReactNode }> = (
   };
 
   //VARIFY GPIB USER
-  const verifyOnGpib = async (body: VerifyUserRequestBody) => {
+  const verifyOnExchange = async (body: VerifyUserRequestBody) => {
     const checkAuthBody = JSON.stringify({
       userName: body.userName,
       password: body.password
@@ -243,17 +186,9 @@ export const ExchangeProvider: React.FC<{ children: React.ReactNode }> = (
       gpibUserID,
       reset,
       signupCoinstash,
-      verifyOnGpib,
-      makeEasyCryptoUser
+      verifyOnExchange
     }),
-    [
-      signupGPIB,
-      gpibUserID,
-      signupCoinstash,
-      verifyOnGpib,
-      makeEasyCryptoUser,
-      reset
-    ]
+    [signupGPIB, gpibUserID, signupCoinstash, verifyOnExchange, reset]
   );
 
   return (

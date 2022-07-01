@@ -17,18 +17,18 @@ import { findNames, findYOB } from "../../utils/formatters";
 import { ScrollView } from "react-native-gesture-handler";
 import { VerifyOnProxy } from "../../types/general";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
-import { IExchange } from "../../interfaces/exchange-interface";
+import { EasyExchange, IExchange } from "../../interfaces/exchange-interface";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
-import { exchangeLocalStorage } from "../../utils/local-storage";
+import { claimsLocalStorage, exchangeLocalStorage } from "../../utils/local-storage";
 import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import * as Crypto from "expo-crypto";
 import usePushNotifications from "../../hooks/usePushNotifications";
+import useEasyCrypto from "../../hooks/useEasyCrypto";
 
 const VendorDetailsScreen: React.FC = () => {
   const { usersClaims } = useClaimsStore();
   const { vendors } = useVendorsList();
-  const { signupGPIB, signupCoinstash, gpibUserID, makeEasyCryptoUser } =
-    useExchange();
+  const { signupGPIB, signupCoinstash, verifyOnExchange } = useExchange();
   const { expoPushToken } = usePushNotifications();
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
   const name = useClaimValue("FullNameCredential");
@@ -46,6 +46,8 @@ const VendorDetailsScreen: React.FC = () => {
 
   const vendor = vendors.find((v) => v.name === route.params.vendorId);
   const [signed, setSigned] = React.useState<boolean>(false);
+  const  { makeEasyCryptoUser } = useEasyCrypto();
+  
 
   const hasAllRequiredClaims = React.useMemo(() => {
     if (!vendor || !vendor.requiredClaimMnemonics) {
@@ -102,8 +104,7 @@ const VendorDetailsScreen: React.FC = () => {
 
   const idToIExchange: { [id: number]: IExchange } = {
     1: signupGPIB,
-    2: signupCoinstash,
-    3: makeEasyCryptoUser
+    2: signupCoinstash
   };
 
   return (
@@ -136,7 +137,19 @@ const VendorDetailsScreen: React.FC = () => {
                 return;
               }
               if (name && email) {
-                await makeUser.signUp(name, email);
+                switch (vendor.id) {
+                  case 1:
+                    await makeUser.signUp(name, email);
+                    break;
+                  case 2:
+                    await makeUser.signUp(name, email);
+                    break;
+                  case 3:
+                    await makeEasyCryptoUser();
+                    break;
+                  default:
+                    break;
+                }
                 setSigned(true);
               } else {
                 Alert.alert(
@@ -144,7 +157,7 @@ const VendorDetailsScreen: React.FC = () => {
                   "Please provide your name and email claims to sign up"
                 );
               }
-            }
+            };
           }}
           title="Sign Up"
           disabled={signed || !hasAllRequiredClaims}
@@ -157,7 +170,7 @@ const VendorDetailsScreen: React.FC = () => {
                 {
                   text: "OK",
                   onPress: async (value: string | undefined) => {
-                    await gpibUserID({
+                    await verifyOnExchange({
                       userName: email,
                       password: value,
                       firstName: splitName?.firstName,
