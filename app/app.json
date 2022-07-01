@@ -5,11 +5,11 @@
     "version": "1.0.60",
     "entryPoint": "./src/App.tsx",
     "orientation": "portrait",
-    "icon": "./assets/Bee-Logo.png",
+    "icon": "./assets/iosLogo.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "userInterfaceStyle": "automatic",
     "updates": {
@@ -32,7 +32,7 @@
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/Bee-Logo.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#000000"
       },
       "permissions": [
         "android.permission.CAMERA",
@@ -55,8 +55,15 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/Bee-Logo.jpg",
+          "icon": "./assets/Bee-Logo.png",
           "color": "#ffffff"
+        }
+      ],
+      [
+        "expo-document-picker",
+        {
+          "appleTeamId": "FRG84WT9XZ",
+          "iCloudContainerEnvironment": "Development"
         }
       ]
     ]
