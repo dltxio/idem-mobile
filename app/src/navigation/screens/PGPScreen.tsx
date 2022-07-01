@@ -94,7 +94,7 @@ const PGPScreen: React.FC = () => {
   }): Promise<KeyPair> => {
     const keyPair = await OpenPGP.generate({
       name: name,
-      email: "amagon270+10@gmail.com",
+      email: email,
       passphrase: passphrase,
       keyOptions: {
         rsaBits: 2048
@@ -131,12 +131,11 @@ const PGPScreen: React.FC = () => {
         }
       );
       console.log(uploadResponse.data);
-      console.log("email", email);
       const verifyResponse = await axios.post(
         "https://keys.openpgp.org/vks/v1/request-verify",
         {
           token: uploadResponse.data.token,
-          addresses: ["amagon270+10@gmail.com"]
+          addresses: [email]
         },
         {
           headers: {
