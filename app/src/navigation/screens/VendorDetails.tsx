@@ -22,6 +22,7 @@ import { exchangeLocalStorage } from "../../utils/local-storage";
 import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import * as Crypto from "expo-crypto";
 import usePushNotifications from "../../hooks/usePushNotifications";
+import { UserVerifyRequest } from "../../types/user";
 
 const VendorDetailsScreen: React.FC = () => {
   const { usersClaims } = useClaimsStore();
@@ -89,7 +90,7 @@ const VendorDetailsScreen: React.FC = () => {
           state: addressValue.state,
           country: addressValue.country,
           userId: gpibUserID?.gpibUserID
-        } as VerifyOnProxy;
+        } as UserVerifyRequest;
         await verifyClaims(userClaims, vendor);
       }
       if (expoPushToken) {
@@ -118,7 +119,7 @@ const VendorDetailsScreen: React.FC = () => {
           <View style={styles.buttonWrapper}>
             <Button
               title="Verify My Claims"
-              disabled={signed ? false : true}
+              // disabled={signed ? false : true}
               onPress={async () => {
                 verifyUserOnProxy();
               }}
