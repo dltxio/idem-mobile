@@ -82,7 +82,7 @@ const ClaimScreen: React.FC = () => {
     setLoading(true);
     await addClaim(claim.type, formState, selectedFileIds);
     const claims = await claimsLocalStorage.get();
-    if (claim.type === "DateOfBirthCredential") saveAndCheckBirthday(claims);
+    if (claim.type === "BirthCredential") saveAndCheckBirthday(claims);
     navigation.reset({
       routes: [{ name: "Home" }]
     });

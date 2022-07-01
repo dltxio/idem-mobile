@@ -1,4 +1,12 @@
-export type DocumentType = "passport" | "drivers-license" | "profile-image";
+export type DocumentType =
+  | "passport"
+  | "drivers-license"
+  | "birth-certificate"
+  | "bank-statement"
+  | "rates-notice"
+  | "utility-account"
+  | "medicare-card"
+  | "profile-image";
 export type Document = {
   type: DocumentType;
   title: string;
