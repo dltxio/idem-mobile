@@ -13,6 +13,8 @@ import { Button } from "../../components";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { pgpLocalStorage } from "../../utils/local-storage";
 
+import OpenPGP from "react-native-fast-openpgp";
+
 const PGPScreen: React.FC = () => {
   const [keytext, setKeytext] = React.useState<string | undefined>();
 
@@ -43,6 +45,16 @@ const PGPScreen: React.FC = () => {
     }
   };
 
+  const genPGPG = async () => {
+    var options = {
+      userIds: [{ name:'Jon Smith', email:'jon@example.com' }], // multiple user IDs
+      numBits: 2048,                                            // RSA key size
+      passphrase: 'super long and hard to guess secret'         // protects the private key
+    };
+    const generated = await OpenPGP.generate(options);
+    console.log(generated);
+  }
+
   return (
     <KeyboardAvoidingView>
       <ScrollView
@@ -67,6 +79,13 @@ const PGPScreen: React.FC = () => {
             <Button title={"Import my Public Key"} onPress={importPGP} />
           </View>
         </View>
+
+        <View style={styles.buttonWrapper}>
+          <View style={styles.button}>
+            <Button title={"New PGP Key"} onPress={genPGPG} />
+          </View>
+        </View>
+
         <BottomNavBarSpacer />
       </ScrollView>
     </KeyboardAvoidingView>
