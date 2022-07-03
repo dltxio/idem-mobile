@@ -6,6 +6,10 @@ export type Field = {
   type: FieldType;
 };
 
+export type UploadPGPKeyResponse = {
+  token: string;
+};
+
 export type Vendor = {
   id: number;
   description: string;
@@ -17,6 +21,11 @@ export type Vendor = {
   backgroundColor: string;
   requiredClaimMnemonics: string[];
 };
+
+// export type VerifyEmail = {
+//   token: string | undefined;
+//   addresses: string[];
+// };
 
 export type VerifyOnProxy = {
   firstName: string;

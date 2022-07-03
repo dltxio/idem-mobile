@@ -1,8 +1,8 @@
 import * as password from "secure-random-password";
 
-export const createRandomPassword = () => {
+export const createRandomPassword = (length = 10) => {
   return password.randomPassword({
-    length: 10,
+    length: length,
     characters: [password.lower, password.upper, password.digits]
   });
 };
