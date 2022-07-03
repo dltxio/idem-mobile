@@ -13,28 +13,29 @@ import { Button } from "../../components";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { pgpLocalStorage } from "../../utils/local-storage";
 
-// import OpenPGP from "react-native-fast-openpgp";
+import type { PGP } from "../../types/wallet";
 
 const PGPScreen: React.FC = () => {
-  const [keytext, setKeytext] = React.useState<string | undefined>();
+  const [pgp, setPGP] = React.useState<PGP>();
+  const [keyText, setKeyText] = React.useState<string>();
 
   React.useEffect(() => {
     (async () => {
       const initialPGP = await pgpLocalStorage.get();
 
       if (initialPGP) {
-        setKeytext(initialPGP.keytext);
+        setKeyText(initialPGP.publicKey);
       }
     })();
   }, []);
 
   const importPGP = async () => {
-    setKeytext(keytext);
+    setPGP(pgp);
     try {
-      await pgpLocalStorage.save({ keytext: keytext });
+      await pgpLocalStorage.save(pgp as PGP);
       const checkKey = await pgpLocalStorage.get();
       if (checkKey) {
-        Alert.alert("Success!", "Your public key has been saved");
+        Alert.alert("Success!", "Your public key has been saved.");
       }
     } catch (error) {
       Alert.alert(
@@ -45,7 +46,7 @@ const PGPScreen: React.FC = () => {
     }
   };
 
-  const genPGPG = async () => {
+  const generatePGPG = async () => {
 
   }
 
@@ -58,8 +59,8 @@ const PGPScreen: React.FC = () => {
         <TextInput
           placeholder="Paste your PGP/GPG PUBLIC key here"
           placeholderTextColor={"black"}
-          onChangeText={setKeytext}
-          value={keytext}
+          onChangeText={setKeyText}
+          value={keyText}
           style={styles.input}
           multiline={true}
           selectionColor={"white"}
@@ -76,7 +77,7 @@ const PGPScreen: React.FC = () => {
 
         <View style={styles.buttonWrapper}>
           <View style={styles.button}>
-            <Button title={"New PGP Key"} onPress={genPGPG} />
+            <Button title={"Generate new PGP Key"} onPress={generatePGPG} />
           </View>
         </View>
 
