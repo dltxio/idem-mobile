@@ -10,8 +10,10 @@ import {
 import { useMnemonic } from "../context/Mnemonic";
 import commonStyles from "../styles/styles";
 
+import { createMnemonic } from "../utils/eth-utils"
+
 const CreateMnemonicController: React.FC = () => {
-  const { mnemonic, createMnemonic, loadingMnemonic } = useMnemonic();
+  const { mnemonic, loadingMnemonic } = useMnemonic();
   const [showMnemonic, setShowMnemonic] = React.useState<boolean>(false);
 
   React.useLayoutEffect(() => {

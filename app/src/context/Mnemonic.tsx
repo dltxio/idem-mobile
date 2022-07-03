@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from "react";
-import { ethers } from "ethers";
+import { createMnemonic } from "../utils/eth-utils";
 import { mnemonicLocalStorage } from "../utils/local-storage";
+// import type { Wallet } from "../types/wallet";
 
 export type MnemonicValue = {
-  mnemonic: string | undefined;
-  ethAddress: string | undefined;
-  createMnemonic: () => Promise<
+  // wallet: Wallet;
+  createAndSaveMnemonic: () => Promise<
     { mnemonic: string | undefined; ethAddress: string | undefined } | undefined
   >;
   reset: () => void;
@@ -37,17 +37,20 @@ export const MnemonicProvider: React.FC<{
     })();
   }, []);
 
-  const createMnemonic = async () => {
+  const createAndSaveMnemonic = async () => {
     try {
-      const wallet = ethers.Wallet.createRandom();
+      const wallet = createMnemonic();
+      
       await mnemonicLocalStorage.save({
-        mnemonic: wallet.mnemonic.phrase,
-        ethAddress: wallet.address
+        mnemonic: wallet.mnemonic,
+        ethAddress: wallet.ethAddress
       });
-      setMnemonic(wallet.mnemonic.phrase);
-      setEthAddress(wallet.address);
+
+      setMnemonic(wallet.mnemonic);
+      setEthAddress(wallet.ethAddress);
+
       return { mnemonic, ethAddress };
-    } catch (error) {
+    } catch (error: unknown) {
       console.log(error);
     }
   };
@@ -60,13 +63,12 @@ export const MnemonicProvider: React.FC<{
 
   const value = React.useMemo(
     () => ({
-      mnemonic,
-      ethAddress,
-      createMnemonic,
+      // Wallet,
+      createAndSaveMnemonic,
       reset,
       loadingMnemonic
     }),
-    [mnemonic, ethAddress, createMnemonic, reset]
+    [mnemonic, ethAddress, createAndSaveMnemonic, reset]
   );
 
   return (
