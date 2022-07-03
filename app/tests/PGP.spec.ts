@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { createPublicKey, generatePGPG } from "../src/utils/pgp-utils";
+import { createPublicKey, generatePGP } from "../src/utils/pgp-utils";
 
 describe("PGP Tests", () => {
   it("should generate a new PGP Key Pair", async () => {
-    const actual = await generatePGPG(
+    const actual = await generatePGP(
       "my passsword",
       "Sathoshi",
       "satoshin@gmx.com"

@@ -1,12 +1,11 @@
-import axios, { AxiosError } from "axios";
 import React from "react";
 import { useState } from "react";
 import { Alert } from "react-native";
 import { useClaimsStore } from "../context/ClaimsStore";
 import { ClaimData } from "../types/claim";
-import { UploadPGPKeyResponse, VerifyEmail } from "../types/general";
 import { check18Plus } from "../utils/birthday-utils";
 import { pgpLocalStorage } from "../utils/local-storage";
+import { verifyPublicKey } from "../utils/pgp-utils";
 
 type Hooks = {
   loading: boolean;
@@ -23,7 +22,6 @@ const useClaimScreen = (): Hooks => {
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedFileIds, setSelectedFileIds] = useState<string[]>([]);
   const [, setIsVerifying] = React.useState<boolean>(false);
-  const [, setVerifyEmailRequest] = React.useState<VerifyEmail>();
 
   const saveAndCheckBirthday = async (claims: ClaimData[] | null) => {
     setLoading(true);
@@ -67,11 +65,12 @@ const useClaimScreen = (): Hooks => {
 
   const verifyEmail = async (email: string) => {
     setIsVerifying(true);
-    const armoredKey = await pgpLocalStorage.get();
-    if (!armoredKey || armoredKey === null) {
+    const pgp = await pgpLocalStorage.get();
+
+    if (!pgp || pgp.publicKey === null) {
       Alert.alert(
         `ERROR`,
-        `Please go to your profile and import your private key first!`,
+        `Please go to your profile and import your PGP private key first!`,
         [
           {
             text: "Ok",
@@ -82,45 +81,23 @@ const useClaimScreen = (): Hooks => {
       );
       return;
     }
-    try {
-      const uploadResponse = await axios.post<UploadPGPKeyResponse>(
-        "https://keys.openpgp.org/vks/v1/upload",
-        armoredKey,
-        {
-          headers: {
-            "Content-Type": "application/json"
+
+    const result = await verifyPublicKey(pgp.publicKey);
+
+    if (result) {
+      Alert.alert(
+        `Email Sent`,
+        `Please check your email for instructions from keys.openpgp.org on how to verify your claim.`,
+        [
+          {
+            text: "OK",
+            onPress: () => console.log(""),
+            style: "cancel"
           }
-        }
+        ]
       );
-      setVerifyEmailRequest({
-        token: uploadResponse.data.token,
-        addresses: [email]
-      });
-      try {
-        await axios.post("https://keys.openpgp.org/vks/v1/upload", armoredKey, {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        });
-        Alert.alert(
-          `Email Sent`,
-          `Please check your email for instructions from keys.openpgp.org on how to verify your claim.`,
-          [
-            {
-              text: "OK",
-              onPress: () => console.log(""),
-              style: "cancel"
-            }
-          ]
-        );
-      } catch (error) {
-        const err = error as AxiosError;
-        console.error(err?.response?.data || error);
-      }
-    } catch (error) {
-      const err = error as AxiosError;
-      console.error(err?.response?.data || error);
     }
+
     setIsVerifying(false);
   };
 

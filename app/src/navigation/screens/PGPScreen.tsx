@@ -14,13 +14,11 @@ import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { pgpLocalStorage } from "../../utils/local-storage";
 
 import type { PGP } from "../../types/wallet";
-import {
-  createRandomPassword,
-  createPublicKey
-} from "../../utils/randomPassword-utils";
+// import { createRandomPassword } from "../../utils/randomPassword-utils";
+import { createPublicKey, generatePGP } from "../../utils/pgp-utils";
 
 const PGPScreen: React.FC = () => {
-  const [pgp, setPGP] = React.useState<PGP>();
+  // const [pgp, setPGP] = React.useState<PGP>();
   const [keyText, setKeyText] = React.useState<string>();
 
   React.useEffect(() => {
@@ -34,9 +32,10 @@ const PGPScreen: React.FC = () => {
   }, []);
 
   const importPGPPrivateKey = async () => {
-    setPGP(pgp);
+    // setPGP(pgp);
     try {
-      await pgpLocalStorage.save(pgp as PGP);
+      const keyPair : PGP = await createPublicKey(keyText as string);
+      await pgpLocalStorage.save(keyPair);
       const checkKey = await pgpLocalStorage.get();
       if (checkKey) {
         Alert.alert("Success!", "Your PGP key has been saved.");
@@ -50,10 +49,13 @@ const PGPScreen: React.FC = () => {
     }
   };
 
-  const generatePGPG = async () => {
-    const password = createRandomPassword(10);
+  const generateNewPGP = async () => {
+    // todo: alert for password
+    const email = claims.find((c) => c.type === "AdultCredential");
+    const name = claims.find((c) => c.type === "AdultCredential");
 
-    const result = await createPublicKey(keyText);
+    const pgp : PGP = await generatePGP("my password", name, email);
+    Alert.alert("Success!", "Your PGP key has been created.");
   }
 
   return (
@@ -86,7 +88,7 @@ const PGPScreen: React.FC = () => {
 
         <View style={styles.buttonWrapper}>
           <View style={styles.button}>
-            <Button title={"Generate new PGP Key"} onPress={generatePGPG} />
+            <Button title={"Generate new PGP Key"} onPress={generateNewPGP} />
           </View>
         </View>
 
