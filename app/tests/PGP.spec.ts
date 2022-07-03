@@ -9,13 +9,12 @@ describe("PGP Tests", () => {
       "satoshin@gmx.com"
     );
 
-    console.log(actual.privateKey);
-
     expect(actual.privateKey).not.to.be.null;
     expect(actual.publicKey).not.to.be.null;
+    expect(actual.fingerPrint).not.to.be.null;
   });
 
-  it("should create a PGP Key Pair from PGP Private Key", async () => {
+  it.skip("should create a PGP Key Pair from PGP Private Key", async () => {
     const privateKey = `
     -----BEGIN PGP PRIVATE KEY BLOCK-----
     

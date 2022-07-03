@@ -11,9 +11,13 @@ export const generatePGPG = async (password: string, name: string, email: string
     format: "armored" // output key format, defaults to 'armored' (other options: 'binary' or 'object')
   });
 
+  const key = await openpgp.readKey( { armoredKey: publicKey });
+  const fingerPrint = await key.getFingerprint();
+
   const pgp : PGP = {
     privateKey: privateKey,
-    publicKey: publicKey
+    publicKey: publicKey,
+    fingerPrint: fingerPrint
   }
 
   return pgp;
@@ -25,7 +29,8 @@ export const createPublicKey = async (privateKey: string) : Promise<PGP> => {
 
   const pgp: PGP = {
     privateKey: privateKey,
-    publicKey: publicKey.armor()
+    publicKey: publicKey.armor(),
+    fingerPrint: "",
   };
 
   return pgp;
