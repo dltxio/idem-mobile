@@ -14,7 +14,10 @@ import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { pgpLocalStorage } from "../../utils/local-storage";
 
 import type { PGP } from "../../types/wallet";
-import { createRandomPassword } from "../../utils/randomPassword-utils";
+import {
+  createRandomPassword,
+  createPublicKey
+} from "../../utils/randomPassword-utils";
 
 const PGPScreen: React.FC = () => {
   const [pgp, setPGP] = React.useState<PGP>();
@@ -30,13 +33,13 @@ const PGPScreen: React.FC = () => {
     })();
   }, []);
 
-  const importPGP = async () => {
+  const importPGPPrivateKey = async () => {
     setPGP(pgp);
     try {
       await pgpLocalStorage.save(pgp as PGP);
       const checkKey = await pgpLocalStorage.get();
       if (checkKey) {
-        Alert.alert("Success!", "Your public key has been saved.");
+        Alert.alert("Success!", "Your PGP key has been saved.");
       }
     } catch (error) {
       Alert.alert(
@@ -49,7 +52,8 @@ const PGPScreen: React.FC = () => {
 
   const generatePGPG = async () => {
     const password = createRandomPassword(10);
-    
+
+    const result = await createPublicKey(keyText);
   }
 
   return (
@@ -59,7 +63,7 @@ const PGPScreen: React.FC = () => {
         contentContainerStyle={styles.scrollContent}
       >
         <TextInput
-          placeholder="Paste your PGP/GPG PUBLIC key here"
+          placeholder="Paste your PGP/GPG PRIVATE key here"
           placeholderTextColor={"black"}
           onChangeText={setKeyText}
           value={keyText}
@@ -73,7 +77,10 @@ const PGPScreen: React.FC = () => {
         </Text>
         <View style={styles.buttonWrapper}>
           <View style={styles.button}>
-            <Button title={"Import my Public Key"} onPress={importPGP} />
+            <Button
+              title={"Import my Private Key"}
+              onPress={importPGPPrivateKey}
+            />
           </View>
         </View>
 
