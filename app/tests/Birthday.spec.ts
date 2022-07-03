@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { check18Plus } from "../src/utils/birthday-utils";
 
-describe("Check if I'm 18", async () => {
+describe("Check if I'm 18", () => {
   it("should return true if I am 18", () => {
     expect(
       check18Plus({
