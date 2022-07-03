@@ -1,18 +1,12 @@
 import { ethers } from "ethers";
+import type { Wallet } from "../types/wallet";
 
-export type Mnemonic = {
-  phrase: String;
-  address: String;
-  privateKey: String;
-};
-
-export const createMnemonic = () : Mnemonic => {
+export const createMnemonic = () : Wallet => {
     const wallet = ethers.Wallet.createRandom();
 
-    const result : Mnemonic = {
-      phrase: wallet.mnemonic.phrase,
-      address: wallet.address,
-      privateKey: wallet.privateKey
+    const result : Wallet = {
+      mnemonic: wallet.mnemonic.phrase,
+      ethAddress: wallet.address
     }
 
     return result;
