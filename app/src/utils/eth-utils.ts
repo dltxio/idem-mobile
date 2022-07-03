@@ -1,6 +1,19 @@
 import { ethers } from "ethers";
 
-export const createMnemonic = async () => {
+export type Mnemonic = {
+  phrase: String;
+  address: String;
+  privateKey: String;
+};
+
+export const createMnemonic = () : Mnemonic => {
     const wallet = ethers.Wallet.createRandom();
-    return { wallet.mnemonic.phrase, wallet.address };
+
+    const result : Mnemonic = {
+      phrase: wallet.mnemonic.phrase,
+      address: wallet.address,
+      privateKey: wallet.privateKey
+    }
+
+    return result;
 };
