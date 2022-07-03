@@ -27,6 +27,7 @@ import {
 const PGPScreen: React.FC = () => {
   // for user input
   const [keyText, setKeyText] = React.useState<string>();
+  // const [keyPublicText, setPublicKeyText] = React.useState<string>();
   const [pgp, setPGP] = React.useState<PGP>();
 
   const email = useClaimValue("EmailCredential");
@@ -47,24 +48,26 @@ const PGPScreen: React.FC = () => {
     try {
       const keyPair : PGP = await createPublicKey(keyText as string);
       setPGP(keyPair);
-
+      
       await pgpLocalStorage.save(keyPair);
       const checkKey = await pgpLocalStorage.get();
 
       if (checkKey) {
         Alert.alert("Success!", "Your PGP Key Pair has been saved.");
+        return;
       }
     } catch (error) {
-      Alert.alert(
-        "UH-OH",
-        "There was a problem importing your Public Key. Please try again."
-      );
       console.log(error);
     }
+
+    Alert.alert(
+      "UH-OH",
+      "There was a problem importing your Private Key. Please try again."
+    );
   };
 
   const publishPGPPublicKey = () => {
-    if (pgp?.publicKey && email) {
+    if (email && pgp?.publicKey) {
       publishPublicKey(email, pgp.publicKey);
       return;
     }
