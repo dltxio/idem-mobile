@@ -9,3 +9,12 @@ export type VerifyUserRequestBody = {
   lastName: string | undefined;
   yob: string | undefined;
 };
+
+export type VerifyEmail = {
+  token: string | undefined;
+  addresses: string[];
+};
+
+export type UploadPGPKeyResponse = {
+  token: string;
+};

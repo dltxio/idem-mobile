@@ -4,5 +4,6 @@ export type Wallet = {
 };
 
 export type PGP = {
-  keytext: string | undefined;
+  privateKey: string | undefined;
+  publicKey: string | undefined;
 };

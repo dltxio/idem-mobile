@@ -13,17 +13,17 @@ import { Button } from "../../components";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { pgpLocalStorage } from "../../utils/local-storage";
 
-import OpenPGP from "react-native-fast-openpgp";
+// import OpenPGP from "react-native-fast-openpgp";
 
 const PGPScreen: React.FC = () => {
   const [keytext, setKeytext] = React.useState<string | undefined>();
 
   React.useEffect(() => {
     (async () => {
-      const initialPgp = await pgpLocalStorage.get();
+      const initialPGP = await pgpLocalStorage.get();
 
-      if (initialPgp) {
-        setKeytext(initialPgp.keytext);
+      if (initialPGP) {
+        setKeytext(initialPGP.keytext);
       }
     })();
   }, []);
@@ -46,13 +46,7 @@ const PGPScreen: React.FC = () => {
   };
 
   const genPGPG = async () => {
-    var options = {
-      userIds: [{ name:'Jon Smith', email:'jon@example.com' }], // multiple user IDs
-      numBits: 2048,                                            // RSA key size
-      passphrase: 'super long and hard to guess secret'         // protects the private key
-    };
-    const generated = await OpenPGP.generate(options);
-    console.log(generated);
+
   }
 
   return (
