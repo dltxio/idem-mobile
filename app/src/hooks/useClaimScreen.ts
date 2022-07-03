@@ -3,7 +3,8 @@ import React from "react";
 import { useState } from "react";
 import { Alert } from "react-native";
 import { useClaimsStore } from "../context/ClaimsStore";
-import { ClaimData, UploadPGPKeyResponse, VerifyEmail } from "../types/claim";
+import { ClaimData } from "../types/claim";
+import { UploadPGPKeyResponse, VerifyEmail } from "../types/general";
 import { check18Plus } from "../utils/birthday-utils";
 import { pgpLocalStorage } from "../utils/local-storage";
 
