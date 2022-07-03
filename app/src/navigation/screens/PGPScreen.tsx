@@ -14,6 +14,7 @@ import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { pgpLocalStorage } from "../../utils/local-storage";
 
 import type { PGP } from "../../types/wallet";
+import { createRandomPassword } from "../../utils/randomPassword-utils";
 
 const PGPScreen: React.FC = () => {
   const [pgp, setPGP] = React.useState<PGP>();
@@ -47,7 +48,8 @@ const PGPScreen: React.FC = () => {
   };
 
   const generatePGPG = async () => {
-
+    const password = createRandomPassword(10);
+    
   }
 
   return (
