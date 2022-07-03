@@ -62,6 +62,7 @@ export const createPublicKey = async (privateKey: string): Promise<PGP> => {
 export const verifyKeyByEmail = async (email: string) : Promise<Boolean> => {
   try {
     await axios.get(encodeURI(`https://keys.openpgp.org/vks/v1/by-email/${email}`));
+    
     // Alert.alert(
     //   `Email Verified`,
     //   `Email has been verified with keys.openpgp.org`

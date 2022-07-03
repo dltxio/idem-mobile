@@ -45,20 +45,21 @@ const PGPScreen: React.FC = () => {
   }, []);
 
   const importPGPPrivateKey = async () => {
-    try {
-      const keyPair : PGP = await createPublicKey(keyText as string);
-      setPGP(keyPair);
+    // try {
+    //   const keyPair : PGP = await createPublicKey(keyText as string);
+    //   setPGP(keyPair);
       
-      await pgpLocalStorage.save(keyPair);
-      const checkKey = await pgpLocalStorage.get();
+    //   // await pgpLocalStorage.save(keyPair);
+    //   // const checkKey = await pgpLocalStorage.get();
 
-      if (checkKey) {
-        Alert.alert("Success!", "Your PGP Key Pair has been saved.");
-        return;
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    //   // if (checkKey) {
+    //   //   Alert.alert("Success!", "Your PGP Key Pair has been saved.");
+    //   //   return;
+    //   // }
+    //   return;
+    // } catch (error) {
+    //   console.log(error);
+    // }
 
     Alert.alert(
       "UH-OH",
@@ -66,21 +67,20 @@ const PGPScreen: React.FC = () => {
     );
   };
 
-  const publishPGPPublicKey = () => {
+  const publishPGPPublicKey = async () => {
     if (email && pgp?.publicKey) {
-      publishPublicKey(email, pgp.publicKey);
+      // await publishPublicKey(email, pgp.publicKey);
       return;
     }
 
     Alert.alert("No PGP key or Email has been added.");
   };
 
-  const verifyPGPPublicKey = () => {
-
+  const verifyPGPPublicKey = async () => {
     // todo check finger prints here too.  See IDEM-168
 
     if (email) {
-      verifyKeyByEmail(email);
+      // await verifyKeyByEmail(email);
       return;
     }
 
@@ -88,19 +88,19 @@ const PGPScreen: React.FC = () => {
   };
 
   const generateNewPGPKeyPair = async () => {
-    const password = createRandomPassword();
+    // const password = createRandomPassword();
 
-    if (name && email) {
-      const keyPair: PGP = await generateKeyPair(password, name, email);
-      setPGP(keyPair);
-      await pgpLocalStorage.save(keyPair);
-      Alert.alert(
-        "Success!",
-        `Your PGP key has been created with the password ${password}`
-      );
+    // if (name && email) {
+    //   const keyPair: PGP = await generateKeyPair(password, name, email);
+    //   setPGP(keyPair);
+    //   // await pgpLocalStorage.save(keyPair);
+    //   Alert.alert(
+    //     "Success!",
+    //     `Your PGP key has been created with the password ${password}`
+    //   );
       
-      return;
-    }
+    //   return;
+    // }
 
     Alert.alert("UH-HO", "No email or name claim was found.");
   }
@@ -120,9 +120,9 @@ const PGPScreen: React.FC = () => {
           multiline={true}
           selectionColor={"white"}
         />
-        <Text>
+        {/* <Text>
           value={pgp?.publicKey}
-        </Text>
+        </Text> */}
         <Text style={styles.warning}>
           NOTE: Importing your keys saves them to your local storage. IDEM does
           not have access to the keys you import.
