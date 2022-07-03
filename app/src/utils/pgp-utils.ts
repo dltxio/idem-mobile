@@ -21,7 +21,7 @@ export const generateKeyPair = async (
     publicKey: publicKey
   };
 
-  console.log(pgp);
+  // console.log(pgp);
 
   return pgp;
 };

@@ -14,9 +14,8 @@ import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { useClaimValue } from "../../context/ClaimsStore";
 import { pgpLocalStorage } from "../../utils/local-storage";
 import { createRandomPassword } from "../../utils/randomPassword-utils";
-
 import type { PGP } from "../../types/wallet";
-// import { createRandomPassword } from "../../utils/randomPassword-utils";
+
 import {
   createPublicKey,
   generateKeyPair,
@@ -46,7 +45,7 @@ const PGPScreen: React.FC = () => {
 
   const importPGPPrivateKey = async () => {
     // try {
-    //   const keyPair : PGP = await createPublicKey(keyText as string);
+    // const keyPair : PGP = await createPublicKey(keyText as string);
     //   setPGP(keyPair);
       
     //   // await pgpLocalStorage.save(keyPair);
@@ -84,23 +83,23 @@ const PGPScreen: React.FC = () => {
       return;
     }
 
-    Alert.alert("UH-HO", "No email claim was found.");
+    Alert.alert("UH-OH", "No email claim was found.");
   };
 
   const generateNewPGPKeyPair = async () => {
-    // const password = createRandomPassword();
+    const password = createRandomPassword();
 
-    // if (name && email) {
-    //   const keyPair: PGP = await generateKeyPair(password, name, email);
-    //   setPGP(keyPair);
-    //   // await pgpLocalStorage.save(keyPair);
-    //   Alert.alert(
-    //     "Success!",
-    //     `Your PGP key has been created with the password ${password}`
-    //   );
+    if (name && email) {
+      // const keyPair: PGP = await generateKeyPair(password, name, email);
+      // setPGP(keyPair);
+      // await pgpLocalStorage.save(keyPair);
+      Alert.alert(
+        "Success!",
+        `Your PGP key has been created with the password ${password}`
+      );
       
-    //   return;
-    // }
+      return;
+    }
 
     Alert.alert("UH-HO", "No email or name claim was found.");
   }
