@@ -51,8 +51,8 @@ const PGPScreen: React.FC = () => {
 
   const generateNewPGP = async () => {
     // todo: alert for password
-    const email = claims.find((c) => c.type === "AdultCredential");
-    const name = claims.find((c) => c.type === "AdultCredential");
+    const email = ""; //claims.find((c) => c.type === "AdultCredential");
+    const name = ""; //claims.find((c) => c.type === "AdultCredential");
 
     const pgp : PGP = await generatePGP("my password", name, email);
     Alert.alert("Success!", "Your PGP key has been created.");
