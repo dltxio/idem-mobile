@@ -86,7 +86,7 @@ const ClaimScreen: React.FC = () => {
     await addClaim(claim.type, formState, selectedFileIds);
     const claims = await claimsLocalStorage.get();
     if (claim.type === "BirthCredential") saveAndCheckBirthday(claims);
-    if (isVerifying === true) saveFileToClaim(addedFiles);
+    if (isVerifying === true) saveFileToClaim();
     navigation.reset({
       routes: [{ name: "Home" }]
     });
@@ -94,7 +94,7 @@ const ClaimScreen: React.FC = () => {
   };
 
   const saveFileToClaim = async () => {
-    await addFile(claim.verificationAction, formState, selectedFileIds);
+    await addClaim(claim.VerificationAction, formState, selectedFileIds);
     const addedFiles = await fileLocalStorage.get();
   };
 
