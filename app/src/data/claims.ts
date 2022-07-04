@@ -76,7 +76,7 @@ const claims: Claim[] = [
     type: "AddressCredential",
     key: "0x05",
     mnemonic: "address",
-    title: "Address",
+    title: "Address",     
     description: "Users physical address",
     verificationAction: "document-upload",
     fields: [

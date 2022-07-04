@@ -19,7 +19,7 @@ export type Claim = {
   mnemonic: string;
   title: string;
   description: string;
-  verified?: boolean;
+  verified?: boolean;   
   verificationAction: VerificationAction;
   fields: Field[];
   verificationDocuments: DocumentType[];

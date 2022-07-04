@@ -25,7 +25,10 @@ import { useDocumentStore } from "../../context/DocumentStore";
 import { getDocumentFromDocumentType } from "../../utils/document-utils";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import useClaimScreen from "../../hooks/useClaimScreen";
-import { claimsLocalStorage } from "../../utils/local-storage";
+import {
+  claimsLocalStorage,
+  fileLocalStorage
+} from "../../utils/local-storage";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -83,10 +86,16 @@ const ClaimScreen: React.FC = () => {
     await addClaim(claim.type, formState, selectedFileIds);
     const claims = await claimsLocalStorage.get();
     if (claim.type === "BirthCredential") saveAndCheckBirthday(claims);
+    if (isVerifying === true) saveFileToClaim(addedFiles);
     navigation.reset({
       routes: [{ name: "Home" }]
     });
     setLoading(false);
+  };
+
+  const saveFileToClaim = async () => {
+    await addFile(claim.verificationAction, formState, selectedFileIds);
+    const addedFiles = await fileLocalStorage.get();
   };
 
   const documentList =
@@ -236,7 +245,7 @@ const VerificationFiles: React.FC<{
   }));
 
   const validDocumentNames = claim.verificationDocuments.map((document) => {
-    return `\n- ${getDocumentFromDocumentType(document).title}`;
+    return `\${getDocumentFromDocumentType(document).title}`;
   });
 
   React.useLayoutEffect(() => {

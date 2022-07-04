@@ -9,6 +9,7 @@ import colors from "../styles/colors";
 import { DocumentsStackNavigation } from "../types/navigation";
 import { useNavigation } from "@react-navigation/native";
 import { getDocumentFromDocumentType } from "../utils/document-utils";
+import { fileLocalStorage } from "../utils/local-storage";
 
 type FileItem = File & { selected?: boolean };
 
@@ -18,6 +19,7 @@ type Props = {
   files: FileItem[];
   onFilePress: (fileId: string) => void;
   onDeleteFile?: (fileId: string) => void;
+  onSaveFile?: (fileId: string) => void;
   isCheckList: boolean;
   style?: object;
 };
@@ -28,7 +30,8 @@ const FileList: React.FC<Props> = ({
   isCheckList,
   files,
   onFilePress,
-  onDeleteFile
+  onDeleteFile,
+  onSaveFile
 }) => {
   const navigation = useNavigation<Navigation>();
   return (
