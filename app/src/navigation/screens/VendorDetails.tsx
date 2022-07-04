@@ -135,11 +135,7 @@ const VendorDetailsScreen: React.FC = () => {
           onPress={async () => {
             if (vendor) {
               const makeUser = idToIExchange[vendor.id];
-              if (!makeUser) {
-                Linking.openURL(vendor.signup);
-                return;
-              }
-              if (name && email && splitName && dob && mobile && address) {
+              if (name && email && splitName) {
                 switch (vendor.id) {
                   case 1:
                     await makeUser.signUp(name, email);
@@ -147,19 +143,12 @@ const VendorDetailsScreen: React.FC = () => {
                   case 2:
                     await makeUser.signUp(name, email);
                     break;
-                  case 3:
-                    await makeEasyCryptoUser({
-                      mobile: mobile,
-                      yob: dob,
-                      lastName: splitName?.lastName,
-                      email: email,
-                      firstName: splitName?.firstName,
-                      extraIdNumber: null,
-                      action: null,
-                      version: null,
-                      siteVersion: null,
-                      address: address
-                    });
+                  case 6:
+                    await makeEasyCryptoUser(
+                      email,
+                      splitName?.firstName,
+                      splitName?.lastName
+                    );
                     break;
                   default:
                     break;

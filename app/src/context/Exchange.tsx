@@ -65,7 +65,7 @@ export const ExchangeProvider: React.FC<{ children: React.ReactNode }> = (
       const splitName = findNames(name);
       if (splitName?.firstName && splitName.lastName && randomTempPassword) {
         api
-          .gpibSignup({
+          .vendorSignup({
             source: VenderEnum.GPIB,
             firstName: splitName?.firstName,
             lastName: splitName?.lastName,
