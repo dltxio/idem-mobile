@@ -17,9 +17,12 @@ import { findNames, findYOB } from "../../utils/formatters";
 import { ScrollView } from "react-native-gesture-handler";
 import { VerifyOnProxy } from "../../types/general";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
-import { EasyExchange, IExchange } from "../../interfaces/exchange-interface";
+import { IExchange } from "../../interfaces/exchange-interface";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
-import { claimsLocalStorage, exchangeLocalStorage } from "../../utils/local-storage";
+import {
+  claimsLocalStorage,
+  exchangeLocalStorage
+} from "../../utils/local-storage";
 import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import * as Crypto from "expo-crypto";
 import usePushNotifications from "../../hooks/usePushNotifications";
@@ -46,8 +49,7 @@ const VendorDetailsScreen: React.FC = () => {
 
   const vendor = vendors.find((v) => v.name === route.params.vendorId);
   const [signed, setSigned] = React.useState<boolean>(false);
-  const  { makeEasyCryptoUser } = useEasyCrypto();
-  
+  const { makeEasyCryptoUser } = useEasyCrypto();
 
   const hasAllRequiredClaims = React.useMemo(() => {
     if (!vendor || !vendor.requiredClaimMnemonics) {
@@ -145,7 +147,16 @@ const VendorDetailsScreen: React.FC = () => {
                     await makeUser.signUp(name, email);
                     break;
                   case 3:
-                    await makeEasyCryptoUser();
+                    await makeEasyCryptoUser( 
+                      mobile: mobile, 
+                      yob: dob,
+  lastName: splitName.lastName,
+  email: userEmail.toString(),
+  firstName: splitName.firstName,
+  extraIdNumber:
+  action:
+  version:
+  siteVersion: );
                     break;
                   default:
                     break;
@@ -157,7 +168,7 @@ const VendorDetailsScreen: React.FC = () => {
                   "Please provide your name and email claims to sign up"
                 );
               }
-            };
+            }
           }}
           title="Sign Up"
           disabled={signed || !hasAllRequiredClaims}
