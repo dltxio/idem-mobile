@@ -19,10 +19,7 @@ import { VerifyOnProxy } from "../../types/general";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { IExchange } from "../../interfaces/exchange-interface";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
-import {
-  claimsLocalStorage,
-  exchangeLocalStorage
-} from "../../utils/local-storage";
+import { exchangeLocalStorage } from "../../utils/local-storage";
 import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import * as Crypto from "expo-crypto";
 import usePushNotifications from "../../hooks/usePushNotifications";
@@ -44,6 +41,7 @@ const VendorDetailsScreen: React.FC = () => {
   const email = useClaimValue("EmailCredential");
   const dob = useClaimValue("BirthCredential");
   const yob = findYOB(dob ? dob : "");
+  const mobile = useClaimValue("MobileCredential");
   const splitName = findNames(name);
   const { verifyClaims, postTokenToProxy } = useVerifyClaims();
 
@@ -83,6 +81,7 @@ const VendorDetailsScreen: React.FC = () => {
 
         const userEmail = await hashEmail();
         const gpibUserID = await exchangeLocalStorage.get();
+        console.log(gpibUserID);
         const userClaims = {
           firstName: splitName.firstName,
           lastName: splitName.lastName,
@@ -139,7 +138,7 @@ const VendorDetailsScreen: React.FC = () => {
                 Linking.openURL(vendor.signup);
                 return;
               }
-              if (name && email) {
+              if (name && email && splitName && dob && mobile) {
                 switch (vendor.id) {
                   case 1:
                     await makeUser.signUp(name, email);
@@ -148,16 +147,17 @@ const VendorDetailsScreen: React.FC = () => {
                     await makeUser.signUp(name, email);
                     break;
                   case 3:
-                    await makeEasyCryptoUser( 
-                      mobile: mobile, 
+                    await makeEasyCryptoUser({
+                      mobile: mobile,
                       yob: dob,
-  lastName: splitName.lastName,
-  email: userEmail.toString(),
-  firstName: splitName.firstName,
-  extraIdNumber:
-  action:
-  version:
-  siteVersion: );
+                      lastName: splitName?.lastName,
+                      email: email,
+                      firstName: splitName?.firstName,
+                      extraIdNumber: null,
+                      action: null,
+                      version: null,
+                      siteVersion: null
+                    });
                     break;
                   default:
                     break;
