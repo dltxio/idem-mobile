@@ -159,6 +159,18 @@ const ClaimScreen: React.FC = () => {
               );
             }
 
+            if (field.type === "number") {
+              return (
+                <View key={field.id}>
+                  <Input
+                    keyboardType={"number-pad"}
+                    value={formState[field.id]}
+                    label={field.title}
+                  />
+                </View>
+              );
+            }
+
             if (field.type === "boolean") {
               return (
                 <View key={field.id} style={{ paddingVertical: 20 }}>
