@@ -99,7 +99,7 @@ const claims: Claim[] = [
     type: "TaxCredential",
     key: "0x06",
     mnemonic: "taxnumber",
-    title: "Tax Number",
+    title: "Tax File Number",
     description: "Users tax file number",
     verificationAction: "action",
     fields: [{ id: "taxFileNumber", title: "Tax File Number", type: "number" }],
