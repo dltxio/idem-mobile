@@ -1,19 +1,25 @@
 import axios from "axios";
 import { Alert } from "react-native";
+import { useClaimValue } from "../context/ClaimsStore";
 import { stuff } from "../interfaces/exchange-interface";
-import { claimsLocalStorage } from "../utils/local-storage";
+import { findNames } from "../utils/formatters";
 import { createRandomPassword } from "../utils/randomPassword-utils";
+
+const dob = useClaimValue("BirthCredential");
+const mobile = useClaimValue("MobileCredential");
+const name = useClaimValue("NameCredential");
+const splitName = findNames(name);
+const address = useClaimValue("AddressCredential");
 
 type Hooks = {
   makeEasyCryptoUser(bod: stuff): Promise<void>;
 };
 
 const useEasyCrypto = (): Hooks => {
-  const makeEasyCryptoUser = async (bod: stuff) => {
+  const makeEasyCryptoUser = async (body: stuff) => {
     const randomTempPassword = createRandomPassword();
-    const getData = claimsLocalStorage.get();
     const bodyEasyCrypto = JSON.stringify({
-      email: bod.email,
+      email: body.email,
       password: randomTempPassword,
       returnSecureToken: true
     });
@@ -29,14 +35,11 @@ const useEasyCrypto = (): Hooks => {
       );
       if (checkUserAuthEasyCrypto.status === 200) {
         const jwtEasy = checkUserAuthEasyCrypto.data.token;
-        const potato = getData.map(
-          (name: { firstName: string }) => name.firstName === bod.firstName
-        );
         const updatedEasyBody = {
-          firstName: potato.firstName,
-          lastName: potato.lastName,
-          yob: Number(potato.yob),
-          mobile: potato.mobileNumber,
+          firstName: splitName?.firstName,
+          lastName: splitName?.lastName,
+          dob: dob,
+          mobile: mobile,
           extraIdNumber: null,
           action: null,
           version: null,
@@ -52,28 +55,29 @@ const useEasyCrypto = (): Hooks => {
           }
         );
         if (updateUserInfo.status === 200) {
-          const jwtEasy = checkUserAuthEasyCrypto.data.token;
-          const updatedEasyBody = {
+          const NewjwtEasy = updateUserInfo.data.token;
+          const changeUserInfo = {
             component: "Address",
             action: "updatePart",
-            fields: { address: bod.address },
+            fields: { address: address },
             siteVersion: null,
             version: null
           };
-          const updateUserInfo = await axios.post(
+          const newchangeUserInfo = await axios.post(
             `https://api.easycrypto.com.au/apiv2/verify.php`,
-            updatedEasyBody,
+            changeUserInfo,
             {
               headers: {
-                Authorization: `Bearer ${jwtEasy}`
+                Authorization: `Bearer ${NewjwtEasy}`
               }
             }
           );
-
-          Alert.alert(
-            "Success!",
-            `You have signed up to Easy Crypto successfully. Your temporary password is ${randomTempPassword}`
-          );
+          if (newchangeUserInfo.status === 200) {
+            Alert.alert(
+              "Success!",
+              `You have signed up to Easy Crypto successfully. Your temporary password is ${randomTempPassword}`
+            );
+          }
         }
       }
     } catch (error: any) {

@@ -31,7 +31,6 @@ const VendorDetailsScreen: React.FC = () => {
   const { signupGPIB, signupCoinstash, verifyOnExchange } = useExchange();
   const { expoPushToken } = usePushNotifications();
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
-  const name = useClaimValue("NameCredential");
 
   const addressValue = usersClaims.find(
     (claim) => claim.type === "AddressCredential"
@@ -42,11 +41,13 @@ const VendorDetailsScreen: React.FC = () => {
   const dob = useClaimValue("BirthCredential");
   const yob = findYOB(dob ? dob : "");
   const mobile = useClaimValue("MobileCredential");
+  const name = useClaimValue("NameCredential");
   const splitName = findNames(name);
   const { verifyClaims, postTokenToProxy } = useVerifyClaims();
 
   const vendor = vendors.find((v) => v.name === route.params.vendorId);
   const [signed, setSigned] = React.useState<boolean>(false);
+
   const { makeEasyCryptoUser } = useEasyCrypto();
 
   const hasAllRequiredClaims = React.useMemo(() => {
