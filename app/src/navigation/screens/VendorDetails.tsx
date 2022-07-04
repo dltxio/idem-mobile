@@ -34,7 +34,7 @@ const VendorDetailsScreen: React.FC = () => {
   const { signupGPIB, signupCoinstash, verifyOnExchange } = useExchange();
   const { expoPushToken } = usePushNotifications();
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
-  const name = useClaimValue("FullNameCredential");
+  const name = useClaimValue("NameCredential");
 
   const addressValue = usersClaims.find(
     (claim) => claim.type === "AddressCredential"
@@ -42,7 +42,7 @@ const VendorDetailsScreen: React.FC = () => {
 
   const address = useClaimValue("AddressCredential");
   const email = useClaimValue("EmailCredential");
-  const dob = useClaimValue("DateOfBirthCredential");
+  const dob = useClaimValue("BirthCredential");
   const yob = findYOB(dob ? dob : "");
   const splitName = findNames(name);
   const { verifyClaims, postTokenToProxy } = useVerifyClaims();
@@ -116,6 +116,7 @@ const VendorDetailsScreen: React.FC = () => {
       contentContainerStyle={styles.scrollContent}
     >
       <Text style={styles.header}>{vendor?.name}</Text>
+      <Text style={styles.tagLine}>{vendor?.tagline}</Text>
       <Text style={styles.description}>{vendor?.description}</Text>
       <Image source={{ uri: vendor?.logo }} style={styles.logo} />
       <View style={styles.buttonWrapper}>
@@ -232,6 +233,12 @@ const styles = StyleSheet.create({
     marginTop: Dimensions.get("window").height / 6,
     justifyContent: "space-around"
   },
+
+  tagLine: {
+    marginVertical: 5,
+    fontSize: 15
+  },
+
   button: {
     marginVertical: 5
   }

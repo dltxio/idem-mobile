@@ -4,6 +4,8 @@ import { ListItem } from "@rneui/themed";
 import { useNavigation } from "@react-navigation/native";
 import { VendorStackNavigation } from "../../types/navigation";
 import useVendorsList from "../../hooks/useVendorsList";
+import { AntDesign } from "@expo/vector-icons";
+import colors from "../../styles/colors";
 
 type Navigation = VendorStackNavigation<"Back">;
 
@@ -18,9 +20,15 @@ const VendorsScreen: React.FC = () => {
         vendors.map((vendor) => {
           const content = (
             <>
-              <ListItem.Content style={styles.container}>
-                <ListItem.Title>{vendor.name}</ListItem.Title>
+              <ListItem.Content>
+                <ListItem.Title style={styles.vendorName}>
+                  {vendor.name}
+                </ListItem.Title>
+                <ListItem.Subtitle style={styles.tagLine}>
+                  {vendor.tagline}
+                </ListItem.Subtitle>
               </ListItem.Content>
+              <AntDesign name="right" style={styles.icon} />
             </>
           );
 
@@ -48,12 +56,28 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "flex-start",
     alignItems: "center",
-    width: Dimensions.get("window").width
+    width: Dimensions.get("window").width,
+    marginTop: 1
+  },
+
+  icon: {
+    color: colors.black,
+    fontSize: 24
   },
 
   header: {
     color: "black",
-    fontSize: 30,
+    fontSize: 40,
     marginBottom: 10
+  },
+
+  vendorName: {
+    fontSize: 20
+  },
+
+  tagLine: {
+    textAlign: "left",
+    fontSize: 14,
+    justifyContent: "flex-start"
   }
 });
