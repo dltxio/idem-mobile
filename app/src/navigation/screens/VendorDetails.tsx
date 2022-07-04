@@ -138,7 +138,7 @@ const VendorDetailsScreen: React.FC = () => {
                 Linking.openURL(vendor.signup);
                 return;
               }
-              if (name && email && splitName && dob && mobile) {
+              if (name && email && splitName && dob && mobile && address) {
                 switch (vendor.id) {
                   case 1:
                     await makeUser.signUp(name, email);
@@ -156,7 +156,8 @@ const VendorDetailsScreen: React.FC = () => {
                       extraIdNumber: null,
                       action: null,
                       version: null,
-                      siteVersion: null
+                      siteVersion: null,
+                      address: address
                     });
                     break;
                   default:

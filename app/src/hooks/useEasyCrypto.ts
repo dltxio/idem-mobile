@@ -12,7 +12,6 @@ const useEasyCrypto = (): Hooks => {
   const makeEasyCryptoUser = async (bod: stuff) => {
     const randomTempPassword = createRandomPassword();
     const getData = claimsLocalStorage.get();
-    console.log(getData);
     const bodyEasyCrypto = JSON.stringify({
       email: bod.email,
       password: randomTempPassword,
@@ -33,16 +32,15 @@ const useEasyCrypto = (): Hooks => {
         const potato = getData.map(
           (name: { firstName: string }) => name.firstName === bod.firstName
         );
-        console.log(potato);
         const updatedEasyBody = {
           firstName: potato.firstName,
           lastName: potato.lastName,
           yob: Number(potato.yob),
           mobile: potato.mobileNumber,
           extraIdNumber: null,
-          action: "checkExisting",
-          version: 2,
-          siteVersion: "8.16.3"
+          action: null,
+          version: null,
+          siteVersion: null
         };
         const updateUserInfo = await axios.post(
           `https://api.easycrypto.com.au/apiv2/verify.php`,
@@ -54,6 +52,24 @@ const useEasyCrypto = (): Hooks => {
           }
         );
         if (updateUserInfo.status === 200) {
+          const jwtEasy = checkUserAuthEasyCrypto.data.token;
+          const updatedEasyBody = {
+            component: "Address",
+            action: "updatePart",
+            fields: { address: bod.address },
+            siteVersion: null,
+            version: null
+          };
+          const updateUserInfo = await axios.post(
+            `https://api.easycrypto.com.au/apiv2/verify.php`,
+            updatedEasyBody,
+            {
+              headers: {
+                Authorization: `Bearer ${jwtEasy}`
+              }
+            }
+          );
+
           Alert.alert(
             "Success!",
             `You have signed up to Easy Crypto successfully. Your temporary password is ${randomTempPassword}`

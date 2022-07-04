@@ -28,4 +28,5 @@ export type stuff = {
   action: null;
   version: null;
   siteVersion: null;
+  address: string;
 };
