@@ -59,7 +59,7 @@ const claims: Claim[] = [
     title: "Email",
     description: "Users email address",
     verificationAction: "action",
-    fields: [{ id: "email", title: "Email", type: "text" }],
+    fields: [{ id: "email", title: "Email", type: "email" }],
     verificationDocuments: []
   },
   {
@@ -69,7 +69,7 @@ const claims: Claim[] = [
     title: "Mobile",
     description: "Users mobile number",
     verificationAction: "action",
-    fields: [{ id: "mobileNumber", title: "Mobile number", type: "text" }],
+    fields: [{ id: "mobileNumber", title: "Mobile number", type: "phone" }],
     verificationDocuments: []
   },
   {
@@ -80,7 +80,7 @@ const claims: Claim[] = [
     description: "Users physical address",
     verificationAction: "document-upload",
     fields: [
-      { id: "houseNumber", title: "House Number", type: "text" },
+      { id: "houseNumber", title: "House Number", type: "number" },
       { id: "street", title: "Street", type: "text" },
       { id: "suburb", title: "Suburb", type: "text" },
       { id: "postCode", title: "Post Code", type: "text" },
@@ -99,10 +99,10 @@ const claims: Claim[] = [
     type: "TaxCredential",
     key: "0x06",
     mnemonic: "taxnumber",
-    title: "Tax Number",
+    title: "Tax File Number",
     description: "Users tax file number",
     verificationAction: "action",
-    fields: [{ id: "taxFileNumber", title: "Tax File Number", type: "text" }],
+    fields: [{ id: "taxFileNumber", title: "Tax File Number", type: "number" }],
     verificationDocuments: []
   },
   {
