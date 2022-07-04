@@ -59,7 +59,7 @@ const claims: Claim[] = [
     title: "Email",
     description: "Users email address",
     verificationAction: "action",
-    fields: [{ id: "email", title: "Email", type: "text" }],
+    fields: [{ id: "email", title: "Email", type: "email" }],
     verificationDocuments: []
   },
   {
@@ -69,7 +69,7 @@ const claims: Claim[] = [
     title: "Mobile",
     description: "Users mobile number",
     verificationAction: "action",
-    fields: [{ id: "mobileNumber", title: "Mobile number", type: "number" }],
+    fields: [{ id: "mobileNumber", title: "Mobile number", type: "phone" }],
     verificationDocuments: []
   },
   {

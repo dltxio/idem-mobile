@@ -1,4 +1,4 @@
-type FieldType = "text" | "date" | "boolean" | "number";
+type FieldType = "text" | "date" | "boolean" | "number" | "email" | "phone";
 
 export type Field = {
   id: string;
