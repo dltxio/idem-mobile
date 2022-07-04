@@ -50,7 +50,7 @@
     "tagline": "Buy, sell and trade on Australia's best crypto exchange",
     "description": "Buy, sell and trade on Australia's best crypto exchange",
     "website": "https://cointree.com/",
-    "logo": "",
+    "logo": "https://www.cointree.com/media/cointree_logo_colour_rgb.png",
     "signup": "https://auth.cointree.com/Account/Register?registerwith=${email}",
     "useProxy": false,
     "backgroundColor": "white"
@@ -61,7 +61,7 @@
     "tagline": "We make it easy for Aussies to buy and sell crypto",
     "description": "Buy and sell instantly with Australia's fastest and safest crypto retailer. Deliver to any wallet address or withdraw to your bank account in as little as two minutes. Easy!",
     "website": "https://easycrypto.com/au",
-    "logo": "",
+    "logo": "https://hub.easycrypto.com/wp-content/uploads/2021/06/logo-white-200px.png",
     "signup": "https://easycrypto.com/au",
     "useProxy": false,
     "backgroundColor": "6438da"

@@ -4,7 +4,7 @@ import allClaims from "../data/claims";
 import { claimsLocalStorage } from "../utils/local-storage";
 import { displayClaimValue } from "../utils/claim-utils";
 
-export type ClaimsVault = {
+export type ClaimsVault = {   
   unclaimedClaims: Claim[];
   usersClaims: ClaimWithValue[];
   addClaim: (claimId: ClaimType, value: any, files: string[]) => Promise<void>;

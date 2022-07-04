@@ -22,9 +22,9 @@ export const ExchangeContext = React.createContext<ExchangeValue | undefined>(
   undefined
 );
 
-export const ExchangeProvider: React.FC<{
-  children: React.ReactNode;
-}> = (props) => {
+export const ExchangeProvider: React.FC<{ children: React.ReactNode }> = (
+  props
+) => {
   const [gpibUserID, setGpibUserID] = React.useState<string | undefined>();
   const api = useApi();
 
@@ -65,7 +65,7 @@ export const ExchangeProvider: React.FC<{
       const splitName = findNames(name);
       if (splitName?.firstName && splitName.lastName && randomTempPassword) {
         api
-          .gpibSignup({
+          .vendorSignup({
             source: VenderEnum.GPIB,
             firstName: splitName?.firstName,
             lastName: splitName?.lastName,
@@ -85,6 +85,7 @@ export const ExchangeProvider: React.FC<{
     }
   };
 
+  // MAKE COINSTASH USER
   const signupCoinstash: IExchange = {
     signUp: async (name: string, email: string) => {
       const randomTempPassword = createRandomPassword();
@@ -103,7 +104,6 @@ export const ExchangeProvider: React.FC<{
             "Content-Type": "application/json"
           }
         });
-
         shareDetailsAlert(randomTempPassword);
       } catch (error: any) {
         if (axios.isAxiosError(error)) {
@@ -126,15 +126,16 @@ export const ExchangeProvider: React.FC<{
     }
   };
 
+  //VARIFY GPIB USER
   const verifyOnExchange = async (body: VerifyUserRequestBody) => {
-    const auth = JSON.stringify({
+    const checkAuthBody = JSON.stringify({
       userName: body.userName,
       password: body.password
     });
     try {
       const checkUserAuth = await axios.post(
         "https://testapi.getpaidinbitcoin.com.au/user/authenticate",
-        auth,
+        checkAuthBody,
         {
           headers: {
             "Content-Type": "application/json"

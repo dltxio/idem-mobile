@@ -23,6 +23,7 @@ import { exchangeLocalStorage } from "../../utils/local-storage";
 import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import * as Crypto from "expo-crypto";
 import usePushNotifications from "../../hooks/usePushNotifications";
+import useEasyCrypto from "../../hooks/useEasyCrypto";
 
 const VendorDetailsScreen: React.FC = () => {
   const { usersClaims } = useClaimsStore();
@@ -30,7 +31,6 @@ const VendorDetailsScreen: React.FC = () => {
   const { signupGPIB, signupCoinstash, verifyOnExchange } = useExchange();
   const { expoPushToken } = usePushNotifications();
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
-  const name = useClaimValue("NameCredential");
 
   const addressValue = usersClaims.find(
     (claim) => claim.type === "AddressCredential"
@@ -40,11 +40,15 @@ const VendorDetailsScreen: React.FC = () => {
   const email = useClaimValue("EmailCredential");
   const dob = useClaimValue("BirthCredential");
   const yob = findYOB(dob ? dob : "");
+  const mobile = useClaimValue("MobileCredential");
+  const name = useClaimValue("NameCredential");
   const splitName = findNames(name);
   const { verifyClaims, postTokenToProxy } = useVerifyClaims();
 
   const vendor = vendors.find((v) => v.name === route.params.vendorId);
   const [signed, setSigned] = React.useState<boolean>(false);
+
+  const { makeEasyCryptoUser } = useEasyCrypto();
 
   const hasAllRequiredClaims = React.useMemo(() => {
     if (!vendor || !vendor.requiredClaimMnemonics) {
@@ -78,6 +82,7 @@ const VendorDetailsScreen: React.FC = () => {
 
         const userEmail = await hashEmail();
         const gpibUserID = await exchangeLocalStorage.get();
+        console.log(gpibUserID);
         const userClaims = {
           firstName: splitName.firstName,
           lastName: splitName.lastName,
@@ -130,12 +135,24 @@ const VendorDetailsScreen: React.FC = () => {
           onPress={async () => {
             if (vendor) {
               const makeUser = idToIExchange[vendor.id];
-              if (!makeUser) {
-                Linking.openURL(vendor.signup);
-                return;
-              }
-              if (name && email) {
-                await makeUser.signUp(name, email);
+              if (name && email && splitName) {
+                switch (vendor.id) {
+                  case 1:
+                    await makeUser.signUp(name, email);
+                    break;
+                  case 2:
+                    await makeUser.signUp(name, email);
+                    break;
+                  case 6:
+                    await makeEasyCryptoUser(
+                      email,
+                      splitName?.firstName,
+                      splitName?.lastName
+                    );
+                    break;
+                  default:
+                    break;
+                }
                 setSigned(true);
               } else {
                 Alert.alert(
