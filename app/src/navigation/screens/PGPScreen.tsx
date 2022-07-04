@@ -45,7 +45,7 @@ const PGPScreen: React.FC = () => {
 
   const importPGPPrivateKey = async () => {
     // try {
-    // const keyPair : PGP = await createPublicKey(keyText as string);
+    const keyPair : PGP = await createPublicKey(keyText as string);
     //   setPGP(keyPair);
       
     //   // await pgpLocalStorage.save(keyPair);
