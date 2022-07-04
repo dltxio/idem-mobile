@@ -163,9 +163,10 @@ const ClaimScreen: React.FC = () => {
               return (
                 <View key={field.id}>
                   <Input
+                    label={field.title}
                     keyboardType={"number-pad"}
                     value={formState[field.id]}
-                    label={field.title}
+                    onChangeText={onChange}
                   />
                 </View>
               );
