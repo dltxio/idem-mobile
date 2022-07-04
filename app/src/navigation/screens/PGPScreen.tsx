@@ -45,9 +45,9 @@ const PGPScreen: React.FC = () => {
 
   const importPGPPrivateKey = async () => {
     // try {
-    const keyPair : PGP = await createPublicKey(keyText as string);
+    const keyPair: PGP = await createPublicKey(keyText as string);
     //   setPGP(keyPair);
-      
+
     //   // await pgpLocalStorage.save(keyPair);
     //   // const checkKey = await pgpLocalStorage.get();
 
@@ -90,19 +90,19 @@ const PGPScreen: React.FC = () => {
     const password = createRandomPassword();
 
     if (name && email) {
-      // const keyPair: PGP = await generateKeyPair(password, name, email);
-      // setPGP(keyPair);
-      // await pgpLocalStorage.save(keyPair);
+      const keyPair: PGP = await generateKeyPair(password, name, email);
+      setPGP(keyPair);
+      await pgpLocalStorage.save(keyPair);
       Alert.alert(
         "Success!",
         `Your PGP key has been created with the password ${password}`
       );
-      
+
       return;
     }
 
     Alert.alert("UH-HO", "No email or name claim was found.");
-  }
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container}>

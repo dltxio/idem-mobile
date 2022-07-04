@@ -1,19 +1,23 @@
 import axios, { AxiosError } from "axios";
-import * as openpgp from "openpgp";
+// import * as openpgp from "openpgp";
 import { UploadPGPKeyResponse } from "../types/general";
 import type { PGP } from "../types/wallet";
+import OpenPGP from "react-native-fast-openpgp";
 
 export const generateKeyPair = async (
   password: string,
   name: string,
   email: string
 ): Promise<PGP> => {
-  const { privateKey, publicKey } = await openpgp.generateKey({
-    type: "ecc", // Type of the key, defaults to ECC
-    curve: "curve25519", // ECC curve name, defaults to curve25519
-    userIDs: [{ name: name, email: email }], // you can pass multiple user IDs
-    passphrase: password,
-    format: "armored" // output key format, defaults to 'armored' (other options: 'binary' or 'object')
+  const { privateKey, publicKey } = await OpenPGP.generate({
+    email: email,
+    name: name,
+    passphrase: password
+    //   type: "ecc", // Type of the key, defaults to ECC
+    //   curve: "curve25519", // ECC curve name, defaults to curve25519
+    //   userIDs: [{ name: name, email: email }], // you can pass multiple user IDs
+    //   passphrase: password,
+    //   format: "armored" // output key format, defaults to 'armored' (other options: 'binary' or 'object')
   });
 
   const pgp: PGP = {
@@ -21,18 +25,18 @@ export const generateKeyPair = async (
     publicKey: publicKey
   };
 
-  // console.log(pgp);
+  console.log(pgp);
 
   return pgp;
 };
 
 export const createPublicKey = async (privateKey: string): Promise<PGP> => {
-  const result: openpgp.Key = await openpgp.readKey({ armoredKey: privateKey });
-  const publicKey = result.toPublic();
+  // const result: OpenPGP.Key = await OpenPGP.apply({ armoredKey: privateKey });
+  // const publicKey = result.toPublic();
 
   const pgp: PGP = {
     privateKey: privateKey,
-    publicKey: publicKey.armor()
+    publicKey: ""
   };
 
   return pgp;
@@ -59,10 +63,12 @@ export const createPublicKey = async (privateKey: string): Promise<PGP> => {
 // };
 
 // TODO: change to fingerprint
-export const verifyKeyByEmail = async (email: string) : Promise<Boolean> => {
+export const verifyKeyByEmail = async (email: string): Promise<Boolean> => {
   try {
-    await axios.get(encodeURI(`https://keys.openpgp.org/vks/v1/by-email/${email}`));
-    
+    await axios.get(
+      encodeURI(`https://keys.openpgp.org/vks/v1/by-email/${email}`)
+    );
+
     // Alert.alert(
     //   `Email Verified`,
     //   `Email has been verified with keys.openpgp.org`
