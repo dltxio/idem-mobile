@@ -1,5 +1,4 @@
 import axios, { AxiosError } from "axios";
-// import * as openpgp from "openpgp";
 import { UploadPGPKeyResponse } from "../types/general";
 import type { PGP } from "../types/wallet";
 import OpenPGP from "react-native-fast-openpgp";
@@ -13,11 +12,7 @@ export const generateKeyPair = async (
     email: email,
     name: name,
     passphrase: password
-    //   type: "ecc", // Type of the key, defaults to ECC
-    //   curve: "curve25519", // ECC curve name, defaults to curve25519
-    //   userIDs: [{ name: name, email: email }], // you can pass multiple user IDs
-    //   passphrase: password,
-    //   format: "armored" // output key format, defaults to 'armored' (other options: 'binary' or 'object')
+    // format: "armored" // output key format, defaults to 'armored' (other options: 'binary' or 'object')
   });
 
   const pgp: PGP = {
@@ -31,7 +26,8 @@ export const generateKeyPair = async (
 };
 
 export const createPublicKey = async (privateKey: string): Promise<PGP> => {
-  // const result: OpenPGP.Key = await OpenPGP.apply({ armoredKey: privateKey });
+  // const key = 
+  const result = await OpenPGP.
   // const publicKey = result.toPublic();
 
   const pgp: PGP = {
