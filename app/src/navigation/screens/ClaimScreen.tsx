@@ -148,6 +148,45 @@ const ClaimScreen: React.FC = () => {
               );
             }
 
+            if (field.type === "number") {
+              return (
+                <View key={field.id}>
+                  <Input
+                    label={field.title}
+                    keyboardType={"number-pad"}
+                    value={formState[field.id]}
+                    onChangeText={onChange}
+                  />
+                </View>
+              );
+            }
+
+            if (field.type === "email") {
+              return (
+                <View key={field.id}>
+                  <Input
+                    label={field.title}
+                    keyboardType={"email-address"}
+                    value={formState[field.id]}
+                    onChangeText={onChange}
+                  />
+                </View>
+              );
+            }
+
+            if (field.type === "phone") {
+              return (
+                <View key={field.id}>
+                  <Input
+                    label={field.title}
+                    keyboardType={"phone-pad"}
+                    value={formState[field.id]}
+                    onChangeText={onChange}
+                  />
+                </View>
+              );
+            }
+
             if (field.type === "boolean") {
               return (
                 <View key={field.id} style={{ paddingVertical: 20 }}>
