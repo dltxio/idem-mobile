@@ -64,9 +64,9 @@ const App = () => {
 
   useEffect(() => {
     const subscription = Notifications.addNotificationResponseReceivedListener(
-      (response) => {
+      async (response) => {
         const url = response.notification.request.content.data.url as string;
-        Linking.openURL(url);
+        await Linking.openURL(url);
       }
     );
     return () => subscription.remove();
