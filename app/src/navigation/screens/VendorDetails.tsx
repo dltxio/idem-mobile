@@ -1,14 +1,6 @@
 import { useRoute } from "@react-navigation/native";
 import * as React from "react";
-import {
-  View,
-  Image,
-  StyleSheet,
-  Text,
-  Dimensions,
-  Linking,
-  Alert
-} from "react-native";
+import { View, Image, StyleSheet, Text, Dimensions, Alert } from "react-native";
 import { Button } from "../../components";
 import useVendorsList from "../../hooks/useVendorsList";
 import { VendorStackNavigationRoute } from "../../types/navigation";
