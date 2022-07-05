@@ -83,7 +83,7 @@ const claims: Claim[] = [
       { id: "houseNumber", title: "House Number", type: "number" },
       { id: "street", title: "Street", type: "text" },
       { id: "suburb", title: "Suburb", type: "text" },
-      { id: "postCode", title: "Post Code", type: "text" },
+      { id: "postCode", title: "Post Code", type: "number" },
       { id: "state", title: "State", type: "text" },
       { id: "country", title: "Country", type: "text" }
     ],
