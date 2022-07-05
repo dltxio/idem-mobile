@@ -38,7 +38,7 @@ const VendorsScreen: React.FC = () => {
               style={styles.container}
               onPress={() =>
                 navigation.navigate("VendorDetails", {
-                  vendorId: vendor.name
+                  id: vendor.id
                 })
               }
             >

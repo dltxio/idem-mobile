@@ -5,6 +5,7 @@
     "version": "1.0.66",
     "entryPoint": "./src/App.tsx",
     "orientation": "portrait",
+    "scheme": "idem",
     "icon": "./assets/iosLogo.png",
     "splash": {
       "image": "./assets/splash.png",
