@@ -4,62 +4,108 @@ import {
   StyleSheet,
   TextInput,
   Text,
-  Dimensions,
   Alert,
   KeyboardAvoidingView,
   ScrollView
 } from "react-native";
+
 import { Button } from "../../components";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
+import { useClaimValue } from "../../context/ClaimsStore";
 import { pgpLocalStorage } from "../../utils/local-storage";
-
+import { createRandomPassword } from "../../utils/randomPassword-utils";
 import type { PGP } from "../../types/wallet";
-// import { createRandomPassword } from "../../utils/randomPassword-utils";
-import { createPublicKey, generatePGP } from "../../utils/pgp-utils";
+
+import {
+  createPublicKey,
+  generateKeyPair,
+  publishPublicKey,
+  verifyKeyByEmail
+} from "../../utils/pgp-utils";
 
 const PGPScreen: React.FC = () => {
-  // const [pgp, setPGP] = React.useState<PGP>();
+  // for user input
   const [keyText, setKeyText] = React.useState<string>();
+  // const [keyPublicText, setPublicKeyText] = React.useState<string>();
+  const [pgp, setPGP] = React.useState<PGP>();
+
+  const email = useClaimValue("EmailCredential");
+  const name = useClaimValue("NameCredential");
 
   React.useEffect(() => {
     (async () => {
-      const initialPGP = await pgpLocalStorage.get();
+      const localPGP = await pgpLocalStorage.get();
 
-      if (initialPGP) {
-        setKeyText(initialPGP.publicKey);
+      if (localPGP) {
+        setKeyText(localPGP.publicKey);
+        setPGP(localPGP);
       }
     })();
   }, []);
 
   const importPGPPrivateKey = async () => {
-    // setPGP(pgp);
-    try {
-      const keyPair : PGP = await createPublicKey(keyText as string);
-      await pgpLocalStorage.save(keyPair);
-      const checkKey = await pgpLocalStorage.get();
-      if (checkKey) {
-        Alert.alert("Success!", "Your PGP key has been saved.");
-      }
-    } catch (error) {
-      Alert.alert(
-        "UH-OH",
-        "There was a problem importing your public key. Please try again."
-      );
-      console.log(error);
-    }
+    // try {
+    const keyPair: PGP = await createPublicKey(keyText as string);
+    //   setPGP(keyPair);
+
+    //   // await pgpLocalStorage.save(keyPair);
+    //   // const checkKey = await pgpLocalStorage.get();
+
+    //   // if (checkKey) {
+    //   //   Alert.alert("Success!", "Your PGP Key Pair has been saved.");
+    //   //   return;
+    //   // }
+    //   return;
+    // } catch (error) {
+    //   console.log(error);
+    // }
+
+    Alert.alert(
+      "UH-OH",
+      "There was a problem importing your Private Key. Please try again."
+    );
   };
 
-  const generateNewPGP = async () => {
-    // todo: alert for password
-    const email = ""; //claims.find((c) => c.type === "AdultCredential");
-    const name = ""; //claims.find((c) => c.type === "AdultCredential");
+  const publishPGPPublicKey = async () => {
+    if (email && pgp?.publicKey) {
+      // await publishPublicKey(email, pgp.publicKey);
+      return;
+    }
 
-    const pgp : PGP = await generatePGP("my password", name, email);
-    Alert.alert("Success!", "Your PGP key has been created.");
-  }
+    Alert.alert("No PGP key or Email has been added.");
+  };
+
+  const verifyPGPPublicKey = async () => {
+    // todo check finger prints here too.  See IDEM-168
+
+    if (email) {
+      // await verifyKeyByEmail(email);
+      return;
+    }
+
+    Alert.alert("UH-OH", "No email claim was found.");
+  };
+
+  const generateNewPGPKeyPair = async () => {
+    const password = createRandomPassword();
+
+    if (name && email) {
+      const keyPair: PGP = await generateKeyPair(password, name, email);
+      setPGP(keyPair);
+      await pgpLocalStorage.save(keyPair);
+      Alert.alert(
+        "Success!",
+        `Your PGP key has been created with the password ${password}`
+      );
+
+      return;
+    }
+
+    Alert.alert("UH-HO", "No email or name claim was found.");
+  };
 
   return (
-    <KeyboardAvoidingView>
+    <KeyboardAvoidingView style={styles.container}>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.scrollContent}
@@ -73,6 +119,9 @@ const PGPScreen: React.FC = () => {
           multiline={true}
           selectionColor={"white"}
         />
+        {/* <Text>
+          value={pgp?.publicKey}
+        </Text> */}
         <Text style={styles.warning}>
           NOTE: Importing your keys saves them to your local storage. IDEM does
           not have access to the keys you import.
@@ -88,7 +137,19 @@ const PGPScreen: React.FC = () => {
 
         <View style={styles.buttonWrapper}>
           <View style={styles.button}>
-            <Button title={"Generate new PGP Key"} onPress={generateNewPGP} />
+            <Button
+              title={"Generate new PGP Key"}
+              onPress={generateNewPGPKeyPair}
+            />
+          </View>
+          <View style={styles.button}>
+            <Button
+              title={"Publish PGP Public key"}
+              onPress={publishPGPPublicKey}
+            />
+          </View>
+          <View style={styles.button}>
+            <Button title={"Verify email"} onPress={verifyPGPPublicKey} />
           </View>
         </View>
 
@@ -102,13 +163,11 @@ export default PGPScreen;
 
 const styles = StyleSheet.create({
   container: {
-    width: Dimensions.get("window").width,
-    marginTop: 80
+    flex: 1
   },
   scrollContent: {
     justifyContent: "flex-start",
-    alignItems: "center",
-    height: Dimensions.get("window").height
+    alignItems: "center"
   },
   introText: {
     marginBottom: 10
@@ -119,18 +178,20 @@ const styles = StyleSheet.create({
     height: 200,
     padding: 10,
     overflow: "scroll",
-    width: Dimensions.get("window").width
+    alignSelf: "stretch"
   },
   buttonWrapper: {
     justifyContent: "flex-end",
-    height: Dimensions.get("window").height * 0.28
+    alignSelf: "stretch"
   },
   button: {
     marginVertical: 5,
-    width: Dimensions.get("window").width * 0.9
+    alignSelf: "stretch",
+    marginHorizontal: 10
   },
   warning: {
-    width: Dimensions.get("window").width * 0.8,
+    alignSelf: "stretch",
+    marginHorizontal: 20,
     marginTop: 10
   }
 });

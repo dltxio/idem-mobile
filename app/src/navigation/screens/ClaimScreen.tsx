@@ -50,7 +50,6 @@ const ClaimScreen: React.FC = () => {
     loading,
     saveAndCheckBirthday,
     onSelectFile,
-    verifyEmail,
     selectedFileIds,
     setLoading,
     setSelectedFileIds
@@ -129,16 +128,6 @@ const ClaimScreen: React.FC = () => {
                     value={formState[field.id]}
                     onChangeText={onChange}
                   />
-                  {field.id === "email" ? (
-                    <View style={{ marginTop: 385 }}>
-                      <Button
-                        onPress={() => verifyEmail(formState[field.id])}
-                        title="Verify Email Claim"
-                      />
-                    </View>
-                  ) : (
-                    <Text></Text>
-                  )}
                 </View>
               );
             }
@@ -256,7 +245,7 @@ const VerificationFiles: React.FC<{
         }
       );
     }
-  }, []);
+  }, [isVerifying]);
 
   return (
     <View>

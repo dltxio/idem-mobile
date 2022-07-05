@@ -2758,7 +2758,7 @@ better-opn@~3.0.2:
   dependencies:
     open "^8.0.4"
 
-big-integer@1.6.x:
+big-integer@1.6.x, big-integer@^1.6.51:
   version "1.6.51"
   resolved "https://registry.yarnpkg.com/big-integer/-/big-integer-1.6.51.tgz#0df92a5d9880560d3ff2d5fd20245c889d130686"
   integrity sha512-GPEid2Y9QU1Exl1rpO9B2IPJGHPSupF5GnVIP0blYvNOMer2bTvSWs1jGOUg04hTmu67nmLsQ9TBo1puaotBHg==
@@ -4256,6 +4256,11 @@ flat@^5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/flat/-/flat-5.0.2.tgz#8ca6fe332069ffa9d324c327198c598259ceb241"
   integrity sha512-b6suED+5/3rTpUBdG1gupIl8MPFCAMA0QXwmljLhvCUKcUvdE4gWky9zpuGCcXHOsz4J9wPGNWq6OKpmIzz3hQ==
+
+flatbuffers@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/flatbuffers/-/flatbuffers-2.0.6.tgz#3aa3a39d282af9a660b4a0cdd1bb7ad91874abfc"
+  integrity sha512-QTTZTXTbVfuOVQu2X6eLOw4vefUxnFJZxAKeN3rEPhjEzBtIbehimJLfVGHPM8iX0Na+9i76SBEg0skf0c0sCA==
 
 flow-parser@0.*:
   version "0.181.0"
@@ -6758,6 +6763,14 @@ react-native-document-picker@^8.1.1:
   integrity sha512-mH0oghd7ndgU9/1meVJdqts1sAkOfUQW1qbrqTTsvR5f2K9r0BAj/X02dve5IBMOMZvlGd7qWrNVuIFg5AUXWg==
   dependencies:
     invariant "^2.2.4"
+
+react-native-fast-openpgp@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-fast-openpgp/-/react-native-fast-openpgp-2.3.1.tgz#9ec8c14b9f5922c8fa4808e453a4442e3c5073d8"
+  integrity sha512-d/IkFgp1ZLHG0wg6+RkUp4FFUimVPXUfWn+ODXFvs045tcrgu94yHL0xC8yURp68vRrDWtBDKzBu37YnEuq+Zw==
+  dependencies:
+    big-integer "^1.6.51"
+    flatbuffers "^2.0.6"
 
 react-native-gesture-handler@~2.2.1:
   version "2.2.1"
