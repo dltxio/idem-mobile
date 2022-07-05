@@ -8,6 +8,7 @@ import useApi from "./useApi";
 type Hooks = {
   signup: (name: string, email: string, vendorId: number) => Promise<void>;
 };
+
 const useVendors = (): Hooks => {
   const api = useApi();
 
