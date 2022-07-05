@@ -26,7 +26,11 @@ const TabNavigator = () => (
     })}
   >
     <Tab.Screen name="Profile" component={ProfileStackNavigator} />
-    <Tab.Screen name="SupportedExchanges" component={VendorsStackNavigator} />
+    <Tab.Screen
+      name="SupportedExchanges"
+      component={VendorsStackNavigator}
+      options={{ title: "Supported Exchanges" }}
+    />
     <Tab.Screen
       name="DocumentsTab"
       options={{
