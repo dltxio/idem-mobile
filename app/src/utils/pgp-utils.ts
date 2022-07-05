@@ -8,12 +8,6 @@ export const generateKeyPair = async (
   name: string,
   email: string
 ): Promise<PGP> => {
-  // const { privateKey, publicKey } = await OpenPGP.generate({
-  //   email: email,
-  //   name: name,
-  //   passphrase: password
-  // });
-
   const { privateKey, publicKey } = await OpenPGP.generate({
     email: email,
     name: name,

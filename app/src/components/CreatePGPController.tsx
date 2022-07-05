@@ -7,11 +7,10 @@ import {
   Text,
   Modal
 } from "react-native";
-// import { pgpLocalStorage } from "../utils/local-storage";
+
 import { useClaimValue } from "../../context/ClaimsStore";
 import { createRandomPassword } from "../../utils/randomPassword-utils";
 import type { PGP } from "../types/wallet";
-
 
 import commonStyles from "../styles/styles";
 import { usePGP } from "../context/PGP";
