@@ -8,11 +8,16 @@ export const generateKeyPair = async (
   name: string,
   email: string
 ): Promise<PGP> => {
+  // const { privateKey, publicKey } = await OpenPGP.generate({
+  //   email: email,
+  //   name: name,
+  //   passphrase: password
+  // });
+
   const { privateKey, publicKey } = await OpenPGP.generate({
     email: email,
     name: name,
     passphrase: password
-    // format: "armored" // output key format, defaults to 'armored' (other options: 'binary' or 'object')
   });
 
   const pgp: PGP = {
@@ -21,19 +26,6 @@ export const generateKeyPair = async (
   };
 
   console.log(pgp);
-
-  return pgp;
-};
-
-export const createPublicKey = async (privateKey: string): Promise<PGP> => {
-  // const key = 
-  const result = await OpenPGP.
-  // const publicKey = result.toPublic();
-
-  const pgp: PGP = {
-    privateKey: privateKey,
-    publicKey: ""
-  };
 
   return pgp;
 };
@@ -74,13 +66,12 @@ export const verifyKeyByEmail = async (email: string): Promise<Boolean> => {
   } catch (error) {
     const err = error as AxiosError;
     console.error(err?.response?.data || error);
-    // Alert.alert("UH-OH", "Could not verify email.");
 
     return false;
   }
 };
 
-export const publishPublicKey = async (email: string, publicKey: string) => {
+export const publishPublicKey = async (email: string, publicKey: string): Promise<Boolean> => {
   try {
     const uploadResponse = await axios.post<UploadPGPKeyResponse>(
       "https://keys.openpgp.org/vks/v1/upload",
@@ -107,14 +98,11 @@ export const publishPublicKey = async (email: string, publicKey: string) => {
       }
     );
     console.log(verifyResponse.data);
-    // Alert.alert(
-    //   `Email Sent`,
-    //   `Please check your email for instructions from keys.openpgp.org on how to verify your claim.`
-    // );
+    return true;
   } catch (error) {
     const err = error as AxiosError;
     console.error(err?.response?.data || error);
+    return false;
   }
 };
 
-// create get signature function here too
