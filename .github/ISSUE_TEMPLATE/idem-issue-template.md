@@ -9,12 +9,10 @@ assignees: ''
 
 ## Context
 
-## User Story
-- As a
-- I want
-- So that
-
 ## AC
 - Given
 - When
 - Then
+
+## Test steps
+-  
