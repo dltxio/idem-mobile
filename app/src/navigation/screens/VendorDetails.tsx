@@ -12,24 +12,23 @@ import {
 import { Button } from "../../components";
 import useVendorsList from "../../hooks/useVendorsList";
 import { VendorStackNavigationRoute } from "../../types/navigation";
-import { useExchange } from "../../context/Exchange";
-import { findNames, findYOB } from "../../utils/formatters";
+import { findNames } from "../../utils/formatters";
 import { ScrollView } from "react-native-gesture-handler";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
-import { IExchange } from "../../interfaces/exchange-interface";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
-import { exchangeLocalStorage } from "../../utils/local-storage";
 import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import * as Crypto from "expo-crypto";
 import usePushNotifications from "../../hooks/usePushNotifications";
 import { UserVerifyRequest } from "../../types/user";
+import useVendors from "../../hooks/userVendors";
+import { getVendor } from "../../utils/vendor";
 
 const VendorDetailsScreen: React.FC = () => {
   const { usersClaims } = useClaimsStore();
   const { vendors } = useVendorsList();
-  const { signupGPIB, signupCoinstash, verifyOnExchange } = useExchange();
   const { expoPushToken } = usePushNotifications();
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
+
   const name = useClaimValue("NameCredential");
 
   const addressValue = usersClaims.find(
@@ -39,12 +38,12 @@ const VendorDetailsScreen: React.FC = () => {
   const address = useClaimValue("AddressCredential");
   const email = useClaimValue("EmailCredential");
   const dob = useClaimValue("BirthCredential");
-  const yob = findYOB(dob ? dob : "");
   const splitName = findNames(name);
   const { verifyClaims, postTokenToProxy } = useVerifyClaims();
 
-  const vendor = vendors.find((v) => v.name === route.params.vendorId);
+  const vendor = vendors.find((v) => v.id == route.params.id);
   const [signed, setSigned] = React.useState<boolean>(false);
+  const { signup } = useVendors();
 
   const hasAllRequiredClaims = React.useMemo(() => {
     if (!vendor || !vendor.requiredClaimMnemonics) {
@@ -77,7 +76,6 @@ const VendorDetailsScreen: React.FC = () => {
         };
 
         const userEmail = await hashEmail();
-        const gpibUserID = await exchangeLocalStorage.get();
         const userClaims = {
           firstName: splitName.firstName,
           lastName: splitName.lastName,
@@ -88,8 +86,7 @@ const VendorDetailsScreen: React.FC = () => {
           suburb: addressValue.suburb,
           postcode: addressValue.postCode,
           state: addressValue.state,
-          country: addressValue.country,
-          userId: gpibUserID?.gpibUserID
+          country: addressValue.country
         } as UserVerifyRequest;
         await verifyClaims(userClaims, vendor);
       }
@@ -97,11 +94,6 @@ const VendorDetailsScreen: React.FC = () => {
         await postTokenToProxy(expoPushToken, vendor);
       }
     }
-  };
-
-  const idToIExchange: { [id: number]: IExchange } = {
-    1: signupGPIB,
-    2: signupCoinstash
   };
 
   return (
@@ -128,28 +120,21 @@ const VendorDetailsScreen: React.FC = () => {
         )}
         <Button
           onPress={async () => {
-            if (vendor) {
-              const makeUser = idToIExchange[vendor.id];
-              if (!makeUser) {
-                Linking.openURL(vendor.signup);
-                return;
-              }
-              if (name && email) {
-                await makeUser.signUp(name, email);
-                setSigned(true);
-              } else {
-                Alert.alert(
-                  "Missing Credentials",
-                  "Please provide your name and email claims to sign up"
-                );
-              }
+            if (vendor && getVendor(vendor.id) && name && email) {
+              await signup(name, email, vendor.id);
+              setSigned(true);
+            } else {
+              Alert.alert(
+                "Missing Credentials",
+                "Please provide your name and email claims to sign up"
+              );
             }
           }}
           title="Sign Up"
           disabled={signed || !hasAllRequiredClaims}
           style={styles.button}
         />
-        {vendor?.website === "https://getpaidinbitcoin.com.au" ? (
+        {/* {vendor?.website === "https://getpaidinbitcoin.com.au" ? (
           <Button
             onPress={() => {
               Alert.prompt("Enter your GPIB password", "", [
@@ -176,7 +161,7 @@ const VendorDetailsScreen: React.FC = () => {
           />
         ) : (
           <Text></Text>
-        )}
+        )} */}
       </View>
       <BottomNavBarSpacer />
     </ScrollView>

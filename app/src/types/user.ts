@@ -1,12 +1,12 @@
 export type UserSignup = {
-  source: string;
+  source: number;
   firstName: string;
   lastName: string;
   password: string;
   email: string;
 };
 
-export enum VenderEnum {
+export enum VendorEnum {
   GPIB = "GPIB",
   CoinStash = "CoinStash",
   EasyCrypto = "EasyCrypto"
