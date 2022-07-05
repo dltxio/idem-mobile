@@ -1,4 +1,4 @@
-type FieldType = "text" | "date" | "boolean";
+type FieldType = "text" | "date" | "boolean" | "number" | "email" | "phone";
 
 export type Field = {
   id: string;
@@ -16,4 +16,18 @@ export type Vendor = {
   website: string;
   backgroundColor: string;
   requiredClaimMnemonics: string[];
+};
+
+export type VerifyOnProxy = {
+  firstName: string;
+  lastName: string;
+  dob: string;
+  email: string;
+  houseNumber: string;
+  street: string;
+  suburb: string;
+  postcode: string;
+  state: string;
+  country: string;
+  userId: string;
 };
