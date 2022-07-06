@@ -60,14 +60,14 @@ const PGPScreen: React.FC = () => {
           NOTE: Importing your keys saves them to your local storage. IDEM does
           not have access to the keys you import.
         </Text>
-        {/* <View style={styles.buttonWrapper}>
+        <View style={styles.buttonWrapper}>
           <View style={styles.button}>
             <Button
               title={"Import my Private Key"}
               onPress={() => createPublicKey(keyText)}
             />
           </View>
-        </View> */}
+        </View>
 
         <View style={styles.buttonWrapper}>
           <View style={styles.button}>
