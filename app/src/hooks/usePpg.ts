@@ -1,5 +1,4 @@
 import axios from "axios";
-import React from "react";
 import { Alert } from "react-native";
 import OpenPGP from "react-native-fast-openpgp";
 import { UploadPGPKeyResponse } from "../types/general";
