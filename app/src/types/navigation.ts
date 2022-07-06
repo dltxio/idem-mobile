@@ -3,6 +3,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ProfileStackParamList } from "../navigation/ProfileStackNavigator";
 import { DocumentsStackParamList } from "../navigation/DocumentsStackNavigator";
 import { VendorStackParamList } from "../navigation/VendorsStackNavigator";
+import { MainTabParamList } from "../navigation/MainTabNavigator";
 
 type StackNavigationNavigation<
   T extends ParamListBase,
@@ -10,6 +11,9 @@ type StackNavigationNavigation<
 > = NativeStackNavigationProp<T, K>;
 
 type Route<T extends ParamListBase, K extends keyof T> = RouteProp<T, K>;
+
+export type MainTabNavigation<K extends keyof MainTabParamList> =
+  StackNavigationNavigation<MainTabParamList, K>;
 
 export type ProfileStackNavigation<K extends keyof ProfileStackParamList> =
   StackNavigationNavigation<ProfileStackParamList, K>;

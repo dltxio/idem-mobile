@@ -4,82 +4,79 @@ import {
   StyleSheet,
   TextInput,
   Text,
-  Dimensions,
-  Alert,
   KeyboardAvoidingView,
   ScrollView
 } from "react-native";
+
 import { Button } from "../../components";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
-import { pgpLocalStorage } from "../../utils/local-storage";
-
-import type { PGP } from "../../types/wallet";
-import { createRandomPassword } from "../../utils/randomPassword-utils";
+import { useClaimValue } from "../../context/ClaimsStore";
+import usePgp from "../../hooks/usePpg";
 
 const PGPScreen: React.FC = () => {
-  const [pgp, setPGP] = React.useState<PGP>();
+  // for user input
   const [keyText, setKeyText] = React.useState<string>();
+  const email = useClaimValue("EmailCredential");
+  const name = useClaimValue("NameCredential");
 
-  React.useEffect(() => {
-    (async () => {
-      const initialPGP = await pgpLocalStorage.get();
-
-      if (initialPGP) {
-        setKeyText(initialPGP.publicKey);
-      }
-    })();
-  }, []);
-
-  const importPGP = async () => {
-    setPGP(pgp);
-    try {
-      await pgpLocalStorage.save(pgp as PGP);
-      const checkKey = await pgpLocalStorage.get();
-      if (checkKey) {
-        Alert.alert("Success!", "Your public key has been saved.");
-      }
-    } catch (error) {
-      Alert.alert(
-        "UH-OH",
-        "There was a problem importing your public key. Please try again."
-      );
-      console.log(error);
-    }
-  };
-
-  const generatePGPG = async () => {
-    const password = createRandomPassword(10);
-    
-  }
+  const {
+    generateKeyPair,
+    createPublicKey,
+    publishPGPPublicKey,
+    verifyPGPPublicKey
+  } = usePgp();
 
   return (
-    <KeyboardAvoidingView>
+    <KeyboardAvoidingView style={styles.container}>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.scrollContent}
       >
         <TextInput
-          placeholder="Paste your PGP/GPG PUBLIC key here"
+          placeholder="Paste your PGP/GPG PRIVATE key here"
           placeholderTextColor={"black"}
           onChangeText={setKeyText}
-          value={keyText}
           style={styles.input}
           multiline={true}
           selectionColor={"white"}
         />
+        {/* <Text>
+          value={pgp?.publicKey}
+        </Text> */}
         <Text style={styles.warning}>
           NOTE: Importing your keys saves them to your local storage. IDEM does
           not have access to the keys you import.
         </Text>
         <View style={styles.buttonWrapper}>
           <View style={styles.button}>
-            <Button title={"Import my Public Key"} onPress={importPGP} />
+            <Button
+              title={"Import my Private Key"}
+              onPress={() => createPublicKey(keyText)}
+            />
           </View>
         </View>
 
         <View style={styles.buttonWrapper}>
           <View style={styles.button}>
-            <Button title={"Generate new PGP Key"} onPress={generatePGPG} />
+            <Button
+              title={"Generate new PGP Key"}
+              disabled={!email || !name}
+              onPress={() => generateKeyPair(email, name)}
+            />
+          </View>
+          <View style={styles.button}>
+            <Button
+              title={"Publish PGP Public key"}
+              disabled={!keyText || !email}
+              onPress={() => publishPGPPublicKey(keyText, email)}
+            />
+          </View>
+          <View style={styles.button}>
+            <Button
+              title={"Verify email"}
+              disabled={!email}
+              onPress={() => verifyPGPPublicKey(email)}
+            />
           </View>
         </View>
 
@@ -93,13 +90,11 @@ export default PGPScreen;
 
 const styles = StyleSheet.create({
   container: {
-    width: Dimensions.get("window").width,
-    marginTop: 80
+    flex: 1
   },
   scrollContent: {
     justifyContent: "flex-start",
-    alignItems: "center",
-    height: Dimensions.get("window").height
+    alignItems: "center"
   },
   introText: {
     marginBottom: 10
@@ -110,18 +105,20 @@ const styles = StyleSheet.create({
     height: 200,
     padding: 10,
     overflow: "scroll",
-    width: Dimensions.get("window").width
+    alignSelf: "stretch"
   },
   buttonWrapper: {
     justifyContent: "flex-end",
-    height: Dimensions.get("window").height * 0.28
+    alignSelf: "stretch"
   },
   button: {
     marginVertical: 5,
-    width: Dimensions.get("window").width * 0.9
+    alignSelf: "stretch",
+    marginHorizontal: 10
   },
   warning: {
-    width: Dimensions.get("window").width * 0.8,
+    alignSelf: "stretch",
+    marginHorizontal: 20,
     marginTop: 10
   }
 });

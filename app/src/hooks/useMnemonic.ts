@@ -1,25 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import * as React from "react";
 import { ethers } from "ethers";
+import React from "react";
 import { mnemonicLocalStorage } from "../utils/local-storage";
 
-export type MnemonicValue = {
+type Hooks = {
   mnemonic: string | undefined;
   ethAddress: string | undefined;
-  createMnemonic: () => Promise<
-    { mnemonic: string | undefined; ethAddress: string | undefined } | undefined
-  >;
+  createMnemonic: () => Promise<void>;
   reset: () => void;
   loadingMnemonic: boolean;
 };
 
-export const MnemonicContext = React.createContext<MnemonicValue | undefined>(
-  undefined
-);
-
-export const MnemonicProvider: React.FC<{
-  children: React.ReactNode;
-}> = (props) => {
+const useMnemonic = (): Hooks => {
   const [mnemonic, setMnemonic] = React.useState<string | undefined>();
   const [ethAddress, setEthAddress] = React.useState<string | undefined>();
   const [loadingMnemonic, setLoadingMnemonic] = React.useState<boolean>(true);
@@ -46,7 +37,6 @@ export const MnemonicProvider: React.FC<{
       });
       setMnemonic(wallet.mnemonic.phrase);
       setEthAddress(wallet.address);
-      return { mnemonic, ethAddress };
     } catch (error) {
       console.log(error);
     }
@@ -57,31 +47,7 @@ export const MnemonicProvider: React.FC<{
     setMnemonic("");
     setEthAddress("");
   };
-
-  const value = React.useMemo(
-    () => ({
-      mnemonic,
-      ethAddress,
-      createMnemonic,
-      reset,
-      loadingMnemonic
-    }),
-    [mnemonic, ethAddress, createMnemonic, reset]
-  );
-
-  return (
-    <MnemonicContext.Provider value={value}>
-      {props.children}
-    </MnemonicContext.Provider>
-  );
+  return { createMnemonic, reset, mnemonic, ethAddress, loadingMnemonic };
 };
 
-export const useMnemonic = () => {
-  const context = React.useContext(MnemonicContext);
-
-  if (context === undefined) {
-    throw new Error("useMnemonic must be used within a MnemonicProvider");
-  }
-
-  return context;
-};
+export default useMnemonic;

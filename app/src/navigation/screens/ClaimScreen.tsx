@@ -50,7 +50,6 @@ const ClaimScreen: React.FC = () => {
     loading,
     saveAndCheckBirthday,
     onSelectFile,
-    verifyEmail,
     selectedFileIds,
     setLoading,
     setSelectedFileIds
@@ -129,16 +128,6 @@ const ClaimScreen: React.FC = () => {
                     value={formState[field.id]}
                     onChangeText={onChange}
                   />
-                  {field.id === "email" ? (
-                    <View style={{ marginTop: 385 }}>
-                      <Button
-                        onPress={() => verifyEmail(formState[field.id])}
-                        title="Verify Email Claim"
-                      />
-                    </View>
-                  ) : (
-                    <Text></Text>
-                  )}
                 </View>
               );
             }
@@ -156,6 +145,45 @@ const ClaimScreen: React.FC = () => {
                   }
                   onFocus={() => showDatePickerFor(field.id)}
                 />
+              );
+            }
+
+            if (field.type === "number") {
+              return (
+                <View key={field.id}>
+                  <Input
+                    label={field.title}
+                    keyboardType={"number-pad"}
+                    value={formState[field.id]}
+                    onChangeText={onChange}
+                  />
+                </View>
+              );
+            }
+
+            if (field.type === "email") {
+              return (
+                <View key={field.id}>
+                  <Input
+                    label={field.title}
+                    keyboardType={"email-address"}
+                    value={formState[field.id]}
+                    onChangeText={onChange}
+                  />
+                </View>
+              );
+            }
+
+            if (field.type === "phone") {
+              return (
+                <View key={field.id}>
+                  <Input
+                    label={field.title}
+                    keyboardType={"phone-pad"}
+                    value={formState[field.id]}
+                    onChangeText={onChange}
+                  />
+                </View>
               );
             }
 
@@ -256,7 +284,7 @@ const VerificationFiles: React.FC<{
         }
       );
     }
-  }, []);
+  }, [isVerifying]);
 
   return (
     <View>

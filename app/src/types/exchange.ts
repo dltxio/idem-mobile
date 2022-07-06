@@ -1,5 +1,8 @@
+import { VendorEnum } from "./user";
+
 export type Exchange = {
-  gpibUserID: string | undefined;
+  vendor: VendorEnum;
+  signup: boolean;
 };
 
 export type VerifyUserRequestBody = {
