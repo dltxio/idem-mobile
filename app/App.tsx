@@ -13,8 +13,8 @@ import { parseClaimRequest } from "./src/utils/claim-utils";
 import RequestClaimsModal from "./src/components/RequestClaimsModal";
 import { DocumentProvider } from "./src/context/DocumentStore";
 import { MnemonicProvider } from "./src/context/Mnemonic";
-import { ExchangeProvider } from "./src/context/Exchange";
 import * as Notifications from "expo-notifications";
+import LinkingConfiguration from "./src/navigation/LinkingConfiguration";
 import { ApiProvider } from "./providers/Api";
 
 Notifications.setNotificationHandler({
@@ -62,22 +62,30 @@ const App = () => {
     }
   }, [initialURL, newUrl]);
 
+  useEffect(() => {
+    const subscription = Notifications.addNotificationResponseReceivedListener(
+      async (response) => {
+        const url = response.notification.request.content.data.url as string;
+        await Linking.openURL(url);
+      }
+    );
+    return () => subscription.remove();
+  });
+
   return (
     <SafeAreaProvider>
       <ApiProvider>
         <ClaimsProvider>
           <DocumentProvider>
             <MnemonicProvider>
-              <ExchangeProvider>
-                <NavigationContainer>
-                  <StatusBar style="auto" />
-                  <TabNavigator />
-                  <RequestClaimsModal
-                    claimRequest={claimRequest}
-                    onClose={() => setClaimRequest(undefined)}
-                  />
-                </NavigationContainer>
-              </ExchangeProvider>
+              <NavigationContainer linking={LinkingConfiguration}>
+                <StatusBar style="auto" />
+                <TabNavigator />
+                <RequestClaimsModal
+                  claimRequest={claimRequest}
+                  onClose={() => setClaimRequest(undefined)}
+                />
+              </NavigationContainer>
             </MnemonicProvider>
           </DocumentProvider>
         </ClaimsProvider>

@@ -5,7 +5,7 @@ import VendorDetailsScreen from "./screens/VendorDetails";
 
 export type VendorStackParamList = {
   Back: undefined;
-  VendorDetails: { vendorId: string };
+  VendorDetails: { id: number };
 };
 
 const Stack = createStackNavigator<VendorStackParamList>();

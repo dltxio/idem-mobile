@@ -5,6 +5,7 @@
     "version": "1.0.0",
     "entryPoint": "./index.js",
     "orientation": "portrait",
+    "scheme": "idem",
     "icon": "./assets/iosLogo.png",
     "splash": {
       "image": "./assets/splash.png",
