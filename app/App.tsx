@@ -12,7 +12,6 @@ import { ClaimRequest } from "./src/types/claim";
 import { parseClaimRequest } from "./src/utils/claim-utils";
 import RequestClaimsModal from "./src/components/RequestClaimsModal";
 import { DocumentProvider } from "./src/context/DocumentStore";
-import { MnemonicProvider } from "./src/context/Mnemonic";
 import * as Notifications from "expo-notifications";
 import LinkingConfiguration from "./src/navigation/LinkingConfiguration";
 import { ApiProvider } from "./providers/Api";
@@ -77,16 +76,14 @@ const App = () => {
       <ApiProvider>
         <ClaimsProvider>
           <DocumentProvider>
-            <MnemonicProvider>
-              <NavigationContainer linking={LinkingConfiguration}>
-                <StatusBar style="auto" />
-                <TabNavigator />
-                <RequestClaimsModal
-                  claimRequest={claimRequest}
-                  onClose={() => setClaimRequest(undefined)}
-                />
-              </NavigationContainer>
-            </MnemonicProvider>
+            <NavigationContainer linking={LinkingConfiguration}>
+              <StatusBar style="auto" />
+              <TabNavigator />
+              <RequestClaimsModal
+                claimRequest={claimRequest}
+                onClose={() => setClaimRequest(undefined)}
+              />
+            </NavigationContainer>
           </DocumentProvider>
         </ClaimsProvider>
       </ApiProvider>

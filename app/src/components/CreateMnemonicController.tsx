@@ -7,7 +7,7 @@ import {
   Text,
   Modal
 } from "react-native";
-import { useMnemonic } from "../context/Mnemonic";
+import useMnemonic from "../hooks/useMnemonic";
 import commonStyles from "../styles/styles";
 
 const CreateMnemonicController: React.FC = () => {
