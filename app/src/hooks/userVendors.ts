@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { Alert } from "react-native";
 import { findNames } from "../utils/formatters";
 import { exchangeLocalStorage } from "../utils/local-storage";
@@ -7,6 +8,13 @@ import useApi from "./useApi";
 
 type Hooks = {
   signup: (name: string, email: string, vendorId: number) => Promise<void>;
+  syncDetail: (
+    name: string,
+    password: string,
+    email: string,
+    dob: string,
+    vendorId: number
+  ) => Promise<void>;
 };
 
 const useVendors = (): Hooks => {
@@ -30,8 +38,12 @@ const useVendors = (): Hooks => {
           email: email,
           password: randomTempPassword
         })
-        .then(async () => {
-          await exchangeLocalStorage.save({ vendor: vendor, signup: true });
+        .then(async (response) => {
+          await exchangeLocalStorage.save({
+            vendor: vendor,
+            signup: true,
+            userId: response
+          });
           shareDetailsAlert(randomTempPassword);
         })
         .catch((error) => {
@@ -61,7 +73,45 @@ const useVendors = (): Hooks => {
     );
   };
 
-  return { signup };
+  const syncDetail = async (
+    name: string,
+    password: string,
+    email: string,
+    dob: string,
+    vendorId: number
+  ) => {
+    if (name && password && email && dob) {
+      const splitName = findNames(name);
+      api
+        .syncDetail({
+          source: vendorId,
+          email: email,
+          password: password,
+          firstName: splitName?.firstName ?? "",
+          lastName: splitName?.lastName ?? "",
+          dob: dob
+        })
+        .then(() => {
+          Alert.alert("Success!", "Your detail sync successful", [
+            {
+              text: "OK",
+              onPress: () => console.log(""),
+              style: "destructive"
+            }
+          ]);
+        })
+        .catch(() => {
+          Alert.alert("Error!", "Something wrong, please check your password", [
+            {
+              text: "OK",
+              onPress: () => console.log(""),
+              style: "destructive"
+            }
+          ]);
+        });
+    }
+  };
+  return { signup, syncDetail };
 };
 
 export default useVendors;
