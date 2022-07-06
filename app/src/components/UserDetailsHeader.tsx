@@ -10,8 +10,8 @@ import { useDocumentStore } from "../context/DocumentStore";
 import { useNavigation } from "@react-navigation/native";
 import { ProfileStackNavigation } from "../types/navigation";
 import defaultProfilePicture from "../../assets/default-profile-picture.png";
-import { useMnemonic } from "../context/Mnemonic";
 import { truncateAddress } from "../utils/wallet-utils";
+import useMnemonic from "../hooks/useMnemonic";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
