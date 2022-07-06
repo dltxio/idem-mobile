@@ -6764,10 +6764,10 @@ react-native-document-picker@^8.1.1:
   dependencies:
     invariant "^2.2.4"
 
-react-native-fast-openpgp@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-fast-openpgp/-/react-native-fast-openpgp-2.3.1.tgz#9ec8c14b9f5922c8fa4808e453a4442e3c5073d8"
-  integrity sha512-d/IkFgp1ZLHG0wg6+RkUp4FFUimVPXUfWn+ODXFvs045tcrgu94yHL0xC8yURp68vRrDWtBDKzBu37YnEuq+Zw==
+react-native-fast-openpgp@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-fast-openpgp/-/react-native-fast-openpgp-2.4.0.tgz#240202ee359bfc430d69b99232438f237d1aa072"
+  integrity sha512-QzUsI7TxzO3WTGh8yTdOMULVlzKjQU43wHXNxzUKvoAIfuz4RaqtI2/ssivHBlydfgqy0ehRVbKVe7ZTFGEwmQ==
   dependencies:
     big-integer "^1.6.51"
     flatbuffers "^2.0.6"
