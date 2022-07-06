@@ -11,7 +11,6 @@ import {
 import { Button } from "../../components";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { useClaimValue } from "../../context/ClaimsStore";
-import { pgpLocalStorage } from "../../utils/local-storage";
 import usePgp from "../../hooks/usePpg";
 
 const PGPScreen: React.FC = () => {
@@ -24,19 +23,8 @@ const PGPScreen: React.FC = () => {
     generateKeyPair,
     createPublicKey,
     publishPGPPublicKey,
-    setPGP,
     verifyPGPPublicKey
   } = usePgp();
-
-  React.useEffect(() => {
-    (async () => {
-      const localPGP = await pgpLocalStorage.get();
-      if (localPGP) {
-        setKeyText(localPGP.publicKey);
-        setPGP(localPGP);
-      }
-    })();
-  }, []);
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -48,7 +36,6 @@ const PGPScreen: React.FC = () => {
           placeholder="Paste your PGP/GPG PRIVATE key here"
           placeholderTextColor={"black"}
           onChangeText={setKeyText}
-          value={keyText}
           style={styles.input}
           multiline={true}
           selectionColor={"white"}

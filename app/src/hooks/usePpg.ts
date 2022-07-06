@@ -17,14 +17,10 @@ type Hooks = {
     publicKey: string | undefined,
     email: string | undefined
   ) => Promise<void>;
-  pgp: PGP | undefined;
-  setPGP: (pgp: PGP) => void;
   verifyPGPPublicKey: (email: string | undefined) => Promise<void>;
 };
 
 const usePgp = (): Hooks => {
-  const [pgp, setPGP] = React.useState<PGP | undefined>(undefined);
-
   const generateKeyPair = async (
     name: string | undefined,
     email: string | undefined
@@ -45,7 +41,6 @@ const usePgp = (): Hooks => {
       } as PGP;
 
       await pgpLocalStorage.save(pgp);
-      setPGP(pgp);
       Alert.alert(
         "Success!",
         `Your PGP key has been created with the password ${password}`
@@ -68,7 +63,6 @@ const usePgp = (): Hooks => {
       } as PGP;
 
       await pgpLocalStorage.save(pgp);
-      setPGP(pgp);
       Alert.alert("Success!", "Your PGP key has been saved");
     } catch (error) {
       Alert.alert(
@@ -139,8 +133,6 @@ const usePgp = (): Hooks => {
     generateKeyPair,
     createPublicKey,
     publishPGPPublicKey,
-    pgp,
-    setPGP,
     verifyPGPPublicKey
   };
 };
