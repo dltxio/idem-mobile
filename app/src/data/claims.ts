@@ -80,7 +80,7 @@ const claims: Claim[] = [
     description: "Users physical address",
     verificationAction: "document-upload",
     fields: [
-      { id: "houseNumber", title: "House Number", type: "number" },
+      { id: "houseNumber", title: "House Number", type: "house" },
       { id: "street", title: "Street", type: "text" },
       { id: "suburb", title: "Suburb", type: "text" },
       { id: "postCode", title: "Post Code", type: "number" },
