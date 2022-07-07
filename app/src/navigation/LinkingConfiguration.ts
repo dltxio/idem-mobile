@@ -17,7 +17,7 @@ const linking: LinkingOptions<MainTabParamList> = {
       SupportedExchanges: {
         screens: {
           Back: "exchange/back",
-          VendorDetails: "exchange/vendors"
+          VendorDetails: "exchange/vendors/:id"
         }
       },
       DocumentsTab: {
