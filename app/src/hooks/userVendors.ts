@@ -1,4 +1,3 @@
-import { AxiosError } from "axios";
 import { Alert } from "react-native";
 import { findNames } from "../utils/formatters";
 import { exchangeLocalStorage } from "../utils/local-storage";

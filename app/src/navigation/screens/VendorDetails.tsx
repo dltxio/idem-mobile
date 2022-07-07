@@ -137,7 +137,8 @@ const VendorDetailsScreen: React.FC = () => {
                 {
                   text: "OK",
                   onPress: async (value: string | undefined) => {
-                    await syncDetail(name, value, email, dob, vendor.id);
+                    if (name && value && email && dob)
+                      await syncDetail(name, value, email, dob, vendor.id);
                   }
                 },
                 {
