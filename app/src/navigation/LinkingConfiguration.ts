@@ -23,7 +23,7 @@ const linking: LinkingOptions<MainTabParamList> = {
       DocumentsTab: {
         screens: {
           Documents: "documents/documents",
-          ViewFile: "documnets/file"
+          ViewFile: "documents/file"
         }
       }
     }
