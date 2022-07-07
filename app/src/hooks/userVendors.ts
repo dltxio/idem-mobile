@@ -53,7 +53,7 @@ const useVendors = (): Hooks => {
 
   const shareDetailsAlert = (randomTempPassword: string) => {
     Alert.alert(
-      "Register",
+      "Success!",
       `Sign up successful, your temporary password is ${randomTempPassword}`,
       [
         {
