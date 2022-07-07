@@ -14,6 +14,7 @@ import usePushNotifications from "../../hooks/usePushNotifications";
 import { UserVerifyRequest } from "../../types/user";
 import useVendors from "../../hooks/userVendors";
 import { getVendor } from "../../utils/vendor";
+import { exchangeLocalStorage } from "../../utils/local-storage";
 
 const VendorDetailsScreen: React.FC = () => {
   const { usersClaims } = useClaimsStore();
@@ -35,7 +36,7 @@ const VendorDetailsScreen: React.FC = () => {
 
   const vendor = vendors.find((v) => v.id == route.params.id);
   const [signed, setSigned] = React.useState<boolean>(false);
-  const { signup } = useVendors();
+  const { signup, syncDetail } = useVendors();
 
   const hasAllRequiredClaims = React.useMemo(() => {
     if (!vendor || !vendor.requiredClaimMnemonics) {
@@ -59,6 +60,7 @@ const VendorDetailsScreen: React.FC = () => {
 
   const verifyUserOnProxy = async () => {
     if (vendor) {
+      const venderStorage = await exchangeLocalStorage.get();
       if (splitName && dob && address && email) {
         const hashEmail = async () => {
           return Crypto.digestStringAsync(
@@ -78,7 +80,8 @@ const VendorDetailsScreen: React.FC = () => {
           suburb: addressValue.suburb,
           postcode: addressValue.postCode,
           state: addressValue.state,
-          country: addressValue.country
+          country: addressValue.country,
+          userId: venderStorage?.userId
         } as UserVerifyRequest;
         await verifyClaims(userClaims, vendor);
       }
@@ -126,20 +129,16 @@ const VendorDetailsScreen: React.FC = () => {
           disabled={signed || !hasAllRequiredClaims}
           style={styles.button}
         />
-        {/* {vendor?.website === "https://getpaidinbitcoin.com.au" ? (
+        {/* 1 === GPIB */}
+        {vendor?.id === 1 && (
           <Button
             onPress={() => {
               Alert.prompt("Enter your GPIB password", "", [
                 {
                   text: "OK",
                   onPress: async (value: string | undefined) => {
-                    await verifyOnExchange({
-                      userName: email,
-                      password: value,
-                      firstName: splitName?.firstName,
-                      lastName: splitName?.lastName,
-                      yob
-                    });
+                    if (name && value && email && dob)
+                      await syncDetail(name, value, email, dob, vendor.id);
                   }
                 },
                 {
@@ -151,9 +150,7 @@ const VendorDetailsScreen: React.FC = () => {
             }}
             title="Sync Details"
           />
-        ) : (
-          <Text></Text>
-        )} */}
+        )}
       </View>
       <BottomNavBarSpacer />
     </ScrollView>
