@@ -7,7 +7,7 @@ import useVendorsList from "../../hooks/useVendorsList";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../../styles/colors";
 
-type Navigation = VendorStackNavigation<"Back">;
+type Navigation = VendorStackNavigation<"Vendors">;
 
 const VendorsScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
