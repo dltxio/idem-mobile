@@ -3,10 +3,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
 import DocumentsStackNavigator from "./DocumentsStackNavigator";
 import ProfileStackNavigator from "./ProfileStackNavigator";
-import VendorsStackNavigator from "./VendorsStackNavigator";
+import VendorsStackNavigator, {
+  VendorStackParamList
+} from "./VendorsStackNavigator";
 import {
   CommonActions,
   ParamListBase,
+  PathConfig,
   RouteProp,
   useNavigation
 } from "@react-navigation/native";
@@ -16,7 +19,9 @@ import { Linking } from "react-native";
 
 export type MainTabParamList = {
   Profile: undefined;
-  SupportedExchanges: undefined | { screen: string; params: any };
+  SupportedExchanges:
+    | undefined
+    | { screen: string; params: PathConfig<VendorStackParamList> };
   DocumentsTab: undefined;
 };
 
