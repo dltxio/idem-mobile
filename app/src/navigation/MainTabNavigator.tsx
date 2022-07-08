@@ -11,12 +11,12 @@ import {
   useNavigation
 } from "@react-navigation/native";
 import colors from "../styles/colors";
-import { MainTabNavigation, VendorStackNavigation } from "../types/navigation";
+import { MainTabNavigation } from "../types/navigation";
 import { Linking } from "react-native";
 
 export type MainTabParamList = {
   Profile: undefined;
-  SupportedExchanges: undefined | { screen: string; params: any };
+  SupportedExchanges: undefined;
   DocumentsTab: undefined;
 };
 
