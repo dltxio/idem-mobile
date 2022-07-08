@@ -16,7 +16,7 @@ import { Linking } from "react-native";
 
 export type MainTabParamList = {
   Profile: undefined;
-  SupportedExchanges: undefined;
+  SupportedExchanges: undefined | { screen: string; params: any };
   DocumentsTab: undefined;
 };
 
