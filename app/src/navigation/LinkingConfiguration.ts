@@ -15,8 +15,9 @@ const linking: LinkingOptions<MainTabParamList> = {
         }
       },
       SupportedExchanges: {
+        initialRouteName: "Vendors",
         screens: {
-          Back: "exchange/back",
+          Vendors: "exchange/vendors",
           VendorDetails: "exchange/vendors/:id"
         }
       },

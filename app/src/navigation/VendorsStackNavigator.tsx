@@ -4,7 +4,7 @@ import VendorsScreen from "./screens/VendorsScreen";
 import VendorDetailsScreen from "./screens/VendorDetails";
 
 export type VendorStackParamList = {
-  Back: undefined;
+  Vendors: undefined;
   VendorDetails: { id: number };
 };
 
@@ -14,7 +14,7 @@ const VendorsStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Back"
+        name="Vendors"
         component={VendorsScreen}
         options={() => ({
           headerShown: false
@@ -25,7 +25,8 @@ const VendorsStackNavigator = () => {
         component={VendorDetailsScreen}
         options={() => {
           return {
-            title: ""
+            title: "",
+            headerBackTitle: "Back"
           };
         }}
       />
