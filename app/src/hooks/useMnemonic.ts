@@ -1,5 +1,7 @@
-import { ethers } from "ethers";
 import React from "react";
+import Uuid from "react-native-uuid";
+import { Wallet } from "../types/wallet";
+import * as EthUtil from "../utils/eth-utils";
 import { mnemonicLocalStorage } from "../utils/local-storage";
 
 type Hooks = {
@@ -8,6 +10,19 @@ type Hooks = {
   createMnemonic: () => Promise<void>;
   reset: () => void;
   loadingMnemonic: boolean;
+};
+
+const createWallet = (mnemonicPhrase: string, ethAddress: string): Wallet => {
+  return {
+    mnemonic: {
+      "@context": ["https://w3id.org/wallet/v1"],
+      id: Uuid.v4() as string,
+      name: "my IDEM mnemonic",
+      type: "Mnemonic",
+      value: mnemonicPhrase
+    },
+    ethAddress
+  };
 };
 
 const useMnemonic = (): Hooks => {
@@ -21,7 +36,7 @@ const useMnemonic = (): Hooks => {
       const initialMnemonic = await mnemonicLocalStorage.get();
 
       if (initialMnemonic) {
-        setMnemonic(initialMnemonic.mnemonic);
+        setMnemonic(initialMnemonic.mnemonic.value);
         setEthAddress(initialMnemonic.ethAddress);
       }
       setLoadingMnemonic(false);
@@ -30,13 +45,11 @@ const useMnemonic = (): Hooks => {
 
   const createMnemonic = async () => {
     try {
-      const wallet = ethers.Wallet.createRandom();
-      await mnemonicLocalStorage.save({
-        mnemonic: wallet.mnemonic.phrase,
-        ethAddress: wallet.address
-      });
-      setMnemonic(wallet.mnemonic.phrase);
-      setEthAddress(wallet.address);
+      const { mnemonicPhrase, ethAddress } = EthUtil.createMnemonic();
+      const wallet = createWallet(mnemonicPhrase, ethAddress);
+      await mnemonicLocalStorage.save(wallet);
+      setMnemonic(wallet.mnemonic.value);
+      setEthAddress(wallet.ethAddress);
     } catch (error) {
       console.log(error);
     }
