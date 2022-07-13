@@ -45,8 +45,9 @@ const useMnemonic = (): Hooks => {
 
   const createMnemonic = async () => {
     try {
-      const { mnemonicPhrase, ethAddress } = EthUtil.createMnemonic();
-      const wallet = createWallet(mnemonicPhrase, ethAddress);
+      const { mnemonicPhrase, ethAddress: newEthAddress } =
+        EthUtil.createMnemonic();
+      const wallet = createWallet(mnemonicPhrase, newEthAddress);
       await mnemonicLocalStorage.save(wallet);
       setMnemonic(wallet.mnemonic.value);
       setEthAddress(wallet.ethAddress);
