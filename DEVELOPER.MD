@@ -21,16 +21,18 @@
 
 ### iOS Physical
 
-1. On an iOS device go to https://expo.dev/register-device/56f0712e-ff59-4c1f-ae0e-11a96262f650
+1. On an iOS device go to https://expo.dev/register-device/56f0712e-ff59-4c1f-ae0e-11a96262f650
 2. Follow instructions to install ad hoc provisioning profile
-3. Run: `eas build --profile development -p ios`
+3. Run: eas build --profile development -p ios
 4. Log into DLTx developer apple account
-5. Choose to reselect devices to provision
-6. Using left/right arrow keys, enable all available devices
-7. Don't set up push notifications
-8. Wait for build to finish
-9. When build is finished download to iOS device
-10. Follow install instructions on the device
+5. Use the left and right arrow keys to select SMS for confirmation code
+6. Code will be sent to Steves phone (You will need to ask for the code)
+7. Choose to reselect devices to provision
+8. Using left/right arrow keys, enable all available devices
+9. Don't set up push notifications
+10. Wait for build to finish
+11. When build is finished download to iOS device
+12. Follow install instructions on the device
 
 ## Building the app
 
