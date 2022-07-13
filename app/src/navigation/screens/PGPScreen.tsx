@@ -20,7 +20,7 @@ const importPrivateKeyFileFromDevice = async () => {
   const res = await DocumentPicker.getDocumentAsync({
     type: ["application/pgp-signature", "text/*"] // .asc and .key
   });
-  if (res.type == "cancel") return;
+  if (res.type === "cancel") return;
   const fileContent = await FileSystem.readAsStringAsync(res.uri);
   return fileContent;
 };
