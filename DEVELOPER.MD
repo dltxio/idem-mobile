@@ -19,11 +19,11 @@
 4. Launch the simulator
 5. Drag idemID.app onto the simulator to install
 
-### iOS Physical
+### iOS Physical (FIRST TIME RUN ONLY)
 
 1. On an iOS device go to https://expo.dev/register-device/56f0712e-ff59-4c1f-ae0e-11a96262f650
 2. Follow instructions to install ad hoc provisioning profile
-3. Run: eas build --profile development -p ios
+3. Run: `eas build --profile development -p ios`
 4. Log into DLTx developer apple account
 5. Use the left and right arrow keys to select SMS for confirmation code
 6. Code will be sent to Steves phone (You will need to ask for the code)
