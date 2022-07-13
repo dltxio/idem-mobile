@@ -27,9 +27,9 @@ const importPrivateKeyFileFromDevice = async () => {
 
 const isPrivateKey = (content: string) => {
   const isStartWithBegin = content.startsWith(
-    "-----BEGIN PGP PUBLIC KEY BLOCK-----"
+    "-----BEGIN PGP PRIVATE KEY BLOCK-----"
   );
-  const isEndWithEnd = content.endsWith("-----END PGP PUBLIC KEY BLOCK-----");
+  const isEndWithEnd = content.endsWith("-----END PGP PRIVATE KEY BLOCK-----");
   return isStartWithBegin && isEndWithEnd;
 };
 
