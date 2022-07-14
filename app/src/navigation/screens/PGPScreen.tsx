@@ -19,7 +19,7 @@ import { AlertTitle } from "../../constants/common";
 
 const importPrivateKeyFileFromDevice = async () => {
   const res = await DocumentPicker.getDocumentAsync({
-    type: ["*/*"] // .asc and .key
+    type: ["*/*"]
   });
   if (res.type === "cancel") return;
   const isCorrectFileType =
