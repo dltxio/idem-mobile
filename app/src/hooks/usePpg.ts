@@ -11,7 +11,7 @@ type Hooks = {
   generateKeyPair: (
     name: string | undefined,
     email: string | undefined
-  ) => Promise<void>;
+  ) => Promise<PGP | undefined>;
   createPublicKey: (privateKey: string | undefined) => Promise<void>;
   publishPGPPublicKey: (
     publicKey: string | undefined,
@@ -36,8 +36,8 @@ const usePgp = (): Hooks => {
       });
 
       const pgp = {
-        privateKey: privateKey,
-        publicKey: publicKey
+        privateKey,
+        publicKey
       } as PGP;
 
       await pgpLocalStorage.save(pgp);
@@ -45,6 +45,7 @@ const usePgp = (): Hooks => {
         AlertTitle.Success,
         `Your PGP key has been created with the password ${password}`
       );
+      return pgp;
     } catch (error) {
       Alert.alert(
         AlertTitle.Error,

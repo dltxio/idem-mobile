@@ -47,7 +47,7 @@ const PGPScreen: React.FC = () => {
     verifyPGPPublicKey
   } = usePgp();
 
-  const importPrivateKeyFromDevice = async () => {
+  const importPrivateKeyFromDevice = React.useCallback(async () => {
     try {
       const content = await importPrivateKeyFileFromDevice();
       if (!content) return;
@@ -62,7 +62,16 @@ const PGPScreen: React.FC = () => {
       );
       console.error(error);
     }
-  };
+  }, [createPublicKey]);
+
+  const generateNewKeyPair = React.useCallback(
+    async (email: string, name: string) => {
+      const pgp = await generateKeyPair(email, name);
+      if (!pgp) return;
+      setKeyText(pgp.publicKey);
+    },
+    [generateKeyPair, setKeyText]
+  );
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -77,10 +86,8 @@ const PGPScreen: React.FC = () => {
           style={styles.input}
           multiline={true}
           selectionColor={"white"}
+          value={keyText}
         />
-        {/* <Text>
-          value={pgp?.publicKey}
-        </Text> */}
         <Text style={styles.warning}>
           NOTE: Importing your keys saves them to your local storage. IDEM does
           not have access to the keys you import.
@@ -107,7 +114,9 @@ const PGPScreen: React.FC = () => {
             <Button
               title={"Generate new PGP Key"}
               disabled={!email || !name}
-              onPress={() => generateKeyPair(email, name)}
+              onPress={async () =>
+                generateNewKeyPair(email as string, name as string)
+              }
             />
           </View>
           <View style={styles.button}>
