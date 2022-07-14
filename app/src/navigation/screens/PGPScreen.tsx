@@ -56,7 +56,7 @@ const PGPScreen: React.FC = () => {
     } catch (error: any) {
       Alert.alert(
         AlertTitle.Error,
-        `Fail to extract private key from file \n> ${
+        `Failed to extract the private key from file \n> ${
           error?.message ?? "unknown error"
         }`
       );
