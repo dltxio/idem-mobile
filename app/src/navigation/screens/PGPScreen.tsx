@@ -54,12 +54,21 @@ const PGPScreen: React.FC = () => {
     setKeyText(key.publicKey);
   }, [setKeyText]);
 
+  const importMyPrivateKey = React.useCallback(
+    async (privateKey: string) => {
+      await createPublicKey(privateKey);
+      await loadKeyFromLocalStorage();
+    },
+    [createPublicKey]
+  );
+
   const importPrivateKeyFromDevice = React.useCallback(async () => {
     try {
       const content = await importPrivateKeyFileFromDevice();
       if (!content) return;
       if (!isPrivateKey(content)) throw new Error("Not a private key");
-      createPublicKey(content);
+      await createPublicKey(content);
+      await loadKeyFromLocalStorage();
     } catch (error: any) {
       Alert.alert(
         AlertTitle.Error,
@@ -78,6 +87,12 @@ const PGPScreen: React.FC = () => {
     },
     [generateKeyPair]
   );
+
+  React.useEffect(() => {
+    (async () => {
+      await loadKeyFromLocalStorage();
+    })();
+  }, []);
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -102,7 +117,7 @@ const PGPScreen: React.FC = () => {
           <View style={styles.button}>
             <Button
               title={"Import my Private Key"}
-              onPress={() => createPublicKey(keyText)}
+              onPress={() => importMyPrivateKey(keyText as string)}
             />
           </View>
         </View>
