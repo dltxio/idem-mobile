@@ -5,13 +5,34 @@ import {
   TextInput,
   Text,
   KeyboardAvoidingView,
-  ScrollView
+  ScrollView,
+  Alert
 } from "react-native";
+import * as DocumentPicker from "expo-document-picker";
+import * as FileSystem from "expo-file-system";
 
 import { Button } from "../../components";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { useClaimValue } from "../../context/ClaimsStore";
 import usePgp from "../../hooks/usePpg";
+import { AlertTitle } from "../../constants/common";
+
+const importPrivateKeyFileFromDevice = async () => {
+  const res = await DocumentPicker.getDocumentAsync({
+    type: ["application/pgp-signature", "text/*"] // .asc and .key
+  });
+  if (res.type === "cancel") return;
+  const fileContent = await FileSystem.readAsStringAsync(res.uri);
+  return fileContent;
+};
+
+const isPrivateKey = (content: string) => {
+  const isStartWithBegin = content.startsWith(
+    "-----BEGIN PGP PRIVATE KEY BLOCK-----"
+  );
+  const isEndWithEnd = content.endsWith("-----END PGP PRIVATE KEY BLOCK-----");
+  return isStartWithBegin && isEndWithEnd;
+};
 
 const PGPScreen: React.FC = () => {
   // for user input
@@ -25,6 +46,23 @@ const PGPScreen: React.FC = () => {
     publishPGPPublicKey,
     verifyPGPPublicKey
   } = usePgp();
+
+  const importPrivateKeyFromDevice = async () => {
+    try {
+      const content = await importPrivateKeyFileFromDevice();
+      if (!content) return;
+      if (!isPrivateKey(content)) throw new Error("Not a private key");
+      createPublicKey(content);
+    } catch (error: any) {
+      Alert.alert(
+        AlertTitle.Error,
+        `Failed to extract the private key from file \n> ${
+          error?.message ?? "unknown error"
+        }`
+      );
+      console.error(error);
+    }
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -52,6 +90,14 @@ const PGPScreen: React.FC = () => {
             <Button
               title={"Import my Private Key"}
               onPress={() => createPublicKey(keyText)}
+            />
+          </View>
+        </View>
+        <View style={styles.buttonWrapper}>
+          <View style={styles.button}>
+            <Button
+              title={"Import my Private Key from my Device"}
+              onPress={importPrivateKeyFromDevice}
             />
           </View>
         </View>

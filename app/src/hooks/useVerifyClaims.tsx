@@ -3,6 +3,7 @@ import { Vendor } from "../types/general";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useApi from "./useApi";
 import { UserVerifyRequest, VerificationResponse } from "../types/user";
+import { AlertTitle } from "../constants/common";
 
 type Hooks = {
   verifyClaims: (
@@ -25,7 +26,7 @@ const useVerifyClaims = (): Hooks => {
       })
       .catch((error) => {
         console.log(error);
-        Alert.alert("Error!", `${error}`);
+        Alert.alert(AlertTitle.Error, `${error}`);
       });
   };
 
@@ -37,13 +38,13 @@ const useVerifyClaims = (): Hooks => {
         .putExpoToken(claimObject.userId, { token: expoToken })
         .then(() => {
           Alert.alert(
-            "Success!",
+            AlertTitle.Success,
             "Your name, date of birth, email, and address have been sent to IDEM to be verified!"
           );
         })
         .catch((error) => {
           console.error(error);
-          Alert.alert("Error!", `${error}`);
+          Alert.alert(AlertTitle.Error, `${error}`);
         });
     }
   };

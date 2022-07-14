@@ -1,4 +1,5 @@
 import { Alert } from "react-native";
+import { AlertTitle } from "../constants/common";
 import { findNames } from "../utils/formatters";
 import { exchangeLocalStorage } from "../utils/local-storage";
 import { createRandomPassword } from "../utils/randomPassword-utils";
@@ -53,7 +54,7 @@ const useVendors = (): Hooks => {
 
   const shareDetailsAlert = (randomTempPassword: string) => {
     Alert.alert(
-      "Success!",
+      AlertTitle.Success,
       `Sign up successful, your temporary password is ${randomTempPassword}`,
       [
         {
@@ -91,7 +92,7 @@ const useVendors = (): Hooks => {
           dob: dob
         })
         .then(() => {
-          Alert.alert("Success!", "Your detail sync successful", [
+          Alert.alert(AlertTitle.Success, "Your detail sync successful", [
             {
               text: "OK",
               onPress: () => console.log(""),
@@ -100,13 +101,17 @@ const useVendors = (): Hooks => {
           ]);
         })
         .catch(() => {
-          Alert.alert("Error!", "Something wrong, please check your password", [
-            {
-              text: "OK",
-              onPress: () => console.log(""),
-              style: "destructive"
-            }
-          ]);
+          Alert.alert(
+            AlertTitle.Error,
+            "Something wrong, please check your password",
+            [
+              {
+                text: "OK",
+                onPress: () => console.log(""),
+                style: "destructive"
+              }
+            ]
+          );
         });
     }
   };
