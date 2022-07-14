@@ -38,8 +38,8 @@ const isPrivateKey = (content: string) => {
 const PGPScreen: React.FC = () => {
   // for user input
   const [keyText, setKeyText] = React.useState<string>();
-  const email = useClaimValue("EmailCredential");
-  const name = useClaimValue("NameCredential");
+  const emailClaimValue = useClaimValue("EmailCredential");
+  const nameClaimValue = useClaimValue("NameCredential");
 
   const {
     generateKeyPair,
@@ -81,8 +81,8 @@ const PGPScreen: React.FC = () => {
   }, [createPublicKey]);
 
   const generateNewPgpKey = React.useCallback(
-    async (email: string, name: string) => {
-      await generateKeyPair(email, name);
+    async (name: string, email: string) => {
+      await generateKeyPair(name, email);
       await loadKeyFromLocalStorage();
     },
     [generateKeyPair]
@@ -134,24 +134,27 @@ const PGPScreen: React.FC = () => {
           <View style={styles.button}>
             <Button
               title={"Generate new PGP Key"}
-              disabled={!email || !name}
+              disabled={!emailClaimValue || !nameClaimValue}
               onPress={async () =>
-                generateNewPgpKey(email as string, name as string)
+                generateNewPgpKey(
+                  nameClaimValue as string,
+                  emailClaimValue as string
+                )
               }
             />
           </View>
           <View style={styles.button}>
             <Button
               title={"Publish PGP Public key"}
-              disabled={!keyText || !email}
-              onPress={() => publishPGPPublicKey(keyText, email)}
+              disabled={!keyText || !emailClaimValue}
+              onPress={() => publishPGPPublicKey(keyText, emailClaimValue)}
             />
           </View>
           <View style={styles.button}>
             <Button
               title={"Verify email"}
-              disabled={!email}
-              onPress={() => verifyPGPPublicKey(email)}
+              disabled={!emailClaimValue}
+              onPress={() => verifyPGPPublicKey(emailClaimValue)}
             />
           </View>
         </View>
