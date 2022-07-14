@@ -67,7 +67,7 @@ const usePgp = (): Hooks => {
     } catch (error: any) {
       Alert.alert(
         AlertTitle.Error,
-        `There was a problem generating your public Key.\n > ${error.message}`
+        `There was a problem generating your public key.\n > ${error.message}`
       );
     }
   };
