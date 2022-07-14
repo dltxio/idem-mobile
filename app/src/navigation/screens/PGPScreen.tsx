@@ -16,6 +16,7 @@ import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { useClaimValue } from "../../context/ClaimsStore";
 import usePgp from "../../hooks/usePpg";
 import { AlertTitle } from "../../constants/common";
+import { pgpLocalStorage } from "../../utils/local-storage";
 
 const importPrivateKeyFileFromDevice = async () => {
   const res = await DocumentPicker.getDocumentAsync({
@@ -47,6 +48,12 @@ const PGPScreen: React.FC = () => {
     verifyPGPPublicKey
   } = usePgp();
 
+  const loadKeyFromLocalStorage = React.useCallback(async () => {
+    const key = await pgpLocalStorage.get();
+    if (!key) return;
+    setKeyText(key.publicKey);
+  }, [setKeyText]);
+
   const importPrivateKeyFromDevice = React.useCallback(async () => {
     try {
       const content = await importPrivateKeyFileFromDevice();
@@ -64,13 +71,12 @@ const PGPScreen: React.FC = () => {
     }
   }, [createPublicKey]);
 
-  const generateNewKeyPair = React.useCallback(
+  const generateNewPgpKey = React.useCallback(
     async (email: string, name: string) => {
-      const pgp = await generateKeyPair(email, name);
-      if (!pgp) return;
-      setKeyText(pgp.publicKey);
+      await generateKeyPair(email, name);
+      await loadKeyFromLocalStorage();
     },
-    [generateKeyPair, setKeyText]
+    [generateKeyPair]
   );
 
   return (
@@ -115,7 +121,7 @@ const PGPScreen: React.FC = () => {
               title={"Generate new PGP Key"}
               disabled={!email || !name}
               onPress={async () =>
-                generateNewKeyPair(email as string, name as string)
+                generateNewPgpKey(email as string, name as string)
               }
             />
           </View>
