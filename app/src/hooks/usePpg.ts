@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Alert } from "react-native";
 import OpenPGP from "react-native-fast-openpgp";
+import { AlertTitle } from "../constants/common";
 import { UploadPGPKeyResponse } from "../types/general";
 import { PGP } from "../types/wallet";
 import { pgpLocalStorage } from "../utils/local-storage";
@@ -41,12 +42,12 @@ const usePgp = (): Hooks => {
 
       await pgpLocalStorage.save(pgp);
       Alert.alert(
-        "Success!",
+        AlertTitle.Success,
         `Your PGP key has been created with the password ${password}`
       );
     } catch (error) {
       Alert.alert(
-        "UH-OH",
+        AlertTitle.Error,
         "There was a problem generating your PGP Key. Please try again."
       );
     }
@@ -62,11 +63,11 @@ const usePgp = (): Hooks => {
       } as PGP;
 
       await pgpLocalStorage.save(pgp);
-      Alert.alert("Success!", "Your PGP key has been saved");
-    } catch (error) {
+      Alert.alert(AlertTitle.Success, "Your PGP key has been saved");
+    } catch (error: any) {
       Alert.alert(
-        "UH-OH",
-        "There was a problem generating your public Key. Please try again."
+        AlertTitle.Error,
+        `There was a problem generating your public Key.\n > ${error.message}`
       );
     }
   };
@@ -103,11 +104,11 @@ const usePgp = (): Hooks => {
         }
       );
       if (verifyResponse.status === 200) {
-        Alert.alert("Success!", "Your PGP key has been uploaded");
+        Alert.alert(AlertTitle.Success, "Your PGP key has been uploaded");
       }
     } catch (error: any) {
       console.error(error);
-      Alert.alert("Error", error.message);
+      Alert.alert(AlertTitle.Error, error.message);
     }
   };
 
@@ -125,7 +126,7 @@ const usePgp = (): Hooks => {
         );
       }
     } catch (error) {
-      Alert.alert("UH-OH", "Could not verify email.");
+      Alert.alert(AlertTitle.Error, "Could not verify email.");
     }
   };
   return {

@@ -15,6 +15,7 @@ import { Button } from "../../components";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { useClaimValue } from "../../context/ClaimsStore";
 import usePgp from "../../hooks/usePpg";
+import { AlertTitle } from "../../constants/common";
 
 const importPrivateKeyFileFromDevice = async () => {
   const res = await DocumentPicker.getDocumentAsync({
@@ -54,7 +55,7 @@ const PGPScreen: React.FC = () => {
       createPublicKey(content);
     } catch (error: any) {
       Alert.alert(
-        "Error",
+        AlertTitle.Error,
         `Fail to extract private key from file \n> ${
           error?.message ?? "unknown error"
         }`

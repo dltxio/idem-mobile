@@ -8,6 +8,7 @@ import { fileLocalStorage } from "../utils/local-storage";
 import { keccak256 } from "ethers/lib/utils";
 import { Buffer } from "buffer";
 import { Alert } from "react-native";
+import { AlertTitle } from "../constants/common";
 
 export type DocumentsValue = {
   files: File[];
@@ -41,7 +42,7 @@ export const DocumentProvider: React.FC<{
       const fileType = file.documentType;
       if (fileType === documentType) {
         Alert.alert(
-          "Warning!",
+          AlertTitle.Warning,
           `You just added another ${documentType}. Please be sure your documents are up to date.`,
           [
             {
