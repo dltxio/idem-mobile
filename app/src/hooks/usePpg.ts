@@ -36,8 +36,8 @@ const usePgp = (): Hooks => {
       });
 
       const pgp = {
-        privateKey: privateKey,
-        publicKey: publicKey
+        privateKey,
+        publicKey
       } as PGP;
 
       await pgpLocalStorage.save(pgp);
