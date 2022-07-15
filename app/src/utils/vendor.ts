@@ -7,6 +7,8 @@ export const getVendor = (vendorId: number) => {
       return VendorEnum.CoinStash;
     case 6:
       return VendorEnum.EasyCrypto;
+    case 7:
+      return VendorEnum.DigitalSurge;
     default:
       return undefined;
   }
