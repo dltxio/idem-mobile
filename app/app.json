@@ -16,7 +16,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "bundleIdentifier": "com.dltx.idem",
       "supportsTablet": true,
@@ -56,13 +58,6 @@
         {
           "icon": "./assets/Bee-Logo.png",
           "color": "#ffffff"
-        }
-      ],
-      [
-        "expo-document-picker",
-        {
-          "appleTeamId": "FRG84WT9XZ",
-          "iCloudContainerEnvironment": "Development"
         }
       ]
     ]
