@@ -16,6 +16,7 @@ import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { useClaimValue } from "../../context/ClaimsStore";
 import usePgp from "../../hooks/usePpg";
 import { AlertTitle } from "../../constants/common";
+import { pgpLocalStorage } from "../../utils/local-storage";
 
 const importPrivateKeyFileFromDevice = async () => {
   const res = await DocumentPicker.getDocumentAsync({
@@ -37,8 +38,8 @@ const isPrivateKey = (content: string) => {
 const PGPScreen: React.FC = () => {
   // for user input
   const [keyText, setKeyText] = React.useState<string>();
-  const email = useClaimValue("EmailCredential");
-  const name = useClaimValue("NameCredential");
+  const emailClaimValue = useClaimValue("EmailCredential");
+  const nameClaimValue = useClaimValue("NameCredential");
 
   const {
     generateKeyPair,
@@ -47,12 +48,27 @@ const PGPScreen: React.FC = () => {
     verifyPGPPublicKey
   } = usePgp();
 
-  const importPrivateKeyFromDevice = async () => {
+  const loadKeyFromLocalStorage = React.useCallback(async () => {
+    const key = await pgpLocalStorage.get();
+    if (!key) return;
+    setKeyText(key.publicKey);
+  }, [setKeyText]);
+
+  const importMyPrivateKey = React.useCallback(
+    async (privateKey: string) => {
+      await createPublicKey(privateKey);
+      await loadKeyFromLocalStorage();
+    },
+    [createPublicKey]
+  );
+
+  const importPrivateKeyFromDevice = React.useCallback(async () => {
     try {
       const content = await importPrivateKeyFileFromDevice();
       if (!content) return;
       if (!isPrivateKey(content)) throw new Error("Not a private key");
-      createPublicKey(content);
+      await createPublicKey(content);
+      await loadKeyFromLocalStorage();
     } catch (error: any) {
       Alert.alert(
         AlertTitle.Error,
@@ -62,7 +78,21 @@ const PGPScreen: React.FC = () => {
       );
       console.error(error);
     }
-  };
+  }, [createPublicKey]);
+
+  const generateNewPgpKey = React.useCallback(
+    async (name: string, email: string) => {
+      await generateKeyPair(name, email);
+      await loadKeyFromLocalStorage();
+    },
+    [generateKeyPair]
+  );
+
+  React.useEffect(() => {
+    (async () => {
+      await loadKeyFromLocalStorage();
+    })();
+  }, []);
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -77,10 +107,8 @@ const PGPScreen: React.FC = () => {
           style={styles.input}
           multiline={true}
           selectionColor={"white"}
+          value={keyText}
         />
-        {/* <Text>
-          value={pgp?.publicKey}
-        </Text> */}
         <Text style={styles.warning}>
           NOTE: Importing your keys saves them to your local storage. IDEM does
           not have access to the keys you import.
@@ -89,7 +117,7 @@ const PGPScreen: React.FC = () => {
           <View style={styles.button}>
             <Button
               title={"Import my Private Key"}
-              onPress={() => createPublicKey(keyText)}
+              onPress={() => importMyPrivateKey(keyText as string)}
             />
           </View>
         </View>
@@ -106,22 +134,27 @@ const PGPScreen: React.FC = () => {
           <View style={styles.button}>
             <Button
               title={"Generate new PGP Key"}
-              disabled={!email || !name}
-              onPress={() => generateKeyPair(email, name)}
+              disabled={!emailClaimValue || !nameClaimValue}
+              onPress={async () =>
+                generateNewPgpKey(
+                  nameClaimValue as string,
+                  emailClaimValue as string
+                )
+              }
             />
           </View>
           <View style={styles.button}>
             <Button
               title={"Publish PGP Public key"}
-              disabled={!keyText || !email}
-              onPress={() => publishPGPPublicKey(keyText, email)}
+              disabled={!keyText || !emailClaimValue}
+              onPress={() => publishPGPPublicKey(keyText, emailClaimValue)}
             />
           </View>
           <View style={styles.button}>
             <Button
               title={"Verify email"}
-              disabled={!email}
-              onPress={() => verifyPGPPublicKey(email)}
+              disabled={!emailClaimValue}
+              onPress={() => verifyPGPPublicKey(emailClaimValue)}
             />
           </View>
         </View>
