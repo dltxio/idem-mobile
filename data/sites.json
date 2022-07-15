@@ -7,6 +7,7 @@
     "website": "https://getpaidinbitcoin.com.au",
     "logo": "https://images.squarespace-cdn.com/content/v1/5f5990cc9e792617828214ae/1600921877148-3ISFDDENM1N89GLGAIKI/GBIB+Logo_5%402x.png?format=1500w",
     "signup": "https://portal.getpaidinbitcoin.com.au/register",
+    "useProxy": false,
     "backgroundColor": "#be2596",
     "requiredClaimMnemonics": ["email", "mobilenumber"]
   },
@@ -17,6 +18,7 @@
     "description": "",
     "logo": "https://res.cloudinary.com/dcisquypm/image/upload/v1651057203/validator-logos/ykib0ji0gekmjfcjhp48.png",
     "signup": "https://coinstash.com.au/auth/signup",
+    "useProxy": false,
     "backgroundColor": "#0012d0",
     "requiredClaimMnemonics": ["email", "mobilenumber"]
   },
@@ -28,6 +30,7 @@
     "website": "https://example.com/",
     "logo": "https://pngset.com/images/dogecoin-wow-gold-gold-medal-trophy-money-transparent-png-1137773.png",
     "signup": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "useProxy": false,
     "backgroundColor": "blue",
     "requiredClaimMnemonics": ["email", "mobilenumber", "eighteenplus"]
   },
@@ -38,7 +41,8 @@
     "description": "You may be thinking... is this a real exchange? To answer your question, YES is it 100% REAL.",
     "website": "https://example.com/",
     "logo": "https://cdn2.vectorstock.com/i/1000x1000/63/46/error-404-with-the-cute-potato-mascot-vector-39106346.jpg",
-    "signup": "https://www.youtube.com/watch?v=q7uyKYeGPdE"
+    "signup": "https://www.youtube.com/watch?v=q7uyKYeGPdE",
+    "useProxy": false
   },
   {
     "id": 5,
@@ -48,6 +52,7 @@
     "website": "https://cointree.com/",
     "logo": "",
     "signup": "https://auth.cointree.com/Account/Register?registerwith=${email}",
+    "useProxy": false,
     "backgroundColor": "white"
   },
   {
@@ -58,6 +63,7 @@
     "website": "https://easycrypto.com/au",
     "logo": "",
     "signup": "https://easycrypto.com/au",
+    "useProxy": false,
     "backgroundColor": "6438da"
   },
   {
@@ -68,6 +74,7 @@
     "website": "https://digitalsurge.com.au/",
     "logo": "https://cdn-images-1.medium.com/max/1200/1*Ou5WXcSyzpz322QrexG90Q.png",
     "signup": "https://digitalsurge.com.au/api/registration/sign-up/",
+    "useProxy": false,
     "requiredClaimMnemonics": ["email", "mobilenumber"]
   }
 ]
