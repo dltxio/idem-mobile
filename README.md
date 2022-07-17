@@ -84,8 +84,9 @@ An IDEM user initiates the registration process by entering their email address 
 Should that user be known to IDEM, the exchange request the claims of the user to complete their registration.  See claims table below.
 
 ```bash
-curl https://proxy.idem.com.au
+curl https://proxy.idem.com.au/notification?email=ea134b0a95c887ebbca53971edd5526c6a152694d03bc515e79badf0594541b8
 ```
+<img src="signup-via-notifications.png">
 
 #### Via a QR code
 
