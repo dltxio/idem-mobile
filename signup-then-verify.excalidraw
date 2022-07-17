@@ -1219,6 +1219,32 @@
       },
       "startArrowhead": null,
       "endArrowhead": "arrow"
+    },
+    {
+      "type": "rectangle",
+      "version": 224,
+      "versionNonce": 1501116512,
+      "isDeleted": false,
+      "id": "5FcvrmWsM2yWqKo-Bfeu3",
+      "fillStyle": "hachure",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "x": 818.7231747314921,
+      "y": 352.9388274643902,
+      "strokeColor": "#000000",
+      "backgroundColor": "transparent",
+      "width": 144,
+      "height": 23,
+      "seed": 751867296,
+      "groupIds": [],
+      "strokeSharpness": "sharp",
+      "boundElements": [],
+      "updated": 1658057139597,
+      "link": null,
+      "locked": false
     }
   ],
   "appState": {
