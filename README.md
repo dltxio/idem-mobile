@@ -98,7 +98,7 @@ curl https://proxy.idem.com.au
 ```
 
 
-#### Vai a QR code
+#### Via a QR code
 
 Instead of the user having to complete a registration process on the website or exchange, the website or exchange can ask for users IDEM claims via a QR code.
 
