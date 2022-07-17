@@ -103,7 +103,7 @@ curl https://proxy.idem.com.au
 Instead of the user having to complete a registration process on the website or exchange, the website or exchange can ask for users IDEM claims via a QR code.
 
 
-### Via the app
+#### Via the app
 
 Websites and exchange who have integrated with IDEM, can list their site on the "supported exchanges" tab on the app.  See the How To guide for businesses on how to integrate.
 
