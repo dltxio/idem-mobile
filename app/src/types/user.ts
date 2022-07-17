@@ -9,7 +9,8 @@ export type UserSignup = {
 export enum VendorEnum {
   GPIB = "GPIB",
   CoinStash = "CoinStash",
-  EasyCrypto = "EasyCrypto"
+  EasyCrypto = "EasyCrypto",
+  DigitalSurge = "DigitalSurge"
 }
 
 export type UserVerifyRequest = {
