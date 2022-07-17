@@ -74,16 +74,6 @@ I want to onboard to an exchange via the IDEM app,
 So that I don't have to resupply all my information again and again and again!
 ```
 
-```text
-Given an IDEM user,
-When they visit the demo.idem.com.au registration page,
-And they scan the QR code via the app,
-And click 'OK' on the app,
-Then they are registered on demo.idem.com.au,
-And their ID is verified,
-And they are redirected to demo.idem.com.au's home page.
-```
-
 Websites or exchanges can interact with _IDEM_ users in the following ways;
 
 #### Via a notification
@@ -97,16 +87,25 @@ Should that user be known to IDEM, the exchange request the claims of the user t
 curl https://proxy.idem.com.au
 ```
 
-
 #### Via a QR code
 
 Instead of the user having to complete a registration process on the website or exchange, the website or exchange can ask for users IDEM claims via a QR code.
 
+```text
+Given an IDEM user,
+When they visit the demo.idem.com.au registration page,
+And they scan the QR code via the app,
+And click 'OK' on the app,
+Then they are registered on demo.idem.com.au,
+And their ID is verified,
+And they are redirected to demo.idem.com.au's home page.
+```
+
+<img src="signup-then-verify.png">
 
 #### Via the app
 
 Websites and exchange who have integrated with IDEM, can list their site on the "supported exchanges" tab on the app.  See the How To guide for businesses on how to integrate.
-
 
 ### User Story 2. Existing (to the website or exchange) user
 
