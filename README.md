@@ -160,7 +160,7 @@ Eg: `did://callback=https://demo.idem.com.au/callback/?nonce=8b5c66c0-bceb-40b4-
 
 _IDEM_ will then check to see if it already has those claims. If it does, skip to step 4. If it doesn't, it will use the _idem-api_ module to obtain the relevant credentials which are verified by third-party KYC vendors and who return an X-509 SSL certificate signed JSON object that can then be reused. Each vendor has a different process for onboarding and the app will maintain these different business requirements.
 
-<img src="https://user-images.githubusercontent.com/91101134/174712724-32f42982-344a-4d62-bb0b-8dc61824b837.png" width=100% height=100%>
+<img src="claims.png">
 
 ### 3. Shaping the response from the API
 
