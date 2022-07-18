@@ -21,31 +21,9 @@
     "useProxy": false,
     "backgroundColor": "#0012d0",
     "requiredClaimMnemonics": ["email", "mobilenumber"]
-  },
+  },    
   {
     "id": 3,
-    "name": "Test Exchange",
-    "tagline": "Doge to the moon",
-    "description": "Oh cool, we have a description. Guess I'll have to think of something to write there. Hmm, this could be tough. I could try to be clever and make it funny or I could just write some boring rubbish... Boring rubbish it is then.",
-    "website": "https://example.com/",
-    "logo": "https://pngset.com/images/dogecoin-wow-gold-gold-medal-trophy-money-transparent-png-1137773.png",
-    "signup": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "useProxy": false,
-    "backgroundColor": "blue",
-    "requiredClaimMnemonics": ["email", "mobilenumber", "eighteenplus"]
-  },
-  {
-    "id": 4,
-    "name": "Potato Exchange",
-    "tagline": "PR's and potatos",
-    "description": "You may be thinking... is this a real exchange? To answer your question, YES is it 100% REAL.",
-    "website": "https://example.com/",
-    "logo": "https://cdn2.vectorstock.com/i/1000x1000/63/46/error-404-with-the-cute-potato-mascot-vector-39106346.jpg",
-    "signup": "https://www.youtube.com/watch?v=q7uyKYeGPdE",
-    "useProxy": false
-  },
-  {
-    "id": 5,
     "name": "Coin Tree",
     "tagline": "Buy, sell and trade on Australia's best crypto exchange",
     "description": "Buy, sell and trade on Australia's best crypto exchange",
@@ -56,7 +34,7 @@
     "backgroundColor": "white"
   },
   {
-    "id": 6,
+    "id": 4,
     "name": "Easy Crypto",
     "tagline": "We make it easy for Aussies to buy and sell crypto",
     "description": "Buy and sell instantly with Australia's fastest and safest crypto retailer. Deliver to any wallet address or withdraw to your bank account in as little as two minutes. Easy!",
