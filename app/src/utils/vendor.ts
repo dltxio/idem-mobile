@@ -5,7 +5,7 @@ export const getVendor = (vendorId: number) => {
       return VendorEnum.GPIB;
     case 2:
       return VendorEnum.CoinStash;
-    case 6:
+    case 4:
       return VendorEnum.EasyCrypto;
     default:
       return undefined;
