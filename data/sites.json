@@ -1,5 +1,17 @@
 [
   {
+    "id": 5,
+    "name": "Digital Surge",
+    "tagline": "Bitcoin & Crypto made simple",
+    "description": "A uniquely easy way to buy, sell & store crypto in Australia. Enjoy safe & effortless trading today.",
+    "website": "https://digitalsurge.com.au/",
+    "logo": "https://tradersunion.com/images/brokers/743.jpeg",
+    "signup": "https://digitalsurge.com.au/api/registration/sign-up/",
+    "useProxy": true,
+    "requiredClaimMnemonics": ["email", "mobilenumber"],
+    "backgroundColor": "#8c75d9"
+  },
+  {
     "id": 1,
     "name": "Get Paid In Bitcoin",
     "tagline": "The easiest way to get paid in Bitcoin",
@@ -39,17 +51,5 @@
     "logo": "",
     "signup": "https://easycrypto.com/au",
     "backgroundColor": "6438da"
-  },
-  {
-    "id": 5,
-    "name": "Digital Surge",
-    "tagline": "Bitcoin & Crypto made simple",
-    "description": "A uniquely easy way to buy, sell & store crypto in Australia. Enjoy safe & effortless trading today.",
-    "website": "https://digitalsurge.com.au/",
-    "logo": "https://tradersunion.com/images/brokers/743.jpeg",
-    "signup": "https://digitalsurge.com.au/api/registration/sign-up/",
-    "useProxy": true,
-    "requiredClaimMnemonics": ["email", "mobilenumber"],
-    "backgroundColor": "#8c75d9"
   }
 ]
