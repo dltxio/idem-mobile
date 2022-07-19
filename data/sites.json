@@ -7,7 +7,6 @@
     "website": "https://getpaidinbitcoin.com.au",
     "logo": "https://images.squarespace-cdn.com/content/v1/5f5990cc9e792617828214ae/1600921877148-3ISFDDENM1N89GLGAIKI/GBIB+Logo_5%402x.png?format=1500w",
     "signup": "https://portal.getpaidinbitcoin.com.au/register",
-    "useProxy": false,
     "backgroundColor": "#be2596",
     "requiredClaimMnemonics": ["email", "mobilenumber"]
   },
@@ -18,10 +17,9 @@
     "description": "",
     "logo": "https://res.cloudinary.com/dcisquypm/image/upload/v1651057203/validator-logos/ykib0ji0gekmjfcjhp48.png",
     "signup": "https://coinstash.com.au/auth/signup",
-    "useProxy": false,
     "backgroundColor": "#0012d0",
     "requiredClaimMnemonics": ["email", "mobilenumber"]
-  },    
+  },
   {
     "id": 3,
     "name": "Coin Tree",
@@ -30,7 +28,6 @@
     "website": "https://cointree.com/",
     "logo": "",
     "signup": "https://auth.cointree.com/Account/Register?registerwith=${email}",
-    "useProxy": false,
     "backgroundColor": "white"
   },
   {
@@ -41,7 +38,6 @@
     "website": "https://easycrypto.com/au",
     "logo": "",
     "signup": "https://easycrypto.com/au",
-    "useProxy": false,
     "backgroundColor": "6438da"
   }
 ]
