@@ -26,18 +26,20 @@ const importPrivateKeyFileFromDevice = async () => {
   const isCorrectFileType =
     res.name.endsWith(".asc") || res.name.endsWith(".key");
   if (!isCorrectFileType) {
-    throw new Error("invalid file type : expecting .asc or .key");
+    throw new Error("Invalid file type : expecting .asc or .key");
   }
   const fileContent = await FileSystem.readAsStringAsync(res.uri);
   return fileContent;
 };
 
 const isPrivateKey = (content: string) => {
-  const isStartWithBegin = content.startsWith(
-    "-----BEGIN PGP PRIVATE KEY BLOCK-----"
-  );
-  const isEndWithEnd = content.endsWith("-----END PGP PRIVATE KEY BLOCK-----");
-  return isStartWithBegin && isEndWithEnd;
+  const privateKeyRegEx = /-----BEGIN PGP PRIVATE KEY BLOCK-----/g;
+  const publicKeyRegEx = /-----BEGIN PGP PRIVATE KEY BLOCK-----/g;
+
+  const hasPrivateKey = content.match(privateKeyRegEx);
+  const hasPublicKey = content.match(publicKeyRegEx);
+
+  return hasPrivateKey && hasPublicKey;
 };
 
 const PGPScreen: React.FC = () => {
