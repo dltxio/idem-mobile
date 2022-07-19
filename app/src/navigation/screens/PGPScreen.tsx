@@ -36,8 +36,8 @@ const isPrivateKey = (content: string) => {
   const privateKeyRegEx = /-----BEGIN PGP PRIVATE KEY BLOCK-----/g;
   const publicKeyRegEx = /-----BEGIN PGP PRIVATE KEY BLOCK-----/g;
 
-  const hasPrivateKey = content.match(privateKeyRegEx);
-  const hasPublicKey = content.match(publicKeyRegEx);
+  const hasPrivateKey = privateKeyRegEx.test(content);
+  const hasPublicKey = publicKeyRegEx.test(content);
 
   return hasPrivateKey && hasPublicKey;
 };
