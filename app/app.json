@@ -16,10 +16,11 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
+      "config": {
+        "usesNonExemptEncryption": false
+      },
       "bundleIdentifier": "com.dltx.idem",
       "supportsTablet": true,
       "usesIcloudStorage": true,
