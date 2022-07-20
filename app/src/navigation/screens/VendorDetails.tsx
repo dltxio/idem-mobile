@@ -58,6 +58,16 @@ const VendorDetailsScreen: React.FC = () => {
     );
   }, [usersClaims, vendor]);
 
+  React.useEffect(() => {
+    if (!hasAllRequiredClaims) {
+      Alert.alert(
+        "Missing required claims",
+        `You must have all of the following required claims to sign up for this exchange.
+        \n[ ${vendor?.requiredClaimMnemonics.join(", ")} ]`
+      );
+    }
+  }, [hasAllRequiredClaims]);
+
   const verifyUserOnProxy = async () => {
     if (vendor) {
       const venderStorage = await exchangeLocalStorage.get();
