@@ -62,7 +62,7 @@ const VendorDetailsScreen: React.FC = () => {
     if (!hasAllRequiredClaims) {
       Alert.alert(
         "Missing required claims",
-        `You must have all of the following required claims to sign up for this exchange.
+        `You must have all of the following claims to sign up for this exchange.
         \n[ ${vendor?.requiredClaimMnemonics.join(", ")} ]`
       );
     }
