@@ -1,5 +1,10 @@
 import * as React from "react";
 import { View, StyleSheet, Text, Dimensions } from "react-native";
+import {
+  connectActionSheet,
+  useActionSheet
+} from "@expo/react-native-action-sheet";
+import { Entypo } from "@expo/vector-icons";
 import commonStyles from "../../styles/styles";
 import { Button, FileList } from "../../components";
 import allDocuments from "../../data/documents";
@@ -10,13 +15,13 @@ import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/image-utils";
 import useSelectPhoto from "../../hooks/useSelectPhoto";
 import * as DocumentPicker from "expo-document-picker";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
-import { Picker } from "@react-native-picker/picker";
 
 type Navigation = DocumentsStackNavigation<"Documents">;
 
 const DocumentsScreen: React.FC = () => {
   const { files, addFile, deleteFile } = useDocumentStore();
   const navigation = useNavigation<Navigation>();
+  const { showActionSheetWithOptions } = useActionSheet();
 
   const [selectedDocumentType, setSelectedDocumentType] = React.useState(
     allDocuments[allDocuments.length - 1].type
@@ -104,17 +109,31 @@ const DocumentsScreen: React.FC = () => {
           Attach a file from your device
         </Text>
         <Text style={styles.label}>Document type</Text>
-        <Picker
-          selectedValue={selectedDocumentType}
-          onValueChange={(itemValue) => setSelectedDocumentType(itemValue)}
-          numberOfLines={2}
-          style={styles.picker}
-          itemStyle={styles.pickerItem}
-        >
-          {allDocuments.map((doc) => (
-            <Picker.Item key={doc.type} label={doc.title} value={doc.type} />
-          ))}
-        </Picker>
+
+        <View style={styles.actionSheetButtonContainer}>
+          <Entypo.Button
+            name="list"
+            backgroundColor="#3e3e3e"
+            onPress={() =>
+              showActionSheetWithOptions(
+                {
+                  options: [
+                    ...allDocuments.map((document) => document.type),
+                    "Cancel"
+                  ],
+                  cancelButtonIndex: allDocuments.length
+                },
+                (buttonIndex) => {
+                  if (buttonIndex === undefined) return;
+                  if (buttonIndex === allDocuments.length) return;
+                  setSelectedDocumentType(allDocuments[buttonIndex].type);
+                }
+              )
+            }
+          >
+            {selectedDocumentType}
+          </Entypo.Button>
+        </View>
 
         <Button
           title="Take A Photo"
@@ -138,7 +157,7 @@ const DocumentsScreen: React.FC = () => {
   );
 };
 
-export default DocumentsScreen;
+export default connectActionSheet(DocumentsScreen);
 
 const styles = StyleSheet.create({
   introText: {
@@ -157,10 +176,7 @@ const styles = StyleSheet.create({
   button: {
     marginVertical: 5
   },
-  picker: {
-    height: 150
-  },
-  pickerItem: {
-    fontSize: 12
+  actionSheetButtonContainer: {
+    margin: 10
   }
 });

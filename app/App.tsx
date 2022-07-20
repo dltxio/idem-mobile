@@ -1,6 +1,7 @@
 import * as React from "react";
 import "react-native-get-random-values";
 import "@ethersproject/shims";
+import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import * as Linking from "expo-linking";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
@@ -76,14 +77,16 @@ const App = () => {
       <ApiProvider>
         <ClaimsProvider>
           <DocumentProvider>
-            <NavigationContainer linking={LinkingConfiguration}>
-              <StatusBar style="auto" />
-              <TabNavigator />
-              <RequestClaimsModal
-                claimRequest={claimRequest}
-                onClose={() => setClaimRequest(undefined)}
-              />
-            </NavigationContainer>
+            <ActionSheetProvider>
+              <NavigationContainer linking={LinkingConfiguration}>
+                <StatusBar style="auto" />
+                <TabNavigator />
+                <RequestClaimsModal
+                  claimRequest={claimRequest}
+                  onClose={() => setClaimRequest(undefined)}
+                />
+              </NavigationContainer>
+            </ActionSheetProvider>
           </DocumentProvider>
         </ClaimsProvider>
       </ApiProvider>
