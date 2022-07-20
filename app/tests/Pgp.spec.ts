@@ -19,7 +19,7 @@ const PRIVATE_KEY = `-----BEGIN PGP PRIVATE KEY BLOCK-----
     =n8OM
     -----END PGP PRIVATE KEY BLOCK-----`;
 
-describe("Pgp-Utils", () => {
+describe("PgpUtils.extractPrivateKeyFromFileContent()", () => {
   it("should extract private key from content containing both private and public key block", async () => {
     const content = `-----BEGIN PGP PRIVATE KEY BLOCK-----
     Comment: Alice's OpenPGP Transferable Secret Key
