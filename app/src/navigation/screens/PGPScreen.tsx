@@ -17,6 +17,7 @@ import { useClaimValue } from "../../context/ClaimsStore";
 import usePgp from "../../hooks/usePpg";
 import { AlertTitle } from "../../constants/common";
 import { pgpLocalStorage } from "../../utils/local-storage";
+import { extractPrivateKeyFromFileContent } from "../../utils/pgp-utils";
 
 const importPrivateKeyFileFromDevice = async () => {
   const res = await DocumentPicker.getDocumentAsync({
@@ -28,20 +29,8 @@ const importPrivateKeyFileFromDevice = async () => {
   if (!isCorrectFileType) {
     throw new Error("Invalid file type : expecting .asc or .key");
   }
-  const content =  await FileSystem.readAsStringAsync(res.uri);
-  const privateKeyRegEx =
-    /-----BEGIN PGP PRIVATE KEY BLOCK-----(.*)-----END PGP PRIVATE KEY BLOCK-----/;
-  return content.match(privateKeyRegEx);
-};
-
-const isPrivateKey = (content: string) => {
-  const privateKeyRegEx = /-----BEGIN PGP PRIVATE KEY BLOCK-----/g;
-  const publicKeyRegEx = /-----BEGIN PGP PUBLIC KEY BLOCK-----/g;
-
-  const hasPrivateKey = privateKeyRegEx.test(content);
-  const hasPublicKey = publicKeyRegEx.test(content);
-
-  return hasPrivateKey && hasPublicKey;
+  const fileContent = await FileSystem.readAsStringAsync(res.uri);
+  return fileContent;
 };
 
 const PGPScreen: React.FC = () => {
@@ -75,8 +64,8 @@ const PGPScreen: React.FC = () => {
     try {
       const content = await importPrivateKeyFileFromDevice();
       if (!content) return;
-      if (!isPrivateKey(content)) throw new Error("Not a private key");
-      await createPublicKey(content);
+      const privateKey = extractPrivateKeyFromFileContent(content);
+      await createPublicKey(privateKey);
       await loadKeyFromLocalStorage();
     } catch (error: any) {
       Alert.alert(
