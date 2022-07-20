@@ -15,6 +15,7 @@ import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/image-utils";
 import useSelectPhoto from "../../hooks/useSelectPhoto";
 import * as DocumentPicker from "expo-document-picker";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
+import { Document } from "../../types/document";
 
 type Navigation = DocumentsStackNavigation<"Documents">;
 
@@ -23,8 +24,8 @@ const DocumentsScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
   const { showActionSheetWithOptions } = useActionSheet();
 
-  const [selectedDocumentType, setSelectedDocumentType] = React.useState(
-    allDocuments[allDocuments.length - 1].type
+  const [selectedDocument, setSelectedDocument] = React.useState<Document>(
+    allDocuments[allDocuments.length - 1]
   );
 
   const { selectPhotoFromCameraRoll, selectPhotoFromCamera } = useSelectPhoto(
@@ -32,8 +33,8 @@ const DocumentsScreen: React.FC = () => {
   );
 
   const selectedDocuments = React.useMemo(
-    () => files.filter((file) => file.documentType === selectedDocumentType),
-    [files, selectedDocumentType]
+    () => files.filter((file) => file.documentType === selectedDocument.type),
+    [files, selectedDocument.type]
   );
 
   const navigateToFile = (fileId: string) => {
@@ -46,14 +47,14 @@ const DocumentsScreen: React.FC = () => {
     const file = await selectPhotoFromCameraRoll();
 
     if (!file.cancelled) {
-      addFile(selectedDocumentType, file.uri);
+      addFile(selectedDocument.type, file.uri);
     }
   };
 
   const takePhoto = async () => {
     const result = await selectPhotoFromCamera();
     if (result && !result.cancelled) {
-      addFile(selectedDocumentType, result.uri);
+      addFile(selectedDocument.type, result.uri);
     }
   };
 
@@ -63,7 +64,7 @@ const DocumentsScreen: React.FC = () => {
         type: "*/*"
       });
       if (res && res.type !== "cancel") {
-        addFile(selectedDocumentType, res.uri);
+        addFile(selectedDocument.type, res.uri);
       }
     } catch (error) {
       console.log(error);
@@ -118,7 +119,7 @@ const DocumentsScreen: React.FC = () => {
               showActionSheetWithOptions(
                 {
                   options: [
-                    ...allDocuments.map((document) => document.type),
+                    ...allDocuments.map((document) => document.title),
                     "Cancel"
                   ],
                   cancelButtonIndex: allDocuments.length
@@ -126,12 +127,12 @@ const DocumentsScreen: React.FC = () => {
                 (buttonIndex) => {
                   if (buttonIndex === undefined) return;
                   if (buttonIndex === allDocuments.length) return;
-                  setSelectedDocumentType(allDocuments[buttonIndex].type);
+                  setSelectedDocument(allDocuments[buttonIndex]);
                 }
               )
             }
           >
-            {selectedDocumentType}
+            {selectedDocument.title}
           </Entypo.Button>
         </View>
 
