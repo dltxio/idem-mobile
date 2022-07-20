@@ -29,13 +29,14 @@ const importPrivateKeyFileFromDevice = async () => {
     throw new Error("Invalid file type : expecting .asc or .key");
   }
   const content =  await FileSystem.readAsStringAsync(res.uri);
-  const privateKeyRegEx = /-----BEGIN PGP PUBLIC KEY BLOCK-----(.*)-----END PGP PUBLIC KEY BLOCK-----/
+  const privateKeyRegEx =
+    /-----BEGIN PGP PRIVATE KEY BLOCK-----(.*)-----END PGP PRIVATE KEY BLOCK-----/;
   return content.match(privateKeyRegEx);
 };
 
 const isPrivateKey = (content: string) => {
   const privateKeyRegEx = /-----BEGIN PGP PRIVATE KEY BLOCK-----/g;
-  const publicKeyRegEx = /-----BEGIN PGP PRIVATE KEY BLOCK-----/g;
+  const publicKeyRegEx = /-----BEGIN PGP PUBLIC KEY BLOCK-----/g;
 
   const hasPrivateKey = privateKeyRegEx.test(content);
   const hasPublicKey = publicKeyRegEx.test(content);
