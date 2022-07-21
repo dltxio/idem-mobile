@@ -116,6 +116,7 @@ const PGPScreen: React.FC = () => {
             <Button
               title={"Import my Private Key"}
               onPress={() => importMyPrivateKey(keyText as string)}
+              disabled={!keyText}
             />
           </View>
         </View>

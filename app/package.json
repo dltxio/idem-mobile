@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "license": "MIT",
   "scripts": {
+    "start:local": "expo start",
     "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
