@@ -60,6 +60,12 @@
           "icon": "./assets/Bee-Logo.png",
           "color": "#ffffff"
         }
+      ],
+      [
+        "dependencies",
+        {
+          "@types/react": "^18.0.15"
+        }
       ]
     ]
   }
