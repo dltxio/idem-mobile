@@ -1,6 +1,6 @@
 export type DocumentType =
   | "passport"
-  | "drivers-license"
+  | "drivers-licence"
   | "birth-certificate"
   | "bank-statement"
   | "rates-notice"
