@@ -12,9 +12,7 @@ import {
 import { Button } from "../../components";
 import useVendorsList from "../../hooks/useVendorsList";
 import { VendorStackNavigationRoute } from "../../types/navigation";
-import useVerifyClaims from "../../hooks/useVerifyClaims";
 import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
-import usePushNotifications from "../../hooks/usePushNotifications";
 import useVendors from "../../hooks/userVendors";
 import { getVendor } from "../../utils/vendor";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
@@ -22,15 +20,10 @@ import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 const VendorDetailsScreen: React.FC = () => {
   const { usersClaims } = useClaimsStore();
   const { vendors } = useVendorsList();
-  const {} = usePushNotifications();
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
-  const {} = useVerifyClaims();
   const vendor = vendors.find((v) => v.id == route.params.id);
-  const [] = React.useState<boolean>(false);
-  const {} = useVendors();
   const [signed, setSigned] = React.useState<boolean>(false);
   const { signup, syncDetail } = useVendors();
-
   const email = useClaimValue("EmailCredential");
   const dob = useClaimValue("BirthCredential");
   const name = useClaimValue("NameCredential");
