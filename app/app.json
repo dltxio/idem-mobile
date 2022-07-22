@@ -18,6 +18,9 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "config": {
+        "usesNonExemptEncryption": false
+      },
       "bundleIdentifier": "com.dltx.idem",
       "supportsTablet": true,
       "usesIcloudStorage": true,
@@ -56,13 +59,6 @@
         {
           "icon": "./assets/Bee-Logo.png",
           "color": "#ffffff"
-        }
-      ],
-      [
-        "expo-document-picker",
-        {
-          "appleTeamId": "FRG84WT9XZ",
-          "iCloudContainerEnvironment": "Development"
         }
       ]
     ]

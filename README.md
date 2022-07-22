@@ -6,13 +6,11 @@ The React native mobile app for IDEM.
 
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-
 ## Introduction
 
 IDEM facilitates users to register on a customer's website, such as a crypto exchange without having the user to manually enter onboarding information such as email, password and personal metadata which we call claims.
 
-**Note: Data is securely stored on your device.  IDEM does not have a server!**
-
+**Note: Data is securely stored on your device. IDEM does not have a server!**
 
 ## Running the app
 
@@ -27,9 +25,7 @@ yarn start
 
 ## What is IDEM?
 
-
 IDEM (_IDEM_, from now on) is an open-source cross-platform mobile application based on the [Decentralised Identity Foundation's DID protocol](https://identity.foundation). The application gives individuals control of their digital identities by establishing trust in an interaction between two individuals or entities that do not know each other. For trust to happen, the offering party will present credentials to the receiving parties, which can verify that the credentials are from an issuer that they trust. _IDEM_ is designed to be used by third parties who require their customers to be KYC'd, such as cryptocurrency exchanges (e.g. [Get Paid In Bitcoin](https://portal.getpaidinbitcoin.com.au)).
-
 
 Each time an exchange requests an ID from a new user, the KYC provider charges the exchange a fee. Users are required to provide KYC information and have it verified for each and every exchange onboarding instead of being able to reuse verification from a trusted provider. By locally storing users' verified information with a cryptographic signature, we can enhance the onboarding experience and reduce costs incurred by vendors.
 
@@ -52,7 +48,7 @@ However, I must complete their profile on the app before any third-party interac
 
 #### 1: New IDEM profile creation
 
-A user downloads the _IDEM_ app on their mobile device and creates a new local profile. Their email address is their unique identifier.  The user creates their profile with all relevant claims, such as phone number and date of birth.  _See claims table for a full list._
+A user downloads the _IDEM_ app on their mobile device and creates a new local profile. Their email address is their unique identifier. The user creates their profile with all relevant claims, such as phone number and date of birth. _See claims table for a full list._
 
 #### 2: Setting or creating a private key
 
@@ -60,7 +56,7 @@ _IDEM_ can automatically create a 256-bit private key on the device or it can al
 
 #### 3: Attaching documents to claims
 
-The user can choose certain types of claims to verify such as _18+_, _Date of Birth_ or _Address_. They have to substantiate those claims with supporting evidence such as a government-issued document (passport, driver's license, etc.), a utility bill, etc. The documents are encrypted and stored in the local storage of the device.
+The user can choose certain types of claims to verify such as _18+_, _Date of Birth_ or _Address_. They have to substantiate those claims with supporting evidence such as a government-issued document (passport, driver's licence, etc.), a utility bill, etc. The documents are encrypted and stored in the local storage of the device.
 
 Once the following is completed, IDEM users can now onboard to websites or exchanges in the following ways!
 
@@ -74,6 +70,24 @@ I want to onboard to an exchange via the IDEM app,
 So that I don't have to resupply all my information again and again and again!
 ```
 
+Websites or exchanges can interact with _IDEM_ users in the following ways;
+
+#### Via a notification
+
+An IDEM user initiates the registration process by entering their email address on the website or exchange. The website can then attempt to notify the IDEM user via the idem proxy https://proxy.idem.com.au with a SHA256 hash of the users email.
+
+Should that user be known to IDEM, the exchange request the claims of the user to complete their registration. See claims table below.
+
+```bash
+curl https://proxy.idem.com.au/notification?email=ea134b0a95c887ebbca53971edd5526c6a152694d03bc515e79badf0594541b8
+```
+
+<img src="signup-via-notifications.png">
+
+#### Via a QR code
+
+Instead of the user having to complete a registration process on the website or exchange, the website or exchange can ask for users IDEM claims via a QR code.
+
 ```text
 Given an IDEM user,
 When they visit the demo.idem.com.au registration page,
@@ -84,33 +98,15 @@ And their ID is verified,
 And they are redirected to demo.idem.com.au's home page.
 ```
 
-Websites or exchanges can interact with _IDEM_ users in the following ways;
+<img src="signup-then-verify.png">
 
-#### Via a notification
+#### Via the app
 
-An IDEM user initiates the registration process by entering their email address on the website or exchange. The website can then attempt to notify the IDEM user via the idem proxy https://proxy.idem.com.au with a SHA256 hash of the users email.
-
-
-Should that user be known to IDEM, the exchange request the claims of the user to complete their registration.  See claims table below.
-
-```bash
-curl https://proxy.idem.com.au
-```
-
-
-#### Vai a QR code
-
-Instead of the user having to complete a registration process on the website or exchange, the website or exchange can ask for users IDEM claims via a QR code.
-
-
-### Via the app
-
-Websites and exchange who have integrated with IDEM, can list their site on the "supported exchanges" tab on the app.  See the How To guide for businesses on how to integrate.
-
+Websites and exchange who have integrated with IDEM, can list their site on the "supported exchanges" tab on the app. See the How To guide for businesses on how to integrate.
 
 ### User Story 2. Existing (to the website or exchange) user
 
-An existing website user can log into the website and is then shown a QR code on their profile page or similar.  The QR code specifies the claims the website requires in their profile.  Once the user can scan the QR code (using _IDEM_) and they confirm the claims they want to share, the app then POSTs the claims to the website's API in the WC3 VC format for the website to validate and save.
+An existing website user can log into the website and is then shown a QR code on their profile page or similar. The QR code specifies the claims the website requires in their profile. Once the user can scan the QR code (using _IDEM_) and they confirm the claims they want to share, the app then POSTs the claims to the website's API in the WC3 VC format for the website to validate and save.
 
 ```text
 As an existing unverified customer of the website,
@@ -128,14 +124,17 @@ Then their ID is posted from the app to the website's API,
 And the IDEM signature is verified,
 And their personal data is updated on the website
 ```
+
 #### Verification Workflow Diagram
 
 The flowchart below is a verification workflow diagram (User story 2) for third-party developers to integrate a website (such as an exchange) with _IDEM_. It works as follows:
 
 1. A user creates an account on the website, typically with an email and password.
 2. The new user may then be asked to supply more information to meet KYC obligations. This could be metadata such as Full Name, Date of Birth and Physical address. These are what IDEM refers to as _Claims_. To capture this data, the website can either;
+
 - Get the user to fill out a form or,
 - Present a self documenting QR code requesting the claims required, and the callback URL for the website. This is similar to a PayPal IPN or an OAuth2 callback URL.
+
 3. The user is asked to confirm they're happy to proceed with sharing those specific claims to the website.
 4. IDEM then POSTs the claims in WC3 VC format to the websites specified callback URL, which it can then add to the users profile.
 
@@ -153,14 +152,13 @@ The site "idem.com.au/demo" creates a unique deeplink url with the url schema `d
 
 Eg: `did://callback=https://demo.idem.com.au/callback/?nonce=8b5c66c0-bceb-40b4-b099-d31b127bf7b3&claims=EmailCredential,NameCredential`
 
-
 <img src="https://user-images.githubusercontent.com/8411406/171374486-f2112f4e-f45e-43c2-be09-b1bb58b8f463.png" width=200px>
 
 ### 2. Verifying the claims
 
 _IDEM_ will then check to see if it already has those claims. If it does, skip to step 4. If it doesn't, it will use the _idem-api_ module to obtain the relevant credentials which are verified by third-party KYC vendors and who return an X-509 SSL certificate signed JSON object that can then be reused. Each vendor has a different process for onboarding and the app will maintain these different business requirements.
 
-<img src="https://user-images.githubusercontent.com/91101134/174712724-32f42982-344a-4d62-bb0b-8dc61824b837.png" width=100% height=100%>
+<img src="claims.png">
 
 ### 3. Shaping the response from the API
 
@@ -230,37 +228,37 @@ Finally, _IDEM_ sends the credentials payload back to the website. Upon receipt 
 
 ## Table of claims
 
-| **CredentialSubject**   | **Mnemonic**     | **Standard**            | **Description**            |
-| ------------------- | ------------ | ------------------- | ---------------------- |
-| AdultCredential     | eighteenplus | 18 Plus                             | 18 Plus                |
-| BirthCredential     | dob          | YYYY-MM-DD ISO 8601                 | Users date of birth    |
-| NameCredential      | fullname     | given name, family name, middle name| Users full name        |
-| EmailCredential     | email        | email@email.email                   | Users email address    |
-| MobileCredential    | mobilenumber | /^(\+\d{1,3}[- ]?)?\d{10}$/       | Users mobile number    |
-| AddressCredential   | address      | Physical Address                    | Users physical address |
-| TaxCredential       | taxnumber    | [0-9]{9}                      | Users tax file number  |
+| **CredentialSubject** | **Mnemonic** | **Standard**                         | **Description**        |
+| --------------------- | ------------ | ------------------------------------ | ---------------------- |
+| AdultCredential       | eighteenplus | 18 Plus                              | 18 Plus                |
+| BirthCredential       | dob          | YYYY-MM-DD ISO 8601                  | Users date of birth    |
+| NameCredential        | fullname     | given name, family name, middle name | Users full name        |
+| EmailCredential       | email        | email@email.email                    | Users email address    |
+| MobileCredential      | mobilenumber | /^(\+\d{1,3}[- ]?)?\d{10}$/          | Users mobile number    |
+| AddressCredential     | address      | Physical Address                     | Users physical address |
+| TaxCredential         | taxnumber    | [0-9]{9}                             | Users tax file number  |
 
 ## Table of documents
-| **Key**  | **Document**                 | **Details**                                                                                                                                                          | **Document contents**                                                                  | **Document type** | **Has photo ID?** | **Can be used as a supporting document for?**                        |
-|----------|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|-------------------|-------------------|----------------------------------------------------------------------|
-| **0x00** | Australian driver licence    | A driver licence with your photo issued in your name. This includes physical and digital driver licences, learner permits and provisional licences.                  | Given name, middle, family name, dob, license number, residential address              | Primary           | Yes               | AdultCredential, BirthCredential,  NameCredential, AddressCredential |
-| **0x01** | Australian passport          | A passport issued by a country.                                                                                                                                      | Given name, middle name, family name, residential address, DOB, passport number        | Primary           | Yes               | BirthCredential,  NameCredential, AddressCredential                  |
-| **0x02** | Australian birth certificate | A full birth certificate in your name or former name issued by Births, Deaths and Marriages. We can’t accept birth extracts or birth cards.                          | Given name, middle name, family name, DOB                                              | Primary           | No                | BirthCredential,  NameCredential                                     |
-| **0x03** | Bank statement               | A bank statement issued in your name. Must be issued within the last 3 months.                                                                                       | Given name, middle name, family name, residential address                              | Secondary         | No                | NameCredential, AddressCredential                                    |
-| **0x04** | Rates notice                 | A paid rates notice issued in your name with your address that is less than 12 months old.                                                                           | Given name, middle name, family name, residential address                              | Secondary         | No                | NameCredential, AddressCredential                                    |
-| **0x05** | Utility account              | Water, gas, electricity or phone account with a receipt number. This must be in your name, show your address and be less than 12 months old. Must be a paid account. | Given name, middle name, family name, residential address                              | Secondary         | No                | AddressCredential                                                    |
-| **0x06** | Medicare Card                | A current Medicare Card issued in your name.                                                                                                                         | Given name, middle name, family name, medicare number, position in family | Secondary         | No                | NameCredential                                                       |
 
+| **Key**  | **Document**                 | **Details**                                                                                                                                                          | **Document contents**                                                           | **Document type** | **Has photo ID?** | **Can be used as a supporting document for?**                       |
+| -------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------- | ----------------- | ------------------------------------------------------------------- |
+| **0x00** | Australian driver licence    | A driver licence with your photo issued in your name. This includes physical and digital driver licences, learner permits and provisional licences.                  | Given name, middle, family name, dob, licence number, residential address       | Primary           | Yes               | AdultCredential, BirthCredential, NameCredential, AddressCredential |
+| **0x01** | Australian passport          | A passport issued by a country.                                                                                                                                      | Given name, middle name, family name, residential address, DOB, passport number | Primary           | Yes               | BirthCredential, NameCredential, AddressCredential                  |
+| **0x02** | Australian birth certificate | A full birth certificate in your name or former name issued by Births, Deaths and Marriages. We can’t accept birth extracts or birth cards.                          | Given name, middle name, family name, DOB                                       | Primary           | No                | BirthCredential, NameCredential                                     |
+| **0x03** | Bank statement               | A bank statement issued in your name. Must be issued within the last 3 months.                                                                                       | Given name, middle name, family name, residential address                       | Secondary         | No                | NameCredential, AddressCredential                                   |
+| **0x04** | Rates notice                 | A paid rates notice issued in your name with your address that is less than 12 months old.                                                                           | Given name, middle name, family name, residential address                       | Secondary         | No                | NameCredential, AddressCredential                                   |
+| **0x05** | Utility account              | Water, gas, electricity or phone account with a receipt number. This must be in your name, show your address and be less than 12 months old. Must be a paid account. | Given name, middle name, family name, residential address                       | Secondary         | No                | AddressCredential                                                   |
+| **0x06** | Medicare Card                | A current Medicare Card issued in your name.                                                                                                                         | Given name, middle name, family name, medicare number, position in family       | Secondary         | No                | NameCredential                                                      |
 
 ## Glossary of Terms
 
-* Document Type: Each file can be associated with a document type, or category, such as "Driver's License" or "Passport".
+- Document Type: Each file can be associated with a document type, or category, such as "Driver's Licence" or "Passport".
 
-* File: A file is a digital representation of a document, such as jpgs, pngs, pdfs, etc. In IDEM, users can upload jpg and pdf files.
+- File: A file is a digital representation of a document, such as jpgs, pngs, pdfs, etc. In IDEM, users can upload jpg and pdf files.
 
-* Document: A document is a file that a user has uploaded and labeled with a document type. Documents can be used as evidence for various claim.
+- Document: A document is a file that a user has uploaded and labeled with a document type. Documents can be used as evidence for various claim.
 
-* Claim: A claim is a statement that the user is asserting as true. A claim can be verified as true by attaching evidence in the form of documents and completing the relevant verification process.
+- Claim: A claim is a statement that the user is asserting as true. A claim can be verified as true by attaching evidence in the form of documents and completing the relevant verification process.
 
 ## Test Vectors
 
@@ -273,7 +271,7 @@ BIP39 seed `excite hospital vast lounge please rebel evolve limit planet taste b
 
 ## References
 
-* https://www.servicesaustralia.gov.au/individuals/topics/confirm-your-identity/29166
-* https://en.bitcoin.it/wiki/Seed_phrase
-* Transactions on the Ethereum Test Network "Kovan" will be signed with the ETH account `0xE4ed9ceF6989CFE9da7c1Eec8c2299141dD9e7cC`
-* [Microsoft claims class for .net](https://docs.microsoft.com/en-us/dotnet/api/system.security.claims.claim?view=net-5.0).
+- https://www.servicesaustralia.gov.au/individuals/topics/confirm-your-identity/29166
+- https://en.bitcoin.it/wiki/Seed_phrase
+- Transactions on the Ethereum Test Network "Kovan" will be signed with the ETH account `0xE4ed9ceF6989CFE9da7c1Eec8c2299141dD9e7cC`
+- [Microsoft claims class for .net](https://docs.microsoft.com/en-us/dotnet/api/system.security.claims.claim?view=net-5.0).

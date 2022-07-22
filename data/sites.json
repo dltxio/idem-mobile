@@ -1,5 +1,17 @@
 [
   {
+    "id": 5,
+    "name": "Digital Surge",
+    "tagline": "Bitcoin & Crypto made simple",
+    "description": "A uniquely easy way to buy, sell & store crypto in Australia. Enjoy safe & effortless trading today.",
+    "website": "https://digitalsurge.com.au/",
+    "logo": "https://tradersunion.com/images/brokers/743.jpeg",
+    "signup": "https://digitalsurge.com.au/api/registration/sign-up/",
+    "useProxy": true,
+    "requiredClaimMnemonics": ["email", "mobilenumber"],
+    "backgroundColor": "#8c75d9"
+  },
+  {
     "id": 1,
     "name": "Get Paid In Bitcoin",
     "tagline": "The easiest way to get paid in Bitcoin",
@@ -7,7 +19,6 @@
     "website": "https://getpaidinbitcoin.com.au",
     "logo": "https://images.squarespace-cdn.com/content/v1/5f5990cc9e792617828214ae/1600921877148-3ISFDDENM1N89GLGAIKI/GBIB+Logo_5%402x.png?format=1500w",
     "signup": "https://portal.getpaidinbitcoin.com.au/register",
-    "useProxy": false,
     "backgroundColor": "#be2596",
     "requiredClaimMnemonics": ["email", "mobilenumber"]
   },
@@ -18,52 +29,27 @@
     "description": "",
     "logo": "https://res.cloudinary.com/dcisquypm/image/upload/v1651057203/validator-logos/ykib0ji0gekmjfcjhp48.png",
     "signup": "https://coinstash.com.au/auth/signup",
-    "useProxy": false,
     "backgroundColor": "#0012d0",
     "requiredClaimMnemonics": ["email", "mobilenumber"]
   },
   {
     "id": 3,
-    "name": "Test Exchange",
-    "tagline": "Doge to the moon",
-    "description": "Oh cool, we have a description. Guess I'll have to think of something to write there. Hmm, this could be tough. I could try to be clever and make it funny or I could just write some boring rubbish... Boring rubbish it is then.",
-    "website": "https://example.com/",
-    "logo": "https://pngset.com/images/dogecoin-wow-gold-gold-medal-trophy-money-transparent-png-1137773.png",
-    "signup": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "useProxy": false,
-    "backgroundColor": "blue",
-    "requiredClaimMnemonics": ["email", "mobilenumber", "eighteenplus"]
-  },
-  {
-    "id": 4,
-    "name": "Potato Exchange",
-    "tagline": "PR's and potatos",
-    "description": "You may be thinking... is this a real exchange? To answer your question, YES is it 100% REAL.",
-    "website": "https://example.com/",
-    "logo": "https://cdn2.vectorstock.com/i/1000x1000/63/46/error-404-with-the-cute-potato-mascot-vector-39106346.jpg",
-    "signup": "https://www.youtube.com/watch?v=q7uyKYeGPdE",
-    "useProxy": false
-  },
-  {
-    "id": 5,
     "name": "Coin Tree",
     "tagline": "Buy, sell and trade on Australia's best crypto exchange",
     "description": "Buy, sell and trade on Australia's best crypto exchange",
     "website": "https://cointree.com/",
     "logo": "",
     "signup": "https://auth.cointree.com/Account/Register?registerwith=${email}",
-    "useProxy": false,
     "backgroundColor": "white"
   },
   {
-    "id": 6,
+    "id": 4,
     "name": "Easy Crypto",
     "tagline": "We make it easy for Aussies to buy and sell crypto",
     "description": "Buy and sell instantly with Australia's fastest and safest crypto retailer. Deliver to any wallet address or withdraw to your bank account in as little as two minutes. Easy!",
     "website": "https://easycrypto.com/au",
     "logo": "",
     "signup": "https://easycrypto.com/au",
-    "useProxy": false,
     "backgroundColor": "6438da"
   }
 ]

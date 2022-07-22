@@ -173,6 +173,18 @@ const ClaimScreen: React.FC = () => {
                 </View>
               );
             }
+             if (field.type === "house") {
+               return (
+                 <View key={field.id}>
+                   <Input
+                     label={field.title}
+                     keyboardType={"numbers-and-punctuation"}
+                     value={formState[field.id]}
+                     onChangeText={onChange}
+                   />
+                 </View>
+               );
+             }
 
             if (field.type === "phone") {
               return (

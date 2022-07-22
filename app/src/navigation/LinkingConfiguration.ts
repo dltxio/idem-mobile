@@ -15,15 +15,16 @@ const linking: LinkingOptions<MainTabParamList> = {
         }
       },
       SupportedExchanges: {
+        initialRouteName: "Vendors",
         screens: {
-          Back: "exchange/back",
-          VendorDetails: "exchange/vendors"
+          Vendors: "exchange/vendors",
+          VendorDetails: "exchange/vendors/:id"
         }
       },
       DocumentsTab: {
         screens: {
           Documents: "documents/documents",
-          ViewFile: "documnets/file"
+          ViewFile: "documents/file"
         }
       }
     }

@@ -1,3 +1,4 @@
+import { UserDetailRequest } from "./../src/types/user";
 import {
   PutExpoTokenRequest,
   UserSignup,
@@ -15,4 +16,7 @@ export default class Api extends HTTPClient {
   public putExpoToken = async (userId: string, body: PutExpoTokenRequest) => {
     this.put(`user/${userId}/token`, body);
   };
+
+  public syncDetail = async (body: UserDetailRequest) =>
+    this.post(`user/syncDetail`, body);
 }

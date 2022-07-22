@@ -14,7 +14,7 @@ const claims: Claim[] = [
         type: "boolean"
       }
     ],
-    verificationDocuments: ["drivers-license"]
+    verificationDocuments: ["drivers-licence"]
   },
   {
     type: "BirthCredential",
@@ -30,7 +30,7 @@ const claims: Claim[] = [
         type: "date"
       }
     ],
-    verificationDocuments: ["drivers-license", "passport", "birth-certificate"]
+    verificationDocuments: ["drivers-licence", "passport", "birth-certificate"]
   },
   {
     type: "NameCredential",
@@ -44,7 +44,7 @@ const claims: Claim[] = [
       { id: "lastName", title: "Last name", type: "text" }
     ],
     verificationDocuments: [
-      "drivers-license",
+      "drivers-licence",
       "passport",
       "birth-certificate",
       "bank-statement",
@@ -80,7 +80,7 @@ const claims: Claim[] = [
     description: "Users physical address",
     verificationAction: "document-upload",
     fields: [
-      { id: "houseNumber", title: "House Number", type: "number" },
+      { id: "houseNumber", title: "House Number", type: "house" },
       { id: "street", title: "Street", type: "text" },
       { id: "suburb", title: "Suburb", type: "text" },
       { id: "postCode", title: "Post Code", type: "number" },
@@ -88,7 +88,7 @@ const claims: Claim[] = [
       { id: "country", title: "Country", type: "text" }
     ],
     verificationDocuments: [
-      "drivers-license",
+      "drivers-licence",
       "passport",
       "bank-statement",
       "rates-notice",
