@@ -18,11 +18,8 @@ const VerifyOtpScreen: React.FC = () => {
 
   const sendOtp = React.useCallback(
     async (mobileNumber: string) => {
-      const otp = Math.floor(100000 + Math.random() * 900000);
-
-      await api.requestOtp({ mobileNumber });
-      const smsMessage = `Your OTP for IDEM mobile number verification is ${otp}`;
-      Alert.alert("mock sms", smsMessage);
+      const response = await api.requestOtp({ mobileNumber });
+      Alert.alert("proxy response", JSON.stringify(response));
     },
     [api]
   );
