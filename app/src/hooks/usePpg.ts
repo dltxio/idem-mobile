@@ -35,9 +35,12 @@ const usePgp = (): Hooks => {
         passphrase: password
       });
 
+      const meta = await OpenPGP.getPublicKeyMetadata(publicKey);
+
       const pgp = {
         privateKey,
-        publicKey
+        publicKey,
+        fingerPrint: meta.keyIDShort
       } as PGP;
 
       await pgpLocalStorage.save(pgp);

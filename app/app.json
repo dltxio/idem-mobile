@@ -60,6 +60,13 @@
           "icon": "./assets/Bee-Logo.png",
           "color": "#ffffff"
         }
+      ],
+      [
+        "expo-document-picker",
+        {
+          "appleTeamId": "FRG84WT9XZ",
+          "iCloudContainerEnvironment": "Production"
+        }
       ]
     ]
   }
