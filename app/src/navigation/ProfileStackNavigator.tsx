@@ -6,6 +6,7 @@ import { ClaimType } from "../types/claim";
 import { getClaimFromType } from "../utils/claim-utils";
 import ViewFile from "./screens/ViewFileScreen";
 import PGPScreen from "./screens/PGPScreen";
+import { pgpLocalStorage } from "../utils/local-storage";
 
 export type ProfileStackParamList = {
   Home: undefined;
@@ -20,7 +21,16 @@ export type ProfileStackParamList = {
 
 const Stack = createStackNavigator<ProfileStackParamList>();
 
-const ProfileStackNavigator = () => {
+const PGPTitle = async () => {
+  const key = await pgpLocalStorage.get();
+
+  if (key) {
+    return key.fingerPrint;
+  }
+  return "Import Private Key";
+}
+
+const ProfileStackNavigator = async () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -37,7 +47,7 @@ const ProfileStackNavigator = () => {
       />
       <Stack.Screen
         name="PGP"
-        options={{ title: "Import Private Key" }}
+        options={{ title: await PGPTitle() }}
         component={PGPScreen}
       />
       <Stack.Screen
