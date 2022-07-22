@@ -17,7 +17,6 @@ import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import usePushNotifications from "../../hooks/usePushNotifications";
 import useVendors from "../../hooks/userVendors";
 import { getVendor } from "../../utils/vendor";
-import { findNames } from "../../utils/formatters";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 
 const VendorDetailsScreen: React.FC = () => {

@@ -5,8 +5,7 @@ import {
   ScrollView,
   Text,
   Dimensions,
-  Button,
-  Alert
+  Button
 } from "react-native";
 import commonStyles from "../../styles/styles";
 import { ProfileStackNavigation } from "../../types/navigation";
