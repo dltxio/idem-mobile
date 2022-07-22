@@ -1,28 +1,21 @@
 import { Alert } from "react-native";
-import { Vendor } from "../types/general";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useApi from "./useApi";
 import { UserVerifyRequest, VerificationResponse } from "../types/user";
 import { AlertTitle } from "../constants/common";
 
 type Hooks = {
-  verifyClaims: (
-    verifyRequest: UserVerifyRequest,
-    vendor: Vendor
-  ) => Promise<void>;
-  postTokenToProxy: (expoToken: string, vendor: Vendor) => Promise<void>;
+  verifyClaims: (verifyRequest: UserVerifyRequest) => Promise<void>;
+  postTokenToProxy: (expoToken: string) => Promise<void>;
 };
 
 const useVerifyClaims = (): Hooks => {
   const api = useApi();
-  const verifyClaims = async (
-    verifyRequest: UserVerifyRequest,
-    vendor: Vendor
-  ) => {
+  const verifyClaims = async (verifyRequest: UserVerifyRequest) => {
     api
       .verify(verifyRequest)
       .then(async (response) => {
-        await AsyncStorage.setItem(vendor.name, JSON.stringify(response));
+        await AsyncStorage.setItem("idemVerify", JSON.stringify(response));
       })
       .catch((error) => {
         console.log(error);
@@ -30,8 +23,8 @@ const useVerifyClaims = (): Hooks => {
       });
   };
 
-  const postTokenToProxy = async (expoToken: string, vendor: Vendor) => {
-    const claim = await AsyncStorage.getItem(vendor.name);
+  const postTokenToProxy = async (expoToken: string) => {
+    const claim = await AsyncStorage.getItem("idemVerify");
     if (claim) {
       const claimObject = JSON.parse(claim) as VerificationResponse;
       api
