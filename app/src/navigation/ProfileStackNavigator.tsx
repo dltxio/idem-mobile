@@ -6,7 +6,6 @@ import { ClaimType } from "../types/claim";
 import { getClaimFromType } from "../utils/claim-utils";
 import ViewFile from "./screens/ViewFileScreen";
 import PGPScreen from "./screens/PGPScreen";
-import { pgpLocalStorage } from "../utils/local-storage";
 
 export type ProfileStackParamList = {
   Home: undefined;
@@ -21,7 +20,7 @@ export type ProfileStackParamList = {
 
 const Stack = createStackNavigator<ProfileStackParamList>();
 
-const ProfileStackNavigator = async () => {
+const ProfileStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{

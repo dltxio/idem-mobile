@@ -27,24 +27,24 @@ const UserDetailsHeader: React.FC = () => {
   const { selectPhotoFromCameraRoll } = useSelectPhoto(PROFILE_IMAGE_OPTIONS);
   const { addClaim } = useClaimsStore();
   const { addFile, files } = useDocumentStore();
-  const [ pgpTitle, setPgpTitle ] = useState<string>("Import your PGP/GPG Key");
+  const [pgpTitle, setPgpTitle] = useState<string | undefined>();
 
   const { ethAddress } = useMnemonic();
 
   const profilePictureFile = files.find((file) => file.id === profileImageId);
 
-  const PGPTitle = async () => {
+  const checkPGPTitle = async () => {
     const key = await pgpLocalStorage.get();
-
     if (key) {
       setPgpTitle(key.fingerPrint);
+      return;
     }
     setPgpTitle("Import PGP Private Key");
   };
 
   useEffect(() => {
-    PGPTitle();
-  });
+    if (!pgpTitle) checkPGPTitle();
+  }, [pgpTitle]);
 
   const addProfileImageClaim = async () => {
     const file = await selectPhotoFromCameraRoll();
