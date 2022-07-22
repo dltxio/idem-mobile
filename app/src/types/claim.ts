@@ -11,7 +11,7 @@ export type ClaimType =
   | "TaxCredential"
   | "ProfileImageCredential";
 
-export type VerificationAction = "document-upload" | "action";
+export type VerificationAction = "document-upload" | "action" | "otp";
 
 export type Claim = {
   type: ClaimType;

@@ -88,24 +88,21 @@ const ClaimScreen: React.FC = () => {
     setLoading(false);
   };
 
-  const documentList =
-    claim.verificationAction === "document-upload" ? (
-      <VerificationFiles
-        claim={claim}
-        isVerifying={isVerifying}
-        setIsVerifying={(newValue) => {
-          setIsVerifying(newValue);
-          setSelectedFileIds([]);
-        }}
-        selectedFileIds={selectedFileIds}
-        onSelectFile={onSelectFile}
-      />
-    ) : null;
-
   const canSave =
     claim.fields.filter((field) => formState[field.id]).length ===
       claim.fields.length &&
     ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
+
+  const isDocumentUploadVerifyAction =
+    claim.verificationAction === "document-upload";
+
+  const isOtpVerifyAction = claim.verificationAction === "otp";
+
+  const openVerifyOtpScreen = () => {
+    navigation.navigate("VerifyOtp", {
+      mobileNumber: formState["mobileNumber"]
+    });
+  };
 
   return (
     <View style={commonStyles.screen}>
@@ -219,17 +216,36 @@ const ClaimScreen: React.FC = () => {
               value={rawDate ?? new Date()}
             />
           )}
-          {documentList}
+          {isDocumentUploadVerifyAction && (
+            <VerificationFiles
+              claim={claim}
+              isVerifying={isVerifying}
+              setIsVerifying={(newValue) => {
+                setIsVerifying(newValue);
+                setSelectedFileIds([]);
+              }}
+              selectedFileIds={selectedFileIds}
+              onSelectFile={onSelectFile}
+            />
+          )}
         </View>
         <BottomNavBarSpacer />
       </ScrollView>
       <View style={styles.buttonWrapper}>
-        <Button
-          title={isVerifying ? "Save & Verify" : "Save"}
-          disabled={!canSave}
-          onPress={onSave}
-          loading={loading}
-        />
+        {isOtpVerifyAction ? (
+          <Button
+            title={"Verify"}
+            disabled={!canSave}
+            onPress={openVerifyOtpScreen}
+          />
+        ) : (
+          <Button
+            title={isVerifying ? "Save & Verify" : "Save"}
+            disabled={!canSave}
+            onPress={onSave}
+            loading={loading}
+          />
+        )}
       </View>
     </View>
   );
@@ -276,7 +292,7 @@ const VerificationFiles: React.FC<{
   }));
 
   const validDocumentNames = claim.verificationDocuments.map((document) => {
-    return `\n- ${getDocumentFromDocumentType(document).title}`;
+    return `- ${getDocumentFromDocumentType(document).title}`;
   });
 
   React.useLayoutEffect(() => {
@@ -284,7 +300,7 @@ const VerificationFiles: React.FC<{
       setIsVerifying(false);
       Alert.alert(
         "No valid documents",
-        `Please add one of the following: ${validDocumentNames}`,
+        `Please add one of the following: \n${validDocumentNames.join("\n")}`,
         [
           {
             text: "OK",
