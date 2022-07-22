@@ -6,10 +6,12 @@ import { ClaimType } from "../types/claim";
 import { getClaimFromType } from "../utils/claim-utils";
 import ViewFile from "./screens/ViewFileScreen";
 import PGPScreen from "./screens/PGPScreen";
+import VerifyOtpScreen from "./screens/VerifyOtpScreen";
 
 export type ProfileStackParamList = {
   Home: undefined;
   Claim: { claimType: ClaimType };
+  VerifyOtp: { mobileNumber: string };
   ViewFile: {
     fileId: string;
     onSelect: () => void;
@@ -50,6 +52,12 @@ const ProfileStackNavigator = () => {
         }}
         component={ClaimScreen}
       />
+      <Stack.Screen
+        name="VerifyOtp"
+        options={{ title: "Verify OTP" }}
+        component={VerifyOtpScreen}
+      />
+
       <Stack.Screen
         name="ViewFile"
         options={() => {
