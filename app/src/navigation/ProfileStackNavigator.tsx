@@ -21,15 +21,6 @@ export type ProfileStackParamList = {
 
 const Stack = createStackNavigator<ProfileStackParamList>();
 
-const PGPTitle = async () => {
-  const key = await pgpLocalStorage.get();
-
-  if (key) {
-    return key.fingerPrint;
-  }
-  return "Import Private Key";
-}
-
 const ProfileStackNavigator = async () => {
   return (
     <Stack.Navigator
@@ -47,7 +38,7 @@ const ProfileStackNavigator = async () => {
       />
       <Stack.Screen
         name="PGP"
-        options={{ title: await PGPTitle() }}
+        options={{ title: "Import PGP Private Key" }}
         component={PGPScreen}
       />
       <Stack.Screen
