@@ -20,7 +20,7 @@
     "logo": "https://images.squarespace-cdn.com/content/v1/5f5990cc9e792617828214ae/1600921877148-3ISFDDENM1N89GLGAIKI/GBIB+Logo_5%402x.png?format=1500w",
     "signup": "https://portal.getpaidinbitcoin.com.au/register",
     "backgroundColor": "#be2596",
-    "requiredClaimMnemonics": ["email", "fullname"]
+    "requiredClaimMnemonics": ["email", "fullname", "mobilenumber"]
   },
   {
     "id": 2,
