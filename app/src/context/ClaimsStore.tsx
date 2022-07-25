@@ -3,10 +3,12 @@ import { Claim, ClaimType, ClaimWithValue, ClaimData } from "../types/claim";
 import allClaims from "../data/claims";
 import { claimsLocalStorage } from "../utils/local-storage";
 import { displayClaimValue } from "../utils/claim-utils";
+import claims from "../data/claims";
 
 export type ClaimsVault = {
   unclaimedClaims: Claim[];
   usersClaims: ClaimWithValue[];
+  updateClaim: (claimId: ClaimType, verified: boolean) => Promise<void>;
   addClaim: (claimId: ClaimType, value: any, files: string[]) => Promise<void>;
   reset: () => void;
 };
@@ -31,6 +33,27 @@ export const ClaimsProvider: React.FC<{
       }
     })();
   }, []);
+
+  const updateClaim = async (claimType: ClaimType, verified: boolean) => {
+    const verifiedClaim = claims.find((c) => c.type === claimType);
+    if (verifiedClaim) verifiedClaim?.verified === true;
+
+    await claimsLocalStorage.save(verifiedClaim);
+    return updateClaim;
+  };
+
+setVerifiedClaimTypes((previous) => {
+      const previousWithoutClaim = previous.filter((c) => c.type !== claimId);
+      const updatedClaims = [...previousWithoutClaim, { type: claimId, value }];
+      claimsLocalStorage.save(updatedClaims);
+      return updatedClaims;
+    });
+  };
+
+
+
+
+
 
   const usersClaims: ClaimWithValue[] = React.useMemo(() => {
     const verifiedClaims: ClaimWithValue[] = [];

@@ -1,9 +1,19 @@
+import { useRoute } from "@react-navigation/native";
 import axios from "axios";
+import { useState } from "react";
 import { Alert } from "react-native";
 import OpenPGP from "react-native-fast-openpgp";
+import { addSyntheticLeadingComment } from "typescript";
 import { AlertTitle } from "../constants/common";
+import { useClaimsStore } from "../context/ClaimsStore";
+import { Claim } from "../types/claim";
 import { UploadPGPKeyResponse } from "../types/general";
+import {
+  ProfileStackNavigation,
+  ProfileStackNavigationRoute
+} from "../types/navigation";
 import { PGP } from "../types/wallet";
+import { getClaimFromType } from "../utils/claim-utils";
 import { pgpLocalStorage } from "../utils/local-storage";
 import { createRandomPassword } from "../utils/randomPassword-utils";
 
@@ -113,17 +123,22 @@ const usePgp = (): Hooks => {
   };
 
   const verifyPGPPublicKey = async (email: string | undefined) => {
+    const { updateClaim } = useClaimsStore();
     try {
       if (!email) return;
       const encodeEmail = encodeURI(email);
       const response = await axios.get(
         `https://keys.openpgp.org/vks/v1/by-email/${encodeEmail}`
       );
+      console.log(response.data, verifyPGPPublicKey);
       if (response.status === 200) {
-        Alert.alert(
-          `Email Verified`,
-          `Email has been verified with keys.openpgp.org`
-        );
+        await updateClaim("EmailCredential", true);
+        {
+          Alert.alert(
+            `Email Verified`,
+            `Email has been verified with keys.openpgp.org`
+          );
+        }
       }
     } catch (error) {
       Alert.alert(AlertTitle.Error, "Could not verify email.");

@@ -58,6 +58,7 @@ const claims: Claim[] = [
     mnemonic: "email",
     title: "Email",
     description: "Users email address",
+    verifyEmail: false,
     verificationAction: "action",
     fields: [{ id: "email", title: "Email", type: "email" }],
     verificationDocuments: []

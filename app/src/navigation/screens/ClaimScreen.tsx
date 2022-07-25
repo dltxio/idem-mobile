@@ -76,7 +76,7 @@ const ClaimScreen: React.FC = () => {
       }));
     }
   };
-
+   
   const onSave = async () => {
     setLoading(true);
     await addClaim(claim.type, formState, selectedFileIds);
