@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useRoute } from "@react-navigation/native";
-import { View, StyleSheet, Text, Alert } from "react-native";
+import { View, Text, Alert } from "react-native";
 
 import { ProfileStackNavigationRoute } from "../../types/navigation";
 import useApi from "../../hooks/useApi";
