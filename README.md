@@ -10,7 +10,7 @@ The React native mobile app for IDEM.
 
 IDEM facilitates users to register on a customer's website, such as a crypto exchange without having the user to manually enter onboarding information such as email, password and personal metadata which we call claims.
 
-**Note: Data is securely stored on your device. IDEM does not have a server!**
+**Note: Data is securely stored on your device.**
 
 ## Running the app
 
