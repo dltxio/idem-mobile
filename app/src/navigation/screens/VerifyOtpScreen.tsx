@@ -1,18 +1,12 @@
 import * as React from "react";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { View, StyleSheet, Text, Alert } from "react-native";
 
-import {
-  ProfileStackNavigation,
-  ProfileStackNavigationRoute
-} from "../../types/navigation";
+import { ProfileStackNavigationRoute } from "../../types/navigation";
 import useApi from "../../hooks/useApi";
-
-type Navigation = ProfileStackNavigation<"VerifyOtp">;
 
 const VerifyOtpScreen: React.FC = () => {
   const route = useRoute<ProfileStackNavigationRoute<"VerifyOtp">>();
-  const navigation = useNavigation<Navigation>();
   const api = useApi();
   const mobileNumber = route.params.mobileNumber;
 
@@ -39,5 +33,3 @@ const VerifyOtpScreen: React.FC = () => {
 };
 
 export default VerifyOtpScreen;
-
-const styles = StyleSheet.create({});
