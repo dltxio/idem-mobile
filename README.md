@@ -10,7 +10,7 @@ The React native mobile app for IDEM.
 
 IDEM facilitates users to register on a customer's website, such as a crypto exchange without having the user to manually enter onboarding information such as email, password and personal metadata which we call claims.
 
-**Note: Data is securely stored on your device. IDEM does not have a server!**
+**Note: Data is securely stored on your device.**
 
 ## Running the app
 
@@ -138,7 +138,7 @@ The flowchart below is a verification workflow diagram (User story 2) for third-
 3. The user is asked to confirm they're happy to proceed with sharing those specific claims to the website.
 4. IDEM then POSTs the claims in WC3 VC format to the websites specified callback URL, which it can then add to the users profile.
 
-OUT OF DATE, TO BE REPLACED: <img src="https://user-images.githubusercontent.com/91101134/141231224-ad845a7c-d336-43cb-b9ea-a2d7c3f1a021.jpeg" width=100% height=100%>
+<img src="idem-signup.png">
 
 ## Implementation
 
