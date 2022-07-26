@@ -102,6 +102,7 @@ const ClaimScreen: React.FC = () => {
   const isOtpVerifyAction = claim.verificationAction === "otp";
 
   const openVerifyOtpScreen = async () => {
+    setLoading(true);
     const mobileNumber = formState["mobileNumber"];
     try {
       const otpResponse = await api.requestOtp({ mobileNumber });
@@ -140,6 +141,7 @@ const ClaimScreen: React.FC = () => {
       console.error(error);
       Alert.alert("Error", "Something went wrong");
     }
+    setLoading(false);
   };
 
   return (
@@ -275,6 +277,7 @@ const ClaimScreen: React.FC = () => {
             title={"Verify"}
             disabled={userClaim?.verified}
             onPress={openVerifyOtpScreen}
+            loading={loading}
           />
         ) : (
           <Button
