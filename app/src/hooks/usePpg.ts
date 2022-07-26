@@ -78,7 +78,7 @@ const usePgp = (): Hooks => {
   ) => {
     try {
       if (!publicKey || !email) return;
-      //Upload public key to openpgp server
+      // Upload public key to openpgp server
       const uploadResponse = await axios.post<UploadPGPKeyResponse>(
         "https://keys.openpgp.org/vks/v1/upload",
         JSON.stringify({
@@ -90,7 +90,10 @@ const usePgp = (): Hooks => {
           }
         }
       );
-      //Verify key,send email
+
+      console.log(uploadResponse);
+
+      // Verify key,send email
       const verifyResponse = await axios.post(
         "https://keys.openpgp.org/vks/v1/request-verify",
         JSON.stringify({
@@ -103,6 +106,9 @@ const usePgp = (): Hooks => {
           }
         }
       );
+
+      console.log(verifyResponse);
+
       if (verifyResponse.status === 200) {
         Alert.alert(AlertTitle.Success, "Your PGP key has been uploaded");
       }
