@@ -87,7 +87,7 @@ const PGPScreen: React.FC = () => {
   );
 
   const checkRequiredClaims = () => {
-    if (!emailClaimValue && !nameClaimValue) {
+    if (emailClaimValue === "" || nameClaimValue === "") {
       Alert.alert(
         AlertTitle.Error,
         "Email and Name claims must be set before a PGP/GPG Key can be generated."
@@ -97,7 +97,7 @@ const PGPScreen: React.FC = () => {
 
   React.useEffect(() => {
     (async () => {
-      checkRequiredClaims;
+      checkRequiredClaims();
       await loadKeyFromLocalStorage();
     })();
   }, []);
