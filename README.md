@@ -15,13 +15,16 @@ IDEM facilitates users to register on a customer's website, such as a crypto exc
 ## Running the app
 
 To run the application locally by using the expo dev-client
+Ensure expo-cli@5.4.9 is installed globally
 
 ```bash
-yarn install
+yarn
 cd app
 yarn start
-
 ```
+Open webtools and ensure connection type is tunnel instead of LAN
+
+Scan QR code on device
 
 ## What is IDEM?
 
