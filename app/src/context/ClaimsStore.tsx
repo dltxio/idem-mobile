@@ -7,7 +7,12 @@ import { displayClaimValue } from "../utils/claim-utils";
 export type ClaimsVault = {
   unclaimedClaims: Claim[];
   usersClaims: ClaimWithValue[];
-  addClaim: (claimId: ClaimType, value: any, files: string[]) => Promise<void>;
+  addClaim: (
+    claimId: ClaimType,
+    value: any,
+    files: string[],
+    verified?: boolean
+  ) => Promise<void>;
   reset: () => void;
 };
 
@@ -24,6 +29,7 @@ export const ClaimsProvider: React.FC<{
 
   React.useEffect(() => {
     (async () => {
+      claimsLocalStorage.clear();
       const initialClaims = await claimsLocalStorage.get();
 
       if (initialClaims) {
@@ -62,7 +68,8 @@ export const ClaimsProvider: React.FC<{
   const addClaim = async (
     claimId: ClaimType,
     value: string,
-    files: string[]
+    files: string[],
+    verified?: boolean
   ) => {
     // This is a mock function.
     // In the future we will send this data off to an api to be verified
@@ -76,7 +83,11 @@ export const ClaimsProvider: React.FC<{
 
     setVerifiedClaimTypes((previous) => {
       const previousWithoutClaim = previous.filter((c) => c.type !== claimId);
-      const updatedClaims = [...previousWithoutClaim, { type: claimId, value }];
+      const updatedClaims = [
+        ...previousWithoutClaim,
+        { type: claimId, value, verified: verified ? verified : false }
+      ];
+      console.log(updatedClaims);
       claimsLocalStorage.save(updatedClaims);
       return updatedClaims;
     });

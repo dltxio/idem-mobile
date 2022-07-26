@@ -6,6 +6,7 @@ import {
   VerificationResponse
 } from "../src/types/user";
 import HTTPClient from "./HTTPClient";
+import { RequestOptResponse, VerifyOtpRequest } from "../src/types/claim";
 export default class Api extends HTTPClient {
   public vendorSignup = async (body: UserSignup) =>
     this.post<string>(`user/signup`, body);
@@ -21,5 +22,8 @@ export default class Api extends HTTPClient {
     this.post(`user/syncDetail`, body);
 
   public requestOtp = async (body: RequestOtpRequest) =>
-    this.post(`user/requestOtp`, body);
+    this.post<RequestOptResponse>(`user/requestOtp`, body);
+
+  public verifyOtp = async (body: VerifyOtpRequest) =>
+    this.post<boolean>(`user/verifyOtp`, body);
 }

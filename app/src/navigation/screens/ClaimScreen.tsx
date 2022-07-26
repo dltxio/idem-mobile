@@ -26,12 +26,15 @@ import { getDocumentFromDocumentType } from "../../utils/document-utils";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import useClaimScreen from "../../hooks/useClaimScreen";
 import { claimsLocalStorage } from "../../utils/local-storage";
+import useApi from "../../hooks/useApi";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
 const ClaimScreen: React.FC = () => {
   const route = useRoute<ProfileStackNavigationRoute<"Claim">>();
+  const api = useApi();
   const claim = getClaimFromType(route.params.claimType);
+
   const { addClaim, usersClaims } = useClaimsStore();
   const userClaim = usersClaims.find((c) => c.type === claim.type);
   const [formState, setFormState] = React.useState<{ [key: string]: string }>(
@@ -98,10 +101,45 @@ const ClaimScreen: React.FC = () => {
 
   const isOtpVerifyAction = claim.verificationAction === "otp";
 
-  const openVerifyOtpScreen = () => {
-    navigation.navigate("VerifyOtp", {
-      mobileNumber: formState["mobileNumber"]
-    });
+  const openVerifyOtpScreen = async () => {
+    const mobileNumber = formState["mobileNumber"];
+    try {
+      const otpResponse = await api.requestOtp({ mobileNumber });
+      if (otpResponse.hash && otpResponse.expiryTimestamp) {
+        Alert.prompt("Enter your verification code", "", [
+          {
+            text: "OK",
+            onPress: async (value: string | undefined) => {
+              if (value) {
+                const verifyOtp = await api.verifyOtp({
+                  hash: otpResponse.hash,
+                  code: value,
+                  expiryTimestamp: otpResponse.expiryTimestamp,
+                  mobileNumber: mobileNumber
+                });
+                if (verifyOtp) {
+                  addClaim(claim.type, formState, selectedFileIds, true);
+                  Alert.alert("Your mobile number is verified");
+                  navigation.reset({
+                    routes: [{ name: "Home" }]
+                  });
+                } else {
+                  Alert.alert("Invalid verification code");
+                }
+              }
+            }
+          },
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          }
+        ]);
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Error", "Something went wrong");
+    }
   };
 
   return (
@@ -235,7 +273,7 @@ const ClaimScreen: React.FC = () => {
         {isOtpVerifyAction ? (
           <Button
             title={"Verify"}
-            disabled={!canSave}
+            disabled={userClaim?.verified}
             onPress={openVerifyOtpScreen}
           />
         ) : (
