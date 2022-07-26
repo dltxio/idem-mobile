@@ -42,7 +42,7 @@
 4. If the app isn't loading try closing the app on your device and relaunching with expo repeatedly
 
 ## NOTE 
-If you want to build for ios sucessfully you will need to add the following to the app.json
+If you want to build for ios successfully you will need to add the following to the app.json (Only add for builds)
 
  [
         "expo-document-picker",
