@@ -3,7 +3,6 @@ import { Alert } from "react-native";
 import OpenPGP from "react-native-fast-openpgp";
 import { AlertTitle } from "../constants/common";
 import { useClaimsStore } from "../context/ClaimsStore";
-import { UploadPGPKeyResponse } from "../types/general";
 import { PGP } from "../types/wallet";
 import { pgpLocalStorage } from "../utils/local-storage";
 import { createRandomPassword } from "../utils/randomPassword-utils";
