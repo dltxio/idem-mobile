@@ -96,11 +96,8 @@ const PGPScreen: React.FC = () => {
     (async () => {
       const claims = await claimsLocalStorage.get();
       claims?.forEach((claim) => {
-        console.log(claim);
-        if (claim.type === "EmailCredential") {
-          if (claim.value.verified) {
-            setVerifyDisabled(true);
-          }
+        if (claim.type === "EmailCredential" && claim.value.verified) {
+          setVerifyDisabled(true);
         }
       });
     })();

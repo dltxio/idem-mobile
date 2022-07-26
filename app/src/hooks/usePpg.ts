@@ -106,7 +106,6 @@ const usePgp = (): Hooks => {
       const response = await axios.get(
         `https://keys.openpgp.org/vks/v1/by-email/${encodeEmail}`
       );
-      console.log(response.data, verifyPGPPublicKey);
       if (response.status === 200) {
         await updateClaim("EmailCredential", true);
         {
