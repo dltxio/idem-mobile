@@ -48,7 +48,6 @@ const ClaimScreen: React.FC = () => {
   const [rawDate, setRawDate] = React.useState<Date>();
 
   const {
-    loading,
     saveAndCheckBirthday,
     onSelectFile,
     selectedFileIds,
