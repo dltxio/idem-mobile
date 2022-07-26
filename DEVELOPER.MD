@@ -41,5 +41,16 @@
 3. Connect expo to the device by either scanning the QR code or using the expo console
 4. If the app isn't loading try closing the app on your device and relaunching with expo repeatedly
 
+## NOTE 
+If you want to build for ios successfully you will need to add the following to the app.json (Only add for builds)
+
+ [
+        "expo-document-picker",
+        {
+          "appleTeamId": "FRG84WT9XZ",
+          "iCloudContainerEnvironment": "Production"
+        }
+      ]
+
 **If a new package is added to the project, a new build will need to be made and everyone will need to download the newest internal distribution build**
 
