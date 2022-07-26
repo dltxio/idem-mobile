@@ -33,6 +33,7 @@ const ClaimScreen: React.FC = () => {
   const route = useRoute<ProfileStackNavigationRoute<"Claim">>();
   const claim = getClaimFromType(route.params.claimType);
   const { addClaim, usersClaims } = useClaimsStore();
+  const [disableButton, setDisableButton] = React.useState<boolean>(false);
   const userClaim = usersClaims.find((c) => c.type === claim.type);
   const [formState, setFormState] = React.useState<{ [key: string]: string }>(
     userClaim?.value || {}
@@ -76,7 +77,7 @@ const ClaimScreen: React.FC = () => {
       }));
     }
   };
-   
+
   const onSave = async () => {
     setLoading(true);
     await addClaim(claim.type, formState, selectedFileIds);
@@ -87,7 +88,6 @@ const ClaimScreen: React.FC = () => {
     });
     setLoading(false);
   };
-
   const documentList =
     claim.verificationAction === "document-upload" ? (
       <VerificationFiles
@@ -106,6 +106,16 @@ const ClaimScreen: React.FC = () => {
     claim.fields.filter((field) => formState[field.id]).length ===
       claim.fields.length &&
     ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
+
+  React.useEffect(() => {
+    if (userClaim?.type === "EmailCredential") {
+      console.log(userClaim.value);
+      const claimValue = userClaim.value;
+      if (claimValue.verifed) {
+        setDisableButton(true);
+      }
+    }
+  }, [userClaim]);
 
   return (
     <View style={commonStyles.screen}>
@@ -226,9 +236,8 @@ const ClaimScreen: React.FC = () => {
       <View style={styles.buttonWrapper}>
         <Button
           title={isVerifying ? "Save & Verify" : "Save"}
-          disabled={!canSave}
+          disabled={!canSave || disableButton}
           onPress={onSave}
-          loading={loading}
         />
       </View>
     </View>

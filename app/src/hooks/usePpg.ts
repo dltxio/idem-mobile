@@ -1,19 +1,10 @@
-import { useRoute } from "@react-navigation/native";
 import axios from "axios";
-import { useState } from "react";
 import { Alert } from "react-native";
 import OpenPGP from "react-native-fast-openpgp";
-import { addSyntheticLeadingComment } from "typescript";
 import { AlertTitle } from "../constants/common";
 import { useClaimsStore } from "../context/ClaimsStore";
-import { Claim } from "../types/claim";
 import { UploadPGPKeyResponse } from "../types/general";
-import {
-  ProfileStackNavigation,
-  ProfileStackNavigationRoute
-} from "../types/navigation";
 import { PGP } from "../types/wallet";
-import { getClaimFromType } from "../utils/claim-utils";
 import { pgpLocalStorage } from "../utils/local-storage";
 import { createRandomPassword } from "../utils/randomPassword-utils";
 
@@ -31,6 +22,7 @@ type Hooks = {
 };
 
 const usePgp = (): Hooks => {
+  const { updateClaim } = useClaimsStore();
   const generateKeyPair = async (
     name: string | undefined,
     email: string | undefined
@@ -114,6 +106,10 @@ const usePgp = (): Hooks => {
         }
       );
       if (verifyResponse.status === 200) {
+        await updateClaim(
+          "EmailCredential",
+          JSON.stringify({ email: email, verified: true })
+        );
         Alert.alert(AlertTitle.Success, "Your PGP key has been uploaded");
       }
     } catch (error: any) {
@@ -123,7 +119,6 @@ const usePgp = (): Hooks => {
   };
 
   const verifyPGPPublicKey = async (email: string | undefined) => {
-    const { updateClaim } = useClaimsStore();
     try {
       if (!email) return;
       const encodeEmail = encodeURI(email);
@@ -142,6 +137,7 @@ const usePgp = (): Hooks => {
       }
     } catch (error) {
       Alert.alert(AlertTitle.Error, "Could not verify email.");
+      console.log(Response, error);
     }
   };
   return {

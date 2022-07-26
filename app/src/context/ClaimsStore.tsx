@@ -3,22 +3,18 @@ import { Claim, ClaimType, ClaimWithValue, ClaimData } from "../types/claim";
 import allClaims from "../data/claims";
 import { claimsLocalStorage } from "../utils/local-storage";
 import { displayClaimValue } from "../utils/claim-utils";
-import claims from "../data/claims";
 
 export type ClaimsVault = {
   unclaimedClaims: Claim[];
   usersClaims: ClaimWithValue[];
   addClaim: (claimId: ClaimType, value: any, files: string[]) => Promise<void>;
   reset: () => void;
+  updateClaim: (claimId: ClaimType, value: any) => Promise<void>;
 };
 
 export const ClaimsContext = React.createContext<ClaimsVault | undefined>(
   undefined
 );
-
-export type updateClaims = {
-  updateClaim: (claimId: ClaimType, verified: boolean) => Promise<void>;
-};
 
 export const ClaimsProvider: React.FC<{
   children: React.ReactNode;
@@ -37,14 +33,16 @@ export const ClaimsProvider: React.FC<{
     })();
   }, []);
 
-  const updateClaim = async (claimType: ClaimType, verified: boolean) => {
-    const verifiedClaim = claims.find(
-      () => claimType === "MobileCredential" || "EmailCredential"
-    );
-    verified !== undefined;
-    if (verifiedClaim) verifiedClaim?.verified === true;
-    await claimsLocalStorage.save(verifiedClaim);
-    return updateClaim;
+  const updateClaim = async (claimType: ClaimType, value: any) => {
+    setVerifiedClaimTypes((previous) => {
+      const previousWithoutClaim = previous.filter((c) => c.type !== claimType);
+      const updatedClaims = [
+        ...previousWithoutClaim,
+        { type: claimType, value }
+      ];
+      claimsLocalStorage.save(updatedClaims);
+      return updatedClaims;
+    });
   };
 
   const usersClaims: ClaimWithValue[] = React.useMemo(() => {
@@ -105,11 +103,12 @@ export const ClaimsProvider: React.FC<{
   const value = React.useMemo(
     () => ({
       unclaimedClaims,
+      updateClaim,
       usersClaims,
       addClaim,
       reset
     }),
-    [allClaims, verifiedClaimTypes, addClaim, reset]
+    [allClaims, verifiedClaimTypes, addClaim, reset, updateClaim]
   );
 
   return (
