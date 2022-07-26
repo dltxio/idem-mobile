@@ -38,7 +38,7 @@
     "tagline": "Grow your wealth with the world of crypto.",
     "description": "Buy, sell and trade on Australia's best crypto exchange",
     "website": "https://cointree.com/",
-    "logo": "",
+    "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/IDEM-252/data/cointree_logo_colour_rgb.png",
     "signup": "https://auth.cointree.com/Account/Register?registerwith=${email}",
     "backgroundColor": "white"
   },
