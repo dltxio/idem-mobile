@@ -21,7 +21,7 @@ cd app
 yarn start
 ```
 
-Make sure your device is connected to the same network as your machine, and that the network type is set to Private in it's properties.
+Make sure your device is connected to the same network as your machine, and (if using Windows) that the network type is set to Private in your settings.
 Scan QR code on device to connect.
 
 ## What is IDEM?
