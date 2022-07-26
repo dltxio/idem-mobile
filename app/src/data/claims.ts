@@ -5,6 +5,7 @@ const claims: Claim[] = [
     key: "0x00",
     mnemonic: "eighteenplus",
     title: "18+",
+    verified: false,
     description: "18 Plus",
     verificationAction: "document-upload",
     fields: [
@@ -20,6 +21,7 @@ const claims: Claim[] = [
     type: "BirthCredential",
     key: "0x01",
     mnemonic: "dob",
+    verified: false,
     title: "Date Of Birth",
     description: "Users date of birth",
     verificationAction: "document-upload",
@@ -37,6 +39,7 @@ const claims: Claim[] = [
     key: "0x02",
     mnemonic: "fullname",
     title: "Full Name",
+    verified: false,
     description: "Users full name",
     verificationAction: "document-upload",
     fields: [
@@ -58,9 +61,9 @@ const claims: Claim[] = [
     mnemonic: "email",
     title: "Email",
     description: "Users email address",
-    verifyEmail: false,
     verificationAction: "action",
     fields: [{ id: "email", title: "Email", type: "email" }],
+    verified: false,
     verificationDocuments: []
   },
   {
@@ -68,6 +71,7 @@ const claims: Claim[] = [
     key: "0x04",
     mnemonic: "mobilenumber",
     title: "Mobile",
+    verified: false,
     description: "Users mobile number",
     verificationAction: "action",
     fields: [{ id: "mobileNumber", title: "Mobile number", type: "phone" }],
@@ -78,6 +82,7 @@ const claims: Claim[] = [
     key: "0x05",
     mnemonic: "address",
     title: "Address",
+    verified: false,
     description: "Users physical address",
     verificationAction: "document-upload",
     fields: [
@@ -101,6 +106,7 @@ const claims: Claim[] = [
     key: "0x06",
     mnemonic: "taxnumber",
     title: "Tax File Number",
+    verified: false,
     description: "Users tax file number",
     verificationAction: "action",
     fields: [{ id: "taxFileNumber", title: "Tax File Number", type: "number" }],
@@ -110,6 +116,7 @@ const claims: Claim[] = [
     type: "ProfileImageCredential",
     key: "0x07",
     mnemonic: "profileImage",
+    verified: false,
     title: "Profile image",
     description: "Your profile image",
     verificationAction: "action",

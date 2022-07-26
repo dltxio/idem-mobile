@@ -34,15 +34,8 @@ export const ClaimsProvider: React.FC<{
   }, []);
 
   const updateClaim = async (claimType: ClaimType, value: any) => {
-    setVerifiedClaimTypes((previous) => {
-      const previousWithoutClaim = previous.filter((c) => c.type !== claimType);
-      const updatedClaims = [
-        ...previousWithoutClaim,
-        { type: claimType, value }
-      ];
-      claimsLocalStorage.save(updatedClaims);
-      return updatedClaims;
-    });
+    setVerifiedClaimTypes([...verifiedClaimTypes, { type: claimType, value }]);
+    claimsLocalStorage.save(verifiedClaimTypes);
   };
 
   const usersClaims: ClaimWithValue[] = React.useMemo(() => {

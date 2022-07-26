@@ -33,7 +33,7 @@ const ClaimScreen: React.FC = () => {
   const route = useRoute<ProfileStackNavigationRoute<"Claim">>();
   const claim = getClaimFromType(route.params.claimType);
   const { addClaim, usersClaims } = useClaimsStore();
-  const [disableButton, setDisableButton] = React.useState<boolean>(false);
+  const [disableButton, setDisableButton] = React.useState(false);
   const userClaim = usersClaims.find((c) => c.type === claim.type);
   const [formState, setFormState] = React.useState<{ [key: string]: string }>(
     userClaim?.value || {}
@@ -109,9 +109,7 @@ const ClaimScreen: React.FC = () => {
 
   React.useEffect(() => {
     if (userClaim?.type === "EmailCredential") {
-      console.log(userClaim.value);
-      const claimValue = userClaim.value;
-      if (claimValue.verifed) {
+      if (userClaim.value) {
         setDisableButton(true);
       }
     }

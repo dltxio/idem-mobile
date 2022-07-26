@@ -16,7 +16,7 @@ import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { useClaimValue } from "../../context/ClaimsStore";
 import usePgp from "../../hooks/usePpg";
 import { AlertTitle } from "../../constants/common";
-import { pgpLocalStorage } from "../../utils/local-storage";
+import { claimsLocalStorage, pgpLocalStorage } from "../../utils/local-storage";
 import { extractPrivateKeyFromFileContent } from "../../utils/pgp-utils";
 
 const importPrivateKeyFileFromDevice = async () => {
@@ -36,6 +36,7 @@ const importPrivateKeyFileFromDevice = async () => {
 const PGPScreen: React.FC = () => {
   // for user input
   const [keyText, setKeyText] = React.useState<string>();
+  const [verifyDisabled, setVerifyDisabled] = React.useState(false);
   const emailClaimValue = useClaimValue("EmailCredential");
   const nameClaimValue = useClaimValue("NameCredential");
 
@@ -91,6 +92,20 @@ const PGPScreen: React.FC = () => {
       await loadKeyFromLocalStorage();
     })();
   }, []);
+
+  React.useEffect(() => {
+    (async () => {
+      const claims = await claimsLocalStorage.get();
+      claims?.forEach((claim) => {
+        console.log(claim);
+        if (claim.type === "EmailCredential") {
+          if (claim.value.verified) {
+            setVerifyDisabled(true);
+          }
+        }
+      });
+    })();
+  });
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -152,7 +167,7 @@ const PGPScreen: React.FC = () => {
           <View style={styles.button}>
             <Button
               title={"Verify email"}
-              disabled={!emailClaimValue}
+              disabled={verifyDisabled}
               onPress={() => verifyPGPPublicKey(emailClaimValue)}
             />
           </View>

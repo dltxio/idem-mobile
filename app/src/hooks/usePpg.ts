@@ -7,6 +7,7 @@ import { UploadPGPKeyResponse } from "../types/general";
 import { PGP } from "../types/wallet";
 import { pgpLocalStorage } from "../utils/local-storage";
 import { createRandomPassword } from "../utils/randomPassword-utils";
+import useApi from "./useApi";
 
 type Hooks = {
   generateKeyPair: (
@@ -22,6 +23,7 @@ type Hooks = {
 };
 
 const usePgp = (): Hooks => {
+  const api = useApi();
   const { updateClaim } = useClaimsStore();
   const generateKeyPair = async (
     name: string | undefined,
@@ -80,36 +82,16 @@ const usePgp = (): Hooks => {
   ) => {
     try {
       if (!publicKey || !email) return;
-      //Upload public key to openpgp server
-      const uploadResponse = await axios.post<UploadPGPKeyResponse>(
-        "https://keys.openpgp.org/vks/v1/upload",
-        JSON.stringify({
-          keytext: publicKey
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
-      );
-      //Verify key,send email
-      const verifyResponse = await axios.post(
-        "https://keys.openpgp.org/vks/v1/request-verify",
-        JSON.stringify({
-          token: uploadResponse.data.token,
-          addresses: [email]
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
-      );
-      if (verifyResponse.status === 200) {
-        await updateClaim(
-          "EmailCredential",
-          JSON.stringify({ email: email, verified: true })
-        );
+      // Upload public key to openpgp server
+      const uploadResponse = await api.publishPGPKey(publicKey);
+      // Verify key,send email
+      const verifyResponse = await api.verifyPGPKey({
+        token: uploadResponse.token,
+        addresses: [email]
+      });
+      // thanks brett
+      if (verifyResponse) {
+        await updateClaim("EmailCredential", email);
         Alert.alert(AlertTitle.Success, "Your PGP key has been uploaded");
       }
     } catch (error: any) {
