@@ -120,12 +120,12 @@ const ClaimScreen: React.FC = () => {
                 });
                 if (verifyOtp) {
                   addClaim(claim.type, formState, selectedFileIds, true);
-                  Alert.alert("Your mobile number is verified");
+                  Alert.alert("Your mobile has been verified");
                   navigation.reset({
                     routes: [{ name: "Home" }]
                   });
                 } else {
-                  Alert.alert("Invalid verification code");
+                  Alert.alert("Please try again, verification code invalid");
                 }
               }
             }
