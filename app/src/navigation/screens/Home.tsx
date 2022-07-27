@@ -17,7 +17,6 @@ import usePushNotifications from "../../hooks/usePushNotifications";
 import * as Crypto from "expo-crypto";
 import CreateMnemonicController from "../../components/CreateMnemonicController";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
-import { exchangeLocalStorage } from "../../utils/local-storage";
 import { findNames } from "../../utils/formatters";
 import { UserVerifyRequest } from "../../types/user";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
@@ -40,36 +39,29 @@ const Home: React.FC = () => {
     (claim) => claim.type === "AddressCredential"
   )?.value;
 
-  const { verifyClaims, postTokenToProxy } = useVerifyClaims();
+  const { verifyClaims } = useVerifyClaims();
 
   const verifyUserOnProxy = async () => {
-    const venderStorage = await exchangeLocalStorage.get();
     if (splitName && dob && address && email) {
-      const hashEmail = async () => {
-        return Crypto.digestStringAsync(
-          Crypto.CryptoDigestAlgorithm.SHA256,
-          email
-        );
-      };
+      const hashEmail = await Crypto.digestStringAsync(
+        Crypto.CryptoDigestAlgorithm.SHA256,
+        email
+      );
 
-      const userEmail = await hashEmail();
       const userClaims = {
         firstName: splitName.firstName,
         lastName: splitName.lastName,
         dob: dob,
-        email: userEmail.toString(),
+        email: hashEmail,
         houseNumber: addressValue.houseNumber,
         street: addressValue.street,
         suburb: addressValue.suburb,
         postcode: addressValue.postCode,
         state: addressValue.state,
-        country: addressValue.country,
-        userId: venderStorage?.userId
+        country: addressValue.country
       } as UserVerifyRequest;
-      await verifyClaims(userClaims);
-    }
-    if (expoPushToken) {
-      await postTokenToProxy(expoPushToken);
+
+      await verifyClaims(userClaims, expoPushToken);
     }
   };
 

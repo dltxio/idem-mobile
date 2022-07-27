@@ -70,7 +70,7 @@ const PGPScreen: React.FC = () => {
     } catch (error: any) {
       Alert.alert(
         AlertTitle.Error,
-        `Failed to extract the private key from file \n> ${
+        `Failed to extract the Private Key from file \n> ${
           error?.message ?? "unknown error"
         }`
       );
@@ -86,8 +86,18 @@ const PGPScreen: React.FC = () => {
     [generateKeyPair]
   );
 
+  const checkRequiredClaims = () => {
+    if (emailClaimValue === "" || nameClaimValue === "") {
+      Alert.alert(
+        AlertTitle.Error,
+        "Email and Name claims must be set before a PGP/GPG Key can be generated."
+      );
+    }
+  }
+
   React.useEffect(() => {
     (async () => {
+      checkRequiredClaims();
       await loadKeyFromLocalStorage();
     })();
   }, []);

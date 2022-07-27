@@ -13,15 +13,16 @@ IDEM facilitates users to register on a customer's website, such as a crypto exc
 **Note: Data is securely stored on your device.**
 
 ## Running the app
-
-To run the application locally by using the expo dev-client
+Ensure the latest version of expo-cli is installed.
 
 ```bash
-yarn install
+yarn
 cd app
 yarn start
-
 ```
+
+Make sure your device is connected to the same network as your machine, and (if using Windows) that the network type is set to Private in your settings.
+Scan QR code on device to connect.
 
 ## What is IDEM?
 

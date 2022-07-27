@@ -4,10 +4,17 @@ import allClaims from "../data/claims";
 import { claimsLocalStorage } from "../utils/local-storage";
 import { displayClaimValue } from "../utils/claim-utils";
 
+type AddClaim_Value = string | { [key: string]: string };
+
 export type ClaimsVault = {
   unclaimedClaims: Claim[];
   usersClaims: ClaimWithValue[];
-  addClaim: (claimId: ClaimType, value: any, files: string[]) => Promise<void>;
+  addClaim: (
+    claimId: ClaimType,
+    value: AddClaim_Value,
+    files: string[],
+    verified?: boolean
+  ) => Promise<void>;
   reset: () => void;
   updateClaim: (
     claimId: ClaimType,
@@ -78,8 +85,9 @@ export const ClaimsProvider: React.FC<{
 
   const addClaim = async (
     claimId: ClaimType,
-    value: string,
-    files: string[]
+    value: AddClaim_Value,
+    files: string[],
+    verified?: boolean
   ) => {
     // This is a mock function.
     // In the future we will send this data off to an api to be verified

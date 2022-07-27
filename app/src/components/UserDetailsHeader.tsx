@@ -12,6 +12,8 @@ import { ProfileStackNavigation } from "../types/navigation";
 import defaultProfilePicture from "../../assets/default-profile-picture.png";
 import { truncateAddress } from "../utils/wallet-utils";
 import useMnemonic from "../hooks/useMnemonic";
+import { pgpLocalStorage } from "../utils/local-storage";
+import { useEffect, useState } from "react";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -25,10 +27,24 @@ const UserDetailsHeader: React.FC = () => {
   const { selectPhotoFromCameraRoll } = useSelectPhoto(PROFILE_IMAGE_OPTIONS);
   const { addClaim } = useClaimsStore();
   const { addFile, files } = useDocumentStore();
+  const [pgpTitle, setPgpTitle] = useState<string | undefined>();
 
   const { ethAddress } = useMnemonic();
 
   const profilePictureFile = files.find((file) => file.id === profileImageId);
+
+  const checkPGPTitle = async () => {
+    const key = await pgpLocalStorage.get();
+    if (key) {
+      setPgpTitle(key.fingerPrint);
+      return;
+    }
+    setPgpTitle("Import PGP Private Key");
+  };
+
+  useEffect(() => {
+    if (!pgpTitle) checkPGPTitle();
+  }, [pgpTitle]);
 
   const addProfileImageClaim = async () => {
     const file = await selectPhotoFromCameraRoll();
@@ -71,9 +87,7 @@ const UserDetailsHeader: React.FC = () => {
             navigation.navigate("Claim", { claimType: "EmailCredential" })
           }
         />
-        <Text onPress={() => navigation.navigate("PGP")}>
-          Import your PGP/GPG key pair
-        </Text>
+        <Text onPress={() => navigation.navigate("PGP")}>{pgpTitle}</Text>
         <Text onPress={showEthAddress}>
           {ethAddress ? truncateAddress(ethAddress) : ""}
         </Text>
