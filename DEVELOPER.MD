@@ -41,6 +41,7 @@
 3. Start expo on your host machine
 4. Scan the QR code from expo to open IDEM on your device
 5. Wait for the JavaScript to bundle
+6. If the app isn't loading try closing the app on your device and relaunching with expo repeatedly
 
 ## NOTE 
 If you want to build for ios successfully you will need to add the following to the app.json (Only add for builds)
