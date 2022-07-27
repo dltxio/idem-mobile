@@ -9,7 +9,7 @@ export type ClaimsVault = {
   usersClaims: ClaimWithValue[];
   addClaim: (
     claimId: ClaimType,
-    value: any,
+    value: string,
     files: string[],
     verified?: boolean
   ) => Promise<void>;
