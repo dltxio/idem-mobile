@@ -16,7 +16,7 @@ const claims: Claim[] = [
     mnemonic: "mobilenumber",
     title: "Mobile",
     description: "Users mobile number",
-    verificationAction: "action",
+    verificationAction: "otp",
     fields: [{ id: "mobileNumber", title: "Mobile number", type: "phone" }],
     verificationDocuments: []
   },
