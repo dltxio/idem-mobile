@@ -1,21 +1,35 @@
 import { Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useApi from "./useApi";
-import { UserVerifyRequest, VerificationResponse } from "../types/user";
+import { UserVerifyRequest } from "../types/user";
 import { AlertTitle } from "../constants/common";
 
 type Hooks = {
-  verifyClaims: (verifyRequest: UserVerifyRequest) => Promise<void>;
-  postTokenToProxy: (expoToken: string) => Promise<void>;
+  verifyClaims: (
+    verifyRequest: UserVerifyRequest,
+    expoToken: string | undefined
+  ) => Promise<void>;
 };
 
 const useVerifyClaims = (): Hooks => {
   const api = useApi();
-  const verifyClaims = async (verifyRequest: UserVerifyRequest) => {
+  const verifyClaims = async (
+    verifyRequest: UserVerifyRequest,
+    expoToken: string | undefined
+  ) => {
     api
       .verify(verifyRequest)
       .then(async (response) => {
         await AsyncStorage.setItem("idemVerify", JSON.stringify(response));
+        if (response.userId && expoToken) {
+          await api.putExpoToken(response.userId, { token: expoToken });
+        }
+      })
+      .then(() => {
+        Alert.alert(
+          AlertTitle.Success,
+          "Your name, date of birth, email, and address have been sent to IDEM to be verified!"
+        );
       })
       .catch((error) => {
         console.log(error);
@@ -23,27 +37,8 @@ const useVerifyClaims = (): Hooks => {
       });
   };
 
-  const postTokenToProxy = async (expoToken: string) => {
-    const claim = await AsyncStorage.getItem("idemVerify");
-    if (claim) {
-      const claimObject = JSON.parse(claim) as VerificationResponse;
-      api
-        .putExpoToken(claimObject.userId, { token: expoToken })
-        .then(() => {
-          Alert.alert(
-            AlertTitle.Success,
-            "Your name, date of birth, email, and address have been sent to IDEM to be verified!"
-          );
-        })
-        .catch((error) => {
-          console.error(error);
-          Alert.alert(AlertTitle.Error, `${error}`);
-        });
-    }
-  };
   return {
-    verifyClaims,
-    postTokenToProxy
+    verifyClaims
   };
 };
 
