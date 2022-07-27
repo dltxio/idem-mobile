@@ -10,6 +10,7 @@ import PGPScreen from "./screens/PGPScreen";
 export type ProfileStackParamList = {
   Home: undefined;
   Claim: { claimType: ClaimType };
+  VerifyOtp: { mobileNumber: string };
   ViewFile: {
     fileId: string;
     onSelect: () => void;
@@ -50,6 +51,7 @@ const ProfileStackNavigator = () => {
         }}
         component={ClaimScreen}
       />
+
       <Stack.Screen
         name="ViewFile"
         options={() => {
