@@ -22,5 +22,5 @@ export type Wallet = {
 export type PGP = {
   privateKey: string;
   publicKey: string;
-  // fingerPrint: string;
+  fingerPrint: string;
 };

@@ -1,36 +1,24 @@
 import { Claim } from "../types/claim";
 const claims: Claim[] = [
   {
-    type: "AdultCredential",
-    key: "0x00",
-    mnemonic: "eighteenplus",
-    title: "18+",
-    description: "18 Plus",
-    verificationAction: "document-upload",
-    fields: [
-      {
-        id: "over18",
-        title: "I am over 18",
-        type: "boolean"
-      }
-    ],
-    verificationDocuments: ["drivers-licence"]
+    type: "EmailCredential",
+    key: "0x03",
+    mnemonic: "email",
+    title: "Email",
+    description: "Users email address",
+    verificationAction: "action",
+    fields: [{ id: "email", title: "Email", type: "email" }],
+    verificationDocuments: []
   },
   {
-    type: "BirthCredential",
-    key: "0x01",
-    mnemonic: "dob",
-    title: "Date Of Birth",
-    description: "Users date of birth",
-    verificationAction: "document-upload",
-    fields: [
-      {
-        id: "dob",
-        title: "Date Of Birth",
-        type: "date"
-      }
-    ],
-    verificationDocuments: ["drivers-licence", "passport", "birth-certificate"]
+    type: "MobileCredential",
+    key: "0x04",
+    mnemonic: "mobilenumber",
+    title: "Mobile",
+    description: "Users mobile number",
+    verificationAction: "action",
+    fields: [{ id: "mobileNumber", title: "Mobile number", type: "phone" }],
+    verificationDocuments: []
   },
   {
     type: "NameCredential",
@@ -51,26 +39,6 @@ const claims: Claim[] = [
       "rates-notice",
       "medicare-card"
     ]
-  },
-  {
-    type: "EmailCredential",
-    key: "0x03",
-    mnemonic: "email",
-    title: "Email",
-    description: "Users email address",
-    verificationAction: "action",
-    fields: [{ id: "email", title: "Email", type: "email" }],
-    verificationDocuments: []
-  },
-  {
-    type: "MobileCredential",
-    key: "0x04",
-    mnemonic: "mobilenumber",
-    title: "Mobile",
-    description: "Users mobile number",
-    verificationAction: "otp",
-    fields: [{ id: "mobileNumber", title: "Mobile number", type: "phone" }],
-    verificationDocuments: []
   },
   {
     type: "AddressCredential",
@@ -94,6 +62,38 @@ const claims: Claim[] = [
       "rates-notice",
       "utility-account"
     ]
+  },
+  {
+    type: "BirthCredential",
+    key: "0x01",
+    mnemonic: "dob",
+    title: "Date Of Birth",
+    description: "Users date of birth",
+    verificationAction: "document-upload",
+    fields: [
+      {
+        id: "dob",
+        title: "Date Of Birth",
+        type: "date"
+      }
+    ],
+    verificationDocuments: ["drivers-licence", "passport", "birth-certificate"]
+  },
+  {
+    type: "AdultCredential",
+    key: "0x00",
+    mnemonic: "eighteenplus",
+    title: "18+",
+    description: "18 Plus",
+    verificationAction: "document-upload",
+    fields: [
+      {
+        id: "over18",
+        title: "I am over 18",
+        type: "boolean"
+      }
+    ],
+    verificationDocuments: ["drivers-licence"]
   },
   {
     type: "TaxCredential",
