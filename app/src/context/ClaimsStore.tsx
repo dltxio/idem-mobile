@@ -87,7 +87,7 @@ export const ClaimsProvider: React.FC<{
     claimId: ClaimType,
     value: AddClaim_Value,
     files: string[],
-    verified?: boolean
+    verified = false
   ) => {
     // This is a mock function.
     // In the future we will send this data off to an api to be verified
@@ -103,7 +103,7 @@ export const ClaimsProvider: React.FC<{
       const previousWithoutClaim = previous.filter((c) => c.type !== claimId);
       const updatedClaims = [
         ...previousWithoutClaim,
-        { type: claimId, value, verified: false }
+        { type: claimId, value, verified }
       ];
       claimsLocalStorage.save(updatedClaims);
       return updatedClaims;

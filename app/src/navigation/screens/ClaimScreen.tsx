@@ -91,19 +91,6 @@ const ClaimScreen: React.FC = () => {
     });
     setLoading(false);
   };
-  const documentList =
-    claim.verificationAction === "document-upload" ? (
-      <VerificationFiles
-        claim={claim}
-        isVerifying={isVerifying}
-        setIsVerifying={(newValue) => {
-          setIsVerifying(newValue);
-          setSelectedFileIds([]);
-        }}
-        selectedFileIds={selectedFileIds}
-        onSelectFile={onSelectFile}
-      />
-    ) : null;
 
   const canSave =
     claim.fields.filter((field) => formState[field.id]).length ===

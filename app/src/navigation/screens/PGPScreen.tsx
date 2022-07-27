@@ -93,7 +93,7 @@ const PGPScreen: React.FC = () => {
         "Email and Name claims must be set before a PGP/GPG Key can be generated."
       );
     }
-  }
+  };
 
   React.useEffect(() => {
     (async () => {

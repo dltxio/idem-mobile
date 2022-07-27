@@ -30,7 +30,9 @@ const RequestClaimsModal: React.FC<Props> = ({ claimRequest, onClose }) => {
     setIsOpen(true);
 
     const claims = getClaimsFromTypes(claimRequest.claims).map((claim) => {
-      const userClaim = usersClaims.find((userClaim) => userClaim.key === claim.key)
+      const userClaim = usersClaims.find(
+        (userClaim) => userClaim.key === claim.key
+      );
       return {
         ...claim,
         value: userClaim?.value,
