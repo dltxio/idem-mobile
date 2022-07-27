@@ -101,6 +101,8 @@ const ClaimScreen: React.FC = () => {
       />
     ) : null;
 
+  // BRETT WANTS THIS if ((ref.current.innerText.length > 0 && isVerifying) || !isVerifying) setButtonEnabled(true);
+
   const canSave =
     claim.fields.filter((field) => formState[field.id]).length ===
       claim.fields.length &&
