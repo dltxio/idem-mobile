@@ -2,7 +2,7 @@
   "expo": {
     "name": "idemID",
     "slug": "IDEM",
-    "version": "1.0.115",
+    "version": "1.0.116",
     "entryPoint": "./src/App.tsx",
     "orientation": "portrait",
     "scheme": "idem",
