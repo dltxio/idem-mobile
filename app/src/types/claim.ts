@@ -11,7 +11,7 @@ export type ClaimType =
   | "TaxCredential"
   | "ProfileImageCredential";
 
-export type VerificationAction = "document-upload" | "action";
+export type VerificationAction = "document-upload" | "action" | "otp";
 
 export type Claim = {
   type: ClaimType;
@@ -29,6 +29,7 @@ export type Claim = {
 export type ClaimData = {
   type: ClaimType;
   value: any; // each claim type has it own value type. todo - make generic
+  verified?: boolean;
 };
 
 export type ClaimWithValue = Claim & {
@@ -46,4 +47,16 @@ export type ClaimRequest = {
   callback: string;
   nonce: string;
   claims: ClaimType[];
+};
+
+export type RequestOptResponse = {
+  hash: string;
+  expiryTimestamp: number;
+};
+
+export type VerifyOtpRequest = {
+  code: string;
+  hash: string;
+  expiryTimestamp: number;
+  mobileNumber: string;
 };
