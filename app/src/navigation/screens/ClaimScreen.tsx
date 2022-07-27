@@ -53,6 +53,7 @@ const ClaimScreen: React.FC = () => {
   const {
     saveAndCheckBirthday,
     onSelectFile,
+    loading,
     selectedFileIds,
     setLoading,
     setSelectedFileIds
@@ -300,7 +301,7 @@ const ClaimScreen: React.FC = () => {
         ) : (
           <Button
             title={isVerifying ? "Save & Verify" : "Save"}
-            disabled={!canSave}
+            disabled={!canSave || disableButton}
             onPress={onSave}
             loading={loading}
           />

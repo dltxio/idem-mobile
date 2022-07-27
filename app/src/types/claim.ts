@@ -33,6 +33,7 @@ export type ClaimData = {
 
 export type ClaimWithValue = Claim & {
   value: any; // each claim type has it own value type. todo - make generic
+  verified?: boolean;
 };
 
 export type ClaimRequestParams = {
