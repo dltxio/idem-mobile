@@ -19,7 +19,6 @@ export type Claim = {
   mnemonic: string;
   title: string;
   description: string;
-  verified: boolean;
   verificationAction: VerificationAction;
   fields: Field[];
   verificationDocuments: DocumentType[];
@@ -29,6 +28,7 @@ export type Claim = {
 export type ClaimData = {
   type: ClaimType;
   value: any; // each claim type has it own value type. todo - make generic
+  verified: boolean;
 };
 
 export type ClaimWithValue = Claim & {

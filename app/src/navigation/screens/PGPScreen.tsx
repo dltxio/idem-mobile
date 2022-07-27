@@ -96,12 +96,12 @@ const PGPScreen: React.FC = () => {
     (async () => {
       const claims = await claimsLocalStorage.get();
       claims?.forEach((claim) => {
-        if (claim.type === "EmailCredential" && claim.value.verified) {
+        if (claim.type === "EmailCredential" && claim.verified) {
           setVerifyDisabled(true);
         }
       });
     })();
-  });
+  }, []);
 
   return (
     <KeyboardAvoidingView style={styles.container}>

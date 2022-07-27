@@ -9,7 +9,11 @@ export type ClaimsVault = {
   usersClaims: ClaimWithValue[];
   addClaim: (claimId: ClaimType, value: any, files: string[]) => Promise<void>;
   reset: () => void;
-  updateClaim: (claimId: ClaimType, value: any) => Promise<void>;
+  updateClaim: (
+    claimId: ClaimType,
+    value: any,
+    verified: boolean
+  ) => Promise<void>;
 };
 
 export const ClaimsContext = React.createContext<ClaimsVault | undefined>(
@@ -33,8 +37,15 @@ export const ClaimsProvider: React.FC<{
     })();
   }, []);
 
-  const updateClaim = async (claimType: ClaimType, value: any) => {
-    setVerifiedClaimTypes([...verifiedClaimTypes, { type: claimType, value }]);
+  const updateClaim = async (
+    claimType: ClaimType,
+    value: any,
+    verified: boolean
+  ) => {
+    setVerifiedClaimTypes([
+      ...verifiedClaimTypes,
+      { type: claimType, value, verified }
+    ]);
     claimsLocalStorage.save(verifiedClaimTypes);
   };
 
@@ -82,7 +93,10 @@ export const ClaimsProvider: React.FC<{
 
     setVerifiedClaimTypes((previous) => {
       const previousWithoutClaim = previous.filter((c) => c.type !== claimId);
-      const updatedClaims = [...previousWithoutClaim, { type: claimId, value }];
+      const updatedClaims = [
+        ...previousWithoutClaim,
+        { type: claimId, value, verified: false }
+      ];
       claimsLocalStorage.save(updatedClaims);
       return updatedClaims;
     });

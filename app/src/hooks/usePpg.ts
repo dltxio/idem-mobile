@@ -90,7 +90,7 @@ const usePgp = (): Hooks => {
       });
       // thanks brett
       if (verifyResponse) {
-        await updateClaim("EmailCredential", email);
+        await updateClaim("EmailCredential", email, false);
         Alert.alert(AlertTitle.Success, "Your PGP key has been uploaded");
       }
     } catch (error: any) {
@@ -107,7 +107,7 @@ const usePgp = (): Hooks => {
         `https://keys.openpgp.org/vks/v1/by-email/${encodeEmail}`
       );
       if (response.status === 200) {
-        await updateClaim("EmailCredential", true);
+        await updateClaim("EmailCredential", email, true);
         {
           Alert.alert(
             `Email Verified`,
