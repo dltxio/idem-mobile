@@ -88,7 +88,6 @@ export const ClaimsProvider: React.FC<{
         ...previousWithoutClaim,
         { type: claimId, value, verified: verified ? verified : false }
       ];
-      console.log(updatedClaims);
       claimsLocalStorage.save(updatedClaims);
       return updatedClaims;
     });
