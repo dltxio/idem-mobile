@@ -35,7 +35,6 @@ const importPrivateKeyFileFromDevice = async () => {
 const PGPScreen: React.FC = () => {
   // for user input
   const [keyText, setKeyText] = React.useState<string>();
-  const [verifyDisabled] = React.useState(false);
   const emailClaimValue = useClaimValue("EmailCredential");
   const nameClaimValue = useClaimValue("NameCredential");
 
@@ -173,7 +172,7 @@ const PGPScreen: React.FC = () => {
           <View style={styles.button}>
             <Button
               title={"Verify email"}
-              disabled={verifyDisabled}
+              disabled={!emailClaimValue}
               onPress={() => verifyPGPPublicKey(emailClaimValue)}
             />
           </View>
