@@ -93,7 +93,7 @@ const PGPScreen: React.FC = () => {
         "Email and Name claims must be set before a PGP/GPG Key can be generated."
       );
     }
-  }
+  };
 
   React.useEffect(() => {
     (async () => {
@@ -143,7 +143,9 @@ const PGPScreen: React.FC = () => {
           <View style={styles.button}>
             <Button
               title={"Generate new PGP Key"}
-              disabled={!emailClaimValue || !nameClaimValue}
+              disabled={
+                !emailClaimValue || !nameClaimValue || keyText !== undefined
+              }
               onPress={async () =>
                 generateNewPgpKey(
                   nameClaimValue as string,
