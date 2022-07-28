@@ -136,7 +136,7 @@ const PGPScreen: React.FC = () => {
               title={"Import my Private Key from my Device"}
               onPress={importPrivateKeyFromDevice}
             />
-          </View>
+          </View>   
         </View>
 
         <View style={styles.buttonWrapper}>
