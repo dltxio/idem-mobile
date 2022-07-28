@@ -93,7 +93,9 @@ const PGPScreen: React.FC = () => {
         "Email and Name claims must be set before a PGP/GPG Key can be generated."
       );
     }
-  }
+  };
+
+  const shouldDisabledGeneratePgpKey = !emailClaimValue || !nameClaimValue;
 
   React.useEffect(() => {
     (async () => {
@@ -101,6 +103,15 @@ const PGPScreen: React.FC = () => {
       await loadKeyFromLocalStorage();
     })();
   }, []);
+
+  React.useEffect(() => {
+    if (shouldDisabledGeneratePgpKey) {
+      Alert.alert(
+        "Cannot generate PGP/GPG Key",
+        "Must have a name and email claim"
+      );
+    }
+  }, [shouldDisabledGeneratePgpKey]);
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -143,7 +154,7 @@ const PGPScreen: React.FC = () => {
           <View style={styles.button}>
             <Button
               title={"Generate new PGP Key"}
-              disabled={!emailClaimValue || !nameClaimValue}
+              disabled={shouldDisabledGeneratePgpKey}
               onPress={async () =>
                 generateNewPgpKey(
                   nameClaimValue as string,
