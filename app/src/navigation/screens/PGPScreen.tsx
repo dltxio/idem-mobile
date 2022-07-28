@@ -95,6 +95,8 @@ const PGPScreen: React.FC = () => {
     }
   };
 
+  const shouldDisabledGeneratePgpKey = !emailClaimValue || !nameClaimValue;
+
   React.useEffect(() => {
     (async () => {
       checkRequiredClaims();
@@ -103,15 +105,13 @@ const PGPScreen: React.FC = () => {
   }, []);
 
   React.useEffect(() => {
-    (async () => {
-      const claims = await claimsLocalStorage.get();
-      claims?.forEach((claim) => {
-        if (claim.type === "EmailCredential" && claim.verified) {
-          setVerifyDisabled(true);
-        }
-      });
-    })();
-  }, []);
+    if (shouldDisabledGeneratePgpKey) {
+      Alert.alert(
+        "Cannot generate PGP/GPG Key",
+        "Must have a name and email claim"
+      );
+    }
+  }, [shouldDisabledGeneratePgpKey]);
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -154,7 +154,7 @@ const PGPScreen: React.FC = () => {
           <View style={styles.button}>
             <Button
               title={"Generate new PGP Key"}
-              disabled={!emailClaimValue || !nameClaimValue}
+              disabled={shouldDisabledGeneratePgpKey}
               onPress={async () =>
                 generateNewPgpKey(
                   nameClaimValue as string,
