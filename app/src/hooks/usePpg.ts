@@ -91,7 +91,7 @@ const usePgp = (): Hooks => {
         token: uploadResponse.token,
         addresses: [email]
       });
-      // thanks brett
+
       if (verifyResponse) {
         await updateClaim("EmailCredential", email, false);
         Alert.alert(AlertTitle.Success, "Your PGP key has been uploaded");
