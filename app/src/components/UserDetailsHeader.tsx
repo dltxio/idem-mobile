@@ -27,7 +27,9 @@ const UserDetailsHeader: React.FC = () => {
   const { selectPhotoFromCameraRoll } = useSelectPhoto(PROFILE_IMAGE_OPTIONS);
   const { addClaim } = useClaimsStore();
   const { addFile, files } = useDocumentStore();
-  const [pgpTitle, setPgpTitle] = useState<string | undefined>();
+  const [pgpTitle, setPgpTitle] = useState<string | undefined>(
+    "Import PGP Private Key"
+  );
 
   const { ethAddress } = useMnemonic();
 
@@ -37,9 +39,7 @@ const UserDetailsHeader: React.FC = () => {
     const key = await pgpLocalStorage.get();
     if (key) {
       setPgpTitle(key.fingerPrint);
-      return;
     }
-    setPgpTitle("Import PGP Private Key");
   };
 
   useEffect(() => {
