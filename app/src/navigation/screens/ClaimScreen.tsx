@@ -235,7 +235,7 @@ const ClaimScreen: React.FC = () => {
                   <Input
                     label={field.title}
                     keyboardType={"phone-pad"}
-                    value={formState[field.id]}
+                    value={formState[field.id].toLowerCase()}
                     onChangeText={onChange}
                   />
                 </View>
