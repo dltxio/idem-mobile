@@ -114,26 +114,25 @@ const ClaimScreen: React.FC = () => {
             onPress: async (value: string | undefined) => {
               if (!value) return;
 
-              const verifyOtp = await api
-                .verifyOtp({
+              try {
+                const verifyOtp = await api.verifyOtp({
                   hash: otpResponse.hash,
                   code: value,
                   expiryTimestamp: otpResponse.expiryTimestamp,
                   mobileNumber: mobileNumber
-                })
-                .catch((error) => {
-                  Alert.alert(AlertTitle.Error, error?.message);
-                  return;
                 });
 
-              if (verifyOtp) {
-                addClaim(claim.type, formState, selectedFileIds, true);
-                Alert.alert("Your mobile has been verified");
-                navigation.reset({
-                  routes: [{ name: "Home" }]
-                });
-              } else {
-                Alert.alert("Please try again, verification code invalid");
+                if (verifyOtp) {
+                  addClaim(claim.type, formState, selectedFileIds, true);
+                  Alert.alert("Your mobile has been verified");
+                  navigation.reset({
+                    routes: [{ name: "Home" }]
+                  });
+                } else {
+                  Alert.alert("Please try again, verification code invalid");
+                }
+              } catch (error: any) {
+                Alert.alert(AlertTitle.Error, error?.message);
               }
             }
           },
