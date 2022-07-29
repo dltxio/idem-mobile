@@ -165,7 +165,7 @@ const PGPScreen: React.FC = () => {
               title={"Generate new PGP Key"}
               disabled={shouldDisabledGeneratePgpKey || keyText !== undefined}
               onPress={async () =>
-                generateNewPgpKey(
+                generateAndPublishNewPgpKey(
                   nameClaimValue as string,
                   emailClaimValue as string
                 )
@@ -174,7 +174,7 @@ const PGPScreen: React.FC = () => {
           </View>
           <View style={styles.button}>
             <Button
-              title={"Publish PGP Public key"}
+              title={"Publish PGP Public Key"}
               disabled={!keyText || !emailClaimValue}
               onPress={() => publishPGPPublicKey(keyText, emailClaimValue)}
             />
