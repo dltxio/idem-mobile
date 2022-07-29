@@ -56,7 +56,7 @@ const UserDetailsHeader: React.FC = () => {
   };
 
   const showEthAddress = async () => {
-    Alert.alert("Your eth address", ethAddress);
+    if (ethAddress) Alert.alert("Your eth address", ethAddress);
   };
 
   return (
