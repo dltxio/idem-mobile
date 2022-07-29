@@ -3,6 +3,7 @@ import { Claim, ClaimType, ClaimWithValue, ClaimData } from "../types/claim";
 import allClaims from "../data/claims";
 import { claimsLocalStorage } from "../utils/local-storage";
 import { displayClaimValue } from "../utils/claim-utils";
+import { setBadgeCountAsync } from "expo-notifications";
 
 type AddClaim_Value = string | { [key: string]: string };
 
@@ -49,11 +50,17 @@ export const ClaimsProvider: React.FC<{
     value: any,
     verified: boolean
   ) => {
-    setVerifiedClaimTypes([
+    const updatedClaimValue = [
       ...verifiedClaimTypes,
-      { type: claimType, value, verified }
-    ]);
-    claimsLocalStorage.save(verifiedClaimTypes);
+      value,
+      claimType,
+      verified
+    ];
+    if (verified === true) {
+      setVerifiedClaimTypes(updatedClaimValue);
+      claimsLocalStorage.save(updatedClaimValue);
+    }
+    console.log(verified);
   };
 
   const usersClaims: ClaimWithValue[] = React.useMemo(() => {

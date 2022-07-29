@@ -98,7 +98,8 @@ const ClaimScreen: React.FC = () => {
     ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
 
   React.useEffect(() => {
-    if (userClaim?.type === "EmailCredential" && userClaim.value) {
+    console.log({ userClaim });
+    if (userClaim?.type === "EmailCredential" && userClaim.verified) {
       setDisableButton(true);
     }
   }, [userClaim]);
