@@ -10,6 +10,7 @@ import PGPScreen from "./screens/PGPScreen";
 export type ProfileStackParamList = {
   Home: undefined;
   Claim: { claimType: ClaimType };
+  VerifyOtp: { mobileNumber: string };
   ViewFile: {
     fileId: string;
     onSelect: () => void;
@@ -37,7 +38,7 @@ const ProfileStackNavigator = () => {
       />
       <Stack.Screen
         name="PGP"
-        options={{ title: "Import Private Key" }}
+        options={{ title: "Import PGP Private Key" }}
         component={PGPScreen}
       />
       <Stack.Screen
@@ -50,6 +51,7 @@ const ProfileStackNavigator = () => {
         }}
         component={ClaimScreen}
       />
+
       <Stack.Screen
         name="ViewFile"
         options={() => {

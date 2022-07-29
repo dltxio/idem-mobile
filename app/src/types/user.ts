@@ -28,6 +28,10 @@ export type UserVerifyRequest = {
   userId: string;
 };
 
+export type RequestOtpRequest = {
+  mobileNumber: string;
+};
+
 export enum KycResult {
   InProgress = "in_progress",
   Completed = "completed",
