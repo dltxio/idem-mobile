@@ -5,7 +5,7 @@
     "tagline": "Bitcoin & Crypto made simple",
     "description": "A uniquely easy way to buy, sell & store crypto in Australia. Enjoy safe & effortless trading today.",
     "website": "https://digitalsurge.com.au/",
-    "logo": "https://australianfintech.com.au/wp-content/uploads/sites/7/2018/07/Digital-Surge.png",
+    "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/digital_surge_logo.png",
     "signup": "https://digitalsurge.com.au/api/registration/sign-up/",
     "useProxy": true,
     "requiredClaimMnemonics": ["email", "fullname", "mobilenumber"],
