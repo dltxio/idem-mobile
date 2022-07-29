@@ -27,6 +27,7 @@ import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import useClaimScreen from "../../hooks/useClaimScreen";
 import { claimsLocalStorage } from "../../utils/local-storage";
 import useApi from "../../hooks/useApi";
+import { AlertTitle } from "../../constants/common";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -111,22 +112,28 @@ const ClaimScreen: React.FC = () => {
           {
             text: "OK",
             onPress: async (value: string | undefined) => {
-              if (value) {
-                const verifyOtp = await api.verifyOtp({
+              if (!value) return;
+
+              const verifyOtp = await api
+                .verifyOtp({
                   hash: otpResponse.hash,
                   code: value,
                   expiryTimestamp: otpResponse.expiryTimestamp,
                   mobileNumber: mobileNumber
+                })
+                .catch((error) => {
+                  Alert.alert(AlertTitle.Error, error?.message);
+                  return;
                 });
-                if (verifyOtp) {
-                  addClaim(claim.type, formState, selectedFileIds, true);
-                  Alert.alert("Your mobile has been verified");
-                  navigation.reset({
-                    routes: [{ name: "Home" }]
-                  });
-                } else {
-                  Alert.alert("Please try again, verification code invalid");
-                }
+
+              if (verifyOtp) {
+                addClaim(claim.type, formState, selectedFileIds, true);
+                Alert.alert("Your mobile has been verified");
+                navigation.reset({
+                  routes: [{ name: "Home" }]
+                });
+              } else {
+                Alert.alert("Please try again, verification code invalid");
               }
             }
           },
