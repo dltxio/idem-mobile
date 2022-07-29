@@ -86,6 +86,15 @@ const PGPScreen: React.FC = () => {
     [generateKeyPair]
   );
 
+  const generateAndPublishNewPgpKey = React.useCallback(
+    async (name: string, email: string) => {
+      await generateKeyPair(name, email);
+      await loadKeyFromLocalStorage();
+      await verifyPGPPublicKey(email);
+    },
+    [generateKeyPair]
+  );
+
   const checkRequiredClaims = () => {
     if (emailClaimValue === "" || nameClaimValue === "") {
       Alert.alert(
