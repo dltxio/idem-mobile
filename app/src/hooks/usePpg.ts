@@ -115,7 +115,6 @@ const usePgp = (): Hooks => {
         Alert.alert(AlertTitle.Success, "Your PGP key has been uploaded");
       }
     } catch (error: any) {
-      // console.error(error);
       Alert.alert(AlertTitle.Error, error.message);
     }
   };
