@@ -10,19 +10,19 @@ const isEnvironment = (env: ReleaseChannel): boolean =>
   (releaseChannel || "").indexOf(env as string) === 0;
 
 const devConfig: config.Config = {
-  apiEndpoint: "https://proxy.idem.com.au/", // change to localhost if running locally for example "http://192.168.1.117:3000/",
+  apiEndpoint: "https://uat-proxy.idem.com.au/", // change to localhost if running locally for example "http://192.168.1.117:3000/",
   userName: "myusername",
   password: "password123"
 };
 
 const stagingConfig: config.Config = {
-  apiEndpoint: "https://proxy.idem.com.au/",
+  apiEndpoint: "https://uat-proxy.idem.com.au/",
   userName: "myusername",
   password: "password123"
 };
 
 const productionConfig: config.Config = {
-  apiEndpoint: "https://proxy.idem.com.au/",
+  apiEndpoint: "https://uat-proxy.idem.com.au/",
   userName: "myusername",
   password: "password123"
 };
