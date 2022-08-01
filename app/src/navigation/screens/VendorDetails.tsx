@@ -28,6 +28,27 @@ const VendorDetailsScreen: React.FC = () => {
   const dob = useClaimValue("BirthCredential");
   const name = useClaimValue("NameCredential");
 
+  const [width, setWidth] = React.useState<number>(0);
+
+  const [height, setHeight] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    if (vendor?.logo) {
+      console.log(vendor.logo);
+      Image.getSize(
+        vendor.logo,
+        (Width, Height) => {
+          console.log(width, height);
+          setWidth(Width);
+          setHeight(Height);
+        },
+        (errorMsg) => {
+          console.log(errorMsg);
+        }
+      );
+    }
+  }, [vendor]);
+
   const hasAllRequiredClaims = React.useMemo(() => {
     if (!vendor || !vendor.requiredClaimMnemonics) {
       return true;
@@ -67,7 +88,11 @@ const VendorDetailsScreen: React.FC = () => {
       <Text style={styles.header}>{vendor?.name}</Text>
       <Text style={styles.tagLine}>{vendor?.tagline}</Text>
       <Text style={styles.description}>{vendor?.description}</Text>
-      <Image source={{ uri: vendor?.logo }} style={styles.logo} />
+      <Image
+        source={{ uri: vendor?.logo }}
+        style={{ width: width, height: height, resizeMode: "center" }}
+        resizeMode="center"
+      />
       <View style={styles.buttonWrapper}>
         <Button
           onPress={async () => {
@@ -128,11 +153,13 @@ const styles = StyleSheet.create({
   },
   description: {
     marginVertical: 20,
-    width: Dimensions.get("window").width * 0.9
+    textAlign: "center"
   },
+
   logo: {
-    width: 170,
-    height: 120
+    flex: 1,
+    display: "flex",
+    flexDirection: "row"
   },
   buttonWrapper: {
     width: Dimensions.get("window").width * 0.9,
