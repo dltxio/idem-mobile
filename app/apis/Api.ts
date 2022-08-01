@@ -25,9 +25,8 @@ export default class Api extends HTTPClient {
   public syncDetail = async (body: UserDetailRequest) =>
     this.post(`user/syncDetail`, body);
 
-
   public publishPGPKey = async (body: string) =>
-    this.post<any>(
+    this.post<string>(
       "https://keys.openpgp.org/vks/v1/upload",
       {
         keytext: body
@@ -40,7 +39,7 @@ export default class Api extends HTTPClient {
     );
 
   public verifyPGPKey = async (body: verifyPGPRequest) =>
-    this.post<any>(
+    this.post<string>(
       "https://keys.openpgp.org/vks/v1/request-verify",
       {
         token: body.token,

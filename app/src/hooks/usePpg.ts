@@ -88,7 +88,7 @@ const usePgp = (): Hooks => {
       const uploadResponse = await api.publishPGPKey(publicKey);
       // Verify key,send email
       const verifyResponse = await api.verifyPGPKey({
-        token: uploadResponse.token,
+        token: uploadResponse,
         addresses: [email]
       });
 
