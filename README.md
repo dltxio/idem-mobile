@@ -263,12 +263,55 @@ Finally, _IDEM_ sends the credentials payload back to the website. Upon receipt 
 
 ## Test Vectors
 
+### Ethereum Test Keys
 BIP39 seed `excite hospital vast lounge please rebel evolve limit planet taste bronze side`
 
 | Name  | Address                                    | Private Key                                                        |
 | ----- | ------------------------------------------ | ------------------------------------------------------------------ |
 | IDEM  | 0x645cD9fE9620649BF71a806bE803695B02f697Aa | 0xcaf6a36710a30e92d8ae27d2110772f14d077a813183091d16af04c71b93bb96 |
 | Alice | 0x8444F8EF5694F09110B5191fCfab012f2E974135 | 0x409f3c9850a095fb1e3967bb55507df2b85bc647d9bc601528d5eb1094deeacc |
+
+
+### PGP Test Keys
+
+Some PGP Public and Private keys for testing can be found in the `/test` folder.
+
+```text
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+ Version: OpenPGP.js v4.10.10
+ Comment: https://openpgpjs.org
+
+ xsBNBGLh7fgBCAC99nS1kBp3WBy+x3xwI3bPwRwmhCLhkXbazrJR7qfnGvpv
+ D6b/NMRajiXV+tTNPr8t38WcRmEjCQRj3gXbMDH7wAufw7TuiRNIX496e6nF
+ XFN/oUTGT7HWNVDAWgpl8nX5AUy8zL9Hkm4JoE9apVumbcv0p4iK9Sk0/RAH
+ 93+n7qrvXomt59sEx9kAHQGc3m3E3k8AiVg7RbT96QPiccQrEuYnI/NtM2I7
+ EOlVGln6xOLE9WFhzJ31sz/o76nr0lFcBU2WwIxez7ElW5juuioUrCLU8LDB
+ YBJK+SHZ5CkBP43dKLHImIl6O1iCkSQ0Gx5FHZSWO4h0hdVFny16hvNpABEB
+ AAHNIENvb3BlciA8Y29vcGVyLmJlbm5pc29uQGRsdHguaW8+wsCNBBABCAAg
+ BQJi4e34BgsJBwgDAgQVCAoCBBYCAQACGQECGwMCHgEAIQkQr0xK5DzZ/A4W
+ IQQLCZPBrFPcsvT69/ivTErkPNn8DidTB/9nwLxd5VhImTMaPk9ZKHtqWlay
+ AeSiMMfquL8DPiyPFCQ7VxFJEOeDpIA5UbkL2lmlRNJrJ1MHsW+smu8ACgnI
+ P8GrAJewbozGykNQsOuRvElETTVO8BqoC3dWX1S53aNmoftAmpXdXTbS2Nuk
+ 7eIKSD0GTqpZNFRch8MGznHGbUS/HgFbNXSQcGv9KA22sMJizMSOix3mcAuQ
+ yH0TsM2YkrmcMeLNzZOxyP6PmLx5DyhFvMAyba5BrMB2+AWzy71vHWiUfOxO
+ gL4SET56dk8U4OEZ7i9WI4+kHepU4zXSEZGdh+QgLZGS4Gn5F3bYo2F6aJOw
+ pThTObODgi+RiPgDzsBNBGLh7fgBCACSMK7iKat9MCkDsqkmCk3xzcswUWzz
+ bzr+suaZD9zJwIpnc3/CVwYK3KOgYUzHKWa7ax0h4EZf+1JalLtPOOOZS0Ai
+ brreKTOygOZmNBKe3HGB+csvBN2iDbzA9Hkw18CpPxL5kGwUMXViJBP8Rq4O
+ N9HYZCzf8y6zh8EPr1vPcz9Coo/PLFixZIUT1bMwx0+JnkWb/kiu1XphKdPL
+ o1GXDZc5Pypm3HuAZfiQmmtlqQHWx6DG8Q/N2IlxNTBx39qlIp3zKeL2Zins
+ SOXfcjCmYJEeUxcy5aEIlAIIrcrTc+Gp5izYtrmO64H0bGgGnPcrVLiS3kTc
+ imGvc2r6bOW7ABEBAAHCwHYEGAEIAAkFAmLh7fgCGwwAIQkQr0xK5DzZ/A4W
+ IQQLCZPBrFPcsvT69/ivTErkPNn8DikTB/wOPfXekiceS5kfERaUMLEiRsIY
+ 7EDsG9UxZivnCpSISRnEsz+Dctybk94AhpUAIjq3hYP2EoSnMQG2yvVKLiKA
+ KSXU0KBmBOlGA6LXkWfvTUIjCMIDAHz5PAebFPVlgsoEpWMnahsdm1aJiBhU
+ 1yam8viDIE92EbTKPl2UexFXPCPEdv0234TM4yZ1fLippV7IAmitUfN3eepN
+ C+4fqCBiOqYpK6OnaJ0VXkSnuSD34B7Y0NX3WS0uXu1qv8m8tg3IiKwnNXDv
+ lrLn8ABWIgj5MoHfncj2uKqGKkXIpCjQGJ8SUQN09o/Q6AC3jFG+UkGsSESi
+ Vs3xc1EQeYo4LT60
+ =K7xH
+ -----END PGP PUBLIC KEY BLOCK-----
+```
 
 ## References
 

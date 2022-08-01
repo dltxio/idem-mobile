@@ -3,6 +3,7 @@ import { Alert } from "react-native";
 import OpenPGP from "react-native-fast-openpgp";
 import { AlertTitle } from "../constants/common";
 import { useClaimsStore } from "../context/ClaimsStore";
+import { UploadPGPKeyResponse } from "../types/general";
 import { PGP } from "../types/wallet";
 import { pgpLocalStorage } from "../utils/local-storage";
 import { createRandomPassword } from "../utils/randomPassword-utils";
@@ -63,9 +64,12 @@ const usePgp = (): Hooks => {
     try {
       if (!privateKey) return;
       const publicKey = await OpenPGP.convertPrivateKeyToPublicKey(privateKey);
+      const meta = await OpenPGP.getPublicKeyMetadata(publicKey);
+
       const pgp = {
         privateKey: privateKey,
-        publicKey: publicKey
+        publicKey: publicKey,
+        fingerPrint: meta.fingerprint
       } as PGP;
 
       await pgpLocalStorage.save(pgp);
@@ -94,10 +98,36 @@ const usePgp = (): Hooks => {
 
       if (verifyResponse) {
         await updateClaim("EmailCredential", email, false);
+      const uploadResponse = await axios.post<UploadPGPKeyResponse>(
+        "https://keys.openpgp.org/vks/v1/upload",
+        JSON.stringify({
+          keytext: publicKey
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+      // Verify key,send email
+      const verifyResponse = await axios.post(
+        "https://keys.openpgp.org/vks/v1/request-verify",
+        JSON.stringify({
+          token: uploadResponse.data.token,
+          addresses: [email]
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+      if (verifyResponse.status === 200) {
         Alert.alert(AlertTitle.Success, "Your PGP key has been uploaded");
       }
     } catch (error: any) {
-      console.error(error);
       Alert.alert(AlertTitle.Error, error.message);
     }
   };
@@ -123,6 +153,7 @@ const usePgp = (): Hooks => {
       console.log(Response, error);
     }
   };
+
   return {
     generateKeyPair,
     createPublicKey,
