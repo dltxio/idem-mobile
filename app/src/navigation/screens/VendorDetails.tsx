@@ -28,27 +28,6 @@ const VendorDetailsScreen: React.FC = () => {
   const dob = useClaimValue("BirthCredential");
   const name = useClaimValue("NameCredential");
 
-  const [width, setWidth] = React.useState<number>(0);
-
-  const [height, setHeight] = React.useState<number>(0);
-
-  React.useEffect(() => {
-    if (vendor?.logo) {
-      console.log(vendor.logo);
-      Image.getSize(
-        vendor.logo,
-        (Width, Height) => {
-          console.log(width, height);
-          setWidth(Width);
-          setHeight(Height);
-        },
-        (errorMsg) => {
-          console.log(errorMsg);
-        }
-      );
-    }
-  }, [vendor]);
-
   const hasAllRequiredClaims = React.useMemo(() => {
     if (!vendor || !vendor.requiredClaimMnemonics) {
       return true;
@@ -90,7 +69,7 @@ const VendorDetailsScreen: React.FC = () => {
       <Text style={styles.description}>{vendor?.description}</Text>
       <Image
         source={{ uri: vendor?.logo }}
-        style={{ width: width, height: height, resizeMode: "center" }}
+        style={styles.logo}
         resizeMode="center"
       />
       <View style={styles.buttonWrapper}>
@@ -159,7 +138,9 @@ const styles = StyleSheet.create({
   logo: {
     flex: 1,
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
+    width: Dimensions.get("window").width * 0.9,
+    height: Dimensions.get("window").height / 3
   },
   buttonWrapper: {
     width: Dimensions.get("window").width * 0.9,
