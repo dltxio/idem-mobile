@@ -50,17 +50,22 @@ export const ClaimsProvider: React.FC<{
     value: any,
     verified: boolean
   ) => {
-    const updatedClaimValue = [
-      ...verifiedClaimTypes,
-      value,
-      claimType,
-      verified
-    ];
-    if (verified === true) {
-      setVerifiedClaimTypes(updatedClaimValue);
-      claimsLocalStorage.save(updatedClaimValue);
+    const updatedClaimData = verifiedClaimTypes.map((claimData) => {
+      if (claimData.type !== claimType) return claimData;
+
+      return {
+        ...claimData,
+        value,
+        verified
+      };
+    });
+
+    {
+      name: "Peerawas"
     }
-    console.log(verified);
+
+    setVerifiedClaimTypes(updatedClaimData);
+    claimsLocalStorage.save(updatedClaimData);
   };
 
   const usersClaims: ClaimWithValue[] = React.useMemo(() => {
