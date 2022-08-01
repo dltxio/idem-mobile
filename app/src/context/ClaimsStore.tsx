@@ -60,10 +60,6 @@ export const ClaimsProvider: React.FC<{
       };
     });
 
-    {
-      name: "Peerawas"
-    }
-
     setVerifiedClaimTypes(updatedClaimData);
     claimsLocalStorage.save(updatedClaimData);
   };
