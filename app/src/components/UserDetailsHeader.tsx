@@ -38,8 +38,7 @@ const UserDetailsHeader: React.FC = () => {
     const run = async () => {
       const key = await pgpLocalStorage.get();
       if (!key) return;
-      const truncateFingerPrint = truncateAddress(key.fingerPrint);
-      setPgpTitle(truncateFingerPrint);
+      setPgpTitle(key.fingerPrint);
     };
     run();
   }, []);
