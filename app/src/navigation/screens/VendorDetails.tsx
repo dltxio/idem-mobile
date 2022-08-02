@@ -16,6 +16,7 @@ import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import useVendors from "../../hooks/userVendors";
 import { getVendor } from "../../utils/vendor";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
+import { ClaimTypeConstants } from "../../constants/common";
 
 const VendorDetailsScreen: React.FC = () => {
   const { usersClaims } = useClaimsStore();
@@ -24,9 +25,9 @@ const VendorDetailsScreen: React.FC = () => {
   const vendor = vendors.find((v) => v.id == route.params.id);
   const [signed, setSigned] = React.useState<boolean>(false);
   const { signup, syncDetail } = useVendors();
-  const email = useClaimValue("EmailCredential");
-  const dob = useClaimValue("BirthCredential");
-  const name = useClaimValue("NameCredential");
+  const email = useClaimValue(ClaimTypeConstants.EmailCredential);
+  const dob = useClaimValue(ClaimTypeConstants.BirthCredential);
+  const name = useClaimValue(ClaimTypeConstants.NameCredential);
 
   const hasAllRequiredClaims = React.useMemo(() => {
     if (!vendor || !vendor.requiredClaimMnemonics) {

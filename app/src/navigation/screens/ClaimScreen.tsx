@@ -37,6 +37,7 @@ const ClaimScreen: React.FC = () => {
   const claim = getClaimFromType(route.params.claimType);
 
   const { addClaim, usersClaims } = useClaimsStore();
+  const [disableButton, setDisableButton] = React.useState(false);
   const userClaim = usersClaims.find((c) => c.type === claim.type);
   const [formState, setFormState] = React.useState<{ [key: string]: string }>(
     userClaim?.value || {}
@@ -51,9 +52,9 @@ const ClaimScreen: React.FC = () => {
   const [rawDate, setRawDate] = React.useState<Date>();
 
   const {
-    loading,
     saveAndCheckBirthday,
     onSelectFile,
+    loading,
     selectedFileIds,
     setLoading,
     setSelectedFileIds
@@ -97,6 +98,12 @@ const ClaimScreen: React.FC = () => {
       claim.fields.length &&
     ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
 
+  React.useEffect(() => {
+    console.log({ userClaim });
+    if (userClaim?.type === "EmailCredential" && userClaim.verified) {
+      setDisableButton(true);
+    }
+  }, [userClaim]);
   const isDocumentUploadVerifyAction =
     claim.verificationAction === "document-upload";
 
@@ -288,7 +295,7 @@ const ClaimScreen: React.FC = () => {
         ) : (
           <Button
             title={isVerifying ? "Save & Verify" : "Save"}
-            disabled={!canSave}
+            disabled={!canSave || disableButton}
             onPress={onSave}
             loading={loading}
           />

@@ -1,4 +1,8 @@
-import { RequestOtpRequest, UserDetailRequest } from "./../src/types/user";
+import {
+  RequestOtpRequest,
+  UserDetailRequest,
+  verifyPGPRequest
+} from "./../src/types/user";
 import {
   PutExpoTokenRequest,
   UserSignup,
@@ -7,6 +11,7 @@ import {
 } from "../src/types/user";
 import HTTPClient from "./HTTPClient";
 import { RequestOptResponse, VerifyOtpRequest } from "../src/types/claim";
+import { UploadPGPKeyResponse } from "../src/types/general";
 export default class Api extends HTTPClient {
   public vendorSignup = async (body: UserSignup) =>
     this.post<string>(`user/signup`, body);
@@ -21,6 +26,32 @@ export default class Api extends HTTPClient {
   public syncDetail = async (body: UserDetailRequest) =>
     this.post(`user/syncDetail`, body);
 
+  public publishPGPKey = async (body: string) =>
+    this.post<UploadPGPKeyResponse>(
+      "https://keys.openpgp.org/vks/v1/upload",
+      {
+        keytext: body
+      },
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+  public verifyPGPKey = async (body: verifyPGPRequest) =>
+    this.post<string>(
+      "https://keys.openpgp.org/vks/v1/request-verify",
+      {
+        token: body.token,
+        addresses: body.addresses
+      },
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
   public requestOtp = async (body: RequestOtpRequest) =>
     this.post<RequestOptResponse>(`user/requestOtp`, body);
 

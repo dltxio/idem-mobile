@@ -56,3 +56,8 @@ export type UserDetailRequest = {
   lastName: string;
   dob: string;
 };
+
+export type verifyPGPRequest = {
+  token: string;
+  addresses: string[];
+};
