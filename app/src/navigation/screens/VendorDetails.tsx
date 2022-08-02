@@ -67,7 +67,11 @@ const VendorDetailsScreen: React.FC = () => {
       <Text style={styles.header}>{vendor?.name}</Text>
       <Text style={styles.tagLine}>{vendor?.tagline}</Text>
       <Text style={styles.description}>{vendor?.description}</Text>
-      <Image source={{ uri: vendor?.logo }} style={styles.logo} />
+      <Image
+        source={{ uri: vendor?.logo }}
+        style={styles.logo}
+        resizeMode="center"
+      />
       <View style={styles.buttonWrapper}>
         <Button
           onPress={async () => {
@@ -128,11 +132,15 @@ const styles = StyleSheet.create({
   },
   description: {
     marginVertical: 20,
-    width: Dimensions.get("window").width * 0.9
+    textAlign: "center"
   },
+
   logo: {
-    width: 170,
-    height: 120
+    flex: 1,
+    display: "flex",
+    flexDirection: "row",
+    width: Dimensions.get("window").width * 0.9,
+    height: Dimensions.get("window").height / 3
   },
   buttonWrapper: {
     width: Dimensions.get("window").width * 0.9,
