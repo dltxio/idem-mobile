@@ -20,6 +20,7 @@ import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { findNames } from "../../utils/formatters";
 import { UserVerifyRequest } from "../../types/user";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
+import { ClaimTypeConstants } from "../../constants/common";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -30,13 +31,13 @@ const Home: React.FC = () => {
   const navigateToClaim = (claimType: ClaimType) => {
     navigation.navigate("Claim", { claimType });
   };
-  const address = useClaimValue("AddressCredential");
-  const email = useClaimValue("EmailCredential");
-  const dob = useClaimValue("BirthCredential");
-  const name = useClaimValue("NameCredential");
+  const address = useClaimValue(ClaimTypeConstants.AddressCredential);
+  const email = useClaimValue(ClaimTypeConstants.EmailCredential);
+  const dob = useClaimValue(ClaimTypeConstants.BirthCredential);
+  const name = useClaimValue(ClaimTypeConstants.NameCredential);
   const splitName = findNames(name);
   const addressValue = usersClaims.find(
-    (claim) => claim.type === "AddressCredential"
+    (claim) => claim.type === ClaimTypeConstants.AddressCredential
   )?.value;
 
   const { verifyClaims } = useVerifyClaims();

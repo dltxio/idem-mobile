@@ -14,15 +14,18 @@ import { truncateAddress } from "../utils/wallet-utils";
 import useMnemonic from "../hooks/useMnemonic";
 import { pgpLocalStorage } from "../utils/local-storage";
 import { useEffect, useState } from "react";
+import { ClaimTypeConstants } from "../constants/common";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
 const UserDetailsHeader: React.FC = () => {
   const navigation = useNavigation<Navigation>();
   const insets = useSafeAreaInsets();
-  const name = useClaimValue("NameCredential");
-  const email = useClaimValue("EmailCredential");
-  const profileImageId = useClaimValue("ProfileImageCredential");
+  const name = useClaimValue(ClaimTypeConstants.NameCredential);
+  const email = useClaimValue(ClaimTypeConstants.EmailCredential);
+  const profileImageId = useClaimValue(
+    ClaimTypeConstants.ProfileImageCredential
+  );
 
   const { selectPhotoFromCameraRoll } = useSelectPhoto(PROFILE_IMAGE_OPTIONS);
   const { addClaim } = useClaimsStore();
@@ -77,14 +80,18 @@ const UserDetailsHeader: React.FC = () => {
           bold={true}
           placeholderWidth={90}
           onPress={() =>
-            navigation.navigate("Claim", { claimType: "NameCredential" })
+            navigation.navigate("Claim", {
+              claimType: ClaimTypeConstants.NameCredential
+            })
           }
         />
         <DetailOrPlaceholder
           value={email}
           placeholderWidth={150}
           onPress={() =>
-            navigation.navigate("Claim", { claimType: "EmailCredential" })
+            navigation.navigate("Claim", {
+              claimType: ClaimTypeConstants.EmailCredential
+            })
           }
         />
         <Text onPress={() => navigation.navigate("PGP")}>{pgpTitle}</Text>

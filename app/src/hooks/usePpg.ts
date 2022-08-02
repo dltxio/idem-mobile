@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Alert } from "react-native";
 import OpenPGP from "react-native-fast-openpgp";
-import { AlertTitle } from "../constants/common";
+import { AlertTitle, ClaimTypeConstants } from "../constants/common";
 import { useClaimsStore } from "../context/ClaimsStore";
 import { PGP } from "../types/wallet";
 import { pgpLocalStorage } from "../utils/local-storage";
@@ -95,7 +95,12 @@ const usePgp = (): Hooks => {
       });
 
       if (verifyResponse) {
-        await updateClaim("EmailCredential", { email: email }, [], false);
+        await updateClaim(
+          ClaimTypeConstants.EmailCredential,
+          { email: email },
+          [],
+          false
+        );
         Alert.alert(AlertTitle.Success, "Your PGP key has been uploaded");
       }
     } catch (error: any) {
@@ -112,7 +117,12 @@ const usePgp = (): Hooks => {
         `https://keys.openpgp.org/vks/v1/by-email/${encodeEmail}`
       );
       if (response.status === 200) {
-        await updateClaim("EmailCredential", { email: email }, [], true);
+        await updateClaim(
+          ClaimTypeConstants.EmailCredential,
+          { email: email },
+          [],
+          true
+        );
         {
           Alert.alert(
             `Email Verified`,
