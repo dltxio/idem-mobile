@@ -43,7 +43,7 @@ const usePgp = (): Hooks => {
       const pgp = {
         privateKey,
         publicKey,
-        fingerPrint: meta.keyIDShort
+        fingerPrint: meta.fingerprint
       } as PGP;
 
       await pgpLocalStorage.save(pgp);
