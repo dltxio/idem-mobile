@@ -23,28 +23,25 @@ const UserDetailsHeader: React.FC = () => {
   const name = useClaimValue("NameCredential");
   const email = useClaimValue("EmailCredential");
   const profileImageId = useClaimValue("ProfileImageCredential");
-
   const { selectPhotoFromCameraRoll } = useSelectPhoto(PROFILE_IMAGE_OPTIONS);
   const { addClaim } = useClaimsStore();
   const { addFile, files } = useDocumentStore();
-  const [pgpTitle, setPgpTitle] = useState<string | undefined>();
+  const [pgpTitle, setPgpTitle] = useState<string | undefined>(
+    "Import PGP Private Key"
+  );
 
   const { ethAddress } = useMnemonic();
 
   const profilePictureFile = files.find((file) => file.id === profileImageId);
 
-  const checkPGPTitle = async () => {
-    const key = await pgpLocalStorage.get();
-    if (key) {
-      setPgpTitle(key.fingerPrint);
-      return;
-    }
-    setPgpTitle("Import PGP Private Key");
-  };
-
   useEffect(() => {
-    if (!pgpTitle) checkPGPTitle();
-  }, [pgpTitle]);
+    const getFingerPrint = async () => {
+      const key = await pgpLocalStorage.get();
+      if (!key) return;
+      setPgpTitle(key.fingerPrint);
+    };
+    getFingerPrint();
+  }, []);
 
   const addProfileImageClaim = async () => {
     const file = await selectPhotoFromCameraRoll();
