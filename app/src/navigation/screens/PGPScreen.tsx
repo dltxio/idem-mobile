@@ -93,7 +93,7 @@ const PGPScreen: React.FC = () => {
         "Email and Name claims must be set before a PGP/GPG Key can be generated."
       );
     }
-  }
+  };
 
   React.useEffect(() => {
     (async () => {
@@ -136,7 +136,7 @@ const PGPScreen: React.FC = () => {
               title={"Import my Private Key from my Device"}
               onPress={importPrivateKeyFromDevice}
             />
-          </View>   
+          </View>
         </View>
 
         <View style={styles.buttonWrapper}>

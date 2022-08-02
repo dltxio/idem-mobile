@@ -35,12 +35,12 @@ const UserDetailsHeader: React.FC = () => {
   const profilePictureFile = files.find((file) => file.id === profileImageId);
 
   useEffect(() => {
-    const run = async () => {
+    const getFingerPrint = async () => {
       const key = await pgpLocalStorage.get();
       if (!key) return;
       setPgpTitle(key.fingerPrint);
     };
-    run();
+    getFingerPrint();
   }, []);
 
   const addProfileImageClaim = async () => {
