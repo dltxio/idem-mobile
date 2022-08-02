@@ -17,7 +17,7 @@
     "tagline": "The easiest way to get paid in Bitcoin",
     "description": "",
     "website": "https://getpaidinbitcoin.com.au",
-    "logo": "https://images.squarespace-cdn.com/content/v1/5f5990cc9e792617828214ae/1600921877148-3ISFDDENM1N89GLGAIKI/GBIB+Logo_5%402x.png?format=1500w",
+    "logo": "https://images.squarespace-cdn.com/content/v1/5f5990cc9e792617828214ae/1600921877148-3ISFDDENM1N89GLGAIKI/GBIB+Logo_5%402x.png",
     "signup": "https://portal.getpaidinbitcoin.com.au/register",
     "backgroundColor": "#be2596",
     "requiredClaimMnemonics": ["email", "fullname", "mobilenumber"]
@@ -38,9 +38,9 @@
     "tagline": "Grow your wealth with the world of crypto.",
     "description": "Buy, sell and trade on Australia's best crypto exchange",
     "website": "https://cointree.com/",
-    "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/CoinTree.png",
+    "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/cointree_logo_colour_rgb.png",
     "signup": "https://auth.cointree.com/Account/Register?registerwith=${email}",
-    "backgroundColor": "#73ac3b"
+    "backgroundColor": "#00DE78"
   },
   {
     "id": 4,
