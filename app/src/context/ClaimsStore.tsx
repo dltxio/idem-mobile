@@ -99,7 +99,7 @@ export const ClaimsProvider: React.FC<{
     claimId: ClaimType,
     value: AddClaim_Value,
     files: string[],
-    verified = false
+    verified?: boolean
   ) => {
     // This is a mock function.
     // In the future we will send this data off to an api to be verified

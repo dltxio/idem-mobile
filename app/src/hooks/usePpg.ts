@@ -63,9 +63,11 @@ const usePgp = (): Hooks => {
     try {
       if (!privateKey) return;
       const publicKey = await OpenPGP.convertPrivateKeyToPublicKey(privateKey);
+      const meta = await OpenPGP.getPublicKeyMetadata(publicKey);
       const pgp = {
         privateKey: privateKey,
-        publicKey: publicKey
+        publicKey: publicKey,
+        fingerPrint: meta.fingerprint
       } as PGP;
 
       await pgpLocalStorage.save(pgp);
