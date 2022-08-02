@@ -18,7 +18,7 @@ export type ClaimsVault = {
   reset: () => void;
   updateClaim: (
     claimId: ClaimType,
-    value: AddClaim_Value,
+    claimValue: AddClaim_Value,
     files: string[],
     verified: boolean
   ) => Promise<void>;
@@ -48,7 +48,7 @@ export const ClaimsProvider: React.FC<{
 
   const updateClaim = async (
     claimType: ClaimType,
-    value: AddClaim_Value,
+    claimValue: AddClaim_Value,
     files: string[],
     verified: boolean
   ) => {
@@ -57,7 +57,7 @@ export const ClaimsProvider: React.FC<{
 
       return {
         ...claimData,
-        value,
+        claimValue,
         files,
         verified
       };
