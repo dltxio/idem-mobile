@@ -27,6 +27,7 @@ import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import useClaimScreen from "../../hooks/useClaimScreen";
 import { claimsLocalStorage } from "../../utils/local-storage";
 import useApi from "../../hooks/useApi";
+import { AlertTitle } from "../../constants/common";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -111,13 +112,16 @@ const ClaimScreen: React.FC = () => {
           {
             text: "OK",
             onPress: async (value: string | undefined) => {
-              if (value) {
+              if (!value) return;
+
+              try {
                 const verifyOtp = await api.verifyOtp({
                   hash: otpResponse.hash,
                   code: value,
                   expiryTimestamp: otpResponse.expiryTimestamp,
                   mobileNumber: mobileNumber
                 });
+
                 if (verifyOtp) {
                   addClaim(claim.type, formState, selectedFileIds, true);
                   Alert.alert("Your mobile has been verified");
@@ -127,6 +131,8 @@ const ClaimScreen: React.FC = () => {
                 } else {
                   Alert.alert("Please try again, verification code invalid");
                 }
+              } catch (error: any) {
+                Alert.alert(AlertTitle.Error, error?.message);
               }
             }
           },
@@ -229,7 +235,7 @@ const ClaimScreen: React.FC = () => {
                   <Input
                     label={field.title}
                     keyboardType={"phone-pad"}
-                    value={formState[field.id].toLowerCase()}
+                    value={formState[field.id]}
                     onChangeText={onChange}
                   />
                 </View>

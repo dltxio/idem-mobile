@@ -86,6 +86,15 @@ const PGPScreen: React.FC = () => {
     [generateKeyPair]
   );
 
+  const generateAndPublishNewPgpKey = React.useCallback(
+    async (name: string, email: string) => {
+      await generateKeyPair(name, email);
+      await loadKeyFromLocalStorage();
+      await verifyPGPPublicKey(email);
+    },
+    [generateKeyPair]
+  );
+
   const checkRequiredClaims = () => {
     if (emailClaimValue === "" || nameClaimValue === "") {
       Alert.alert(
@@ -95,12 +104,23 @@ const PGPScreen: React.FC = () => {
     }
   };
 
+  const shouldDisabledGeneratePgpKey = !emailClaimValue || !nameClaimValue;
+
   React.useEffect(() => {
     (async () => {
       checkRequiredClaims();
       await loadKeyFromLocalStorage();
     })();
   }, []);
+
+  React.useEffect(() => {
+    if (shouldDisabledGeneratePgpKey) {
+      Alert.alert(
+        "Cannot generate PGP/GPG Key",
+        "Must have a name and email claim"
+      );
+    }
+  }, [shouldDisabledGeneratePgpKey]);
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -143,9 +163,9 @@ const PGPScreen: React.FC = () => {
           <View style={styles.button}>
             <Button
               title={"Generate new PGP Key"}
-              disabled={!emailClaimValue || !nameClaimValue}
+              disabled={shouldDisabledGeneratePgpKey || keyText !== undefined}
               onPress={async () =>
-                generateNewPgpKey(
+                generateAndPublishNewPgpKey(
                   nameClaimValue as string,
                   emailClaimValue as string
                 )
@@ -154,7 +174,7 @@ const PGPScreen: React.FC = () => {
           </View>
           <View style={styles.button}>
             <Button
-              title={"Publish PGP Public key"}
+              title={"Publish PGP Public Key"}
               disabled={!keyText || !emailClaimValue}
               onPress={() => publishPGPPublicKey(keyText, emailClaimValue)}
             />

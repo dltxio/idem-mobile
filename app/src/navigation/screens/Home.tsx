@@ -45,7 +45,7 @@ const Home: React.FC = () => {
     if (splitName && dob && address && email) {
       const hashEmail = await Crypto.digestStringAsync(
         Crypto.CryptoDigestAlgorithm.SHA256,
-        email
+        email.toLowerCase()
       );
 
       const userClaims = {
