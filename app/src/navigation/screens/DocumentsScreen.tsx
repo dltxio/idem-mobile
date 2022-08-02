@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   documentsList: {
-    height: Dimensions.get("window").height * 0.28
+    height: Dimensions.get("window").height * 0.25
   },
   bottomSection: {
     justifyContent: "flex-end",
