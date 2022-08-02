@@ -11,6 +11,7 @@ import {
 } from "../src/types/user";
 import HTTPClient from "./HTTPClient";
 import { RequestOptResponse, VerifyOtpRequest } from "../src/types/claim";
+import { UploadPGPKeyResponse } from "../src/types/general";
 export default class Api extends HTTPClient {
   public vendorSignup = async (body: UserSignup) =>
     this.post<string>(`user/signup`, body);
@@ -26,7 +27,7 @@ export default class Api extends HTTPClient {
     this.post(`user/syncDetail`, body);
 
   public publishPGPKey = async (body: string) =>
-    this.post<string>(
+    this.post<UploadPGPKeyResponse>(
       "https://keys.openpgp.org/vks/v1/upload",
       {
         keytext: body

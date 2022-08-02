@@ -17,6 +17,7 @@ export type Claim = {
   type: ClaimType;
   key: string;
   mnemonic: string;
+  verified?: boolean;
   title: string;
   description: string;
   verificationAction: VerificationAction;

@@ -12,7 +12,7 @@ import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import { Button } from "../../components";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
-import { useClaimValue } from "../../context/ClaimsStore";
+import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import usePgp from "../../hooks/usePpg";
 import { AlertTitle } from "../../constants/common";
 import { pgpLocalStorage } from "../../utils/local-storage";
@@ -37,6 +37,10 @@ const PGPScreen: React.FC = () => {
   const [keyText, setKeyText] = React.useState<string>();
   const emailClaimValue = useClaimValue("EmailCredential");
   const nameClaimValue = useClaimValue("NameCredential");
+
+  const { usersClaims } = useClaimsStore();
+
+  const emailClaim = usersClaims.find((c) => c.type === "EmailCredential");
 
   const {
     generateKeyPair,
@@ -181,7 +185,7 @@ const PGPScreen: React.FC = () => {
           <View style={styles.button}>
             <Button
               title={"Verify email"}
-              disabled={!emailClaimValue}
+              disabled={emailClaim?.verified}
               onPress={() => verifyPGPPublicKey(emailClaimValue)}
             />
           </View>

@@ -19,7 +19,8 @@ export type ClaimsVault = {
   reset: () => void;
   updateClaim: (
     claimId: ClaimType,
-    value: any,
+    value: AddClaim_Value,
+    files: string[],
     verified: boolean
   ) => Promise<void>;
 };
@@ -37,6 +38,7 @@ export const ClaimsProvider: React.FC<{
 
   React.useEffect(() => {
     (async () => {
+      claimsLocalStorage.clear();
       const initialClaims = await claimsLocalStorage.get();
 
       if (initialClaims) {
@@ -47,7 +49,8 @@ export const ClaimsProvider: React.FC<{
 
   const updateClaim = async (
     claimType: ClaimType,
-    value: any,
+    value: AddClaim_Value,
+    files: string[],
     verified: boolean
   ) => {
     const updatedClaimData = verifiedClaimTypes.map((claimData) => {
@@ -56,6 +59,7 @@ export const ClaimsProvider: React.FC<{
       return {
         ...claimData,
         value,
+        files,
         verified
       };
     });
