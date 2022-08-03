@@ -40,7 +40,7 @@ export enum KycResult {
 
 type ClaimResponsePayload = Record<string, unknown>;
 
-export type VerificationResponse = {
+export type IdemVerification = {
   result: KycResult;
   userId: string;
   thirdPartyVerified: boolean;

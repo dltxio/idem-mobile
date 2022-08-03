@@ -56,4 +56,7 @@ export const exchangeLocalStorage = createLocalStorage<Exchange>(
 
 export const pgpLocalStorage = createLocalStorage<PGP>("PGP", true);
 
-export const verifyStorage = createLocalStorage("IDEM_VERIFY", true);
+export const verificationStorage = createLocalStorage<IdemVerification>(
+  "IDEM_VERIFICATION",
+  true
+);

@@ -2,7 +2,7 @@ import { Alert } from "react-native";
 import useApi from "./useApi";
 import { UserVerifyRequest } from "../types/user";
 import { AlertTitle } from "../constants/common";
-import { verifyStorage } from "../utils/local-storage";
+import { verificationStorage } from "../utils/local-storage";
 
 type Hooks = {
   verifyClaims: (
@@ -20,7 +20,7 @@ const useVerifyClaims = (): Hooks => {
     api
       .verify(verifyRequest)
       .then(async (response) => {
-        await verifyStorage.save(JSON.stringify(response));
+        await verificationStorage.save(response);
         if (response.userId && expoToken) {
           await api.putExpoToken(response.userId, { token: expoToken });
         }
