@@ -38,7 +38,7 @@ export enum KycResult {
   Failed = "failed"
 }
 
-type ClaimResponsePayload = Object;
+type ClaimResponsePayload = Record<string, unknown>;
 
 export type VerificationResponse = {
   result: KycResult;
