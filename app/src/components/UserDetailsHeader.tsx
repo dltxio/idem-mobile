@@ -44,7 +44,8 @@ const UserDetailsHeader: React.FC = () => {
 
       const { fingerPrint } = key;
 
-      const lastEightChar = fingerPrint.slice(fingerPrint.length - 8);
+      const lastEightChar =
+        fingerPrint?.slice(fingerPrint.length - 8) ?? "Missing PGP Fingerprint";
       setPgpTitle(lastEightChar);
     };
     getFingerPrint();
