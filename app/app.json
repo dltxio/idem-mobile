@@ -2,7 +2,7 @@
   "expo": {
     "name": "idemID",
     "slug": "IDEM",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "entryPoint": "./index.js",
     "orientation": "portrait",
     "scheme": "idem",
@@ -23,6 +23,7 @@
       },
       "bundleIdentifier": "com.dltx.idem",
       "supportsTablet": true,
+      "buildNumber": "2",
       "usesIcloudStorage": true,
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "IDEM accesses your photos to verify your claims",
