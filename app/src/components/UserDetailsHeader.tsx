@@ -33,7 +33,6 @@ const UserDetailsHeader: React.FC = () => {
   const [pgpTitle, setPgpTitle] = useState<string | undefined>(
     "Import PGP Private Key"
   );
-
   const { ethAddress } = useMnemonic();
 
   const profilePictureFile = files.find((file) => file.id === profileImageId);
@@ -42,7 +41,11 @@ const UserDetailsHeader: React.FC = () => {
     const getFingerPrint = async () => {
       const key = await pgpLocalStorage.get();
       if (!key) return;
-      setPgpTitle(key.fingerPrint);
+
+      const { fingerPrint } = key;
+
+      const lastEightChar = fingerPrint.slice(fingerPrint.length - 8);
+      setPgpTitle(lastEightChar);
     };
     getFingerPrint();
   }, []);
