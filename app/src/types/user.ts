@@ -38,10 +38,14 @@ export enum KycResult {
   Failed = "failed"
 }
 
+type ClaimResponsePayload = Object;
+
 export type VerificationResponse = {
   result: KycResult;
   userId: string;
   thirdPartyVerified: boolean;
+  message: string; //signed claim response
+  claimPayload: ClaimResponsePayload;
 };
 
 export type PutExpoTokenRequest = {
