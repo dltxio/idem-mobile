@@ -1,7 +1,10 @@
 import { Alert } from "react-native";
 import { AlertTitle } from "../constants/common";
 import { findNames } from "../utils/formatters";
-import { exchangeLocalStorage } from "../utils/local-storage";
+import {
+  exchangeLocalStorage,
+  verificationStorage
+} from "../utils/local-storage";
 import { createRandomPassword } from "../utils/randomPassword-utils";
 import { getVendor } from "../utils/vendor";
 import useApi from "./useApi";
@@ -19,6 +22,7 @@ type Hooks = {
 
 const useVendors = (): Hooks => {
   const api = useApi();
+  const verification = verificationStorage.get();
 
   const signup = async (name: string, email: string, vendorId: number) => {
     const vendor = getVendor(vendorId);
@@ -31,13 +35,16 @@ const useVendors = (): Hooks => {
       vendor
     ) {
       api
-        .vendorSignup({
-          source: vendorId,
-          firstName: splitName?.firstName,
-          lastName: splitName?.lastName,
-          email: email,
-          password: randomTempPassword
-        })
+        .vendorSignup(
+          {
+            source: vendorId,
+            firstName: splitName?.firstName,
+            lastName: splitName?.lastName,
+            email: email,
+            password: randomTempPassword
+          },
+          verification
+        )
         .then(async (response) => {
           await exchangeLocalStorage.save({
             vendor: vendor,
