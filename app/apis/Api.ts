@@ -7,7 +7,7 @@ import {
   PutExpoTokenRequest,
   UserSignup,
   UserVerifyRequest,
-  VerificationResponse
+  IdemVerification
 } from "../src/types/user";
 import HTTPClient from "./HTTPClient";
 import { RequestOptResponse, VerifyOtpRequest } from "../src/types/claim";
