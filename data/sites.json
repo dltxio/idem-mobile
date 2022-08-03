@@ -8,7 +8,11 @@
     "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/digital_surge_logo.png",
     "signup": "https://digitalsurge.com.au/api/registration/sign-up/",
     "useProxy": true,
-    "requiredClaimMnemonics": ["email", "fullname", "mobilenumber"],
+    "requiredClaimTypes": [
+      "EmailCredential",
+      "NameCredential",
+      "MobileCredential"
+    ],
     "backgroundColor": "#8c75d9"
   },
   {
@@ -20,7 +24,11 @@
     "logo": "https://images.squarespace-cdn.com/content/v1/5f5990cc9e792617828214ae/1600921877148-3ISFDDENM1N89GLGAIKI/GBIB+Logo_5%402x.png",
     "signup": "https://portal.getpaidinbitcoin.com.au/register",
     "backgroundColor": "#be2596",
-    "requiredClaimMnemonics": ["email", "fullname", "mobilenumber"]
+    "requiredClaimTypes": [
+      "EmailCredential",
+      "NameCredential",
+      "MobileCredential"
+    ]
   },
   {
     "id": 2,
@@ -30,7 +38,11 @@
     "logo": "https://res.cloudinary.com/dcisquypm/image/upload/v1651057203/validator-logos/ykib0ji0gekmjfcjhp48.png",
     "signup": "https://coinstash.com.au/auth/signup",
     "backgroundColor": "#0012d0",
-    "requiredClaimMnemonics": ["email", "fullname", "address"]
+    "requiredClaimTypes": [
+      "EmailCredential",
+      "NameCredential",
+      "AddressCredential"
+    ]
   },
   {
     "id": 3,

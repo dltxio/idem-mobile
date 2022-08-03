@@ -115,7 +115,7 @@ const claims: Claim[] = [
     fields: [],
     verificationDocuments: [],
     hideFromList: true
-  }
+  },
 ];
 
 export default claims;

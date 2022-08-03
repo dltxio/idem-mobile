@@ -17,6 +17,7 @@ import useVendors from "../../hooks/userVendors";
 import { getVendor } from "../../utils/vendor";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { ClaimTypeConstants } from "../../constants/common";
+import { getClaimsFromTypes } from "../../utils/claim-utils";
 
 const VendorDetailsScreen: React.FC = () => {
   const { usersClaims } = useClaimsStore();
@@ -30,13 +31,13 @@ const VendorDetailsScreen: React.FC = () => {
   const name = useClaimValue(ClaimTypeConstants.NameCredential);
 
   const hasAllRequiredClaims = React.useMemo(() => {
-    if (!vendor || !vendor.requiredClaimMnemonics) {
+    if (!vendor || !vendor.requiredClaimTypes) {
       return true;
     }
 
-    const userClaimMnemonicMap = usersClaims.reduce(
+    const userClaimTypeMap = usersClaims.reduce(
       (acc, claim) => {
-        acc[claim.mnemonic] = true;
+        acc[claim.type] = true;
         return acc;
       },
       {} as {
@@ -44,17 +45,21 @@ const VendorDetailsScreen: React.FC = () => {
       }
     );
 
-    return vendor.requiredClaimMnemonics.every(
-      (mnemonic) => userClaimMnemonicMap[mnemonic]
+    return vendor.requiredClaimTypes.every(
+      (claimType) => userClaimTypeMap[claimType]
     );
   }, [usersClaims, vendor]);
 
   React.useEffect(() => {
     if (!hasAllRequiredClaims) {
+      const requiredClaims = getClaimsFromTypes(
+        vendor?.requiredClaimTypes ?? []
+      );
+      const requirements = requiredClaims.map((claim) => claim.title);
       Alert.alert(
         "Missing required claims",
         `You must have all of the following claims to sign up for this exchange.
-        \n[ ${vendor?.requiredClaimMnemonics.join(", ")} ]`
+        \n[ ${requirements.join(", ")} ]`
       );
     }
   }, [hasAllRequiredClaims]);
