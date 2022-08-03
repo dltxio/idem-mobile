@@ -22,40 +22,41 @@ type Hooks = {
 
 const useVendors = (): Hooks => {
   const api = useApi();
-  const verification = verificationStorage.get();
 
   const signup = async (name: string, email: string, vendorId: number) => {
-    const vendor = getVendor(vendorId);
-    const randomTempPassword = createRandomPassword();
-    const splitName = findNames(name);
-    if (
-      splitName?.firstName &&
-      splitName.lastName &&
-      randomTempPassword &&
-      vendor
-    ) {
-      api
-        .vendorSignup(
-          {
-            source: vendorId,
-            firstName: splitName?.firstName,
-            lastName: splitName?.lastName,
-            email: email,
-            password: randomTempPassword
-          },
-          verification
-        )
-        .then(async (response) => {
-          await exchangeLocalStorage.save({
-            vendor: vendor,
-            signup: true,
-            userId: response
-          });
-          shareDetailsAlert(randomTempPassword);
-        })
-        .catch((error) => {
-          Alert.alert(error.message);
-        });
+    try {
+      const verification = await verificationStorage.get();
+      if (!verification) {
+        throw new Error("Verification not found");
+      }
+
+      const vendor = getVendor(vendorId);
+      if (!vendor) throw new Error("Vendor not found");
+
+      const splitName = findNames(name);
+      const hasFullName = splitName?.firstName && splitName.lastName;
+      if (!hasFullName) throw new Error("Missing Full Name");
+
+      const randomTempPassword = createRandomPassword();
+
+      const response = await api.vendorSignup(
+        {
+          source: vendorId,
+          firstName: splitName?.firstName,
+          lastName: splitName?.lastName,
+          email: email,
+          password: randomTempPassword
+        },
+        verification
+      );
+      await exchangeLocalStorage.save({
+        vendor: vendor,
+        signup: true,
+        userId: response
+      });
+      shareDetailsAlert(randomTempPassword);
+    } catch (error: any) {
+      Alert.alert(error?.message);
     }
   };
 
