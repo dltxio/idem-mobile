@@ -1,6 +1,8 @@
-export default ({ config }) => {
+import { ExpoConfig, ConfigContext } from "@expo/config";
+
+export default ({ config }: ConfigContext): ExpoConfig => {
   return {
-    ...config,
+    ...(config as ExpoConfig),
     hooks: {
       postPublish: [
         {
