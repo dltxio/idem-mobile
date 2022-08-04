@@ -35,7 +35,7 @@
     "name": "Coin Stash",
     "tagline": "Crypto made Simple",
     "description": "",
-    "logo": "Coinstash_logo_resized.png",
+    "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/coinstash_logo.png",
     "signup": "https://coinstash.com.au/auth/signup",
     "backgroundColor": "#0012d0",
     "requiredClaimTypes": [
