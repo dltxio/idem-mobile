@@ -29,7 +29,8 @@ Notifications.setNotificationHandler({
 
 Sentry.init({
   dsn: appConfig.sentryDSN,
-  debug: appConfig.sentryDebugEnable
+  debug: appConfig.sentryDebugEnable,
+  environment: appConfig.releaseChannel
 });
 
 const App = () => {

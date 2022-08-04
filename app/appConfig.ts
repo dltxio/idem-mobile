@@ -49,7 +49,8 @@ const getChannelConfig = () => {
 };
 
 const appConfig: config.Config = {
-  ...getChannelConfig()
+  ...getChannelConfig(),
+  releaseChannel
 };
 
 export default appConfig;
