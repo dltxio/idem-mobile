@@ -44,8 +44,8 @@ export type IdemVerification = {
   result: KycResult;
   userId: string;
   thirdPartyVerified: boolean;
-  message: string; //signed claim response
-  claimPayload: ClaimResponsePayload;
+  signature: string; //signed claim response
+  message: ClaimResponsePayload;
 };
 
 export type PutExpoTokenRequest = {
