@@ -14,8 +14,10 @@ import { parseClaimRequest } from "./src/utils/claim-utils";
 import RequestClaimsModal from "./src/components/RequestClaimsModal";
 import { DocumentProvider } from "./src/context/DocumentStore";
 import * as Notifications from "expo-notifications";
+import * as Sentry from "sentry-expo";
 import LinkingConfiguration from "./src/navigation/LinkingConfiguration";
 import { ApiProvider } from "./providers/Api";
+import appConfig from "./appConfig";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -23,6 +25,11 @@ Notifications.setNotificationHandler({
     shouldPlaySound: false,
     shouldSetBadge: false
   })
+});
+
+Sentry.init({
+  dsn: appConfig.sentryDSN,
+  debug: appConfig.sentryDebugEnable
 });
 
 const App = () => {

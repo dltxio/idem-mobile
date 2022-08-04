@@ -7,5 +7,7 @@ declare namespace config {
     apiEndpoint: string;
     userName?: string;
     password?: string;
+    sentryDSN: string;
+    sentryDebugEnable: boolean;
   };
 }

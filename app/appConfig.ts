@@ -12,19 +12,28 @@ const isEnvironment = (env: ReleaseChannel): boolean =>
 const devConfig: config.Config = {
   apiEndpoint: "https://uat-proxy.idem.com.au/", // change to localhost if running locally for example "http://192.168.1.117:3000/",
   userName: "myusername",
-  password: "password123"
+  password: "password123",
+  sentryDSN:
+    "https://6965f2d7058b49e9a642b8d60f704eb1@o1345931.ingest.sentry.io/6623100",
+  sentryDebugEnable: true
 };
 
 const stagingConfig: config.Config = {
   apiEndpoint: "https://uat-proxy.idem.com.au/",
-  userName: process.env.staging_proxyUsername,
-  password: process.env.staging_proxyUsername
+  userName: process.env.STAGING_PROXY_USERNAME,
+  password: process.env.STAGING_PROXY_PASSWORD,
+  sentryDSN:
+    "https://6965f2d7058b49e9a642b8d60f704eb1@o1345931.ingest.sentry.io/6623100",
+  sentryDebugEnable: true
 };
 
 const productionConfig: config.Config = {
   apiEndpoint: "https://uat-proxy.idem.com.au/",
-  userName: process.env.prod_proxyUsername,
-  password: process.env.prod_proxyUsername
+  userName: process.env.PROD_PROXY_USERNAME,
+  password: process.env.PROD_PROXY_PASSWORD,
+  sentryDSN:
+    "https://6965f2d7058b49e9a642b8d60f704eb1@o1345931.ingest.sentry.io/6623100",
+  sentryDebugEnable: false
 };
 
 const getChannelConfig = () => {
