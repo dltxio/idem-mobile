@@ -5,7 +5,7 @@ declare module "@env" {
 declare namespace config {
   type Config = {
     apiEndpoint: string;
-    userName: string;
-    password: string;
+    userName?: string;
+    password?: string;
   };
 }

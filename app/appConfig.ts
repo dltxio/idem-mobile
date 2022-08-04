@@ -17,14 +17,14 @@ const devConfig: config.Config = {
 
 const stagingConfig: config.Config = {
   apiEndpoint: "https://uat-proxy.idem.com.au/",
-  userName: "myusername",
-  password: "password123"
+  userName: process.env.staging_proxyUsername,
+  password: process.env.staging_proxyUsername
 };
 
 const productionConfig: config.Config = {
   apiEndpoint: "https://uat-proxy.idem.com.au/",
-  userName: "myusername",
-  password: "password123"
+  userName: process.env.prod_proxyUsername,
+  password: process.env.prod_proxyUsername
 };
 
 const getChannelConfig = () => {
