@@ -5,7 +5,7 @@
     "tagline": "Bitcoin & Crypto made simple",
     "description": "A uniquely easy way to buy, sell & store crypto in Australia. Enjoy safe & effortless trading today.",
     "website": "https://digitalsurge.com.au/",
-    "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/digital_surge_logo.png",
+    "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/digital_surge.png",
     "signup": "https://digitalsurge.com.au/api/registration/sign-up/",
     "useProxy": true,
     "requiredClaimTypes": [
@@ -13,7 +13,7 @@
       "NameCredential",
       "MobileCredential"
     ],
-    "backgroundColor": "#8c75d9"
+    "backgroundColor": "#FFFFFF"
   },
   {
     "id": 1,
@@ -21,7 +21,7 @@
     "tagline": "The easiest way to get paid in Bitcoin",
     "description": "",
     "website": "https://getpaidinbitcoin.com.au",
-    "logo": "https://images.squarespace-cdn.com/content/v1/5f5990cc9e792617828214ae/1600921877148-3ISFDDENM1N89GLGAIKI/GBIB+Logo_5%402x.png",
+    "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/GPIB_logo.png",
     "signup": "https://portal.getpaidinbitcoin.com.au/register",
     "backgroundColor": "#be2596",
     "requiredClaimTypes": [
@@ -35,8 +35,8 @@
     "name": "Coin Stash",
     "tagline": "Crypto made Simple",
     "description": "",
-    "logo": "https://res.cloudinary.com/dcisquypm/image/upload/v1651057203/validator-logos/ykib0ji0gekmjfcjhp48.png",
-    "signup": "https://coinstash.com.au/auth/signup",
+    "logo": "Coinstash_logo_resized.png",
+    "signup": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/coinstash_logo.png",
     "backgroundColor": "#0012d0",
     "requiredClaimTypes": [
       "EmailCredential",
@@ -50,9 +50,9 @@
     "tagline": "Grow your wealth with the world of crypto.",
     "description": "Buy, sell and trade on Australia's best crypto exchange",
     "website": "https://cointree.com/",
-    "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/cointree_logo_colour_rgb.png",
+    "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/cointree_logo.png",
     "signup": "https://auth.cointree.com/Account/Register?registerwith=${email}",
-    "backgroundColor": "#00DE78"
+    "backgroundColor": "#00de78"
   },
   {
     "id": 4,
@@ -60,8 +60,8 @@
     "tagline": "We make it easy for Aussies to buy and sell crypto",
     "description": "Buy and sell instantly with Australia's fastest and safest crypto retailer. Deliver to any wallet address or withdraw to your bank account in as little as two minutes. Easy!",
     "website": "https://easycrypto.com/au",
-    "logo": "",
+    "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/easycrypto_logo.png",
     "signup": "https://easycrypto.com/au",
-    "backgroundColor": "6438da"
+    "backgroundColor": "#8c75d9"
   }
 ]
