@@ -11,8 +11,8 @@ const isEnvironment = (env: ReleaseChannel): boolean =>
 
 const devConfig: config.Config = {
   apiEndpoint: "https://uat-proxy.idem.com.au/", // change to localhost if running locally for example "http://192.168.1.117:3000/",
-  userName: "myusername",
-  password: "password123",
+  userName: "<USERNAME>",
+  password: "<PASSWORD>",
   sentryDSN:
     "https://6965f2d7058b49e9a642b8d60f704eb1@o1345931.ingest.sentry.io/6623100",
   sentryDebugEnable: true
