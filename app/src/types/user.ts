@@ -4,6 +4,7 @@ export type UserSignup = {
   lastName: string;
   password: string;
   email: string;
+  mobile?: string;
 };
 
 export enum VendorEnum {

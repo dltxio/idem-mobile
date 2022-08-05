@@ -1,3 +1,4 @@
+import { User } from "@sentry/react-native";
 import { Alert } from "react-native";
 import { AlertTitle } from "../constants/common";
 import { findNames } from "../utils/formatters";
@@ -9,8 +10,14 @@ import { createRandomPassword } from "../utils/randomPassword-utils";
 import { getVendor } from "../utils/vendor";
 import useApi from "./useApi";
 
+type UserInfo = {
+  name: string;
+  email: string;
+  mobile?: string;
+};
+
 type Hooks = {
-  signup: (name: string, email: string, vendorId: number) => Promise<void>;
+  signup: (userInfo: UserInfo, vendorId: number) => Promise<void>;
   syncDetail: (
     name: string,
     password: string,
@@ -23,7 +30,8 @@ type Hooks = {
 const useVendors = (): Hooks => {
   const api = useApi();
 
-  const signup = async (name: string, email: string, vendorId: number) => {
+  const signup = async (userInfo: UserInfo, vendorId: number) => {
+    const { name, email, mobile } = userInfo;
     try {
       const verification = await verificationStorage.get();
       if (!verification) {
@@ -44,17 +52,28 @@ const useVendors = (): Hooks => {
           source: vendorId,
           firstName: splitName?.firstName,
           lastName: splitName?.lastName,
-          email: email,
+          email,
+          mobile,
           password: randomTempPassword
         },
         verification
       );
+      let tempPassword;
+      let userId;
+      if (vendorId === 5) {
+        const { token, password } = response as any;
+        userId = token;
+        tempPassword = password;
+      } else {
+        userId = response;
+        tempPassword = randomTempPassword;
+      }
       await exchangeLocalStorage.save({
         vendor: vendor,
         signup: true,
-        userId: response
+        userId
       });
-      shareDetailsAlert(randomTempPassword);
+      shareDetailsAlert(tempPassword);
     } catch (error: any) {
       Alert.alert(error?.message);
     }

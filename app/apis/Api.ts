@@ -21,7 +21,7 @@ export default class Api extends HTTPClient {
       ...body,
       verification
     };
-    return this.post<string>(`user/signup`, payload);
+    return this.post(`user/signup`, payload);
   };
 
   public verify = async (body: UserVerifyRequest) =>
