@@ -11,7 +11,7 @@ import useApi from "./useApi";
 type Hooks = {
   generateKeyPair: (
     name: string | undefined,
-    email: string | undefined
+    email: string | undefined    
   ) => Promise<void>;
   createPublicKey: (privateKey: string | undefined) => Promise<void>;
   publishPGPPublicKey: (

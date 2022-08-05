@@ -57,14 +57,6 @@ const PGPScreen: React.FC = () => {
     setKeyText(key.publicKey);
   }, [setKeyText]);
 
-  const importMyPrivateKey = React.useCallback(
-    async (privateKey: string) => {
-      await createPublicKey(privateKey);
-      await loadKeyFromLocalStorage();
-    },
-    [createPublicKey]
-  );
-
   const importPrivateKeyFromDevice = React.useCallback(async () => {
     try {
       const content = await importPrivateKeyFileFromDevice();
@@ -80,22 +72,16 @@ const PGPScreen: React.FC = () => {
         }`
       );
       console.error(error);
+      console.log(generateAndPublishNewPgpKey);
     }
   }, [createPublicKey]);
-
-  const generateNewPgpKey = React.useCallback(
-    async (name: string, email: string) => {
-      await generateKeyPair(name, email);
-      await loadKeyFromLocalStorage();
-    },
-    [generateKeyPair]
-  );
 
   const generateAndPublishNewPgpKey = React.useCallback(
     async (name: string, email: string) => {
       await generateKeyPair(name, email);
-      await loadKeyFromLocalStorage();
-      await verifyPGPPublicKey(email);
+      const key = await pgpLocalStorage.get();
+      if (!key) return;
+      await publishPGPPublicKey(key.publicKey, email);
     },
     [generateKeyPair]
   );
@@ -150,7 +136,7 @@ const PGPScreen: React.FC = () => {
           <View style={styles.button}>
             <Button
               title={"Import my Private Key"}
-              onPress={() => importMyPrivateKey(keyText as string)}
+              onPress={() => keyText as string}
               disabled={!keyText}
             />
           </View>
