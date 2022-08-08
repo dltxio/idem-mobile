@@ -4,6 +4,7 @@ export type UserSignup = {
   lastName: string;
   password: string;
   email: string;
+  mobile?: string;
 };
 
 export enum VendorEnum {
@@ -44,8 +45,8 @@ export type IdemVerification = {
   result: KycResult;
   userId: string;
   thirdPartyVerified: boolean;
-  message: string; //signed claim response
-  claimPayload: ClaimResponsePayload;
+  signature: string; //signed claim response
+  message: ClaimResponsePayload;
 };
 
 export type PutExpoTokenRequest = {
