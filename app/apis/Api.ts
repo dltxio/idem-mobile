@@ -47,8 +47,8 @@ export default class Api extends HTTPClient {
       }
     );
 
-  public verifyPGPKey = async (body: verifyPGPRequest) =>
-    this.post<string>(
+  public requestVerifyPGPKey = async (body: verifyPGPRequest) =>
+    this.post(
       "https://keys.openpgp.org/vks/v1/request-verify",
       {
         token: body.token,

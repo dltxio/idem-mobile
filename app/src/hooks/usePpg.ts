@@ -89,7 +89,7 @@ const usePgp = (): Hooks => {
       // Upload public key to openpgp server
       const uploadResponse = await api.publishPGPKey(publicKey);
       // Verify key,send email
-      const verifyResponse = await api.verifyPGPKey({
+      const verifyResponse = await api.requestVerifyPGPKey({
         token: uploadResponse.token,
         addresses: [email]
       });
@@ -130,9 +130,11 @@ const usePgp = (): Hooks => {
           );
         }
       }
-    } catch (error) {
-      Alert.alert(AlertTitle.Error, "Could not verify email.");
-      console.log(Response, error);
+    } catch (error: any) {
+      Alert.alert(
+        AlertTitle.Error,
+        "Could not verify email, please check your email and try again"
+      );
     }
   };
   return {
