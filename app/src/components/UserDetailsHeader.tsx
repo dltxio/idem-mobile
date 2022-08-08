@@ -15,7 +15,6 @@ import useMnemonic from "../hooks/useMnemonic";
 import { pgpLocalStorage } from "../utils/local-storage";
 import { useEffect, useState } from "react";
 import { ClaimTypeConstants } from "../constants/common";
-import { splitSignature } from "ethers/lib/utils";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -45,12 +44,12 @@ const UserDetailsHeader: React.FC = () => {
 
       const { fingerPrint } = key;
 
-      const lastEightChar =
+      const lastEightCharAndSpaces =
         fingerPrint
           .split(":")
           .join(" ")
           .slice(fingerPrint.length - 10) ?? "Missing PGP Fingerprint";
-      setPgpTitle(lastEightChar);
+      setPgpTitle(lastEightCharAndSpaces);
     };
     getFingerPrint();
   }, []);
