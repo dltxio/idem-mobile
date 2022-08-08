@@ -29,6 +29,7 @@ const VendorDetailsScreen: React.FC = () => {
   const email = useClaimValue(ClaimTypeConstants.EmailCredential);
   const dob = useClaimValue(ClaimTypeConstants.BirthCredential);
   const name = useClaimValue(ClaimTypeConstants.NameCredential);
+  const mobile = useClaimValue(ClaimTypeConstants.MobileCredential);
 
   const hasAllRequiredClaims = React.useMemo(() => {
     if (!vendor || !vendor.requiredClaimTypes) {
@@ -82,7 +83,7 @@ const VendorDetailsScreen: React.FC = () => {
         <Button
           onPress={async () => {
             if (vendor && getVendor(vendor.id) && name && email) {
-              await signup(name, email, vendor.id);
+              await signup({ name, email, mobile }, vendor.id);
               setSigned(true);
             } else {
               Alert.alert(
