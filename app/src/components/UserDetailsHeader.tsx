@@ -44,9 +44,12 @@ const UserDetailsHeader: React.FC = () => {
 
       const { fingerPrint } = key;
 
-      const lastEightChar =
-        fingerPrint?.slice(fingerPrint.length - 8) ?? "Missing PGP Fingerprint";
-      setPgpTitle(lastEightChar);
+      const lastEightCharAndSpaces =
+        fingerPrint
+          .split(":")
+          .join(" ")
+          .slice(fingerPrint.length - 10) ?? "Missing PGP Fingerprint";
+      setPgpTitle(lastEightCharAndSpaces);
     };
     getFingerPrint();
   }, []);

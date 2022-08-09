@@ -86,7 +86,9 @@ const PGPScreen: React.FC = () => {
   const generateAndPublishNewPgpKey = React.useCallback(
     async (name: string, email: string) => {
       await generateKeyPair(name, email);
-      await loadKeyFromLocalStorage();
+      const key = await pgpLocalStorage.get();
+      if (!key) return;
+      await publishPGPPublicKey(key.publicKey, email);
     },
     [generateKeyPair]
   );
