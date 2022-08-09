@@ -5,3 +5,12 @@ export const extractPrivateKeyFromFileContent = (content: string) => {
   if (!privateKey) throw new Error("Not a private key");
   return privateKey;
 };
+
+export const trimFingerPrint = (fingerPrint: string) => {
+  return (
+    fingerPrint
+      .split(":")
+      .join(" ")
+      .slice(fingerPrint.length - 10) ?? "Missing PGP Fingerprint"
+  );
+};

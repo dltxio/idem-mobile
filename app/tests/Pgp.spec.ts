@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { extractPrivateKeyFromFileContent } from "../src/utils/pgp-utils";
+import { extractPrivateKeyFromFileContent, trimFingerPrint } from "../src/utils/pgp-utils";
 
 const PRIVATE_KEY = `-----BEGIN PGP PRIVATE KEY BLOCK-----
     Comment: Alice's OpenPGP Transferable Secret Key
@@ -141,5 +141,12 @@ describe("PgpUtils.extractPrivateKeyFromFileContent()", () => {
     `;
 
     expect(() => extractPrivateKeyFromFileContent(content)).to.throw();
+  });
+
+  it("should trip pgp fingerprint to 8 characters", () => {
+    const content = "31C3:DF95:1686:F51D:882C:7457:0D29:3492:5D21:9FFA";
+    const actual = trimFingerPrint(content);
+
+    expect(actual).to.eq("5D21 9FFA");
   });
 });
