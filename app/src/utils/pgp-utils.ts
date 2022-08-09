@@ -7,10 +7,6 @@ export const extractPrivateKeyFromFileContent = (content: string) => {
 };
 
 export const trimFingerPrint = (fingerPrint: string) => {
-  return (
-    fingerPrint
-      .split(":")
-      .join(" ")
-      .slice(fingerPrint.length - 10) ?? "Missing PGP Fingerprint"
-  );
+  const short = fingerPrint.replace(/:/g, " ");
+  return short.slice(short.length - 9) ?? "Missing PGP Fingerprint";
 };
