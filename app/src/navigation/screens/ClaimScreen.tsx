@@ -10,15 +10,17 @@ import {
   ScrollView,
   Dimensions
 } from "react-native";
+import Dialog from "react-native-dialog";
 import { Input, Switch } from "@rneui/themed";
 import DateTimePicker from "@react-native-community/datetimepicker";
+
 import commonStyles from "../../styles/styles";
 import {
   ProfileStackNavigation,
   ProfileStackNavigationRoute
 } from "../../types/navigation";
 import { getClaimFromType } from "../../utils/claim-utils";
-import { Claim } from "../../types/claim";
+import { Claim, RequestOptResponse } from "../../types/claim";
 import { FileList, Button } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
@@ -48,8 +50,9 @@ const ClaimScreen: React.FC = () => {
   const [showDatePickerForFieldId, setShowDatePickerForFieldId] =
     React.useState<string>();
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
-
   const [rawDate, setRawDate] = React.useState<Date>();
+  const [showOtpDialog, setShowOtpDialog] = React.useState<boolean>(false);
+  const [otpContext, setOtpContext] = React.useState<RequestOptResponse>();
 
   const {
     saveAndCheckBirthday,
@@ -99,7 +102,6 @@ const ClaimScreen: React.FC = () => {
     ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
 
   React.useEffect(() => {
-    console.log({ userClaim });
     if (userClaim?.type === "EmailCredential" && userClaim.verified) {
       setDisableButton(true);
     }
@@ -115,40 +117,8 @@ const ClaimScreen: React.FC = () => {
     try {
       const otpResponse = await api.requestOtp({ mobileNumber });
       if (otpResponse.hash && otpResponse.expiryTimestamp) {
-        Alert.prompt("Enter your verification code", "", [
-          {
-            text: "OK",
-            onPress: async (value: string | undefined) => {
-              if (!value) return;
-
-              try {
-                const verifyOtp = await api.verifyOtp({
-                  hash: otpResponse.hash,
-                  code: value,
-                  expiryTimestamp: otpResponse.expiryTimestamp,
-                  mobileNumber: mobileNumber
-                });
-
-                if (verifyOtp) {
-                  addClaim(claim.type, formState, selectedFileIds, true);
-                  Alert.alert("Your mobile has been verified");
-                  navigation.reset({
-                    routes: [{ name: "Home" }]
-                  });
-                } else {
-                  Alert.alert("Please try again, verification code invalid");
-                }
-              } catch (error: any) {
-                Alert.alert(AlertTitle.Error, error?.message);
-              }
-            }
-          },
-          {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel"
-          }
-        ]);
+        setOtpContext(otpResponse);
+        setShowOtpDialog(true);
       }
     } catch (error) {
       console.error(error);
@@ -157,8 +127,47 @@ const ClaimScreen: React.FC = () => {
     setLoading(false);
   };
 
+  const handleSubmitOtp = React.useCallback(
+    async (otpCode: string | undefined) => {
+      if (!otpCode || !otpContext) return;
+      const { hash, expiryTimestamp } = otpContext;
+      const mobileNumber = formState["mobileNumber"];
+
+      try {
+        const verifyOtp = await api.verifyOtp({
+          hash,
+          code: otpCode,
+          expiryTimestamp,
+          mobileNumber: mobileNumber
+        });
+
+        if (verifyOtp) {
+          addClaim(claim.type, formState, selectedFileIds, true);
+          Alert.alert("Your mobile has been verified");
+          navigation.reset({
+            routes: [{ name: "Home" }]
+          });
+        } else {
+          Alert.alert("Please try again, verification code invalid");
+        }
+      } catch (error: any) {
+        Alert.alert(AlertTitle.Error, error?.message);
+      }
+    },
+    [otpContext, api, addClaim, navigation]
+  );
+
   return (
     <View style={commonStyles.screen}>
+      <OtpDialog
+        showDialog={showOtpDialog}
+        onCancel={() => setShowOtpDialog(false)}
+        onSubmit={(otpCode) => {
+          handleSubmitOtp(otpCode).then(() => {
+            setShowOtpDialog(false);
+          });
+        }}
+      />
       <ScrollView style={commonStyles.screenContent}>
         <View>
           {claim.fields.map((field) => {
@@ -395,5 +404,37 @@ const VerificationFiles: React.FC<{
         </>
       ) : null}
     </View>
+  );
+};
+
+const OtpDialog: React.FC<{
+  showDialog: boolean;
+  onCancel: () => void;
+  onSubmit: (otpCode?: string) => void;
+}> = ({ showDialog, onCancel, onSubmit }) => {
+  const [otpCode, setOtpCode] = React.useState<string>();
+
+  return (
+    <Dialog.Container visible={showDialog} onBackdropPress={onCancel}>
+      <Dialog.Title>Enter your verification code</Dialog.Title>
+      <Dialog.Input
+        onChangeText={setOtpCode}
+        autoFocus={true}
+        keyboardType={"number-pad"}
+      ></Dialog.Input>
+      <Dialog.Button
+        onPress={onCancel}
+        label="Cancel"
+        bold={true}
+        color="#007ff9"
+      />
+      <Dialog.Button
+        onPress={() => {
+          onSubmit(otpCode);
+        }}
+        label="OK"
+        color="#007ff9"
+      />
+    </Dialog.Container>
   );
 };
