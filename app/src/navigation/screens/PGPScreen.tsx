@@ -16,7 +16,10 @@ import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import usePgp from "../../hooks/usePpg";
 import { AlertTitle, ClaimTypeConstants } from "../../constants/common";
 import { pgpLocalStorage } from "../../utils/local-storage";
-import { extractPrivateKeyFromFileContent } from "../../utils/pgp-utils";
+import {
+  checkIfContentContainOnlyPublicKey,
+  extractPrivateKeyFromContent
+} from "../../utils/pgp-utils";
 
 const importPrivateKeyFileFromDevice = async () => {
   const res = await DocumentPicker.getDocumentAsync({
@@ -46,7 +49,7 @@ const PGPScreen: React.FC = () => {
 
   const {
     generateKeyPair,
-    createPublicKey,
+    generateKeyPairFromPrivateKey,
     publishPGPPublicKey,
     verifyPGPPublicKey
   } = usePgp();
@@ -57,21 +60,36 @@ const PGPScreen: React.FC = () => {
     setKeyText(key.publicKey);
   }, [setKeyText]);
 
-  const importMyPrivateKey = React.useCallback(
-    async (privateKey: string) => {
-      await createPublicKey(privateKey);
+  const extractAndLoadKeyPairFromContent = React.useCallback(
+    async (content: string) => {
+      const privateKey = extractPrivateKeyFromContent(content);
+      await generateKeyPairFromPrivateKey(privateKey);
       await loadKeyFromLocalStorage();
     },
-    [createPublicKey]
+    [generateKeyPairFromPrivateKey, loadKeyFromLocalStorage]
+  );
+
+  const importMyPrivateKeyFromTextInput = React.useCallback(
+    async (content: string) => {
+      try {
+        await extractAndLoadKeyPairFromContent(content);
+      } catch (error: any) {
+        Alert.alert(
+          AlertTitle.Error,
+          `Failed to parse the Private Key \n> ${
+            error?.message ?? "unknown error"
+          }`
+        );
+      }
+    },
+    [extractAndLoadKeyPairFromContent]
   );
 
   const importPrivateKeyFromDevice = React.useCallback(async () => {
     try {
       const content = await importPrivateKeyFileFromDevice();
       if (!content) return;
-      const privateKey = extractPrivateKeyFromFileContent(content);
-      await createPublicKey(privateKey);
-      await loadKeyFromLocalStorage();
+      await extractAndLoadKeyPairFromContent(content);
     } catch (error: any) {
       Alert.alert(
         AlertTitle.Error,
@@ -81,11 +99,12 @@ const PGPScreen: React.FC = () => {
       );
       console.error(error);
     }
-  }, [createPublicKey]);
+  }, [extractAndLoadKeyPairFromContent]);
 
   const generateAndPublishNewPgpKey = React.useCallback(
     async (name: string, email: string) => {
       await generateKeyPair(name, email);
+      await loadKeyFromLocalStorage();
       const key = await pgpLocalStorage.get();
       if (!key) return;
       await publishPGPPublicKey(key.publicKey, email);
@@ -120,6 +139,11 @@ const PGPScreen: React.FC = () => {
     }
   }, [shouldDisabledGeneratePgpKey]);
 
+  const isKeyTextIsPublicKey = React.useMemo(() => {
+    if (!keyText) return false;
+    return checkIfContentContainOnlyPublicKey(keyText);
+  }, [keyText]);
+
   return (
     <KeyboardAvoidingView style={styles.container}>
       <ScrollView
@@ -143,8 +167,8 @@ const PGPScreen: React.FC = () => {
           <View style={styles.button}>
             <Button
               title={"Import my Private Key"}
-              onPress={() => importMyPrivateKey(keyText as string)}
-              disabled={!keyText}
+              onPress={() => importMyPrivateKeyFromTextInput(keyText as string)}
+              disabled={!keyText || isKeyTextIsPublicKey}
             />
           </View>
         </View>
