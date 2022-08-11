@@ -46,6 +46,7 @@
     "moment": "^2.29.3",
     "react": "17.0.2",
     "react-native": "0.68.2",
+    "react-native-dialog": "^9.2.2",
     "react-native-fast-openpgp": "^2.4.1",
     "react-native-gesture-handler": "~2.2.1",
     "react-native-get-random-values": "~1.8.0",
