@@ -13,7 +13,9 @@ type Hooks = {
     name: string | undefined,
     email: string | undefined
   ) => Promise<void>;
-  createPublicKey: (privateKey: string | undefined) => Promise<void>;
+  generateKeyPairFromPrivateKey: (
+    privateKey: string | undefined
+  ) => Promise<void>;
   publishPGPPublicKey: (
     publicKey: string | undefined,
     email: string | undefined
@@ -59,11 +61,13 @@ const usePgp = (): Hooks => {
     }
   };
 
-  const createPublicKey = async (privateKey: string | undefined) => {
+  const generateKeyPairFromPrivateKey = async (
+    privateKey: string | undefined
+  ) => {
     try {
       if (!privateKey) return;
       const publicKey = await OpenPGP.convertPrivateKeyToPublicKey(privateKey);
-      const meta = await OpenPGP.getPublicKeyMetadata(publicKey);
+      const meta = await OpenPGP.getPrivateKeyMetadata(privateKey);
       const pgp = {
         privateKey: privateKey,
         publicKey: publicKey,
@@ -73,8 +77,7 @@ const usePgp = (): Hooks => {
       await pgpLocalStorage.save(pgp);
       Alert.alert(AlertTitle.Success, "Your PGP key has been saved");
     } catch (error: any) {
-      Alert.alert(
-        AlertTitle.Error,
+      throw new Error(
         `There was a problem generating your public key.\n > ${error.message}`
       );
     }
@@ -139,7 +142,7 @@ const usePgp = (): Hooks => {
   };
   return {
     generateKeyPair,
-    createPublicKey,
+    generateKeyPairFromPrivateKey,
     publishPGPPublicKey,
     verifyPGPPublicKey
   };
