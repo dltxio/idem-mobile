@@ -415,13 +415,11 @@ const OtpDialog: React.FC<{
   const [otpCode, setOtpCode] = React.useState<string>();
 
   return (
-    <Dialog.Container visible={showDialog}>
+    <Dialog.Container visible={showDialog} onBackdropPress={onCancel}>
       <Dialog.Title>Enter your verification code</Dialog.Title>
-      <Dialog.Input onChangeText={setOtpCode}></Dialog.Input>
+      <Dialog.Input onChangeText={setOtpCode} autoFocus={true}></Dialog.Input>
       <Dialog.Button
-        onPress={() => {
-          onCancel();
-        }}
+        onPress={onCancel}
         label="Cancel"
         bold={true}
         color="#007ff9"
