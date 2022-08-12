@@ -1,14 +1,9 @@
-import { useNavigation } from "@react-navigation/native";
 import React, { useCallback } from "react";
 import commonStyles from "../../styles/styles";
-import { View, Dimensions, StyleSheet, Linking, Alert } from "react-native";
-import { SettingsStackNavigation } from "../../types/navigation";
+import { View, Dimensions, StyleSheet, Linking } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
-type Navigation = SettingsStackNavigation<"Settings">;
-
 const SettingsScreen: React.FC = () => {
-  const navigation = useNavigation<Navigation>();
   const supportURL = "https://idem.com.au/";
 
   const goToIdem = useCallback(async () => {
