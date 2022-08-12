@@ -1,4 +1,3 @@
-import { User } from "@sentry/react-native";
 import { Alert } from "react-native";
 import { AlertTitle } from "../constants/common";
 import { findNames } from "../utils/formatters";

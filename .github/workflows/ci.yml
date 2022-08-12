@@ -3,10 +3,10 @@ name: CI
 on:
   pull_request:
     branches:
-      - main
+      - development
   push:
     branches:
-      - main
+      - development
 
 jobs:
   build-and-lint:
@@ -40,7 +40,7 @@ jobs:
         run: yarn test
 
       - name: Notify Slack
-        if: ${{ always() && github.ref == 'refs/heads/main' }}
+        if: ${{ always() && github.ref == 'refs/heads/development' }}
         uses: ./.github/actions
         with:
           slack-channel: "idem"
