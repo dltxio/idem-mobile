@@ -2,13 +2,13 @@ name: EAS PIPELINE
 on:
   push:
     branches:
-      - main
+      - development
 
 concurrency:
   group: build_app
 jobs:
   merge:
-    name: Merge main into BUILD
+    name: Merge development into BUILD
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Branch
@@ -58,7 +58,7 @@ jobs:
           commit_message: Bump version number
 
       - name: Notify Slack
-        if: ${{ always() && github.ref == 'refs/heads/main' }}
+        if: ${{ always() && github.ref == 'refs/heads/development' }}
         uses: ./.github/actions
         with:
           slack-channel: "idem"

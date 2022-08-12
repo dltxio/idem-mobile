@@ -4,8 +4,11 @@ declare module "@env" {
 
 declare namespace config {
   type Config = {
+    releaseChannel?: string;
     apiEndpoint: string;
-    userName: string;
-    password: string;
+    userName?: string;
+    password?: string;
+    sentryDSN: string;
+    sentryDebugEnable: boolean;
   };
 }

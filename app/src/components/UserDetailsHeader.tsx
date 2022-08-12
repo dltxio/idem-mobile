@@ -14,37 +14,40 @@ import { truncateAddress } from "../utils/wallet-utils";
 import useMnemonic from "../hooks/useMnemonic";
 import { pgpLocalStorage } from "../utils/local-storage";
 import { useEffect, useState } from "react";
+import { ClaimTypeConstants } from "../constants/common";
+import { trimFingerPrint } from "../utils/pgp-utils";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
 const UserDetailsHeader: React.FC = () => {
   const navigation = useNavigation<Navigation>();
   const insets = useSafeAreaInsets();
-  const name = useClaimValue("NameCredential");
-  const email = useClaimValue("EmailCredential");
-  const profileImageId = useClaimValue("ProfileImageCredential");
+  const name = useClaimValue(ClaimTypeConstants.NameCredential);
+  const email = useClaimValue(ClaimTypeConstants.EmailCredential);
+  const profileImageId = useClaimValue(
+    ClaimTypeConstants.ProfileImageCredential
+  );
 
   const { selectPhotoFromCameraRoll } = useSelectPhoto(PROFILE_IMAGE_OPTIONS);
   const { addClaim } = useClaimsStore();
   const { addFile, files } = useDocumentStore();
-  const [pgpTitle, setPgpTitle] = useState<string | undefined>();
-
+  const [pgpTitle, setPgpTitle] = useState<string | undefined>(
+    "Import PGP Private Key"
+  );
   const { ethAddress } = useMnemonic();
 
   const profilePictureFile = files.find((file) => file.id === profileImageId);
 
-  const checkPGPTitle = async () => {
-    const key = await pgpLocalStorage.get();
-    if (key) {
-      setPgpTitle(key.fingerPrint);
-      return;
-    }
-    setPgpTitle("Import PGP Private Key");
-  };
-
   useEffect(() => {
-    if (!pgpTitle) checkPGPTitle();
-  }, [pgpTitle]);
+    const getFingerPrint = async () => {
+      const key = await pgpLocalStorage.get();
+      if (!key) return;
+
+      const fingerPrint = trimFingerPrint(key.fingerPrint);
+      setPgpTitle(fingerPrint);
+    };
+    getFingerPrint();
+  }, []);
 
   const addProfileImageClaim = async () => {
     const file = await selectPhotoFromCameraRoll();
@@ -56,7 +59,7 @@ const UserDetailsHeader: React.FC = () => {
   };
 
   const showEthAddress = async () => {
-    Alert.alert("Your eth address", ethAddress);
+    if (ethAddress) Alert.alert("Your eth address", ethAddress);
   };
 
   return (
@@ -77,14 +80,18 @@ const UserDetailsHeader: React.FC = () => {
           bold={true}
           placeholderWidth={90}
           onPress={() =>
-            navigation.navigate("Claim", { claimType: "NameCredential" })
+            navigation.navigate("Claim", {
+              claimType: ClaimTypeConstants.NameCredential
+            })
           }
         />
         <DetailOrPlaceholder
           value={email}
           placeholderWidth={150}
           onPress={() =>
-            navigation.navigate("Claim", { claimType: "EmailCredential" })
+            navigation.navigate("Claim", {
+              claimType: ClaimTypeConstants.EmailCredential
+            })
           }
         />
         <Text onPress={() => navigation.navigate("PGP")}>{pgpTitle}</Text>

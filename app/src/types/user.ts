@@ -4,6 +4,7 @@ export type UserSignup = {
   lastName: string;
   password: string;
   email: string;
+  mobile?: string;
 };
 
 export enum VendorEnum {
@@ -38,10 +39,14 @@ export enum KycResult {
   Failed = "failed"
 }
 
-export type VerificationResponse = {
+type ClaimResponsePayload = Record<string, unknown>;
+
+export type IdemVerification = {
   result: KycResult;
   userId: string;
   thirdPartyVerified: boolean;
+  signature: string; //signed claim response
+  message: ClaimResponsePayload;
 };
 
 export type PutExpoTokenRequest = {
@@ -55,4 +60,9 @@ export type UserDetailRequest = {
   firstName: string;
   lastName: string;
   dob: string;
+};
+
+export type verifyPGPRequest = {
+  token: string;
+  addresses: string[];
 };

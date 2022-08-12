@@ -25,12 +25,7 @@
       },
       "bundleIdentifier": "com.dltx.idem",
       "supportsTablet": true,
-      "usesIcloudStorage": true,
-      "infoPlist": {
-        "NSPhotoLibraryUsageDescription": "IDEM accesses your photos to verify your claims",
-        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera",
-        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone"
-      }
+      "usesIcloudStorage": true
     },
     "android": {
       "googleServicesFile": "./google-services.json",
@@ -38,12 +33,6 @@
         "foregroundImage": "./assets/Bee-Logo.png",
         "backgroundColor": "#000000"
       },
-      "permissions": [
-        "android.permission.CAMERA",
-        "android.permission.READ_EXTERNAL_STORAGE",
-        "android.permission.WRITE_EXTERNAL_STORAGE",
-        "android.permission.RECORD_AUDIO"
-      ],
       "package": "com.dltx.idem"
     },
     "web": {
@@ -53,7 +42,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "IDEM accesses your photos to verify your claims"
+          "photosPermission": "IDEM accesses your photos to verify your claims",
+          "cameraPermission": "IDEM accesses your camera to verify your claims"
         }
       ],
       [

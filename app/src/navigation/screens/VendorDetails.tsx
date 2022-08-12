@@ -16,6 +16,8 @@ import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import useVendors from "../../hooks/userVendors";
 import { getVendor } from "../../utils/vendor";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
+import { ClaimTypeConstants } from "../../constants/common";
+import { getClaimsFromTypes } from "../../utils/claim-utils";
 
 const VendorDetailsScreen: React.FC = () => {
   const { usersClaims } = useClaimsStore();
@@ -24,18 +26,19 @@ const VendorDetailsScreen: React.FC = () => {
   const vendor = vendors.find((v) => v.id == route.params.id);
   const [signed, setSigned] = React.useState<boolean>(false);
   const { signup, syncDetail } = useVendors();
-  const email = useClaimValue("EmailCredential");
-  const dob = useClaimValue("BirthCredential");
-  const name = useClaimValue("NameCredential");
+  const email = useClaimValue(ClaimTypeConstants.EmailCredential);
+  const dob = useClaimValue(ClaimTypeConstants.BirthCredential);
+  const name = useClaimValue(ClaimTypeConstants.NameCredential);
+  const mobile = useClaimValue(ClaimTypeConstants.MobileCredential);
 
   const hasAllRequiredClaims = React.useMemo(() => {
-    if (!vendor || !vendor.requiredClaimMnemonics) {
+    if (!vendor || !vendor.requiredClaimTypes) {
       return true;
     }
 
-    const userClaimMnemonicMap = usersClaims.reduce(
+    const userClaimTypeMap = usersClaims.reduce(
       (acc, claim) => {
-        acc[claim.mnemonic] = true;
+        acc[claim.type] = true;
         return acc;
       },
       {} as {
@@ -43,17 +46,21 @@ const VendorDetailsScreen: React.FC = () => {
       }
     );
 
-    return vendor.requiredClaimMnemonics.every(
-      (mnemonic) => userClaimMnemonicMap[mnemonic]
+    return vendor.requiredClaimTypes.every(
+      (claimType) => userClaimTypeMap[claimType]
     );
   }, [usersClaims, vendor]);
 
   React.useEffect(() => {
     if (!hasAllRequiredClaims) {
+      const requiredClaims = getClaimsFromTypes(
+        vendor?.requiredClaimTypes ?? []
+      );
+      const requirements = requiredClaims.map((claim) => claim.title);
       Alert.alert(
         "Missing required claims",
         `You must have all of the following claims to sign up for this exchange.
-        \n[ ${vendor?.requiredClaimMnemonics.join(", ")} ]`
+        \n[ ${requirements.join(", ")} ]`
       );
     }
   }, [hasAllRequiredClaims]);
@@ -67,12 +74,16 @@ const VendorDetailsScreen: React.FC = () => {
       <Text style={styles.header}>{vendor?.name}</Text>
       <Text style={styles.tagLine}>{vendor?.tagline}</Text>
       <Text style={styles.description}>{vendor?.description}</Text>
-      <Image source={{ uri: vendor?.logo }} style={styles.logo} />
+      <Image
+        source={{ uri: vendor?.logo }}
+        style={styles.logo}
+        resizeMode="center"
+      />
       <View style={styles.buttonWrapper}>
         <Button
           onPress={async () => {
             if (vendor && getVendor(vendor.id) && name && email) {
-              await signup(name, email, vendor.id);
+              await signup({ name, email, mobile }, vendor.id);
               setSigned(true);
             } else {
               Alert.alert(
@@ -128,11 +139,15 @@ const styles = StyleSheet.create({
   },
   description: {
     marginVertical: 20,
-    width: Dimensions.get("window").width * 0.9
+    textAlign: "center"
   },
+
   logo: {
-    width: 170,
-    height: 120
+    flex: 1,
+    display: "flex",
+    flexDirection: "row",
+    width: Dimensions.get("window").width * 0.9,
+    height: Dimensions.get("window").height / 3
   },
   buttonWrapper: {
     width: Dimensions.get("window").width * 0.9,

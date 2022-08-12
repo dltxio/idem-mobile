@@ -1,5 +1,8 @@
 import { expect } from "chai";
-import { extractPrivateKeyFromFileContent } from "../src/utils/pgp-utils";
+import {
+  extractPrivateKeyFromContent,
+  trimFingerPrint
+} from "../src/utils/pgp-utils";
 
 const PRIVATE_KEY = `-----BEGIN PGP PRIVATE KEY BLOCK-----
     Comment: Alice's OpenPGP Transferable Secret Key
@@ -19,7 +22,7 @@ const PRIVATE_KEY = `-----BEGIN PGP PRIVATE KEY BLOCK-----
     =n8OM
     -----END PGP PRIVATE KEY BLOCK-----`;
 
-describe("PgpUtils.extractPrivateKeyFromFileContent()", () => {
+describe("PgpUtils.extractPrivateKeyFromContent()", () => {
   it("should extract private key from content containing both private and public key block", async () => {
     const content = `-----BEGIN PGP PRIVATE KEY BLOCK-----
     Comment: Alice's OpenPGP Transferable Secret Key
@@ -55,7 +58,7 @@ describe("PgpUtils.extractPrivateKeyFromFileContent()", () => {
     -----END PGP PUBLIC KEY BLOCK-----
     `;
 
-    const extractedPrivateKey = extractPrivateKeyFromFileContent(content);
+    const extractedPrivateKey = extractPrivateKeyFromContent(content);
     expect(extractedPrivateKey).to.equal(PRIVATE_KEY);
   });
 
@@ -94,7 +97,7 @@ describe("PgpUtils.extractPrivateKeyFromFileContent()", () => {
     -----END PGP PRIVATE KEY BLOCK-----
     `;
 
-    const extractedPrivateKey = extractPrivateKeyFromFileContent(content);
+    const extractedPrivateKey = extractPrivateKeyFromContent(content);
     expect(extractedPrivateKey).to.equal(PRIVATE_KEY);
   });
 
@@ -118,7 +121,7 @@ describe("PgpUtils.extractPrivateKeyFromFileContent()", () => {
     -----END PGP PRIVATE KEY BLOCK-----
     `;
 
-    const extractedPrivateKey = extractPrivateKeyFromFileContent(content);
+    const extractedPrivateKey = extractPrivateKeyFromContent(content);
     expect(extractedPrivateKey).to.equal(PRIVATE_KEY);
   });
 
@@ -140,6 +143,13 @@ describe("PgpUtils.extractPrivateKeyFromFileContent()", () => {
     -----END PGP PUBLIC KEY BLOCK-----
     `;
 
-    expect(() => extractPrivateKeyFromFileContent(content)).to.throw();
+    expect(() => extractPrivateKeyFromContent(content)).to.throw();
+  });
+
+  it("should trip pgp fingerprint to 8 characters", () => {
+    const content = "31C3:DF95:1686:F51D:882C:7457:0D29:3492:5D21:9FFA";
+    const actual = trimFingerPrint(content);
+
+    expect(actual).to.eq("5D21 9FFA");
   });
 });

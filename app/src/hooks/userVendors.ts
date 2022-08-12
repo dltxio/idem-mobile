@@ -1,13 +1,22 @@
 import { Alert } from "react-native";
 import { AlertTitle } from "../constants/common";
 import { findNames } from "../utils/formatters";
-import { exchangeLocalStorage } from "../utils/local-storage";
+import {
+  exchangeLocalStorage,
+  verificationStorage
+} from "../utils/local-storage";
 import { createRandomPassword } from "../utils/randomPassword-utils";
 import { getVendor } from "../utils/vendor";
 import useApi from "./useApi";
 
+type UserInfo = {
+  name: string;
+  email: string;
+  mobile?: string;
+};
+
 type Hooks = {
-  signup: (name: string, email: string, vendorId: number) => Promise<void>;
+  signup: (userInfo: UserInfo, vendorId: number) => Promise<void>;
   syncDetail: (
     name: string,
     password: string,
@@ -20,35 +29,52 @@ type Hooks = {
 const useVendors = (): Hooks => {
   const api = useApi();
 
-  const signup = async (name: string, email: string, vendorId: number) => {
-    const vendor = getVendor(vendorId);
-    const randomTempPassword = createRandomPassword();
-    const splitName = findNames(name);
-    if (
-      splitName?.firstName &&
-      splitName.lastName &&
-      randomTempPassword &&
-      vendor
-    ) {
-      api
-        .vendorSignup({
+  const signup = async (userInfo: UserInfo, vendorId: number) => {
+    const { name, email, mobile } = userInfo;
+    try {
+      const verification = await verificationStorage.get();
+      if (!verification) {
+        throw new Error("Verification not found");
+      }
+
+      const vendor = getVendor(vendorId);
+      if (!vendor) throw new Error("Vendor not found");
+
+      const splitName = findNames(name);
+      const hasFullName = splitName?.firstName && splitName.lastName;
+      if (!hasFullName) throw new Error("Missing Full Name");
+
+      const randomTempPassword = createRandomPassword();
+
+      const response = await api.vendorSignup(
+        {
           source: vendorId,
           firstName: splitName?.firstName,
           lastName: splitName?.lastName,
-          email: email,
+          email,
+          mobile,
           password: randomTempPassword
-        })
-        .then(async (response) => {
-          await exchangeLocalStorage.save({
-            vendor: vendor,
-            signup: true,
-            userId: response
-          });
-          shareDetailsAlert(randomTempPassword);
-        })
-        .catch((error) => {
-          Alert.alert(error.message);
-        });
+        },
+        verification
+      );
+      let tempPassword;
+      let userId;
+      if (vendorId === 5) {
+        const { token, password } = response as any;
+        userId = token;
+        tempPassword = password;
+      } else {
+        userId = response;
+        tempPassword = randomTempPassword;
+      }
+      await exchangeLocalStorage.save({
+        vendor: vendor,
+        signup: true,
+        userId
+      });
+      shareDetailsAlert(tempPassword);
+    } catch (error: any) {
+      Alert.alert(error?.message);
     }
   };
 

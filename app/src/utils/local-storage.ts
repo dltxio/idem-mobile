@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ClaimData } from "../types/claim";
 import { File } from "../types/document";
 import { Exchange } from "../types/exchange";
+import { IdemVerification } from "../types/user";
 import { PGP, Wallet } from "../types/wallet";
 
 type LocalStorage<T> = {
@@ -55,3 +56,8 @@ export const exchangeLocalStorage = createLocalStorage<Exchange>(
 );
 
 export const pgpLocalStorage = createLocalStorage<PGP>("PGP", true);
+
+export const verificationStorage = createLocalStorage<IdemVerification>(
+  "IDEM_VERIFICATION",
+  true
+);
