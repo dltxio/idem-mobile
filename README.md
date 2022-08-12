@@ -12,6 +12,8 @@ IDEM facilitates users to register on a customer's website, such as a crypto exc
 
 **Note: Data is securely stored on your device.**
 
+https://youtu.be/M_wreVz4vcs
+
 ## Running the app
 Ensure the latest version of expo-cli is installed.
 
