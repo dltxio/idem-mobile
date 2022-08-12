@@ -4,6 +4,7 @@ import { ProfileStackParamList } from "../navigation/ProfileStackNavigator";
 import { DocumentsStackParamList } from "../navigation/DocumentsStackNavigator";
 import { VendorStackParamList } from "../navigation/VendorsStackNavigator";
 import { MainTabParamList } from "../navigation/MainTabNavigator";
+import { SettingsStackParamList } from "../navigation/screens/SettingsTabNavigator";
 
 type StackNavigationNavigation<
   T extends ParamListBase,
@@ -29,6 +30,9 @@ export type VendorStackNavigationRoute<K extends keyof VendorStackParamList> =
 
 export type DocumentsStackNavigation<K extends keyof DocumentsStackParamList> =
   StackNavigationNavigation<DocumentsStackParamList, K>;
+
+export type SettingsStackNavigation<K extends keyof SettingsStackParamList> =
+  StackNavigationNavigation<SettingsStackParamList, K>;
 
 export type DocumentsStackNavigationRoute<
   K extends keyof DocumentsStackParamList
