@@ -9,7 +9,7 @@ const SettingsScreen: React.FC = () => {
       <View style={styles.documentsList}>
         <AntDesign.Button
           name="right"
-          onPress={() => Linking.openURL("mailto:support@example.com")}
+          onPress={() => Linking.openURL("support@dltx.io")}
         >
           Contact Support
         </AntDesign.Button>
