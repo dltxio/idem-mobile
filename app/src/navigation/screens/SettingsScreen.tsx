@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import commonStyles from "../../styles/styles";
 import { View, Dimensions, StyleSheet, Linking } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
