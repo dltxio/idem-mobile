@@ -4,14 +4,9 @@ import { View, Dimensions, StyleSheet, Linking } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
 const SettingsScreen: React.FC = () => {
-  const supportURL = "https://idem.com.au/";
-
-  const goToIdem = useCallback(async () => {
-    const supported = await Linking.canOpenURL(supportURL);
-    if (supported) {
-      await Linking.openURL(supportURL);
-    }
-  }, [supportURL]);
+  const goToIdem = () => {
+    "https://idem.com.au/";
+  };
 
   return (
     <View style={commonStyles.screenContent}>
