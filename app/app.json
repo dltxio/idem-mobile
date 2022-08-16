@@ -2,7 +2,7 @@
   "expo": {
     "name": "idemID",
     "slug": "IDEM",
-    "version": "1.0.0",
+    "version": "2.0.8",
     "entryPoint": "./index.js",
     "orientation": "portrait",
     "scheme": "idem",
@@ -16,7 +16,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "config": {
         "usesNonExemptEncryption": false

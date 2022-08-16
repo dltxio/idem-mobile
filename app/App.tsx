@@ -17,7 +17,8 @@ import * as Notifications from "expo-notifications";
 import * as Sentry from "sentry-expo";
 import LinkingConfiguration from "./src/navigation/LinkingConfiguration";
 import { ApiProvider } from "./providers/Api";
-import appConfig from "./appConfig";
+import Constants from "expo-constants";
+import config from "./config";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -28,12 +29,13 @@ Notifications.setNotificationHandler({
 });
 
 Sentry.init({
-  dsn: appConfig.sentryDSN,
-  debug: appConfig.sentryDebugEnable,
-  environment: appConfig.releaseChannel
+  dsn: config.sentryDSN,
+  debug: config.sentryDebugEnable,
+  environment: config.releaseChannel
 });
 
 const App = () => {
+  console.log(Constants.manifest?.extra?.environment);
   const initialURL = Linking.useURL();
   const [newUrl, setNewUrl] = React.useState<boolean>(false);
   const [claimRequest, setClaimRequest] = React.useState<ClaimRequest>();

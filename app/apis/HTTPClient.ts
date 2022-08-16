@@ -4,7 +4,7 @@ import axios, {
   AxiosResponse,
   AxiosInstance
 } from "axios";
-import appConfig from "../appConfig";
+import config from "../config";
 import { Buffer } from "buffer";
 
 export default class HTTPClient {
@@ -21,13 +21,13 @@ export default class HTTPClient {
 
     if (secure) {
       this.client.interceptors.request.use(
-        async (config) => {
+        async (clientConfig) => {
           const basicAuth = Buffer.from(
-            appConfig.userName + ":" + appConfig.password
+            config.userName + ":" + config.password
           ).toString("base64");
-          if (basicAuth && config.headers)
-            config.headers.Authorization = `Basic ${basicAuth}`;
-          return config;
+          if (basicAuth && clientConfig.headers)
+            clientConfig.headers.Authorization = `Basic ${basicAuth}`;
+          return clientConfig;
         },
         (error) => {
           return Promise.reject(error);
