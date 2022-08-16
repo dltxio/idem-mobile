@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
 import DocumentsStackNavigator from "./DocumentsStackNavigator";
 import ProfileStackNavigator from "./ProfileStackNavigator";
+import SettingsStackNavigator from "./screens/SettingsTabNavigator";
 import VendorsStackNavigator, {
   VendorStackParamList
 } from "./VendorsStackNavigator";
@@ -23,6 +24,7 @@ export type MainTabParamList = {
     | undefined
     | { screen: string; params: PathConfig<VendorStackParamList> };
   DocumentsTab: undefined;
+  Settings: undefined;
 };
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -77,6 +79,7 @@ const TabNavigator = () => {
       })}
     >
       <Tab.Screen name="Profile" component={ProfileStackNavigator} />
+
       <Tab.Screen
         name="SupportedExchanges"
         component={VendorsStackNavigator}
@@ -88,6 +91,11 @@ const TabNavigator = () => {
           title: "Documents"
         }}
         component={DocumentsStackNavigator}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsStackNavigator}
+        options={{ title: "Settings" }}
       />
     </Tab.Navigator>
   );
@@ -106,7 +114,8 @@ const renderTabIcon = (
   const iconFromRouteName: { [key: string]: string } = {
     Profile: "address-book",
     SupportedExchanges: "university",
-    DocumentsTab: "cog"
+    DocumentsTab: "cog",
+    Settings: "bars"
   };
 
   return (
