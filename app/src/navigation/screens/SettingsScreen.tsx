@@ -13,7 +13,7 @@ const SettingsScreen: React.FC = () => {
         </Text>
         <AntDesign.Button
           name="right"
-          onPress={() => Linking.openURL(`mailto:support@dltx.io`)}
+          onPress={() => Linking.openURL("mailto:support@dltx.io")}
         >
           Contact Support
         </AntDesign.Button>
