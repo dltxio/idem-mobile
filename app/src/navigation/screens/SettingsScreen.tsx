@@ -8,7 +8,7 @@ const SettingsScreen: React.FC = () => {
     <View style={commonStyles.screenContent}>
       <View style={styles.documentsList}>
         <Text style={styles.mitLicense}>
-          IDEM is a fully open source application shipped under MIT licence.
+          IDEM is a fully open source application shipped under the MIT licence.
           Feel free to raise an issue on GitHub or contact customer support.
         </Text>
         <AntDesign.Button
