@@ -8,12 +8,13 @@ import {
   Text,
   Alert,
   ScrollView,
-  Dimensions
+  Dimensions,
+  TouchableOpacity
 } from "react-native";
 import Dialog from "react-native-dialog";
 import { Input, Switch } from "@rneui/themed";
 import DateTimePicker from "@react-native-community/datetimepicker";
-
+import { CountryPicker } from "react-native-country-codes-picker";
 import commonStyles from "../../styles/styles";
 import {
   ProfileStackNavigation,
@@ -51,6 +52,8 @@ const ClaimScreen: React.FC = () => {
     React.useState<string>();
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
   const [rawDate, setRawDate] = React.useState<Date>();
+  const [show, setShow] = React.useState(false);
+  const [countryCode, setCountryCode] = React.useState("");
   const [showOtpDialog, setShowOtpDialog] = React.useState<boolean>(false);
   const [otpContext, setOtpContext] = React.useState<RequestOptResponse>();
 
@@ -209,13 +212,42 @@ const ClaimScreen: React.FC = () => {
 
             if (field.type === "number") {
               return (
-                <View key={field.id}>
-                  <Input
-                    label={field.title}
-                    keyboardType={"number-pad"}
-                    value={formState[field.id]}
-                    onChangeText={onChange}
-                  />
+                <View>
+                  <View>
+                    <TouchableOpacity
+                      onPress={() => setShow(true)}
+                      style={{
+                        width: "80%",
+                        height: 60,
+                        backgroundColor: "black",
+                        padding: 10
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: "white",
+                          fontSize: 20
+                        }}
+                      >
+                        {countryCode}
+                      </Text>
+                    </TouchableOpacity>
+                    <CountryPicker
+                      show={show}
+                      pickerButtonOnPress={(item: any) => {
+                        setCountryCode(item.dial_code);
+                        setShow(false);
+                      }}
+                    />
+                  </View>
+                  <View key={field.id}>
+                    <Input
+                      label={field.title}
+                      keyboardType={"number-pad"}
+                      value={formState[field.id]}
+                      onChangeText={onChange}
+                    />
+                  </View>
                 </View>
               );
             }
