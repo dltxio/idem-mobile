@@ -45,8 +45,7 @@ const UserDetailsHeader: React.FC = () => {
       const fingerPrint = trimFingerPrint(key.fingerPrint);
       setPgpTitle(fingerPrint);
     };
-    const onFocus = navigation.addListener("focus", getFingerPrint);
-    return onFocus;
+    return navigation.addListener("focus", getFingerPrint);
   }, []);
 
   const addProfileImageClaim = async () => {
