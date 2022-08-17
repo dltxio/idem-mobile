@@ -42,11 +42,10 @@ const UserDetailsHeader: React.FC = () => {
     const getFingerPrint = async () => {
       const key = await pgpLocalStorage.get();
       if (!key) return;
-
       const fingerPrint = trimFingerPrint(key.fingerPrint);
       setPgpTitle(fingerPrint);
     };
-    getFingerPrint();
+    return navigation.addListener("focus", getFingerPrint);
   }, []);
 
   const addProfileImageClaim = async () => {
