@@ -4,7 +4,12 @@ import allClaims from "../data/claims";
 import { claimsLocalStorage } from "../utils/local-storage";
 import { displayClaimValue } from "../utils/claim-utils";
 
-type AddClaim_Value = string | { [key: string]: string };
+export type KeyValueObject = { [key: string]: string };
+
+type AddClaim_Value =
+  | string
+  | KeyValueObject
+  | { [key: string]: string | KeyValueObject };
 
 export type ClaimsVault = {
   unclaimedClaims: Claim[];

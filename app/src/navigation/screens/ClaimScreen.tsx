@@ -22,7 +22,7 @@ import {
 import { getClaimFromType } from "../../utils/claim-utils";
 import { Claim, RequestOptResponse } from "../../types/claim";
 import { FileList, Button } from "../../components";
-import { useClaimsStore } from "../../context/ClaimsStore";
+import { KeyValueObject, useClaimsStore } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
 import { getDocumentFromDocumentType } from "../../utils/document-utils";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
@@ -41,9 +41,9 @@ const ClaimScreen: React.FC = () => {
   const { addClaim, usersClaims } = useClaimsStore();
   const [disableButton, setDisableButton] = React.useState(false);
   const userClaim = usersClaims.find((c) => c.type === claim.type);
-  const [formState, setFormState] = React.useState<{ [key: string]: string }>(
-    userClaim?.value || {}
-  );
+  const [formState, setFormState] = React.useState<{
+    [key: string]: string | KeyValueObject;
+  }>(userClaim?.value || {});
 
   const navigation = useNavigation<Navigation>();
   const dateRefs = React.useRef<{ [key: string]: any }>({});
@@ -113,9 +113,11 @@ const ClaimScreen: React.FC = () => {
 
   const openVerifyOtpScreen = async () => {
     setLoading(true);
-    const mobileNumber = formState["mobileNumber"];
+    const { cc, mobile } = formState["mobileNumber"] as KeyValueObject;
     try {
-      const otpResponse = await api.requestOtp({ mobileNumber });
+      const otpResponse = await api.requestOtp({
+        mobileNumber: `${cc}${mobile}`
+      });
       if (otpResponse.hash && otpResponse.expiryTimestamp) {
         setOtpContext(otpResponse);
         setShowOtpDialog(true);
@@ -131,14 +133,14 @@ const ClaimScreen: React.FC = () => {
     async (otpCode: string | undefined) => {
       if (!otpCode || !otpContext) return;
       const { hash, expiryTimestamp } = otpContext;
-      const mobileNumber = formState["mobileNumber"];
+      const { cc, mobile } = formState["mobileNumber"] as KeyValueObject; // {cc:"+62",number:"2435234523"}
 
       try {
         const verifyOtp = await api.verifyOtp({
           hash,
           code: otpCode,
           expiryTimestamp,
-          mobileNumber: mobileNumber
+          mobileNumber: `${cc}${mobile}`
         });
 
         if (verifyOtp) {
@@ -171,7 +173,7 @@ const ClaimScreen: React.FC = () => {
       <ScrollView style={commonStyles.screenContent}>
         <View>
           {claim.fields.map((field) => {
-            const onChange = (value: string) => {
+            const onChange = (value: string | KeyValueObject) => {
               setFormState((previous) => ({
                 ...previous,
                 [field.id]: value
@@ -184,7 +186,7 @@ const ClaimScreen: React.FC = () => {
                   <Input
                     label={field.title}
                     clearButtonMode="always"
-                    value={formState[field.id]}
+                    value={formState[field.id] as string}
                     onChangeText={onChange}
                   />
                 </View>
@@ -194,7 +196,7 @@ const ClaimScreen: React.FC = () => {
             if (field.type === "date") {
               return (
                 <Input
-                  value={formState[field.id]}
+                  value={formState[field.id] as string}
                   key={field.id}
                   label={field.title}
                   ref={(ref) =>
@@ -213,7 +215,7 @@ const ClaimScreen: React.FC = () => {
                   <Input
                     label={field.title}
                     keyboardType={"number-pad"}
-                    value={formState[field.id]}
+                    value={formState[field.id] as string}
                     onChangeText={onChange}
                   />
                 </View>
@@ -226,7 +228,7 @@ const ClaimScreen: React.FC = () => {
                   <Input
                     label={field.title}
                     keyboardType={"email-address"}
-                    value={formState[field.id]}
+                    value={formState[field.id] as string}
                     onChangeText={onChange}
                   />
                 </View>
@@ -238,7 +240,7 @@ const ClaimScreen: React.FC = () => {
                   <Input
                     label={field.title}
                     keyboardType={"numbers-and-punctuation"}
-                    value={formState[field.id]}
+                    value={formState[field.id] as string}
                     onChangeText={onChange}
                   />
                 </View>
@@ -247,13 +249,42 @@ const ClaimScreen: React.FC = () => {
 
             if (field.type === "phone") {
               return (
-                <View key={field.id}>
-                  <Input
-                    label={field.title}
-                    keyboardType={"phone-pad"}
-                    value={formState[field.id]}
-                    onChangeText={onChange}
-                  />
+                <View key={field.id} style={styles.mobileCountryCode}>
+                  <View
+                    style={{
+                      display: "flex",
+                      width: 80
+                    }}
+                  >
+                    <Input
+                      label={"CC"}
+                      placeholder={"+61"}
+                      value={(formState[field.id] as KeyValueObject)?.cc} // read cc
+                      onChangeText={(value) => {
+                        const state =
+                          (formState[field.id] as KeyValueObject) ?? {};
+                        onChange({ ...state, cc: value });
+                      }}
+                    />
+                  </View>
+
+                  <View
+                    style={{
+                      display: "flex",
+                      flex: 1
+                    }}
+                  >
+                    <Input
+                      label={field.title}
+                      keyboardType={"phone-pad"}
+                      value={(formState[field.id] as KeyValueObject)?.mobile} // read number
+                      onChangeText={(value) => {
+                        const state =
+                          (formState[field.id] as KeyValueObject) ?? {};
+                        onChange({ ...state, mobile: value });
+                      }}
+                    />
+                  </View>
                 </View>
               );
             }
@@ -327,6 +358,11 @@ const styles = StyleSheet.create({
   },
   datePicker: {
     height: 500
+  },
+
+  mobileCountryCode: {
+    display: "flex",
+    flexDirection: "row"
   }
 });
 
