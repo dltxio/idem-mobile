@@ -23,7 +23,7 @@ import {
 import { getClaimFromType } from "../../utils/claim-utils";
 import { Claim, RequestOptResponse } from "../../types/claim";
 import { FileList, Button } from "../../components";
-import { KeyValueObject, useClaimsStore } from "../../context/ClaimsStore";
+import { useClaimsStore } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
 import { getDocumentFromDocumentType } from "../../utils/document-utils";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";

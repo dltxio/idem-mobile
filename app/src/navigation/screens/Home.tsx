@@ -21,7 +21,6 @@ import { findNames } from "../../utils/formatters";
 import { UserVerifyRequest } from "../../types/user";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
 import { ClaimTypeConstants } from "../../constants/common";
-import { claimsLocalStorage } from "../../utils/local-storage";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
