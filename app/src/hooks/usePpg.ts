@@ -39,15 +39,14 @@ const usePgp = (): Hooks => {
         name: name,
         passphrase: password
       });
-
       const meta = await OpenPGP.getPublicKeyMetadata(publicKey);
-
+      
       const pgp = {
         privateKey,
         publicKey,
         fingerPrint: meta.fingerprint
       } as PGP;
-      
+
       await pgpLocalStorage.save(pgp);
       Alert.alert(
         AlertTitle.Success,
@@ -68,7 +67,6 @@ const usePgp = (): Hooks => {
       if (!privateKey) return;
       const publicKey = await OpenPGP.convertPrivateKeyToPublicKey(privateKey);
       const meta = await OpenPGP.getPrivateKeyMetadata(privateKey);
-
       const pgp = {
         privateKey: privateKey,
         publicKey: publicKey,
@@ -76,7 +74,6 @@ const usePgp = (): Hooks => {
       } as PGP;
 
       await pgpLocalStorage.save(pgp);
-      
       Alert.alert(AlertTitle.Success, "Your PGP key has been saved");
     } catch (error: any) {
       throw new Error(
