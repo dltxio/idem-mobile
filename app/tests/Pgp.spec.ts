@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import {
   extractPrivateKeyFromContent,
-  trimFingerPrint
+  formatFingerPrint
 } from "../src/utils/pgp-utils";
 
 const PRIVATE_KEY = `-----BEGIN PGP PRIVATE KEY BLOCK-----
@@ -146,10 +146,10 @@ describe("PgpUtils.extractPrivateKeyFromContent()", () => {
     expect(() => extractPrivateKeyFromContent(content)).to.throw();
   });
 
-  it("should trip pgp fingerprint to 8 characters", () => {
-    const content = "31C3:DF95:1686:F51D:882C:7457:0D29:3492:5D21:9FFA";
-    const actual = trimFingerPrint(content);
+  it("should format pgp fingerprint to 8 characters", () => {
+    const content = "67:81:67:161:181:252:139:183:10:58:169:177:15:102:115:168";
+    const actual = formatFingerPrint(content);
 
-    expect(actual).to.eq("5D21 9FFA");
+    expect(actual).to.eq("0f 66 73 a8");
   });
 });
