@@ -17,7 +17,7 @@ const claims: Claim[] = [
     title: "Mobile",
     description: "Users mobile number",
     verificationAction: "otp",
-    fields: [{ id: "mobileNumber", title: "Mobile number", type: "phone" }], // "123123123" => { "cc:"123", number:"1234567890"} "}
+    fields: [{ id: "mobileNumber", title: "Mobile number", type: "phone" }],
     verificationDocuments: []
   },
   {

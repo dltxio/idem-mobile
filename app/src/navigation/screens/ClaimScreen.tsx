@@ -133,7 +133,7 @@ const ClaimScreen: React.FC = () => {
     async (otpCode: string | undefined) => {
       if (!otpCode || !otpContext) return;
       const { hash, expiryTimestamp } = otpContext;
-      const { cc, mobile } = formState["mobileNumber"] as KeyValueObject; // {cc:"+62",number:"2435234523"}
+      const { cc, mobile } = formState["mobileNumber"] as KeyValueObject;
 
       try {
         const verifyOtp = await api.verifyOtp({
