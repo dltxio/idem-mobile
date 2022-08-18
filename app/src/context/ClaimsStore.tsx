@@ -4,7 +4,7 @@ import allClaims from "../data/claims";
 import { claimsLocalStorage } from "../utils/local-storage";
 import { displayClaimValue } from "../utils/claim-utils";
 
-export type KeyValueObject = { [key: string]: string };
+type KeyValueObject = { [key: string]: string };
 
 type AddClaim_Value =
   | string

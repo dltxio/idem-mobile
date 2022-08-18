@@ -48,7 +48,6 @@ const usePgp = (): Hooks => {
         fingerPrint: meta.fingerprint
       } as PGP;
       
-
       await pgpLocalStorage.save(pgp);
       Alert.alert(
         AlertTitle.Success,
