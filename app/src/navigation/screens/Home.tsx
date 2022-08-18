@@ -21,6 +21,7 @@ import { findNames } from "../../utils/formatters";
 import { UserVerifyRequest } from "../../types/user";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
 import { ClaimTypeConstants } from "../../constants/common";
+import { claimsLocalStorage } from "../../utils/local-storage";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -41,7 +42,6 @@ const Home: React.FC = () => {
   )?.value;
 
   const { verifyClaims } = useVerifyClaims();
-
   const verifyUserOnProxy = async () => {
     if (splitName && dob && address && email) {
       const hashEmail = await Crypto.digestStringAsync(
