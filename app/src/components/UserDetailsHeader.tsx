@@ -15,7 +15,7 @@ import useMnemonic from "../hooks/useMnemonic";
 import { pgpLocalStorage } from "../utils/local-storage";
 import { useEffect, useState } from "react";
 import { ClaimTypeConstants } from "../constants/common";
-import { trimFingerPrint } from "../utils/pgp-utils";
+import { formatFingerPrint } from "../utils/pgp-utils";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -42,11 +42,10 @@ const UserDetailsHeader: React.FC = () => {
     const getFingerPrint = async () => {
       const key = await pgpLocalStorage.get();
       if (!key) return;
-
-      const fingerPrint = trimFingerPrint(key.fingerPrint);
+      const fingerPrint = formatFingerPrint(key.fingerPrint);
       setPgpTitle(fingerPrint);
     };
-    getFingerPrint();
+    return navigation.addListener("focus", getFingerPrint);
   }, []);
 
   const addProfileImageClaim = async () => {

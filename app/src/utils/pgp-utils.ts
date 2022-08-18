@@ -6,9 +6,18 @@ export const extractPrivateKeyFromContent = (content: string) => {
   return privateKey;
 };
 
-export const trimFingerPrint = (fingerPrint: string) => {
-  const short = fingerPrint.replace(/:/g, " ");
-  return short.slice(short.length - 9) ?? "Missing PGP Fingerprint";
+const convertToHexArray = (fingerPrint: string) => {
+  const hexArray = fingerPrint.split(":").map((numberString) => {
+    const number = parseInt(numberString);
+    return number.toString(16).padStart(2, "0");
+  });
+  return hexArray;
+};
+
+export const formatFingerPrint = (fingerPrint: string) => {
+  const hexArray = convertToHexArray(fingerPrint);
+  const lastFourPair = hexArray.slice(-4);
+  return lastFourPair.join(" ");
 };
 
 export const checkIfContentContainOnlyPublicKey = (content: string) => {

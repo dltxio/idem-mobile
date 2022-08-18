@@ -41,7 +41,6 @@ const Home: React.FC = () => {
   )?.value;
 
   const { verifyClaims } = useVerifyClaims();
-
   const verifyUserOnProxy = async () => {
     if (splitName && dob && address && email) {
       const hashEmail = await Crypto.digestStringAsync(

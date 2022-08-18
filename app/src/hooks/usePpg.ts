@@ -39,9 +39,8 @@ const usePgp = (): Hooks => {
         name: name,
         passphrase: password
       });
-
       const meta = await OpenPGP.getPublicKeyMetadata(publicKey);
-
+      
       const pgp = {
         privateKey,
         publicKey,
