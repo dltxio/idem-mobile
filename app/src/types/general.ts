@@ -1,6 +1,6 @@
 import { ClaimType } from "./claim";
 
-type FieldType =
+export type FieldType =
   | "text"
   | "date"
   | "boolean"
