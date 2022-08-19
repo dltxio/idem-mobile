@@ -2,7 +2,7 @@
   "expo": {
     "name": "idemID",
     "slug": "IDEM",
-    "version": "2.0.8",
+    "version": "2.0.9",
     "entryPoint": "./index.js",
     "orientation": "portrait",
     "scheme": "idem",
@@ -33,7 +33,8 @@
         "foregroundImage": "./assets/Bee-Logo.png",
         "backgroundColor": "#000000"
       },
-      "package": "com.dltx.idem"
+      "package": "com.dltx.idem",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
