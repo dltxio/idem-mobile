@@ -21,40 +21,30 @@ const useClaimScreen = (): Hooks => {
 
   const saveAndCheckBirthday = async (claims: ClaimData[] | null) => {
     setLoading(true);
-    claims?.map((claim) => {
-      const findAge = claims.find(
-        (c) => c.type === ClaimTypeConstants.AdultCredential
+    const claim = claims?.find(
+      (claim) => claim.type === ClaimTypeConstants.BirthCredential
+    );
+
+    if (claim && check18Plus(claim)) {
+      await addClaim(
+        ClaimTypeConstants.AdultCredential,
+        { over18: "true" },
+        selectedFileIds
       );
-      if (claim.type === "BirthCredential") {
-        if (check18Plus(claim)) {
-          save18Claim();
-        }
-        if (findAge?.value.over18 === "true" && !check18Plus(claim)) {
-          addClaim(
-            ClaimTypeConstants.AdultCredential,
-            "false",
-            selectedFileIds
-          );
-        }
-      }
-    });
+      Alert.alert(
+        `Over 18`,
+        `Your claim for being over 18 years of age has been saved.`,
+        [
+          {
+            text: "OK",
+            onPress: () => console.log(""),
+            style: "cancel"
+          }
+        ]
+      );
+    }
     setLoading(false);
     return true;
-  };
-
-  const save18Claim = async () => {
-    await addClaim(ClaimTypeConstants.AdultCredential, "true", selectedFileIds);
-    Alert.alert(
-      `Over 18`,
-      `Your claim for being over 18 years of age has been saved.`,
-      [
-        {
-          text: "OK",
-          onPress: () => console.log(""),
-          style: "cancel"
-        }
-      ]
-    );
   };
 
   const onSelectFile = (fileId: string) => {
