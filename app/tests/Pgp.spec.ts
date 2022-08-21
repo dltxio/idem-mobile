@@ -150,6 +150,6 @@ describe("PgpUtils.extractPrivateKeyFromContent()", () => {
     const content = "67:81:67:161:181:252:139:183:10:58:169:177:15:102:115:168";
     const actual = formatFingerPrint(content);
 
-    expect(actual).to.eq("0f 66 73 a8");
+    expect(actual).to.eq("0F6673A8");
   });
 });
