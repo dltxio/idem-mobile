@@ -17,7 +17,7 @@ const convertToHexArray = (fingerPrint: string) => {
 export const formatFingerPrint = (fingerPrint: string) => {
   const hexArray = convertToHexArray(fingerPrint);
   const lastFourPair = hexArray.slice(-4);
-  return lastFourPair.join(" ");
+  return lastFourPair.join("").toUpperCase();
 };
 
 export const checkIfContentContainOnlyPublicKey = (content: string) => {
