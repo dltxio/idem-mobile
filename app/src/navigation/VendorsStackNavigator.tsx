@@ -16,7 +16,7 @@ const VendorsStackNavigator = () => {
       <Stack.Screen
         component={VendorsScreen}
         name="Vendors"
-        options={{ title: "Supported Exchanges" }}
+        options={{ title: "Exchanges" }}
       />
       <Stack.Screen
         name="VendorDetails"
