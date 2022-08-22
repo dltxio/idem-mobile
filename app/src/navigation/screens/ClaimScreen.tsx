@@ -250,7 +250,7 @@ const ClaimScreen: React.FC = () => {
               return (
                 <View key={field.id}>
                   <Input
-                    label={"Country Code"}
+                    label={"Country code"}
                     keyboardType={"phone-pad"}
                     placeholder={"+61"}
                     value={phone.countryCode}
