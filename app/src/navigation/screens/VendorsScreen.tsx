@@ -15,7 +15,6 @@ const VendorsScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, { marginTop: 70 }]}>
-      <Text style={styles.header}>Supported Exchanges</Text>
       {vendors.length > 0 &&
         vendors.map((vendor) => {
           const content = (
