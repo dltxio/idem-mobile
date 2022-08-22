@@ -248,15 +248,11 @@ const ClaimScreen: React.FC = () => {
             if (field.type === "phone") {
               const phone = (formState[field.id] as PhoneType) ?? {};
               return (
-                <View key={field.id} style={styles.mobileCountryCode}>
-                  <View
-                    style={{
-                      display: "flex",
-                      width: 80
-                    }}
-                  >
+                <View key={field.id}>
+                  <View>
                     <Input
-                      label={"CC"} // country code
+                      label={"Country Code"}
+                      keyboardType={"phone-pad"}
                       placeholder={"+61"}
                       value={phone.countryCode}
                       onChangeText={(value) => {
@@ -265,12 +261,7 @@ const ClaimScreen: React.FC = () => {
                     />
                   </View>
 
-                  <View
-                    style={{
-                      display: "flex",
-                      flex: 1
-                    }}
-                  >
+                  <View>
                     <Input
                       label={field.title}
                       keyboardType={"phone-pad"}
@@ -359,11 +350,6 @@ const styles = StyleSheet.create({
   },
   datePicker: {
     height: 500
-  },
-
-  mobileCountryCode: {
-    display: "flex",
-    flexDirection: "row"
   }
 });
 
