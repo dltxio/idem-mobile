@@ -31,9 +31,6 @@ export default class Api extends HTTPClient {
     this.put(`user/${userId}/token`, body);
   };
 
-  public syncDetail = async (body: UserDetailRequest) =>
-    this.post(`user/syncDetail`, body);
-
   public publishPGPKey = async (body: string) =>
     this.post<UploadPGPKeyResponse>(
       "https://keys.openpgp.org/vks/v1/upload",
