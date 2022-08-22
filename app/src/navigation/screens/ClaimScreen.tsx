@@ -249,31 +249,27 @@ const ClaimScreen: React.FC = () => {
               const phone = (formState[field.id] as PhoneType) ?? {};
               return (
                 <View key={field.id}>
-                  <View>
-                    <Input
-                      label={"Country Code"}
-                      keyboardType={"phone-pad"}
-                      placeholder={"+61"}
-                      value={phone.countryCode}
-                      onChangeText={(value) => {
-                        onChange({ ...phone, countryCode: value });
-                      }}
-                    />
-                  </View>
+                  <Input
+                    label={"Country Code"}
+                    keyboardType={"phone-pad"}
+                    placeholder={"+61"}
+                    value={phone.countryCode}
+                    onChangeText={(value) => {
+                      onChange({ ...phone, countryCode: value });
+                    }}
+                  />
 
-                  <View>
-                    <Input
-                      label={field.title}
-                      keyboardType={"phone-pad"}
-                      value={phone.number}
-                      onChangeText={(value) => {
-                        onChange({
-                          countryCode: phone.countryCode ?? "+61",
-                          number: value
-                        });
-                      }}
-                    />
-                  </View>
+                  <Input
+                    label={field.title}
+                    keyboardType={"phone-pad"}
+                    value={phone.number}
+                    onChangeText={(value) => {
+                      onChange({
+                        countryCode: phone.countryCode ?? "+61",
+                        number: value
+                      });
+                    }}
+                  />
                 </View>
               );
             }
