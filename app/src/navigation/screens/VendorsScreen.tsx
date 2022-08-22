@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, StyleSheet, Dimensions, Text } from "react-native";
+import { View, StyleSheet, Dimensions } from "react-native";
 import { ListItem } from "@rneui/themed";
 import { useNavigation } from "@react-navigation/native";
 import { VendorStackNavigation } from "../../types/navigation";
