@@ -1,8 +1,4 @@
-import {
-  RequestOtpRequest,
-  UserDetailRequest,
-  verifyPGPRequest
-} from "./../src/types/user";
+import { RequestOtpRequest, verifyPGPRequest } from "./../src/types/user";
 import {
   PutExpoTokenRequest,
   UserSignup,
