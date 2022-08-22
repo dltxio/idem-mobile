@@ -250,9 +250,9 @@ const ClaimScreen: React.FC = () => {
               return (
                 <View key={field.id}>
                   <Input
-                    label={"Country code"}
-                    keyboardType={"phone-pad"}
-                    placeholder={"+61"}
+                    label="Country code"
+                    keyboardType="phone-pad"
+                    placeholder="+61"
                     value={phone.countryCode}
                     onChangeText={(value) => {
                       onChange({ ...phone, countryCode: value });
@@ -261,7 +261,7 @@ const ClaimScreen: React.FC = () => {
 
                   <Input
                     label={field.title}
-                    keyboardType={"phone-pad"}
+                    keyboardType="phone-pad"
                     value={phone.number}
                     onChangeText={(value) => {
                       onChange({
@@ -312,7 +312,7 @@ const ClaimScreen: React.FC = () => {
       <View style={styles.buttonWrapper}>
         {isOtpVerifyAction ? (
           <Button
-            title={"Verify"}
+            title="Verify"
             disabled={userClaim?.verified}
             onPress={() => {
               formatMobileNumberState();
