@@ -14,11 +14,9 @@ const VendorsStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Vendors"
         component={VendorsScreen}
-        options={() => ({
-          headerShown: false
-        })}
+        name="Vendors"
+        options={{ title: "Exchanges" }}
       />
       <Stack.Screen
         name="VendorDetails"
