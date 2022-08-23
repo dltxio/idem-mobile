@@ -5,6 +5,7 @@ export type UserSignup = {
   password: string;
   email: string;
   mobile?: string;
+  dob?: string;
 };
 
 export enum VendorEnum {

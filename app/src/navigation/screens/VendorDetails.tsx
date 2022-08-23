@@ -25,7 +25,7 @@ const VendorDetailsScreen: React.FC = () => {
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
   const vendor = vendors.find((v) => v.id == route.params.id);
   const [signed, setSigned] = React.useState<boolean>(false);
-  const { signup, syncDetail } = useVendors();
+  const { signup } = useVendors();
   const email = useClaimValue(ClaimTypeConstants.EmailCredential);
   const dob = useClaimValue(ClaimTypeConstants.BirthCredential);
   const name = useClaimValue(ClaimTypeConstants.NameCredential);
@@ -83,7 +83,7 @@ const VendorDetailsScreen: React.FC = () => {
         <Button
           onPress={async () => {
             if (vendor && getVendor(vendor.id) && name && email) {
-              await signup({ name, email, mobile }, vendor.id);
+              await signup({ name, email, mobile, dob }, vendor.id);
               setSigned(true);
             } else {
               Alert.alert(
@@ -96,28 +96,6 @@ const VendorDetailsScreen: React.FC = () => {
           disabled={signed || !hasAllRequiredClaims}
           style={styles.button}
         />
-        {/* 1 === GPIB */}
-        {vendor?.id === 1 && (
-          <Button
-            onPress={() => {
-              Alert.prompt("Enter your GPIB password", "", [
-                {
-                  text: "OK",
-                  onPress: async (value: string | undefined) => {
-                    if (name && value && email && dob)
-                      await syncDetail(name, value, email, dob, vendor.id);
-                  }
-                },
-                {
-                  text: "Cancel",
-                  onPress: () => console.log("Cancel Pressed"),
-                  style: "cancel"
-                }
-              ]);
-            }}
-            title="Sync Details"
-          />
-        )}
       </View>
       <BottomNavBarSpacer />
     </ScrollView>
