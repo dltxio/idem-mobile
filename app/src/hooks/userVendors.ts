@@ -13,24 +13,18 @@ type UserInfo = {
   name: string;
   email: string;
   mobile?: string;
+  dob?: string;
 };
 
 type Hooks = {
   signup: (userInfo: UserInfo, vendorId: number) => Promise<void>;
-  syncDetail: (
-    name: string,
-    password: string,
-    email: string,
-    dob: string,
-    vendorId: number
-  ) => Promise<void>;
 };
 
 const useVendors = (): Hooks => {
   const api = useApi();
 
   const signup = async (userInfo: UserInfo, vendorId: number) => {
-    const { name, email, mobile } = userInfo;
+    const { name, email, mobile, dob } = userInfo;
     try {
       const verification = await verificationStorage.get();
       if (!verification) {
@@ -53,7 +47,8 @@ const useVendors = (): Hooks => {
           lastName: splitName?.lastName,
           email,
           mobile,
-          password: randomTempPassword
+          password: randomTempPassword,
+          dob
         },
         verification
       );
@@ -99,49 +94,7 @@ const useVendors = (): Hooks => {
     );
   };
 
-  const syncDetail = async (
-    name: string,
-    password: string,
-    email: string,
-    dob: string,
-    vendorId: number
-  ) => {
-    if (name && password && email && dob) {
-      const splitName = findNames(name);
-      api
-        .syncDetail({
-          source: vendorId,
-          email: email,
-          password: password,
-          firstName: splitName?.firstName ?? "",
-          lastName: splitName?.lastName ?? "",
-          dob: dob
-        })
-        .then(() => {
-          Alert.alert(AlertTitle.Success, "Your detail sync successful", [
-            {
-              text: "OK",
-              onPress: () => console.log(""),
-              style: "destructive"
-            }
-          ]);
-        })
-        .catch(() => {
-          Alert.alert(
-            AlertTitle.Error,
-            "Something wrong, please check your password",
-            [
-              {
-                text: "OK",
-                onPress: () => console.log(""),
-                style: "destructive"
-              }
-            ]
-          );
-        });
-    }
-  };
-  return { signup, syncDetail };
+  return { signup };
 };
 
 export default useVendors;
