@@ -9,6 +9,7 @@ import { keccak256 } from "ethers/lib/utils";
 import { Buffer } from "buffer";
 import { Alert } from "react-native";
 import { AlertTitle } from "../constants/common";
+import moment from "moment";
 
 export type DocumentsValue = {
   files: File[];
@@ -64,6 +65,9 @@ export const DocumentProvider: React.FC<{
     uri: string
   ): Promise<string> => {
     const name = getImageFileName(uri);
+    const time = moment()
+      .utcOffset("Australia/Sydney")
+      .format("DD-MM-YYYY hh:mm:ss a");
 
     checkFileTypes(documentType);
 
@@ -89,6 +93,7 @@ export const DocumentProvider: React.FC<{
     const newFile: File = {
       id,
       documentType,
+      timeStamp: time,
       name,
       uri: uri,
       hashes: {

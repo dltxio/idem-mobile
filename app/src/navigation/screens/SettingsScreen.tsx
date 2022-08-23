@@ -1,6 +1,14 @@
 import React from "react";
 import commonStyles from "../../styles/styles";
-import { View, Dimensions, StyleSheet, Linking, Text } from "react-native";
+import {
+  View,
+  Dimensions,
+  StyleSheet,
+  Linking,
+  Text,
+  ScrollView
+} from "react-native";
+import { FileList } from "../../components";
 import { AntDesign } from "@expo/vector-icons";
 
 const SettingsScreen: React.FC = () => {
@@ -17,6 +25,17 @@ const SettingsScreen: React.FC = () => {
         >
           Contact Support
         </AntDesign.Button>
+        <Text style={commonStyles.text.smallHeading}>Claims History</Text>
+        <ScrollView style={commonStyles.screenContent}>
+          {/* {selectedDocuments.length && usersClaims.length === 0 && (
+            <View>
+              <Text>You have not made any claims yet.</Text>
+            </View>
+          )}
+          {selectedDocuments.length && usersClaims.length > 0 && (
+            <FileList files={selectedDocuments || } isCheckList={false} onFilePress={}/>
+          )} */}
+        </ScrollView>
       </View>
     </View>
   );

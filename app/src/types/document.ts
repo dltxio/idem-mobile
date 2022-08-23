@@ -14,6 +14,7 @@ export type Document = {
 
 export type File = {
   id: string;
+  timeStamp: string;
   documentType: DocumentType;
   name: string;
   uri: string;

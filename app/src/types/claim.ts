@@ -24,6 +24,7 @@ export type Claim = {
   fields: Field[];
   verificationDocuments: DocumentType[];
   hideFromList?: boolean;
+  timeStamp?: string;
 };
 
 export type ClaimData = {
