@@ -3,6 +3,7 @@ import { Claim, ClaimType, ClaimWithValue, ClaimData } from "../types/claim";
 import allClaims from "../data/claims";
 import { claimsLocalStorage } from "../utils/local-storage";
 import { displayClaimValue } from "../utils/claim-utils";
+import moment from "moment";
 
 type KeyValueObject = { [key: string]: string };
 
@@ -17,6 +18,7 @@ export type ClaimsVault = {
   addClaim: (
     claimId: ClaimType,
     value: AddClaim_Value,
+    timeStamp: string,
     files: string[],
     verified?: boolean
   ) => Promise<void>;
@@ -101,12 +103,16 @@ export const ClaimsProvider: React.FC<{
   const addClaim = async (
     claimId: ClaimType,
     value: AddClaim_Value,
+    timeStamp: string,
     files: string[],
     verified?: boolean
   ) => {
     // This is a mock function.
     // In the future we will send this data off to an api to be verified
-    console.log("making a claim", claimId, value, files);
+    const time = moment()
+      .utcOffset("Australia/Sydney")
+      .format("DD-MM-YYYY hh:mm:ss a");
+    console.log("making a claim", claimId, value, files, timeStamp);
 
     await new Promise((resolve) =>
       setTimeout(() => {
