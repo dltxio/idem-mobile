@@ -248,41 +248,28 @@ const ClaimScreen: React.FC = () => {
             if (field.type === "phone") {
               const phone = (formState[field.id] as PhoneType) ?? {};
               return (
-                <View key={field.id} style={styles.mobileCountryCode}>
-                  <View
-                    style={{
-                      display: "flex",
-                      width: 80
+                <View key={field.id}>
+                  <Input
+                    label="Country code"
+                    keyboardType="phone-pad"
+                    placeholder="+61"
+                    value={phone.countryCode}
+                    onChangeText={(value) => {
+                      onChange({ ...phone, countryCode: value });
                     }}
-                  >
-                    <Input
-                      label={"CC"} // country code
-                      placeholder={"+61"}
-                      value={phone.countryCode}
-                      onChangeText={(value) => {
-                        onChange({ ...phone, countryCode: value });
-                      }}
-                    />
-                  </View>
+                  />
 
-                  <View
-                    style={{
-                      display: "flex",
-                      flex: 1
+                  <Input
+                    label={field.title}
+                    keyboardType="phone-pad"
+                    value={phone.number}
+                    onChangeText={(value) => {
+                      onChange({
+                        countryCode: phone.countryCode ?? "+61",
+                        number: value
+                      });
                     }}
-                  >
-                    <Input
-                      label={field.title}
-                      keyboardType={"phone-pad"}
-                      value={phone.number}
-                      onChangeText={(value) => {
-                        onChange({
-                          countryCode: phone.countryCode ?? "+61",
-                          number: value
-                        });
-                      }}
-                    />
-                  </View>
+                  />
                 </View>
               );
             }
@@ -325,7 +312,7 @@ const ClaimScreen: React.FC = () => {
       <View style={styles.buttonWrapper}>
         {isOtpVerifyAction ? (
           <Button
-            title={"Verify"}
+            title="Verify"
             disabled={userClaim?.verified}
             onPress={() => {
               formatMobileNumberState();
@@ -359,11 +346,6 @@ const styles = StyleSheet.create({
   },
   datePicker: {
     height: 500
-  },
-
-  mobileCountryCode: {
-    display: "flex",
-    flexDirection: "row"
   }
 });
 
