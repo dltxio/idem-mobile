@@ -28,6 +28,7 @@ import { useDocumentStore } from "../../context/DocumentStore";
 import { getDocumentFromDocumentType } from "../../utils/document-utils";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import useClaimScreen from "../../hooks/useClaimScreen";
+import { claimsLocalStorage } from "../../utils/local-storage";
 import useApi from "../../hooks/useApi";
 import { AlertTitle } from "../../constants/common";
 import { FieldType } from "../../types/general";
@@ -73,9 +74,9 @@ const ClaimScreen: React.FC = () => {
   const [otpContext, setOtpContext] = React.useState<RequestOptResponse>();
 
   const {
+    saveAndCheckBirthday,
     onSelectFile,
     loading,
-    addingAClaim,
     selectedFileIds,
     setLoading,
     setSelectedFileIds
@@ -105,7 +106,9 @@ const ClaimScreen: React.FC = () => {
 
   const onSave = async () => {
     setLoading(true);
-    addingAClaim();
+    await addClaim(claim.type, formState, selectedFileIds);
+    const claims = await claimsLocalStorage.get();
+    if (claim.type === "BirthCredential") saveAndCheckBirthday(claims);
     navigation.reset({
       routes: [{ name: "Home" }]
     });
