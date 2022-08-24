@@ -31,6 +31,7 @@ const Home: React.FC = () => {
   const navigateToClaim = (claimType: ClaimType) => {
     navigation.navigate("Claim", { claimType });
   };
+  
   const address = useClaimValue(ClaimTypeConstants.AddressCredential);
   const email = useClaimValue(ClaimTypeConstants.EmailCredential);
   const dob = useClaimValue(ClaimTypeConstants.BirthCredential);
