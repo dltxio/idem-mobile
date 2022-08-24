@@ -32,14 +32,15 @@ const Home: React.FC = () => {
     navigation.navigate("Claim", { claimType });
   };
   const address = useClaimValue(ClaimTypeConstants.AddressCredential);
-  const email = useClaimValue(ClaimTypeConstants.EmailCredential);
+  const email = useClaimValue(
+    ClaimTypeConstants.EmailCredential
+  )?.toLowerCase();
   const dob = useClaimValue(ClaimTypeConstants.BirthCredential);
   const name = useClaimValue(ClaimTypeConstants.NameCredential);
   const splitName = findNames(name);
   const addressValue = usersClaims.find(
     (claim) => claim.type === ClaimTypeConstants.AddressCredential
   )?.value;
-
   const { verifyClaims } = useVerifyClaims();
   const verifyUserOnProxy = async () => {
     if (splitName && dob && address && email) {
