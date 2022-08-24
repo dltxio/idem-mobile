@@ -32,9 +32,7 @@ const Home: React.FC = () => {
     navigation.navigate("Claim", { claimType });
   };
   const address = useClaimValue(ClaimTypeConstants.AddressCredential);
-  const email = useClaimValue(
-    ClaimTypeConstants.EmailCredential
-  )?.toLowerCase();
+  const email = useClaimValue(ClaimTypeConstants.EmailCredential);
   const dob = useClaimValue(ClaimTypeConstants.BirthCredential);
   const name = useClaimValue(ClaimTypeConstants.NameCredential);
   const splitName = findNames(name);
@@ -46,7 +44,7 @@ const Home: React.FC = () => {
     if (splitName && dob && address && email) {
       const hashEmail = await Crypto.digestStringAsync(
         Crypto.CryptoDigestAlgorithm.SHA256,
-        email.toLowerCase()
+        email
       );
 
       const userClaims = {

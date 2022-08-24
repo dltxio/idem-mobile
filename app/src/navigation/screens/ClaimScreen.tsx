@@ -32,6 +32,7 @@ import { claimsLocalStorage } from "../../utils/local-storage";
 import useApi from "../../hooks/useApi";
 import { AlertTitle } from "../../constants/common";
 import { FieldType } from "../../types/general";
+import { hexValue } from "ethers/lib/utils";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -106,7 +107,15 @@ const ClaimScreen: React.FC = () => {
 
   const onSave = async () => {
     setLoading(true);
-    await addClaim(claim.type, formState, selectedFileIds);
+    let newFormState = formState;
+    if (claim.type === "EmailCredential") {
+      newFormState = {
+        ...newFormState,
+        email: (newFormState.email as string).toLowerCase()
+      };
+      console.log(newFormState);
+    }
+    await addClaim(claim.type, newFormState, selectedFileIds);
     const claims = await claimsLocalStorage.get();
     if (claim.type === "BirthCredential") saveAndCheckBirthday(claims);
     navigation.reset({
