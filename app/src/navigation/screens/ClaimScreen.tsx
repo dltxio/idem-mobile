@@ -222,6 +222,7 @@ const ClaimScreen: React.FC = () => {
                     label={field.title}
                     clearButtonMode="always"
                     keyboardType={keyboardTypeMap[possibleType]}
+                    autoCapitalize="none"
                     value={formState[field.id] as string}
                     onChangeText={onChange}
                   />
