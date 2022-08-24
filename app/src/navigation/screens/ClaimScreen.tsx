@@ -32,7 +32,6 @@ import { claimsLocalStorage } from "../../utils/local-storage";
 import useApi from "../../hooks/useApi";
 import { AlertTitle } from "../../constants/common";
 import { FieldType } from "../../types/general";
-import { hexValue } from "ethers/lib/utils";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
