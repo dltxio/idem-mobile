@@ -112,7 +112,7 @@ const ClaimScreen: React.FC = () => {
         ...newFormState,
         email: (newFormState.email as string).toLowerCase()
       };
-      console.log(newFormState);
+  
     }
     await addClaim(claim.type, newFormState, selectedFileIds);
     const claims = await claimsLocalStorage.get();
