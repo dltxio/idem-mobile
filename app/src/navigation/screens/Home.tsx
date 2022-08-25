@@ -39,13 +39,12 @@ const Home: React.FC = () => {
   const addressValue = usersClaims.find(
     (claim) => claim.type === ClaimTypeConstants.AddressCredential
   )?.value;
-
   const { verifyClaims } = useVerifyClaims();
   const verifyUserOnProxy = async () => {
     if (splitName && dob && address && email) {
       const hashEmail = await Crypto.digestStringAsync(
         Crypto.CryptoDigestAlgorithm.SHA256,
-        email.toLowerCase()
+        email
       );
 
       const userClaims = {
