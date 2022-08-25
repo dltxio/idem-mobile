@@ -32,7 +32,7 @@ const UserDetailsHeader: React.FC = () => {
   const { addClaim } = useClaimsStore();
   const { addFile, files } = useDocumentStore();
   const [pgpTitle, setPgpTitle] = useState<string | undefined>(
-    "Import PGP Private Key"
+    "Setup PGP key pair"
   );
   const { ethAddress } = useMnemonic();
 

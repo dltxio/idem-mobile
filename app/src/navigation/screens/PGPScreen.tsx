@@ -6,7 +6,8 @@ import {
   Text,
   KeyboardAvoidingView,
   ScrollView,
-  Alert
+  Alert,
+  StatusBar
 } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
@@ -145,8 +146,9 @@ const PGPScreen: React.FC = () => {
         style={styles.container}
         contentContainerStyle={styles.scrollContent}
       >
+        <StatusBar hidden={false} />
         <TextInput
-          placeholder="Paste your PGP/GPG PRIVATE key here"
+          placeholder="Paste your PGP/GPG private key here"
           placeholderTextColor={"black"}
           onChangeText={setKeyText}
           style={styles.input}
@@ -161,7 +163,7 @@ const PGPScreen: React.FC = () => {
         <View style={styles.buttonWrapper}>
           <View style={styles.button}>
             <Button
-              title={"Import my Private Key"}
+              title={"Import Private Key"}
               onPress={() => importMyPrivateKeyFromTextInput(keyText as string)}
               disabled={!keyText || isKeyTextIsPublicKey}
             />
@@ -170,7 +172,7 @@ const PGPScreen: React.FC = () => {
         <View style={styles.buttonWrapper}>
           <View style={styles.button}>
             <Button
-              title={"Import my Private Key from my Device"}
+              title={"Import Private Key from Device"}
               onPress={importPrivateKeyFromDevice}
             />
           </View>

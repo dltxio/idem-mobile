@@ -1,22 +1,28 @@
 import React from "react";
 import commonStyles from "../../styles/styles";
-import { View, Dimensions, StyleSheet, Linking, Text } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import {
+  View,
+  Dimensions,
+  StyleSheet,
+  Linking,
+  Text,
+  StatusBar
+} from "react-native";
+import IdemButton from "../../components/Button";
 
 const SettingsScreen: React.FC = () => {
   return (
     <View style={commonStyles.screenContent}>
+      <StatusBar hidden={false} />
       <View style={styles.documentsList}>
         <Text style={styles.mitLicense}>
           IDEM is a fully open source application shipped under the MIT licence.
           Feel free to raise an issue on GitHub or contact customer support.
         </Text>
-        <AntDesign.Button
-          name="right"
+        <IdemButton
+          title={"Contact Support"}
           onPress={() => Linking.openURL("mailto:support@dltx.io")}
-        >
-          Contact Support
-        </AntDesign.Button>
+        />
       </View>
     </View>
   );
@@ -30,5 +36,14 @@ const styles = StyleSheet.create({
   },
   mitLicense: {
     marginBottom: 5
+  },
+  button: {
+    marginVertical: 5,
+    alignSelf: "stretch",
+    marginHorizontal: 10
+  },
+  buttonWrapper: {
+    justifyContent: "flex-end",
+    alignSelf: "stretch"
   }
 });

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
 import { WebView } from "react-native-webview";
 import commonStyles from "../../styles/styles";
 import { useDocumentStore } from "../../context/DocumentStore";
@@ -21,6 +21,7 @@ const ViewFile: React.FC = () => {
 
   return (
     <ScrollView style={[commonStyles.screen, commonStyles.screenContent]}>
+      <StatusBar hidden={false} />
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <WebView
           originWhitelist={["*"]}

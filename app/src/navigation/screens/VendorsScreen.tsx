@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Dimensions, StatusBar, Text } from "react-native";
 import { ListItem } from "@rneui/themed";
 import { useNavigation } from "@react-navigation/native";
 import { VendorStackNavigation } from "../../types/navigation";
@@ -14,7 +14,9 @@ const VendorsScreen: React.FC = () => {
   const { vendors } = useVendorsList();
 
   return (
-    <View style={[styles.container, { marginTop: 70 }]}>
+    <View style={[styles.container, { marginTop: 20 }]}>
+      <Text style={styles.headingText}>Supported Exchanges</Text>
+      <StatusBar hidden={false} />
       {vendors.length > 0 &&
         vendors.map((vendor) => {
           const content = (
@@ -71,12 +73,19 @@ const styles = StyleSheet.create({
   },
 
   vendorName: {
-    fontSize: 20
+    fontSize: 17
   },
 
   tagLine: {
     textAlign: "left",
-    fontSize: 14,
+    fontSize: 15,
     justifyContent: "flex-start"
+  },
+
+  headingText: {
+    right: 100,
+    fontWeight: "500" as any,
+    fontSize: 18,
+    marginBottom: 10
   }
 });

@@ -38,7 +38,7 @@ const ProfileStackNavigator = () => {
       />
       <Stack.Screen
         name="PGP"
-        options={{ title: "Import PGP Private Key" }}
+        options={{ title: "Setup PGP key pair" }}
         component={PGPScreen}
       />
       <Stack.Screen
