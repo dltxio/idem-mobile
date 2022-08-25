@@ -47,14 +47,8 @@ const PGPScreen: React.FC = () => {
     (c) => c.type === ClaimTypeConstants.EmailCredential
   );
 
-  const {
-    generateKeyPair,
-    generateKeyPairFromPrivateKey,
-    // publishPGPPublicKey,
-    // verifyPGPPublicKey,
-    // uploadPublicKey,
-    verifyPublicKey
-  } = usePgp();
+  const { generateKeyPair, generateKeyPairFromPrivateKey, verifyPublicKey } =
+    usePgp();
 
   const loadKeyFromLocalStorage = React.useCallback(async () => {
     const key = await pgpLocalStorage.get();
@@ -109,8 +103,6 @@ const PGPScreen: React.FC = () => {
       await loadKeyFromLocalStorage();
       const key = await pgpLocalStorage.get();
       if (!key) return;
-      //await publishPGPPublicKey(key.publicKey, email);
-      //await uploadPublicKey(email, key.publicKey);
     },
     [generateKeyPair]
   );
@@ -197,13 +189,6 @@ const PGPScreen: React.FC = () => {
               }
             />
           </View>
-          {/* <View style={styles.button}>
-            <Button
-              title={"Publish PGP Public Key"}
-              disabled={!keyText || !emailClaimValue}
-              onPress={() => uploadPublicKey(emailClaimValue, keyText)}
-            />
-          </View> */}
           <View style={styles.button}>
             <Button
               title={"Verify email"}
