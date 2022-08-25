@@ -91,7 +91,7 @@ const usePgp = (): Hooks => {
         if (result) {
           Alert.alert(
             AlertTitle.Success,
-            `Your PGP key has been created with the password ${password}, and uploaded,please check your email`
+            `Your PGP key has been created with the password ${password} and uploaded, please check your email to confirm.`
           );
         } else {
           Alert.alert(AlertTitle.Error, "Your PGP key has not been uploaded");
