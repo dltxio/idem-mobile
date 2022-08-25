@@ -67,13 +67,13 @@ const claims: Claim[] = [
     type: "BirthCredential",
     key: "0x01",
     mnemonic: "dob",
-    title: "Date Of Birth",
+    title: "Date of Birth",
     description: "Users date of birth",
     verificationAction: "document-upload",
     fields: [
       {
         id: "dob",
-        title: "Date Of Birth",
+        title: "Date of Birth",
         type: "date"
       }
     ],
