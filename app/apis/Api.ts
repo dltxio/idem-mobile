@@ -1,8 +1,6 @@
-import { RequestOtpRequest, verifyPGPRequest } from "./../src/types/user";
 import {
   RequestOtpRequest,
   uploadPublicKey,
-  UserDetailRequest,
   UsersResponse,
   verifyPGPRequest
 } from "./../src/types/user";
