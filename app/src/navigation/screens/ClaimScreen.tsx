@@ -9,12 +9,12 @@ import {
   Alert,
   ScrollView,
   Dimensions,
-  KeyboardTypeOptions
+  KeyboardTypeOptions,
+  StatusBar
 } from "react-native";
 import Dialog from "react-native-dialog";
 import { Input, Switch } from "@rneui/themed";
 import DateTimePicker from "@react-native-community/datetimepicker";
-
 import commonStyles from "../../styles/styles";
 import {
   ProfileStackNavigation,
@@ -211,6 +211,7 @@ const ClaimScreen: React.FC = () => {
       />
       <ScrollView style={commonStyles.screenContent}>
         <View>
+          <StatusBar hidden={false} />
           {claim.fields.map((field) => {
             const onChange = (value: string | PhoneType) => {
               setFormState((previous) => ({

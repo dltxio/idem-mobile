@@ -35,7 +35,7 @@ const CreateMnemonicController: React.FC = () => {
   const showMnemonicAlert = (_mnemonic: string) => {
     setShowMnemonic(false);
     Alert.alert(
-      "Your Mnemonic seed is",
+      "Your Mnemonic Seed is",
       `${_mnemonic}`,
       [
         {
