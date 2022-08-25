@@ -50,8 +50,10 @@ const PGPScreen: React.FC = () => {
   const {
     generateKeyPair,
     generateKeyPairFromPrivateKey,
-    publishPGPPublicKey,
-    verifyPGPPublicKey
+    // publishPGPPublicKey,
+    // verifyPGPPublicKey,
+    // uploadPublicKey,
+    verifyPublicKey
   } = usePgp();
 
   const loadKeyFromLocalStorage = React.useCallback(async () => {
@@ -107,7 +109,8 @@ const PGPScreen: React.FC = () => {
       await loadKeyFromLocalStorage();
       const key = await pgpLocalStorage.get();
       if (!key) return;
-      await publishPGPPublicKey(key.publicKey, email);
+      //await publishPGPPublicKey(key.publicKey, email);
+      //await uploadPublicKey(email, key.publicKey);
     },
     [generateKeyPair]
   );
@@ -184,7 +187,7 @@ const PGPScreen: React.FC = () => {
         <View style={styles.buttonWrapper}>
           <View style={styles.button}>
             <Button
-              title={"Generate new PGP Key"}
+              title={"Generate new PGP Key and publish"}
               disabled={shouldDisabledGeneratePgpKey || keyText !== undefined}
               onPress={async () =>
                 generateAndPublishNewPgpKey(
@@ -194,18 +197,18 @@ const PGPScreen: React.FC = () => {
               }
             />
           </View>
-          <View style={styles.button}>
+          {/* <View style={styles.button}>
             <Button
               title={"Publish PGP Public Key"}
               disabled={!keyText || !emailClaimValue}
-              onPress={() => publishPGPPublicKey(keyText, emailClaimValue)}
+              onPress={() => uploadPublicKey(emailClaimValue, keyText)}
             />
-          </View>
+          </View> */}
           <View style={styles.button}>
             <Button
               title={"Verify email"}
               disabled={emailClaim?.verified}
-              onPress={() => verifyPGPPublicKey(emailClaimValue)}
+              onPress={() => verifyPublicKey(emailClaimValue)}
             />
           </View>
         </View>
