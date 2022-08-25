@@ -67,3 +67,15 @@ export type verifyPGPRequest = {
   token: string;
   addresses: string[];
 };
+
+export type uploadPublicKey = {
+  email: string;
+  publicKeyArmored: string;
+};
+
+export type UsersResponse = {
+  userId: string;
+  email: string;
+  createdAt: Date;
+  emailVerified: boolean;
+};
