@@ -186,7 +186,7 @@ const PGPScreen: React.FC = () => {
         <View style={styles.buttonWrapper}>
           <View style={styles.button}>
             <Button
-              title={"Generate New PGP Key"}
+              title={"Generate new PGP Key"}
               disabled={shouldDisabledGeneratePgpKey || keyText !== undefined}
               onPress={async () =>
                 generateAndPublishNewPgpKey(
