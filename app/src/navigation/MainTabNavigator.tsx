@@ -83,7 +83,7 @@ const TabNavigator = () => {
       <Tab.Screen
         name="SupportedExchanges"
         component={VendorsStackNavigator}
-        options={{ title: "Supported Exchanges" }}
+        options={{ title: "Exchanges" }}
       />
       <Tab.Screen
         name="DocumentsTab"

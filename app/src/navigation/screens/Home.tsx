@@ -5,7 +5,8 @@ import {
   ScrollView,
   Text,
   Dimensions,
-  Button
+  Button,
+  StatusBar
 } from "react-native";
 import commonStyles from "../../styles/styles";
 import { ProfileStackNavigation } from "../../types/navigation";
@@ -67,10 +68,11 @@ const Home: React.FC = () => {
 
   return (
     <View style={commonStyles.screen}>
+      <StatusBar hidden={false} />
       <UserDetailsHeader />
       <CreateMnemonicController />
       <ScrollView style={commonStyles.screenContent}>
-        <Text style={commonStyles.text.smallHeading}>Your claims</Text>
+        <Text style={commonStyles.text.smallHeading}>Your Claims</Text>
         {usersClaims.length ? (
           <ClaimsList
             claims={usersClaims.filter((c) => !c.hideFromList)}
@@ -86,7 +88,7 @@ const Home: React.FC = () => {
         )}
         {unclaimedClaims.length ? (
           <>
-            <Text style={commonStyles.text.smallHeading}>All claims</Text>
+            <Text style={commonStyles.text.smallHeading}>All Claims</Text>
             <ClaimsList
               claims={unclaimedClaims.filter((c) => !c.hideFromList)}
               onPress={navigateToClaim}
