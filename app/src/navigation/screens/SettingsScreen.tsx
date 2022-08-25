@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Linking,
   Text,
-  Button,
   StatusBar
 } from "react-native";
 import IdemButton from "../../components/Button";
