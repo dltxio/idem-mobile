@@ -71,5 +71,5 @@ export default class Api extends HTTPClient {
     this.post<boolean>(`user/key/add`, body);
 
   public getUser = async (email: string) =>
-    this.get<UsersResponse>(`user/${email}`);
+    this.get<UsersResponse>(`user/email/${email}`);
 }
