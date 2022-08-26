@@ -1,6 +1,6 @@
 import React, { createContext } from "react";
 import Api from "../apis/Api";
-import appConfig from "../appConfig";
+import appConfig from "../config";
 
 export const ApiContext = createContext<Api>(null as unknown as Api);
 
