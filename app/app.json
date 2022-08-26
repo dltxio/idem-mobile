@@ -2,7 +2,7 @@
   "expo": {
     "name": "idemID",
     "slug": "IDEM",
-    "version": "2.0.9",
+    "version": "1.0.0",
     "entryPoint": "./index.js",
     "orientation": "portrait",
     "scheme": "idem",
@@ -16,9 +16,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "config": {
         "usesNonExemptEncryption": false
@@ -33,8 +31,7 @@
         "foregroundImage": "./assets/Bee-Logo.png",
         "backgroundColor": "#000000"
       },
-      "package": "com.dltx.idem",
-      "versionCode": 2
+      "package": "com.dltx.idem"
     },
     "web": {
       "favicon": "./assets/favicon.png"
