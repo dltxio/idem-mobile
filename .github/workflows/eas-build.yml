@@ -46,10 +46,10 @@ jobs:
 
       - shell: bash
         run: |
-            cd ~/idem-mobile/app
-            sed -i -e 's/PROXY_USERNAME_STAGING_TOKEN/${{ secrets.PROXY_USERNAME_STAGING }}/g' eas.json
-            sed -i -e 's/PROXY_PASSWORD_STAGING_TOKEN/${{ secrets.PROXY_PASSWORD_STAGING }}/g' eas.json
-            cat eas.json
+          cd app
+          sed -i -e 's/PROXY_USERNAME_STAGING_TOKEN/${{ secrets.PROXY_USERNAME_STAGING }}/g' eas.json
+          sed -i -e 's/PROXY_PASSWORD_STAGING_TOKEN/${{ secrets.PROXY_PASSWORD_STAGING }}/g' eas.json
+          cat eas.json
 
       - name: Build on EAS
         run: EXPO_APPLE_APP_SPECIFIC_PASSWORD=${{ secrets.EXPO_APPLE_APP_SPECIFIC_PASSWORD }} npx eas-cli build --platform ios --non-interactive --auto-submit --no-wait --profile staging
