@@ -20,7 +20,7 @@ export type UserVerifyRequest = {
   firstName: string;
   lastName: string;
   dob: string;
-  email: string;
+  hashEmail: string;
   houseNumber: string;
   street: string;
   suburb: string;
@@ -69,7 +69,7 @@ export type verifyPGPRequest = {
 };
 
 export type uploadPublicKey = {
-  email: string;
+  hashEmail: string;
   publicKeyArmored: string;
 };
 
