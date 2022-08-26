@@ -44,10 +44,8 @@ jobs:
       - name: Install Project Dependencies
         run: yarn
 
-      - name: Setup Secrets
-        uses: expo/expo-github-action@v7
-        with:
-          script: |
+      - shell: bash
+        run: |
             cd ~/idem-mobile/app
             sed -i -e 's/PROXY_USERNAME_STAGING_TOKEN/${{ secrets.PROXY_USERNAME_STAGING }}/g' eas.json
             sed -i -e 's/PROXY_PASSWORD_STAGING_TOKEN/${{ secrets.PROXY_PASSWORD_STAGING }}/g' eas.json

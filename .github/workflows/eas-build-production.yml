@@ -44,14 +44,12 @@ jobs:
       - name: Install Project Dependencies
         run: yarn
 
-      - name: Setup Secrets
-        uses: expo/expo-github-action@v7
-        with:
-          script: |
-            cd ~/idem-mobile/app
-            sed -i -e 's/PROXY_USERNAME_TOKEN/${{ secrets.PROXY_USERNAME }}/g' eas.json
-            sed -i -e 's/PROXY_PASSWORD_TOKEN/${{ secrets.PROXY_PASSWORD }}/g' eas.json
-            cat eas.json
+      - shell: bash
+        run: |
+          cd ~/idem-mobile/app
+          sed -i -e 's/PROXY_USERNAME_TOKEN/${{ secrets.PROXY_USERNAME }}/g' eas.json
+          sed -i -e 's/PROXY_PASSWORD_TOKEN/${{ secrets.PROXY_PASSWORD }}/g' eas.json
+          cat eas.json
 
       - name: Build on EAS
         run: EXPO_APPLE_APP_SPECIFIC_PASSWORD=${{ secrets.EXPO_APPLE_APP_SPECIFIC_PASSWORD }} npx eas-cli build --platform ios --non-interactive --auto-submit --no-wait --profile production
