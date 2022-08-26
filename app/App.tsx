@@ -35,7 +35,6 @@ Sentry.init({
 });
 
 const App = () => {
-  console.log(Constants.manifest?.extra?.environment);
   const initialURL = Linking.useURL();
   const [newUrl, setNewUrl] = React.useState<boolean>(false);
   const [claimRequest, setClaimRequest] = React.useState<ClaimRequest>();
