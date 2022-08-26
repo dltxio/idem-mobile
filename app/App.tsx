@@ -17,7 +17,7 @@ import * as Notifications from "expo-notifications";
 import * as Sentry from "sentry-expo";
 import LinkingConfiguration from "./src/navigation/LinkingConfiguration";
 import { ApiProvider } from "./providers/Api";
-import appConfig from "./appConfig";
+import appConfig from "./config";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
