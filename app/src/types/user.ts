@@ -5,6 +5,7 @@ export type UserSignup = {
   password: string;
   email: string;
   mobile?: string;
+  dob?: string;
 };
 
 export enum VendorEnum {
@@ -19,7 +20,7 @@ export type UserVerifyRequest = {
   firstName: string;
   lastName: string;
   dob: string;
-  email: string;
+  hashEmail: string;
   houseNumber: string;
   street: string;
   suburb: string;
@@ -65,4 +66,16 @@ export type UserDetailRequest = {
 export type verifyPGPRequest = {
   token: string;
   addresses: string[];
+};
+
+export type uploadPublicKey = {
+  hashEmail: string;
+  publicKeyArmored: string;
+};
+
+export type UsersResponse = {
+  userId: string;
+  email: string;
+  createdAt: Date;
+  emailVerified: boolean;
 };

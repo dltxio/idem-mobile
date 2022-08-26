@@ -6,7 +6,8 @@ import {
   Text,
   KeyboardAvoidingView,
   ScrollView,
-  Alert
+  Alert,
+  StatusBar
 } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
@@ -47,12 +48,8 @@ const PGPScreen: React.FC = () => {
     (c) => c.type === ClaimTypeConstants.EmailCredential
   );
 
-  const {
-    generateKeyPair,
-    generateKeyPairFromPrivateKey,
-    publishPGPPublicKey,
-    verifyPGPPublicKey
-  } = usePgp();
+  const { generateKeyPair, generateKeyPairFromPrivateKey, verifyPublicKey } =
+    usePgp();
 
   const loadKeyFromLocalStorage = React.useCallback(async () => {
     const key = await pgpLocalStorage.get();
@@ -107,7 +104,6 @@ const PGPScreen: React.FC = () => {
       await loadKeyFromLocalStorage();
       const key = await pgpLocalStorage.get();
       if (!key) return;
-      await publishPGPPublicKey(key.publicKey, email);
     },
     [generateKeyPair]
   );
@@ -150,8 +146,9 @@ const PGPScreen: React.FC = () => {
         style={styles.container}
         contentContainerStyle={styles.scrollContent}
       >
+        <StatusBar hidden={false} />
         <TextInput
-          placeholder="Paste your PGP/GPG PRIVATE key here"
+          placeholder="Paste your PGP/GPG private key here"
           placeholderTextColor={"black"}
           onChangeText={setKeyText}
           style={styles.input}
@@ -166,7 +163,7 @@ const PGPScreen: React.FC = () => {
         <View style={styles.buttonWrapper}>
           <View style={styles.button}>
             <Button
-              title={"Import my Private Key"}
+              title={"Import Private Key"}
               onPress={() => importMyPrivateKeyFromTextInput(keyText as string)}
               disabled={!keyText || isKeyTextIsPublicKey}
             />
@@ -175,7 +172,7 @@ const PGPScreen: React.FC = () => {
         <View style={styles.buttonWrapper}>
           <View style={styles.button}>
             <Button
-              title={"Import my Private Key from my Device"}
+              title={"Import Private Key from Device"}
               onPress={importPrivateKeyFromDevice}
             />
           </View>
@@ -184,7 +181,7 @@ const PGPScreen: React.FC = () => {
         <View style={styles.buttonWrapper}>
           <View style={styles.button}>
             <Button
-              title={"Generate new PGP Key"}
+              title={"Generate New PGP Key and publish"}
               disabled={shouldDisabledGeneratePgpKey || keyText !== undefined}
               onPress={async () =>
                 generateAndPublishNewPgpKey(
@@ -196,16 +193,9 @@ const PGPScreen: React.FC = () => {
           </View>
           <View style={styles.button}>
             <Button
-              title={"Publish PGP Public Key"}
-              disabled={!keyText || !emailClaimValue}
-              onPress={() => publishPGPPublicKey(keyText, emailClaimValue)}
-            />
-          </View>
-          <View style={styles.button}>
-            <Button
               title={"Verify email"}
               disabled={emailClaim?.verified}
-              onPress={() => verifyPGPPublicKey(emailClaimValue)}
+              onPress={() => verifyPublicKey(emailClaimValue)}
             />
           </View>
         </View>

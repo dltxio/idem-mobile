@@ -14,7 +14,7 @@
         "simulator": true
       }
     },
-    "uat": {
+    "staging": {
       "ios": {
         "autoIncrement": "version"
       },
@@ -39,7 +39,7 @@
     }
   },
   "submit": {
-    "uat": {
+    "staging": {
       "android": {
         "track": "internal",
         "releaseStatus": "draft"

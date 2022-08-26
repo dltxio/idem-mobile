@@ -9,12 +9,12 @@ import {
   Alert,
   ScrollView,
   Dimensions,
-  KeyboardTypeOptions
+  KeyboardTypeOptions,
+  StatusBar
 } from "react-native";
 import Dialog from "react-native-dialog";
 import { Input, Switch } from "@rneui/themed";
 import DateTimePicker from "@react-native-community/datetimepicker";
-
 import commonStyles from "../../styles/styles";
 import {
   ProfileStackNavigation,
@@ -106,7 +106,15 @@ const ClaimScreen: React.FC = () => {
 
   const onSave = async () => {
     setLoading(true);
-    await addClaim(claim.type, formState, selectedFileIds);
+    let newFormState = formState;
+    if (claim.type === "EmailCredential") {
+      newFormState = {
+        ...newFormState,
+        email: (newFormState.email as string).toLowerCase()
+      };
+  
+    }
+    await addClaim(claim.type, newFormState, selectedFileIds);
     const claims = await claimsLocalStorage.get();
     if (claim.type === "BirthCredential") saveAndCheckBirthday(claims);
     navigation.reset({
@@ -203,6 +211,7 @@ const ClaimScreen: React.FC = () => {
       />
       <ScrollView style={commonStyles.screenContent}>
         <View>
+          <StatusBar hidden={false} />
           {claim.fields.map((field) => {
             const onChange = (value: string | PhoneType) => {
               setFormState((previous) => ({
@@ -222,6 +231,7 @@ const ClaimScreen: React.FC = () => {
                     label={field.title}
                     clearButtonMode="always"
                     keyboardType={keyboardTypeMap[possibleType]}
+                    autoCapitalize="none"
                     value={formState[field.id] as string}
                     onChangeText={onChange}
                   />
@@ -248,41 +258,28 @@ const ClaimScreen: React.FC = () => {
             if (field.type === "phone") {
               const phone = (formState[field.id] as PhoneType) ?? {};
               return (
-                <View key={field.id} style={styles.mobileCountryCode}>
-                  <View
-                    style={{
-                      display: "flex",
-                      width: 80
+                <View key={field.id}>
+                  <Input
+                    label="Country code"
+                    keyboardType="phone-pad"
+                    placeholder="+61"
+                    value={phone.countryCode}
+                    onChangeText={(value) => {
+                      onChange({ ...phone, countryCode: value });
                     }}
-                  >
-                    <Input
-                      label={"CC"} // country code
-                      placeholder={"+61"}
-                      value={phone.countryCode}
-                      onChangeText={(value) => {
-                        onChange({ ...phone, countryCode: value });
-                      }}
-                    />
-                  </View>
+                  />
 
-                  <View
-                    style={{
-                      display: "flex",
-                      flex: 1
+                  <Input
+                    label={field.title}
+                    keyboardType="phone-pad"
+                    value={phone.number}
+                    onChangeText={(value) => {
+                      onChange({
+                        countryCode: phone.countryCode ?? "+61",
+                        number: value
+                      });
                     }}
-                  >
-                    <Input
-                      label={field.title}
-                      keyboardType={"phone-pad"}
-                      value={phone.number}
-                      onChangeText={(value) => {
-                        onChange({
-                          countryCode: phone.countryCode ?? "+61",
-                          number: value
-                        });
-                      }}
-                    />
-                  </View>
+                  />
                 </View>
               );
             }
@@ -325,7 +322,7 @@ const ClaimScreen: React.FC = () => {
       <View style={styles.buttonWrapper}>
         {isOtpVerifyAction ? (
           <Button
-            title={"Verify"}
+            title="Verify"
             disabled={userClaim?.verified}
             onPress={() => {
               formatMobileNumberState();
@@ -359,11 +356,6 @@ const styles = StyleSheet.create({
   },
   datePicker: {
     height: 500
-  },
-
-  mobileCountryCode: {
-    display: "flex",
-    flexDirection: "row"
   }
 });
 

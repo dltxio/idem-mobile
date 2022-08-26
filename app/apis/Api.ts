@@ -1,6 +1,7 @@
 import {
   RequestOtpRequest,
-  UserDetailRequest,
+  uploadPublicKey,
+  UsersResponse,
   verifyPGPRequest
 } from "./../src/types/user";
 import {
@@ -12,6 +13,7 @@ import {
 import HTTPClient from "./HTTPClient";
 import { RequestOptResponse, VerifyOtpRequest } from "../src/types/claim";
 import { UploadPGPKeyResponse } from "../src/types/general";
+
 export default class Api extends HTTPClient {
   public vendorSignup = async (
     body: UserSignup,
@@ -30,9 +32,6 @@ export default class Api extends HTTPClient {
   public putExpoToken = async (userId: string, body: PutExpoTokenRequest) => {
     this.put(`user/${userId}/token`, body);
   };
-
-  public syncDetail = async (body: UserDetailRequest) =>
-    this.post(`user/syncDetail`, body);
 
   public publishPGPKey = async (body: string) =>
     this.post<UploadPGPKeyResponse>(
@@ -65,4 +64,10 @@ export default class Api extends HTTPClient {
 
   public verifyOtp = async (body: VerifyOtpRequest) =>
     this.post<boolean>(`user/verifyOtp`, body);
+
+  public uploadPublicKey = async (body: uploadPublicKey) =>
+    this.post<boolean>(`user/key/add`, body);
+
+  public getUser = async (email: string) =>
+    this.get<UsersResponse>(`user/email/${email}`);
 }

@@ -5,7 +5,8 @@ import {
   ScrollView,
   Text,
   Dimensions,
-  Button
+  Button,
+  StatusBar
 } from "react-native";
 import commonStyles from "../../styles/styles";
 import { ProfileStackNavigation } from "../../types/navigation";
@@ -39,20 +40,20 @@ const Home: React.FC = () => {
   const addressValue = usersClaims.find(
     (claim) => claim.type === ClaimTypeConstants.AddressCredential
   )?.value;
-
   const { verifyClaims } = useVerifyClaims();
   const verifyUserOnProxy = async () => {
     if (splitName && dob && address && email) {
+      const formattedEmail = email.trim().toLowerCase();
       const hashEmail = await Crypto.digestStringAsync(
         Crypto.CryptoDigestAlgorithm.SHA256,
-        email.toLowerCase()
+        formattedEmail
       );
 
       const userClaims = {
         firstName: splitName.firstName,
         lastName: splitName.lastName,
-        dob: dob,
-        email: hashEmail,
+        dob,
+        hashEmail,
         houseNumber: addressValue.houseNumber,
         street: addressValue.street,
         suburb: addressValue.suburb,
@@ -67,10 +68,11 @@ const Home: React.FC = () => {
 
   return (
     <View style={commonStyles.screen}>
+      <StatusBar hidden={false} />
       <UserDetailsHeader />
       <CreateMnemonicController />
       <ScrollView style={commonStyles.screenContent}>
-        <Text style={commonStyles.text.smallHeading}>Your claims</Text>
+        <Text style={commonStyles.text.smallHeading}>Your Claims</Text>
         {usersClaims.length ? (
           <ClaimsList
             claims={usersClaims.filter((c) => !c.hideFromList)}
@@ -86,7 +88,7 @@ const Home: React.FC = () => {
         )}
         {unclaimedClaims.length ? (
           <>
-            <Text style={commonStyles.text.smallHeading}>All claims</Text>
+            <Text style={commonStyles.text.smallHeading}>All Claims</Text>
             <ClaimsList
               claims={unclaimedClaims.filter((c) => !c.hideFromList)}
               onPress={navigateToClaim}
