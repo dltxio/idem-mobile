@@ -1,18 +1,18 @@
 const setPgp = [
   {
-    type: "passport",
+    type: "Import-Private-Key",
     title: "Import Private Key"
   },
   {
-    type: "drivers-licence",
+    type: "Import-Private-Key-from-Device",
     title: "Import Private Key from Device"
   },
   {
-    type: "birth-certificate",
+    type: "Generate-new-PGP-Key-and-publish",
     title: "Generate new PGP Key and publish"
   },
   {
-    type: "bank-statement",
+    type: "Verify-email",
     title: "Verify email"
   }
 ];

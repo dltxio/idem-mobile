@@ -16,7 +16,7 @@ const documents: Document[] = [
   {
     type: "bank-statement",
     title: "Bank Statement"
-  },
+  },  
   {
     type: "rates-notice",
     title: "Rates Notice"

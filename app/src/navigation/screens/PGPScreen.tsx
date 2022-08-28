@@ -43,7 +43,7 @@ const PGPScreen: React.FC = () => {
   // for user input
   const { showActionSheetWithOptions } = useActionSheet();
   const [keyText, setKeyText] = React.useState<string>();
-  const {UserDetailsHeader} = UserDetailsHeader();
+  // const {UserDetailsHeader} = UserDetailsHeader();
   const emailClaimValue = useClaimValue(ClaimTypeConstants.EmailCredential);
   const nameClaimValue = useClaimValue(ClaimTypeConstants.NameCredential);
 
@@ -169,9 +169,9 @@ const PGPScreen: React.FC = () => {
           not have access to the keys you import.
         </Text>
         <Text style={styles.headingText}>PGP Public Key</Text>
-        <View>{pgpTitle}</View>
+        {/* <View>{pgpTitle}</View> */}
         <View style={styles.actionSheetButtonContainer}>
-          {/* <Entypo.Button
+          <Entypo.Button
             name="list"
             backgroundColor="#3e3e3e"
             onPress={() =>
@@ -192,7 +192,7 @@ const PGPScreen: React.FC = () => {
             }
           >
             {selectedDocument.title}
-          </Entypo.Button> */}
+          </Entypo.Button>
         </View>
         <View style={styles.buttonWrapper}>
           {/* <View style={styles.button}>
