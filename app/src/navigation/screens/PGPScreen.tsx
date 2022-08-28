@@ -10,6 +10,7 @@ import {
   StatusBar
 } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
+import UserDetailsHeader from "./UserDetailsHeader";
 import * as FileSystem from "expo-file-system";
 import { Button } from "../../components";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
@@ -21,6 +22,8 @@ import {
   checkIfContentContainOnlyPublicKey,
   extractPrivateKeyFromContent
 } from "../../utils/pgp-utils";
+import { Entypo } from "@expo/vector-icons";
+import { useActionSheet } from "@expo/react-native-action-sheet";
 
 const importPrivateKeyFileFromDevice = async () => {
   const res = await DocumentPicker.getDocumentAsync({
@@ -38,7 +41,9 @@ const importPrivateKeyFileFromDevice = async () => {
 
 const PGPScreen: React.FC = () => {
   // for user input
+  const { showActionSheetWithOptions } = useActionSheet();
   const [keyText, setKeyText] = React.useState<string>();
+  const {UserDetailsHeader} = UserDetailsHeader();
   const emailClaimValue = useClaimValue(ClaimTypeConstants.EmailCredential);
   const nameClaimValue = useClaimValue(ClaimTypeConstants.NameCredential);
 
@@ -147,21 +152,50 @@ const PGPScreen: React.FC = () => {
         contentContainerStyle={styles.scrollContent}
       >
         <StatusBar hidden={false} />
-        <TextInput
-          placeholder="Paste your PGP/GPG private key here"
-          placeholderTextColor={"black"}
-          onChangeText={setKeyText}
-          style={styles.input}
-          multiline={true}
-          selectionColor={"white"}
-          value={keyText}
-        />
-        <Text style={styles.warning}>
+
+        <Text style={styles.PGPText}>
+          Pretty Good Privacy (PGP) is an encryption program that provides
+          cryptographic privacy and authentication for data communication. PGP
+          is used for singing, encryption, and decrypting texts, e-mails, files,
+          directories, and whole disk partitions and to increase the security of
+          e-mail communications.
+        </Text>
+
+        <Text style={styles.PGPText}>
+          IDEM uses PGP encryption to secure your communication and data.
+        </Text>
+        <Text style={styles.PGPText}>
           NOTE: Importing your keys saves them to your local storage. IDEM does
           not have access to the keys you import.
         </Text>
+        <Text style={styles.headingText}>PGP Public Key</Text>
+        <View>{pgpTitle}</View>
+        <View style={styles.actionSheetButtonContainer}>
+          {/* <Entypo.Button
+            name="list"
+            backgroundColor="#3e3e3e"
+            onPress={() =>
+              showActionSheetWithOptions(
+                {
+                  options: [
+                    ...allDocuments.map((document) => document.title),
+                    "Cancel"
+                  ],
+                  cancelButtonIndex: allDocuments.length
+                },
+                (buttonIndex) => {
+                  if (buttonIndex === undefined) return;
+                  if (buttonIndex === allDocuments.length) return;
+                  setSelectedDocument(allDocuments[buttonIndex]);
+                }
+              )
+            }
+          >
+            {selectedDocument.title}
+          </Entypo.Button> */}
+        </View>
         <View style={styles.buttonWrapper}>
-          <View style={styles.button}>
+          {/* <View style={styles.button}>
             <Button
               title={"Import Private Key"}
               onPress={() => importMyPrivateKeyFromTextInput(keyText as string)}
@@ -197,9 +231,8 @@ const PGPScreen: React.FC = () => {
               disabled={emailClaim?.verified}
               onPress={() => verifyPublicKey(emailClaimValue)}
             />
-          </View>
+          </View> */}
         </View>
-
         <BottomNavBarSpacer />
       </ScrollView>
     </KeyboardAvoidingView>
@@ -212,12 +245,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  actionSheetButtonContainer: {
+    margin: 10
+  },
   scrollContent: {
     justifyContent: "flex-start",
     alignItems: "center"
   },
   introText: {
     marginBottom: 10
+  },
+  headingText: {
+    fontWeight: "500" as any,
+    fontSize: 18,
+    marginBottom: 10,
+    textAlign: "center"
   },
   input: {
     marginVertical: 10,
@@ -236,7 +278,7 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     marginHorizontal: 10
   },
-  warning: {
+  PGPText: {
     alignSelf: "stretch",
     marginHorizontal: 20,
     marginTop: 10

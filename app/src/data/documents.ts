@@ -6,7 +6,7 @@ const documents: Document[] = [
     title: "Passport"
   },
   {
-    type: "drivers-licence",
+    type: "drivers-licence",  
     title: "Driver Licence"
   },
   {
