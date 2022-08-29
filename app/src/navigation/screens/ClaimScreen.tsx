@@ -32,7 +32,6 @@ import { claimsLocalStorage } from "../../utils/local-storage";
 import useApi from "../../hooks/useApi";
 import { AlertTitle } from "../../constants/common";
 import { FieldType } from "../../types/general";
-import { reactRouterV3Instrumentation } from "@sentry/react";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
