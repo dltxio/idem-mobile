@@ -9,8 +9,9 @@ import {
   Alert,
   StatusBar
 } from "react-native";
+import Dialog from "react-native-dialog";
 import * as DocumentPicker from "expo-document-picker";
-import UserDetailsHeader from "./UserDetailsHeader";
+// import UserDetailsHeader from "./UserDetailsHeader";
 import * as FileSystem from "expo-file-system";
 import { Button } from "../../components";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
@@ -169,69 +170,44 @@ const PGPScreen: React.FC = () => {
           not have access to the keys you import.
         </Text>
         <Text style={styles.headingText}>PGP Public Key</Text>
-        {/* <View>{pgpTitle}</View> */}
-        <View style={styles.actionSheetButtonContainer}>
-          <Entypo.Button
-            name="list"
-            backgroundColor="#3e3e3e"
+        {/* <Title>{pgpTitle}</Title> */}
+        <View style={styles.buttonWrapper}>
+          <Button
+            style={styles.button}
+            disabled={shouldDisabledGeneratePgpKey}
+            // {!keyText || isKeyTextIsPublicKey}
+            // || keyText !== undefined}
+            // {emailClaim?.verified}
             onPress={() =>
               showActionSheetWithOptions(
                 {
                   options: [
-                    ...allDocuments.map((document) => document.title),
-                    "Cancel"
+                    "Import Private Key",
+                    "Import Private Key from Device",
+                    "Generate new PGP Key and publish",
+                    "cancel"
                   ],
-                  cancelButtonIndex: allDocuments.length
+                  cancelButtonIndex: 3
                 },
-                (buttonIndex) => {
-                  if (buttonIndex === undefined) return;
-                  if (buttonIndex === allDocuments.length) return;
-                  setSelectedDocument(allDocuments[buttonIndex]);
+                async (buttonIndex) => {
+                  if (buttonIndex === 0) {
+                    importMyPrivateKeyFromTextInput(keyText as string);
+                  }
+                  if (buttonIndex === 1) {
+                    await importPrivateKeyFromDevice();
+                  }
+                  if (buttonIndex === 2) {
+                    await generateAndPublishNewPgpKey(
+                      nameClaimValue as string,
+                      emailClaimValue as string
+                    );
+                  }
                 }
               )
             }
           >
-            {selectedDocument.title}
-          </Entypo.Button>
-        </View>
-        <View style={styles.buttonWrapper}>
-          {/* <View style={styles.button}>
-            <Button
-              title={"Import Private Key"}
-              onPress={() => importMyPrivateKeyFromTextInput(keyText as string)}
-              disabled={!keyText || isKeyTextIsPublicKey}
-            />
-          </View>
-        </View>
-        <View style={styles.buttonWrapper}>
-          <View style={styles.button}>
-            <Button
-              title={"Import Private Key from Device"}
-              onPress={importPrivateKeyFromDevice}
-            />
-          </View>
-        </View>
-
-        <View style={styles.buttonWrapper}>
-          <View style={styles.button}>
-            <Button
-              title={"Generate new PGP Key and publish"}
-              disabled={shouldDisabledGeneratePgpKey || keyText !== undefined}
-              onPress={async () =>
-                generateAndPublishNewPgpKey(
-                  nameClaimValue as string,
-                  emailClaimValue as string
-                )
-              }
-            />
-          </View>
-          <View style={styles.button}>
-            <Button
-              title={"Verify email"}
-              disabled={emailClaim?.verified}
-              onPress={() => verifyPublicKey(emailClaimValue)}
-            />
-          </View> */}
+            Setup PGP
+          </Button>
         </View>
         <BottomNavBarSpacer />
       </ScrollView>
@@ -274,7 +250,7 @@ const styles = StyleSheet.create({
     alignSelf: "stretch"
   },
   button: {
-    marginVertical: 5,
+    marginVertical: 400,
     alignSelf: "stretch",
     marginHorizontal: 10
   },
