@@ -19,8 +19,8 @@
         "API_ENDPOINT": "https://proxy.idem.com.au/",
         "SENTRY_DSN": "https://6965f2d7058b49e9a642b8d60f704eb1@o1345931.ingest.sentry.io/6623100",
         "SENTRY_DEBUG_ENABLE": "false",
-        "PROXY_USERNAME": "PROXY_USERNAME_STAGING_TOKEN",
-        "PROXY_PASSWORD": "PROXY_PASSWORD_STAGING_TOKEN"
+        "PROXY_USERNAME": "myusername",
+        "PROXY_PASSWORD": "password123"
       },
       "ios": {
         "autoIncrement": "version"
