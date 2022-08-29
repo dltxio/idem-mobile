@@ -32,6 +32,7 @@ import { claimsLocalStorage } from "../../utils/local-storage";
 import useApi from "../../hooks/useApi";
 import { AlertTitle } from "../../constants/common";
 import { FieldType } from "../../types/general";
+import { reactRouterV3Instrumentation } from "@sentry/react";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -112,7 +113,7 @@ const ClaimScreen: React.FC = () => {
         ...newFormState,
         email: (newFormState.email as string).toLowerCase()
       };
-  
+
     }
     await addClaim(claim.type, newFormState, selectedFileIds);
     const claims = await claimsLocalStorage.get();
@@ -152,10 +153,20 @@ const ClaimScreen: React.FC = () => {
   };
   const openVerifyOtpScreen = async () => {
     setLoading(true);
-    const { countryCode, number } = formatMobileNumberState();
+
+    const newMobileState = formatMobileNumberState();
+    if (newMobileState.countryCode !== "+61") {
+      Alert.alert(
+        "Error",
+        "IDEM can only support Australian numbers for mobile verification"
+      );
+      setLoading(false);
+      return;
+    };
+
     try {
       const otpResponse = await api.requestOtp({
-        mobileNumber: `${countryCode}${number}`
+        mobileNumber: `${newMobileState.countryCode}${newMobileState.number}`
       });
       if (otpResponse.hash && otpResponse.expiryTimestamp) {
         setOtpContext(otpResponse);
@@ -264,6 +275,7 @@ const ClaimScreen: React.FC = () => {
                     keyboardType="phone-pad"
                     placeholder="+61"
                     value={phone.countryCode}
+                    defaultValue={"+61"}
                     onChangeText={(value) => {
                       onChange({ ...phone, countryCode: value });
                     }}
@@ -325,7 +337,6 @@ const ClaimScreen: React.FC = () => {
             title="Verify"
             disabled={userClaim?.verified}
             onPress={() => {
-              formatMobileNumberState();
               openVerifyOtpScreen();
             }}
             loading={loading}
