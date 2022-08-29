@@ -112,7 +112,6 @@ const ClaimScreen: React.FC = () => {
         ...newFormState,
         email: (newFormState.email as string).toLowerCase()
       };
-
     }
     await addClaim(claim.type, newFormState, selectedFileIds);
     const claims = await claimsLocalStorage.get();
@@ -161,7 +160,7 @@ const ClaimScreen: React.FC = () => {
       );
       setLoading(false);
       return;
-    };
+    }
 
     try {
       const otpResponse = await api.requestOtp({
