@@ -46,7 +46,7 @@ jobs:
 
       - shell: bash
         run: |
-          cd ~/idem-mobile/app
+          cd app
           sed -i -e 's/PROXY_USERNAME_TOKEN/${{ secrets.PROXY_USERNAME }}/g' eas.json
           sed -i -e 's/PROXY_PASSWORD_TOKEN/${{ secrets.PROXY_PASSWORD }}/g' eas.json
           cat eas.json
