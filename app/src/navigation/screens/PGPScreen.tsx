@@ -148,7 +148,7 @@ const PGPScreen: React.FC = () => {
       >
         <StatusBar hidden={false} />
         <TextInput
-          placeholder="Paste your PGP/GPG private key here"
+          placeholder="Paste your PGP/GPG Private Key here"
           placeholderTextColor={"black"}
           onChangeText={setKeyText}
           style={styles.input}
@@ -181,7 +181,7 @@ const PGPScreen: React.FC = () => {
         <View style={styles.buttonWrapper}>
           <View style={styles.button}>
             <Button
-              title={"Generate New PGP Key and publish"}
+              title={"Generate New PGP Key and Publish"}
               disabled={shouldDisabledGeneratePgpKey || keyText !== undefined}
               onPress={async () =>
                 generateAndPublishNewPgpKey(
