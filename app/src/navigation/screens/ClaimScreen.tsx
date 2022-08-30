@@ -156,7 +156,7 @@ const ClaimScreen: React.FC = () => {
     if (newMobileState.countryCode.trim() !== "+61") {
       Alert.alert(
         "Error",
-        "IDEM can only support Australian numbers for mobile verification"
+        "IDEM only supports Australian numbers for mobile claims/verification"
       );
       setLoading(false);
       return;
