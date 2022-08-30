@@ -193,7 +193,7 @@ const PGPScreen: React.FC = () => {
           </View>
           <View style={styles.button}>
             <Button
-              title={"Verify email"}
+              title={"Verify Email"}
               disabled={emailClaim?.verified}
               onPress={() => verifyPublicKey(emailClaimValue)}
             />
