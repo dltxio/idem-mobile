@@ -82,9 +82,10 @@ const usePgp = (): Hooks => {
     publicKey: string,
     password: string
   ) => {
+    const formattedEmail = email.trim().toLowerCase();
     api
       .uploadPublicKey({
-        email: ethers.utils.hashMessage(email),
+        hashEmail: ethers.utils.hashMessage(formattedEmail),
         publicKeyArmored: publicKey
       })
       .then((result) => {

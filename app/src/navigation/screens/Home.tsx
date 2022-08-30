@@ -43,16 +43,17 @@ const Home: React.FC = () => {
   const { verifyClaims } = useVerifyClaims();
   const verifyUserOnProxy = async () => {
     if (splitName && dob && address && email) {
+      const formattedEmail = email.trim().toLowerCase();
       const hashEmail = await Crypto.digestStringAsync(
         Crypto.CryptoDigestAlgorithm.SHA256,
-        email
+        formattedEmail
       );
 
       const userClaims = {
         firstName: splitName.firstName,
         lastName: splitName.lastName,
-        dob: dob,
-        email: hashEmail,
+        dob,
+        hashEmail,
         houseNumber: addressValue.houseNumber,
         street: addressValue.street,
         suburb: addressValue.suburb,
