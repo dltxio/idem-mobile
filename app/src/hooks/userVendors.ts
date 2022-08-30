@@ -29,7 +29,7 @@ const useVendors = (): Hooks => {
       const verification = await verificationStorage.get();
       if (!verification) {
         throw new Error(
-          "Claims not verified. Please verify your claims on the profile page"
+          "The required claims have not been verified. Please verify these claims on the profile page first."
         );
       }
 
