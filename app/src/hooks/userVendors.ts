@@ -28,7 +28,9 @@ const useVendors = (): Hooks => {
     try {
       const verification = await verificationStorage.get();
       if (!verification) {
-        throw new Error("Verification not found");
+        throw new Error(
+          "Claims not verified. Please verify your claims on the profile page"
+        );
       }
 
       const vendor = getVendor(vendorId);
