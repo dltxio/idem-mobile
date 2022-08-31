@@ -22,6 +22,7 @@ import { findNames } from "../../utils/formatters";
 import { UserVerifyRequest } from "../../types/user";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
 import { ClaimTypeConstants } from "../../constants/common";
+import IdemButton from "../../components/Button";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -98,7 +99,7 @@ const Home: React.FC = () => {
         <View style={styles.buttonWrapper}>
           {name && dob && address && email && (
             <View style={styles.buttonWrapper}>
-              <Button
+              <IdemButton
                 title="Verify My Claims"
                 // disabled={signed ? false : true}
                 onPress={async () => {
