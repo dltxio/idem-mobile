@@ -143,7 +143,7 @@ const ClaimScreen: React.FC = () => {
   const formatMobileNumberState = () => {
     const mobileState = formState["mobileNumber"];
     const newMobileState = {
-      countryCode: mobileState.countryCode ?? "+61",
+      countryCode: mobileState.countryCode.trim() ?? "+61",
       number: mobileState.number.replace(/^0/, "")
     };
     setFormState((previous) => ({
@@ -154,10 +154,20 @@ const ClaimScreen: React.FC = () => {
   };
   const openVerifyOtpScreen = async () => {
     setLoading(true);
-    const { countryCode, number } = formatMobileNumberState();
+
+    const newMobileState = formatMobileNumberState();
+    if (newMobileState.countryCode !== "+61") {
+      Alert.alert(
+        "Error",
+        "IDEM only supports Australian numbers for mobile claims/verification"
+      );
+      setLoading(false);
+      return;
+    }
+
     try {
       const otpResponse = await api.requestOtp({
-        mobileNumber: `${countryCode}${number}`
+        mobileNumber: `${newMobileState.countryCode}${newMobileState.number}`
       });
       if (otpResponse.hash && otpResponse.expiryTimestamp) {
         setOtpContext(otpResponse);
@@ -267,6 +277,7 @@ const ClaimScreen: React.FC = () => {
                     keyboardType="phone-pad"
                     placeholder="+61"
                     value={phone.countryCode}
+                    defaultValue={"+61"}
                     onChangeText={(value) => {
                       onChange({ ...phone, countryCode: value });
                     }}
@@ -328,7 +339,6 @@ const ClaimScreen: React.FC = () => {
             title="Verify"
             disabled={userClaim?.verified}
             onPress={() => {
-              formatMobileNumberState();
               openVerifyOtpScreen();
             }}
             loading={loading}
