@@ -59,6 +59,7 @@ const ClaimScreen: React.FC = () => {
 
   const { addClaim, usersClaims } = useClaimsStore();
   const [disableButton, setDisableButton] = React.useState(false);
+  const [emailInput, setEmailInput] = React.useState(false);
   const userClaim = usersClaims.find((c) => c.type === claim.type);
   const [formState, setFormState] = React.useState<FormState>(
     userClaim?.value ?? {}
@@ -112,7 +113,6 @@ const ClaimScreen: React.FC = () => {
         ...newFormState,
         email: (newFormState.email as string).toLowerCase()
       };
-  
     }
     await addClaim(claim.type, newFormState, selectedFileIds);
     const claims = await claimsLocalStorage.get();
@@ -131,8 +131,10 @@ const ClaimScreen: React.FC = () => {
   React.useEffect(() => {
     if (userClaim?.type === "EmailCredential" && userClaim.verified) {
       setDisableButton(true);
+      setEmailInput(true)
     }
   }, [userClaim]);
+
   const isDocumentUploadVerifyAction =
     claim.verificationAction === "document-upload";
 
@@ -234,6 +236,7 @@ const ClaimScreen: React.FC = () => {
                     autoCapitalize="none"
                     value={formState[field.id] as string}
                     onChangeText={onChange}
+                    editable={emailInput}
                   />
                 </View>
               );
