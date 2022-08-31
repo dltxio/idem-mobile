@@ -5,7 +5,6 @@ import {
   exchangeLocalStorage,
   verificationStorage
 } from "../utils/local-storage";
-import { createRandomPassword } from "../utils/randomPassword-utils";
 import { getVendor } from "../utils/vendor";
 import useApi from "./useApi";
 
