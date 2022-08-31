@@ -89,7 +89,7 @@ const usePgp = (): Hooks => {
 
   const uploadPublicKey = async (email: string, publicKey: string) => {
     const formattedEmail = email.trim().toLowerCase();
-    api
+    await api
       .uploadPublicKey({
         hashEmail: ethers.utils.hashMessage(formattedEmail),
         publicKeyArmored: publicKey
