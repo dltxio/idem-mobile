@@ -5,7 +5,6 @@ import {
   ScrollView,
   Text,
   Dimensions,
-  Button,
   StatusBar
 } from "react-native";
 import commonStyles from "../../styles/styles";
