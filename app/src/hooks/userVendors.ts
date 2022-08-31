@@ -48,7 +48,7 @@ const useVendors = (): Hooks => {
           firstName: splitName?.firstName,
           lastName: splitName?.lastName,
           email,
-          mobile,
+          mobile: mobile?.replace(" ", ""),
           password: randomTempPassword,
           dob
         },
