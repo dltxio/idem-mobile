@@ -12,7 +12,7 @@ import {
 } from "../src/types/user";
 import HTTPClient from "./HTTPClient";
 import { RequestOptResponse, VerifyOtpRequest } from "../src/types/claim";
-import { UploadPGPKeyResponse } from "../src/types/general";
+import { UploadPGPKeyResponse, UserSignupResponse } from "../src/types/general";
 
 export default class Api extends HTTPClient {
   public vendorSignup = async (
@@ -23,7 +23,7 @@ export default class Api extends HTTPClient {
       ...body,
       verification
     };
-    return this.post(`user/signup`, payload);
+    return this.post<UserSignupResponse>(`user/signup`, payload);
   };
 
   public verify = async (body: UserVerifyRequest) =>

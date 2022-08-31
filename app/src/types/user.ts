@@ -2,7 +2,6 @@ export type UserSignup = {
   source: number;
   firstName: string;
   lastName: string;
-  password: string;
   email: string;
   mobile?: string;
   dob?: string;

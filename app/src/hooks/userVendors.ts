@@ -40,8 +40,6 @@ const useVendors = (): Hooks => {
       const hasFullName = splitName?.firstName && splitName.lastName;
       if (!hasFullName) throw new Error("Missing Full Name");
 
-      const randomTempPassword = createRandomPassword();
-
       const response = await api.vendorSignup(
         {
           source: vendorId,
@@ -49,21 +47,12 @@ const useVendors = (): Hooks => {
           lastName: splitName?.lastName,
           email,
           mobile,
-          password: randomTempPassword,
           dob
         },
         verification
       );
-      let tempPassword;
-      let userId;
-      if (vendorId === 5) {
-        const { token, password } = response as any;
-        userId = token;
-        tempPassword = password;
-      } else {
-        userId = response;
-        tempPassword = randomTempPassword;
-      }
+
+      const { userId, tempPassword } = response;
       await exchangeLocalStorage.save({
         vendor: vendor,
         signup: true,

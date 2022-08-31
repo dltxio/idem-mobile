@@ -19,6 +19,11 @@ export type UploadPGPKeyResponse = {
   token: string;
 };
 
+export type UserSignupResponse = {
+  userId: string;
+  tempPassword: string;
+};
+
 export type Vendor = {
   id: number;
   description: string;

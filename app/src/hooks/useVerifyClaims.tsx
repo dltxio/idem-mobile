@@ -33,7 +33,7 @@ const useVerifyClaims = (): Hooks => {
       })
       .catch((error) => {
         console.log(error);
-        Alert.alert(AlertTitle.Error, `${error}`);
+        Alert.alert(AlertTitle.Error, `${error.message}`);
       });
   };
 
