@@ -81,6 +81,6 @@ export type UsersResponse = {
 };
 
 export type SignupResponse = {
-  token: string;
+  userId: string;
   password?: string;
 };

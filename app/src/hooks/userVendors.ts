@@ -54,14 +54,13 @@ const useVendors = (): Hooks => {
         },
         verification
       );
-      let tempPassword;
+      let tempPassword: string;
       let userId;
       if (vendorId === 5) {
-        const { token, password } = response as any;
-        userId = token;
-        tempPassword = password;
+        userId = response.userId;
+        tempPassword = response.password ?? randomTempPassword;
       } else {
-        userId = response;
+        userId = response.userId;
         tempPassword = randomTempPassword;
       }
       await exchangeLocalStorage.save({
