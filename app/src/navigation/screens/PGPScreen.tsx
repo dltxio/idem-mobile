@@ -184,7 +184,7 @@ const PGPScreen: React.FC = () => {
               onPress={async () =>
                 importPrivateKeyFromDevice(emailClaimValue as string)
               }
-              disabled={!emailClaimValue}
+              disabled={!emailClaimValue || keyText !== undefined}
             />
           </View>
         </View>
