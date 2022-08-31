@@ -15,7 +15,8 @@ type Hooks = {
     email: string | undefined
   ) => Promise<void>;
   generateKeyPairFromPrivateKey: (
-    privateKey: string | undefined
+    privateKey: string | undefined,
+    email: string
   ) => Promise<void>;
   verifyPublicKey: (email: string | undefined) => Promise<void>;
 };
@@ -46,7 +47,11 @@ const usePgp = (): Hooks => {
 
       await pgpLocalStorage.save(pgp);
 
-      await uploadPublicKey(email, publicKey, password);
+      await uploadPublicKey(email, publicKey);
+      Alert.alert(
+        AlertTitle.Success,
+        `Your PGP key has been created with the password ${password} and uploaded, please check your email to confirm.`
+      );
     } catch (error) {
       Alert.alert(
         AlertTitle.Error,
@@ -56,10 +61,11 @@ const usePgp = (): Hooks => {
   };
 
   const generateKeyPairFromPrivateKey = async (
-    privateKey: string | undefined
+    privateKey: string | undefined,
+    email: string
   ) => {
     try {
-      if (!privateKey) return;
+      if (!privateKey || !email) return;
       const publicKey = await OpenPGP.convertPrivateKeyToPublicKey(privateKey);
       const meta = await OpenPGP.getPrivateKeyMetadata(privateKey);
       const pgp = {
@@ -69,7 +75,11 @@ const usePgp = (): Hooks => {
       } as PGP;
 
       await pgpLocalStorage.save(pgp);
-      Alert.alert(AlertTitle.Success, "Your PGP key has been saved");
+      await uploadPublicKey(email, publicKey);
+      Alert.alert(
+        AlertTitle.Success,
+        "Your PGP key has been saved and uploaded, please check your email to confirm."
+      );
     } catch (error: any) {
       throw new Error(
         `There was a problem generating your public key.\n > ${error.message}`
@@ -77,29 +87,16 @@ const usePgp = (): Hooks => {
     }
   };
 
-  const uploadPublicKey = async (
-    email: string,
-    publicKey: string,
-    password: string
-  ) => {
+  const uploadPublicKey = async (email: string, publicKey: string) => {
     const formattedEmail = email.trim().toLowerCase();
     api
       .uploadPublicKey({
         hashEmail: ethers.utils.hashMessage(formattedEmail),
         publicKeyArmored: publicKey
       })
-      .then((result) => {
-        if (result) {
-          Alert.alert(
-            AlertTitle.Success,
-            `Your PGP key has been created with the password ${password} and uploaded, please check your email to confirm.`
-          );
-        } else {
-          Alert.alert(AlertTitle.Error, "Your PGP key has not been uploaded");
-        }
-      })
       .catch((error) => {
         Alert.alert(AlertTitle.Error, error.message);
+        throw error;
       });
   };
 

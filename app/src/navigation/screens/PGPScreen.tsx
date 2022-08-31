@@ -58,18 +58,18 @@ const PGPScreen: React.FC = () => {
   }, [setKeyText]);
 
   const extractAndLoadKeyPairFromContent = React.useCallback(
-    async (content: string) => {
+    async (content: string, email: string) => {
       const privateKey = extractPrivateKeyFromContent(content);
-      await generateKeyPairFromPrivateKey(privateKey);
+      await generateKeyPairFromPrivateKey(privateKey, email);
       await loadKeyFromLocalStorage();
     },
     [generateKeyPairFromPrivateKey, loadKeyFromLocalStorage]
   );
 
   const importMyPrivateKeyFromTextInput = React.useCallback(
-    async (content: string) => {
+    async (content: string, email: string) => {
       try {
-        await extractAndLoadKeyPairFromContent(content);
+        await extractAndLoadKeyPairFromContent(content, email);
       } catch (error: any) {
         Alert.alert(
           AlertTitle.Error,
@@ -82,21 +82,24 @@ const PGPScreen: React.FC = () => {
     [extractAndLoadKeyPairFromContent]
   );
 
-  const importPrivateKeyFromDevice = React.useCallback(async () => {
-    try {
-      const content = await importPrivateKeyFileFromDevice();
-      if (!content) return;
-      await extractAndLoadKeyPairFromContent(content);
-    } catch (error: any) {
-      Alert.alert(
-        AlertTitle.Error,
-        `Failed to extract the Private Key from file \n> ${
-          error?.message ?? "unknown error"
-        }`
-      );
-      console.error(error);
-    }
-  }, [extractAndLoadKeyPairFromContent]);
+  const importPrivateKeyFromDevice = React.useCallback(
+    async (email: string) => {
+      try {
+        const content = await importPrivateKeyFileFromDevice();
+        if (!content) return;
+        await extractAndLoadKeyPairFromContent(content, email);
+      } catch (error: any) {
+        Alert.alert(
+          AlertTitle.Error,
+          `Failed to extract the Private Key from file \n> ${
+            error?.message ?? "unknown error"
+          }`
+        );
+        console.error(error);
+      }
+    },
+    [extractAndLoadKeyPairFromContent]
+  );
 
   const generateAndPublishNewPgpKey = React.useCallback(
     async (name: string, email: string) => {
@@ -164,8 +167,13 @@ const PGPScreen: React.FC = () => {
           <View style={styles.button}>
             <Button
               title={"Import Private Key"}
-              onPress={() => importMyPrivateKeyFromTextInput(keyText as string)}
-              disabled={!keyText || isKeyTextIsPublicKey}
+              onPress={async () =>
+                importMyPrivateKeyFromTextInput(
+                  keyText as string,
+                  emailClaimValue as string
+                )
+              }
+              disabled={!keyText || isKeyTextIsPublicKey || !emailClaimValue}
             />
           </View>
         </View>
@@ -173,7 +181,10 @@ const PGPScreen: React.FC = () => {
           <View style={styles.button}>
             <Button
               title={"Import Private Key from Device"}
-              onPress={importPrivateKeyFromDevice}
+              onPress={async () =>
+                importPrivateKeyFromDevice(emailClaimValue as string)
+              }
+              disabled={!emailClaimValue}
             />
           </View>
         </View>
