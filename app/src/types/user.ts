@@ -79,3 +79,8 @@ export type UsersResponse = {
   createdAt: Date;
   emailVerified: boolean;
 };
+
+export type SignupResponse = {
+  userId: string;
+  password?: string;
+};
