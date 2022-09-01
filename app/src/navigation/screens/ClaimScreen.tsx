@@ -271,12 +271,12 @@ const ClaimScreen: React.FC = () => {
                   <Input
                     label="Country code"
                     keyboardType="phone-pad"
-                    placeholder="+61"
                     value={phone.countryCode}
                     defaultValue={"+61"}
                     onChangeText={(value) => {
                       onChange({ ...phone, countryCode: value });
                     }}
+                    editable={false}
                   />
 
                   <Input
