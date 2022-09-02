@@ -59,6 +59,7 @@ const ClaimScreen: React.FC = () => {
 
   const { addClaim, usersClaims } = useClaimsStore();
   const [disableButton, setDisableButton] = React.useState(false);
+  const [emailInput, setEmailInput] = React.useState(true);
   const userClaim = usersClaims.find((c) => c.type === claim.type);
   const [formState, setFormState] = React.useState<FormState>(
     userClaim?.value ?? {}
@@ -130,8 +131,10 @@ const ClaimScreen: React.FC = () => {
   React.useEffect(() => {
     if (userClaim?.type === "EmailCredential" && userClaim.verified) {
       setDisableButton(true);
+      setEmailInput(false);
     }
   }, [userClaim]);
+
   const isDocumentUploadVerifyAction =
     claim.verificationAction === "document-upload";
 
@@ -243,6 +246,7 @@ const ClaimScreen: React.FC = () => {
                     autoCapitalize="none"
                     value={formState[field.id] as string}
                     onChangeText={onChange}
+                    editable={emailInput}
                   />
                 </View>
               );
