@@ -131,7 +131,7 @@ const ClaimScreen: React.FC = () => {
   React.useEffect(() => {
     if (userClaim?.type === "EmailCredential" && userClaim.verified) {
       setDisableButton(true);
-      setEmailInput(true);
+      setEmailInput(false);
     }
   }, [userClaim]);
 
