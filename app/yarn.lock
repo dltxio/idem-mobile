@@ -7165,10 +7165,10 @@ react-native-dialog@^9.2.2:
   resolved "https://registry.yarnpkg.com/react-native-dialog/-/react-native-dialog-9.2.2.tgz#f16921dd071d17daf1e5d98fb084e1837694f009"
   integrity sha512-d2w3fyqB6G8Os0DYJKnfVl6PgqQwplW8dHSvzkQpczXzmX5V4BXOJTTXqoiKwI+nsS6QEHYb6Bk8VG7vV9WuXQ==
 
-react-native-fast-openpgp@^2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/react-native-fast-openpgp/-/react-native-fast-openpgp-2.4.1.tgz#a746c235102e0fc8d855d7789bf13cc9d83960c8"
-  integrity sha512-xXhcjTCWHXSpZE+Am4Nkl+LvWMY3Ncrz3FcbZrJX5wWPM2VzFTgwqWI69DzjKuW1+2rSeUrjlKl7wUHceTFIkA==
+react-native-fast-openpgp@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/react-native-fast-openpgp/-/react-native-fast-openpgp-2.4.2.tgz#7d2cb64e9881064e9c32dec7c73b229120359709"
+  integrity sha512-LMGnuzjzZ/YmYxFyWZJBWBuDezOc99ke0doSTo3Dan1E8gG6bD32GtxilFMuUHMQTdKBz6m41TCTbwnW1VzpMg==
   dependencies:
     big-integer "^1.6.51"
     flatbuffers "^2.0.6"
