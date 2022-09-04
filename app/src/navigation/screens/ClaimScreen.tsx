@@ -10,8 +10,14 @@ import {
   ScrollView,
   Dimensions,
   KeyboardTypeOptions,
-  StatusBar
+  StatusBar,
+  Pressable,
+  Modal
 } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { extractPrivateKeyFromContent } from "../../utils/pgp-utils";
+import * as DocumentPicker from "expo-document-picker";
+import usePgp from "../../hooks/usePpg";
 import Dialog from "react-native-dialog";
 import { Input, Switch } from "@rneui/themed";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -20,18 +26,21 @@ import {
   ProfileStackNavigation,
   ProfileStackNavigationRoute
 } from "../../types/navigation";
+import * as FileSystem from "expo-file-system";
 import { getClaimFromType } from "../../utils/claim-utils";
 import { Claim, RequestOptResponse } from "../../types/claim";
 import { FileList, Button } from "../../components";
-import { useClaimsStore } from "../../context/ClaimsStore";
+import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
 import { getDocumentFromDocumentType } from "../../utils/document-utils";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import useClaimScreen from "../../hooks/useClaimScreen";
-import { claimsLocalStorage } from "../../utils/local-storage";
+import { claimsLocalStorage, pgpLocalStorage } from "../../utils/local-storage";
 import useApi from "../../hooks/useApi";
-import { AlertTitle } from "../../constants/common";
+import { AlertTitle, ClaimTypeConstants } from "../../constants/common";
 import { FieldType } from "../../types/general";
+import { useActionSheet } from "@expo/react-native-action-sheet";
+import colors from "../../styles/colors";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -56,13 +65,15 @@ const ClaimScreen: React.FC = () => {
   const route = useRoute<ProfileStackNavigationRoute<"Claim">>();
   const api = useApi();
   const claim = getClaimFromType(route.params.claimType);
-
+  const { showActionSheetWithOptions } = useActionSheet();
   const { addClaim, usersClaims } = useClaimsStore();
   const [disableButton, setDisableButton] = React.useState(false);
   const userClaim = usersClaims.find((c) => c.type === claim.type);
   const [formState, setFormState] = React.useState<FormState>(
     userClaim?.value ?? {}
   );
+  const emailClaimValue = useClaimValue(ClaimTypeConstants.EmailCredential);
+  const nameClaimValue = useClaimValue(ClaimTypeConstants.NameCredential);
 
   const navigation = useNavigation<Navigation>();
   const dateRefs = React.useRef<{ [key: string]: any }>({});
@@ -70,6 +81,8 @@ const ClaimScreen: React.FC = () => {
     React.useState<string>();
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
   const [rawDate, setRawDate] = React.useState<Date>();
+  const [modalVisible, setModalVisible] = React.useState(false);
+  const [keyText, setKeyText] = React.useState<string>();
   const [showOtpDialog, setShowOtpDialog] = React.useState<boolean>(false);
   const [otpContext, setOtpContext] = React.useState<RequestOptResponse>();
 
@@ -112,7 +125,6 @@ const ClaimScreen: React.FC = () => {
         ...newFormState,
         email: (newFormState.email as string).toLowerCase()
       };
-  
     }
     await addClaim(claim.type, newFormState, selectedFileIds);
     const claims = await claimsLocalStorage.get();
@@ -122,6 +134,8 @@ const ClaimScreen: React.FC = () => {
     });
     setLoading(false);
   };
+  const { generateKeyPair, generateKeyPairFromPrivateKey, verifyPublicKey } =
+    usePgp();
 
   const canSave =
     claim.fields.filter((field) => formState[field.id]).length ===
@@ -137,6 +151,7 @@ const ClaimScreen: React.FC = () => {
     claim.verificationAction === "document-upload";
 
   const isOtpVerifyAction = claim.verificationAction === "otp";
+  const shouldDisabledGeneratePgpKey = !emailClaimValue || !nameClaimValue;
 
   const formatMobileNumberState = () => {
     const mobileState = formState["mobileNumber"];
@@ -167,6 +182,76 @@ const ClaimScreen: React.FC = () => {
     }
     setLoading(false);
   };
+
+  const loadKeyFromLocalStorage = React.useCallback(async () => {
+    const key = await pgpLocalStorage.get();
+    if (!key) return;
+    setKeyText(key.publicKey);
+  }, [setKeyText]);
+
+  const generateAndPublishNewPgpKey = React.useCallback(
+    async (name: string, email: string) => {
+      await generateKeyPair(name, email);
+      await loadKeyFromLocalStorage();
+      const key = await pgpLocalStorage.get();
+      if (!key) return;
+    },
+    [generateKeyPair]
+  );
+
+  const extractAndLoadKeyPairFromContent = React.useCallback(
+    async (content: string) => {
+      const privateKey = extractPrivateKeyFromContent(content);
+      await generateKeyPairFromPrivateKey(privateKey);
+      await loadKeyFromLocalStorage();
+    },
+    [generateKeyPairFromPrivateKey, loadKeyFromLocalStorage]
+  );
+  const importPrivateKeyFileFromDevice = async () => {
+    const res = await DocumentPicker.getDocumentAsync({
+      type: ["*/*"]
+    });
+    if (res.type === "cancel") return;
+    const isCorrectFileType =
+      res.name.endsWith(".asc") || res.name.endsWith(".key");
+    if (!isCorrectFileType) {
+      throw new Error("Invalid file type : expecting .asc or .key");
+    }
+    const fileContent = await FileSystem.readAsStringAsync(res.uri);
+    return fileContent;
+  };
+
+  const importMyPrivateKeyFromTextInput = React.useCallback(
+    async (content: string) => {
+      try {
+        await extractAndLoadKeyPairFromContent(content);
+      } catch (error: any) {
+        Alert.alert(
+          AlertTitle.Error,
+          `Failed to parse the Private Key \n> ${
+            error?.message ?? "unknown error"
+          }`
+        );
+      }
+    },
+    [extractAndLoadKeyPairFromContent]
+  );
+
+  const importPrivateKeyFromDevice = React.useCallback(async () => {
+    try {
+      const content = await importPrivateKeyFileFromDevice();
+      if (!content) return;
+      await extractAndLoadKeyPairFromContent(content);
+    } catch (error: any) {
+      Alert.alert(
+        AlertTitle.Error,
+        `Failed to extract the Private Key from file \n> ${
+          error?.message ?? "unknown error"
+        }`
+      );
+      console.error(error);
+    }
+  }, [extractAndLoadKeyPairFromContent]);
 
   const handleSubmitOtp = React.useCallback(
     async (otpCode: string | undefined) => {
@@ -219,7 +304,6 @@ const ClaimScreen: React.FC = () => {
                 [field.id]: value
               }));
             };
-
             if (["text", "number", "email", "house"].includes(field.type)) {
               const possibleType = field.type as Extract<
                 FieldType,
@@ -227,14 +311,110 @@ const ClaimScreen: React.FC = () => {
               >; // array.includes doesn't discriminate field.type for us :(
               return (
                 <View key={field.id}>
-                  <Input
-                    label={field.title}
-                    clearButtonMode="always"
-                    keyboardType={keyboardTypeMap[possibleType]}
-                    autoCapitalize="none"
-                    value={formState[field.id] as string}
-                    onChangeText={onChange}
-                  />
+                  <View style={styles.inputRow}>
+                    <Input
+                      label={field.title}
+                      clearButtonMode="always"
+                      keyboardType={keyboardTypeMap[possibleType]}
+                      autoCapitalize="none"
+                      value={formState[field.id] as string}
+                      onChangeText={onChange}
+                    />
+                    <View>
+                      <View style={styles.centeredView}>
+                        <Modal
+                          animationType="slide"
+                          transparent={true}
+                          visible={modalVisible}
+                        >
+                          <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                              <Text>What is a PGP key?</Text>
+                              <Text style={styles.PGPText}>
+                                Pretty Good Privacy (PGP) is an encryption
+                                program that provides cryptographic privacy and
+                                authentication for data communication. PGP is
+                                used for singing, encryption, and decrypting
+                                texts, e-mails, files, directories, and whole
+                                disk partitions and to increase the security of
+                                e-mail communications.
+                              </Text>
+                              <Text style={styles.PGPText}>
+                                IDEM uses PGP encryption to secure your
+                                communication and data.
+                              </Text>
+                              <Text style={styles.PGPText}>
+                                NOTE: Importing your keys saves them to your
+                                local storage. IDEM does not have access to the
+                                keys you import.
+                              </Text>
+                              <Pressable
+                                onPress={() => setModalVisible(!modalVisible)}
+                              >
+                                <View style={styles.buttonWrapper}>
+                                  <Text style={styles.textcolor}>Close</Text>
+                                </View>
+                              </Pressable>
+                            </View>
+                          </View>
+                        </Modal>
+                        <Pressable
+                          style={styles.modalButton}
+                          onPress={() => setModalVisible(true)}
+                        >
+                          <FontAwesome5
+                            name="info-circle"
+                            size={30}
+                            solid
+                            style={{ color: "#2089dc" }}
+                          />
+                        </Pressable>
+                      </View>
+                    </View>
+                  </View>
+                  <StatusBar hidden={false} />
+                  <View>
+                    <Button
+                      style={styles.button}
+                      disabled={shouldDisabledGeneratePgpKey}
+                      // {!keyText || isKeyTextIsPublicKey}
+                      // || keyText !== undefined}
+                      // {emailClaim?.verified}
+                      onPress={() =>
+                        showActionSheetWithOptions(
+                          {
+                            options: [
+                              "Import Private Key",
+                              "Import Private Key from Device",
+                              "Generate new PGP Key and publish",
+                              "cancel"
+                            ],
+                            cancelButtonIndex: 3
+                          },
+                          async (buttonIndex) => {
+                            if (buttonIndex === 0) {
+                              importMyPrivateKeyFromTextInput(
+                                keyText as string
+                              );
+                            }
+                            if (buttonIndex === 1) {
+                              await importPrivateKeyFromDevice();
+                            }
+                            if (buttonIndex === 2) {
+                              await generateAndPublishNewPgpKey(
+                                nameClaimValue as string,
+                                emailClaimValue as string
+                              );
+                            }
+                          }
+                        )
+                      }
+                    >
+                      Setup PGP Key
+                    </Button>
+                    <Button style={styles.button}>Verify</Button>
+                    <Text style={styles.PGPText}>FingerPrint:</Text>
+                  </View>
                 </View>
               );
             }
@@ -349,13 +529,67 @@ const styles = StyleSheet.create({
   introText: {
     marginBottom: 10
   },
+  inputRow: {
+
+  },
   buttonWrapper: {
-    bottom: 0,
-    width: Dimensions.get("window").width - 40,
-    margin: 20
+    margin: 10,
+    backgroundColor: "#2089dc",
+    padding: 5
+  },
+  textcolor: {
+    color: "white"
+  },
+  headingText: {
+    fontWeight: "500" as any,
+    fontSize: 18,
+    textAlign: "center"
+  },
+  button: {
+    alignSelf: "stretch",
+    marginHorizontal: 10,
+    marginBottom: 10
   },
   datePicker: {
     height: 500
+  },
+  PGPText: {
+    alignSelf: "stretch",
+    marginTop: 10,
+    marginBottom: 20
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  modalButton: {
+    borderRadius: 80,
+    paddingHorizontal: 10,
+    paddingVertical: 2
+  },
+
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+    padding: 10
   }
 });
 
