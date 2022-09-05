@@ -28,7 +28,9 @@ const useVendors = (): Hooks => {
     try {
       const verification = await verificationStorage.get();
       if (!verification) {
-        throw new Error("Verification not found");
+        throw new Error(
+          "The required claims have not been verified. Please verify these claims on the profile page first."
+        );
       }
 
       const vendor = getVendor(vendorId);
@@ -46,20 +48,19 @@ const useVendors = (): Hooks => {
           firstName: splitName?.firstName,
           lastName: splitName?.lastName,
           email,
-          mobile,
+          mobile: mobile?.replace(" ", ""),
           password: randomTempPassword,
           dob
         },
         verification
       );
-      let tempPassword;
+      let tempPassword: string;
       let userId;
       if (vendorId === 5) {
-        const { token, password } = response as any;
-        userId = token;
-        tempPassword = password;
+        userId = response.userId;
+        tempPassword = response.password ?? randomTempPassword;
       } else {
-        userId = response;
+        userId = response.userId;
         tempPassword = randomTempPassword;
       }
       await exchangeLocalStorage.save({

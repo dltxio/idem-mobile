@@ -1,5 +1,6 @@
 import {
   RequestOtpRequest,
+  SignupResponse,
   uploadPublicKey,
   UsersResponse,
   verifyPGPRequest
@@ -23,7 +24,7 @@ export default class Api extends HTTPClient {
       ...body,
       verification
     };
-    return this.post(`user/signup`, payload);
+    return this.post<SignupResponse>(`user/signup`, payload);
   };
 
   public verify = async (body: UserVerifyRequest) =>

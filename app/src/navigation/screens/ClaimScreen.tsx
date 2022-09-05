@@ -8,7 +8,6 @@ import {
   Text,
   Alert,
   ScrollView,
-  Dimensions,
   KeyboardTypeOptions,
   StatusBar,
   Pressable,
@@ -40,7 +39,6 @@ import useApi from "../../hooks/useApi";
 import { AlertTitle, ClaimTypeConstants } from "../../constants/common";
 import { FieldType } from "../../types/general";
 import { useActionSheet } from "@expo/react-native-action-sheet";
-import colors from "../../styles/colors";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -82,7 +80,6 @@ const ClaimScreen: React.FC = () => {
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
   const [rawDate, setRawDate] = React.useState<Date>();
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [keyText, setKeyText] = React.useState<string>();
   const [showOtpDialog, setShowOtpDialog] = React.useState<boolean>(false);
   const [otpContext, setOtpContext] = React.useState<RequestOptResponse>();
 
@@ -134,8 +131,6 @@ const ClaimScreen: React.FC = () => {
     });
     setLoading(false);
   };
-  const { generateKeyPair, generateKeyPairFromPrivateKey, verifyPublicKey } =
-    usePgp();
 
   const canSave =
     claim.fields.filter((field) => formState[field.id]).length ===
@@ -145,8 +140,10 @@ const ClaimScreen: React.FC = () => {
   React.useEffect(() => {
     if (userClaim?.type === "EmailCredential" && userClaim.verified) {
       setDisableButton(true);
+      setEmailInput(false);
     }
   }, [userClaim]);
+
   const isDocumentUploadVerifyAction =
     claim.verificationAction === "document-upload";
 
@@ -156,7 +153,7 @@ const ClaimScreen: React.FC = () => {
   const formatMobileNumberState = () => {
     const mobileState = formState["mobileNumber"];
     const newMobileState = {
-      countryCode: mobileState.countryCode ?? "+61",
+      countryCode: mobileState.countryCode.trim() ?? "+61",
       number: mobileState.number.replace(/^0/, "")
     };
     setFormState((previous) => ({
@@ -167,10 +164,20 @@ const ClaimScreen: React.FC = () => {
   };
   const openVerifyOtpScreen = async () => {
     setLoading(true);
-    const { countryCode, number } = formatMobileNumberState();
+
+    const newMobileState = formatMobileNumberState();
+    if (newMobileState.countryCode !== "+61") {
+      Alert.alert(
+        "Error",
+        "IDEM only supports Australian numbers for mobile claims/verification"
+      );
+      setLoading(false);
+      return;
+    }
+
     try {
       const otpResponse = await api.requestOtp({
-        mobileNumber: `${countryCode}${number}`
+        mobileNumber: `${newMobileState.countryCode}${newMobileState.number}`
       });
       if (otpResponse.hash && otpResponse.expiryTimestamp) {
         setOtpContext(otpResponse);
@@ -183,30 +190,11 @@ const ClaimScreen: React.FC = () => {
     setLoading(false);
   };
 
-  const loadKeyFromLocalStorage = React.useCallback(async () => {
-    const key = await pgpLocalStorage.get();
-    if (!key) return;
-    setKeyText(key.publicKey);
-  }, [setKeyText]);
+    const emailClaim = usersClaims.find(
+      (c) => c.type === ClaimTypeConstants.EmailCredential
+    );
 
-  const generateAndPublishNewPgpKey = React.useCallback(
-    async (name: string, email: string) => {
-      await generateKeyPair(name, email);
-      await loadKeyFromLocalStorage();
-      const key = await pgpLocalStorage.get();
-      if (!key) return;
-    },
-    [generateKeyPair]
-  );
 
-  const extractAndLoadKeyPairFromContent = React.useCallback(
-    async (content: string) => {
-      const privateKey = extractPrivateKeyFromContent(content);
-      await generateKeyPairFromPrivateKey(privateKey);
-      await loadKeyFromLocalStorage();
-    },
-    [generateKeyPairFromPrivateKey, loadKeyFromLocalStorage]
-  );
   const importPrivateKeyFileFromDevice = async () => {
     const res = await DocumentPicker.getDocumentAsync({
       type: ["*/*"]
@@ -412,9 +400,24 @@ const ClaimScreen: React.FC = () => {
                     >
                       Setup PGP Key
                     </Button>
-                    <Button style={styles.button}>Verify</Button>
+                    <Button
+                      style={styles.button}
+                      disabled={emailClaim?.verified}
+                      onPress={() => verifyPublicKey(emailClaimValue)}
+                    >
+                      Verify
+                    </Button>
                     <Text style={styles.PGPText}>FingerPrint:</Text>
                   </View>
+                  <Input
+                    label={field.title}
+                    clearButtonMode="always"
+                    keyboardType={keyboardTypeMap[possibleType]}
+                    autoCapitalize="none"
+                    value={formState[field.id] as string}
+                    onChangeText={onChange}
+                    editable={emailInput}
+                  />
                 </View>
               );
             }
@@ -442,11 +445,12 @@ const ClaimScreen: React.FC = () => {
                   <Input
                     label="Country code"
                     keyboardType="phone-pad"
-                    placeholder="+61"
                     value={phone.countryCode}
+                    defaultValue={"+61"}
                     onChangeText={(value) => {
                       onChange({ ...phone, countryCode: value });
                     }}
+                    editable={false}
                   />
 
                   <Input
@@ -505,7 +509,6 @@ const ClaimScreen: React.FC = () => {
             title="Verify"
             disabled={userClaim?.verified}
             onPress={() => {
-              formatMobileNumberState();
               openVerifyOtpScreen();
             }}
             loading={loading}
@@ -529,9 +532,7 @@ const styles = StyleSheet.create({
   introText: {
     marginBottom: 10
   },
-  inputRow: {
-
-  },
+  inputRow: {},
   buttonWrapper: {
     margin: 10,
     backgroundColor: "#2089dc",
