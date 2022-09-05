@@ -31,9 +31,9 @@ const VendorDetailsScreen: React.FC = () => {
   const name = useClaimValue(ClaimTypeConstants.NameCredential);
   const mobile = useClaimValue(ClaimTypeConstants.MobileCredential);
 
-  const hasAllRequiredClaims = React.useMemo(() => {
+  const missingClaimTypes = React.useMemo(() => {
     if (!vendor || !vendor.requiredClaimTypes) {
-      return true;
+      return [];
     }
 
     const userClaimTypeMap = usersClaims.reduce(
@@ -45,25 +45,25 @@ const VendorDetailsScreen: React.FC = () => {
         [key: string]: boolean;
       }
     );
-
-    return vendor.requiredClaimTypes.every(
-      (claimType) => userClaimTypeMap[claimType]
+    return vendor.requiredClaimTypes.filter(
+      (claimType) => !userClaimTypeMap[claimType]
     );
   }, [usersClaims, vendor]);
 
-  React.useEffect(() => {
-    if (!hasAllRequiredClaims) {
-      const requiredClaims = getClaimsFromTypes(
-        vendor?.requiredClaimTypes ?? []
-      );
-      const requirements = requiredClaims.map((claim) => claim.title);
-      Alert.alert(
-        "Missing required claims",
-        `You must have all of the following claims to sign up for this exchange.
-        \n[ ${requirements.join(", ")} ]`
-      );
-    }
-  }, [hasAllRequiredClaims]);
+  const hasAllRequiredClaims = missingClaimTypes.length === 0;
+
+  const requirementText = React.useMemo(() => {
+    if (hasAllRequiredClaims) return "";
+    const missingClaims = getClaimsFromTypes(missingClaimTypes);
+    const missingClaimsTitle = missingClaims.map((claim) => claim.title);
+
+    if (missingClaimsTitle.length === 1) return missingClaimsTitle[0];
+    return (
+      missingClaimsTitle.slice(0, -1).join(", ") +
+      " and " +
+      missingClaimsTitle.slice(-1)
+    );
+  }, [missingClaimTypes]);
 
   return (
     <ScrollView
@@ -79,6 +79,16 @@ const VendorDetailsScreen: React.FC = () => {
         style={styles.logo}
         resizeMode="center"
       />
+
+      <View style={{ height: 80 }}>
+        {!hasAllRequiredClaims && (
+          <View style={{ marginTop: 30 }}>
+            <Text style={{ textAlign: "center" }}>
+              {vendor?.name} requires your {requirementText} to be completed.
+            </Text>
+          </View>
+        )}
+      </View>
       <View style={styles.buttonWrapper}>
         <Button
           onPress={async () => {
@@ -94,7 +104,6 @@ const VendorDetailsScreen: React.FC = () => {
           }}
           title="Sign Up"
           disabled={signed || !hasAllRequiredClaims}
-          style={styles.button}
         />
       </View>
       <BottomNavBarSpacer />
@@ -119,7 +128,6 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     textAlign: "center"
   },
-
   logo: {
     flex: 1,
     display: "flex",
@@ -129,16 +137,10 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     width: Dimensions.get("window").width * 0.9,
-    marginTop: Dimensions.get("window").height / 6,
-    justifyContent: "space-around"
+    marginTop: 50
   },
-
   tagLine: {
     marginVertical: 5,
     fontSize: 15
-  },
-
-  button: {
-    marginVertical: 5
   }
 });
