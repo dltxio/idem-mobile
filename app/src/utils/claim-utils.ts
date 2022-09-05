@@ -68,7 +68,11 @@ export const displayClaimValue = (claim: ClaimWithValue): string => {
     BirthCredential: (value: any) => value.dob,
     NameCredential: (value: any) => value.firstName + " " + value.lastName,
     EmailCredential: (value: any) => value.email,
-    MobileCredential: (value: any) => value.mobileNumber,
+    MobileCredential: (value: any) => {
+      const { countryCode, number } = value.mobileNumber;
+      const fullPhoneNumber = `${countryCode} ${number}`;
+      return fullPhoneNumber;
+    },
     AddressCredential: (value: any) =>
       `${value.houseNumber} ${value.street} ${value.suburb}, ${value.postCode} ${value.state} ${value.country}`,
     TaxCredential: (value: any) => value.taxFileNumber,

@@ -8,8 +8,11 @@ import {
   Text,
   Alert,
   ScrollView,
-  Dimensions
+  Dimensions,
+  KeyboardTypeOptions,
+  StatusBar
 } from "react-native";
+import Dialog from "react-native-dialog";
 import { Input, Switch } from "@rneui/themed";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import commonStyles from "../../styles/styles";
@@ -18,7 +21,7 @@ import {
   ProfileStackNavigationRoute
 } from "../../types/navigation";
 import { getClaimFromType } from "../../utils/claim-utils";
-import { Claim } from "../../types/claim";
+import { Claim, RequestOptResponse } from "../../types/claim";
 import { FileList, Button } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
@@ -27,8 +30,27 @@ import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import useClaimScreen from "../../hooks/useClaimScreen";
 import { claimsLocalStorage } from "../../utils/local-storage";
 import useApi from "../../hooks/useApi";
+import { AlertTitle } from "../../constants/common";
+import { FieldType } from "../../types/general";
 
 type Navigation = ProfileStackNavigation<"Claim">;
+
+type PhoneType = {
+  countryCode: string;
+  number: string;
+};
+
+type FormState = {
+  [key: string]: string | PhoneType;
+  mobileNumber: PhoneType;
+};
+
+const keyboardTypeMap: { [key: string]: KeyboardTypeOptions | undefined } = {
+  house: "numbers-and-punctuation",
+  email: "email-address",
+  number: "number-pad",
+  text: undefined
+};
 
 const ClaimScreen: React.FC = () => {
   const route = useRoute<ProfileStackNavigationRoute<"Claim">>();
@@ -36,9 +58,11 @@ const ClaimScreen: React.FC = () => {
   const claim = getClaimFromType(route.params.claimType);
 
   const { addClaim, usersClaims } = useClaimsStore();
+  const [disableButton, setDisableButton] = React.useState(false);
+  const [emailInput, setEmailInput] = React.useState(true);
   const userClaim = usersClaims.find((c) => c.type === claim.type);
-  const [formState, setFormState] = React.useState<{ [key: string]: string }>(
-    userClaim?.value || {}
+  const [formState, setFormState] = React.useState<FormState>(
+    userClaim?.value ?? {}
   );
 
   const navigation = useNavigation<Navigation>();
@@ -46,13 +70,14 @@ const ClaimScreen: React.FC = () => {
   const [showDatePickerForFieldId, setShowDatePickerForFieldId] =
     React.useState<string>();
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
-
   const [rawDate, setRawDate] = React.useState<Date>();
+  const [showOtpDialog, setShowOtpDialog] = React.useState<boolean>(false);
+  const [otpContext, setOtpContext] = React.useState<RequestOptResponse>();
 
   const {
-    loading,
     saveAndCheckBirthday,
     onSelectFile,
+    loading,
     selectedFileIds,
     setLoading,
     setSelectedFileIds
@@ -82,7 +107,14 @@ const ClaimScreen: React.FC = () => {
 
   const onSave = async () => {
     setLoading(true);
-    await addClaim(claim.type, formState, selectedFileIds);
+    let newFormState = formState;
+    if (claim.type === "EmailCredential") {
+      newFormState = {
+        ...newFormState,
+        email: (newFormState.email as string).toLowerCase()
+      };
+    }
+    await addClaim(claim.type, newFormState, selectedFileIds);
     const claims = await claimsLocalStorage.get();
     if (claim.type === "BirthCredential") saveAndCheckBirthday(claims);
     navigation.reset({
@@ -96,46 +128,50 @@ const ClaimScreen: React.FC = () => {
       claim.fields.length &&
     ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
 
+  React.useEffect(() => {
+    if (userClaim?.type === "EmailCredential" && userClaim.verified) {
+      setDisableButton(true);
+      setEmailInput(false);
+    }
+  }, [userClaim]);
+
   const isDocumentUploadVerifyAction =
     claim.verificationAction === "document-upload";
 
   const isOtpVerifyAction = claim.verificationAction === "otp";
 
+  const formatMobileNumberState = () => {
+    const mobileState = formState["mobileNumber"];
+    const newMobileState = {
+      countryCode: mobileState.countryCode.trim() ?? "+61",
+      number: mobileState.number.replace(/^0/, "")
+    };
+    setFormState((previous) => ({
+      ...previous,
+      ["mobileNumber"]: newMobileState
+    }));
+    return newMobileState;
+  };
   const openVerifyOtpScreen = async () => {
     setLoading(true);
-    const mobileNumber = formState["mobileNumber"];
+
+    const newMobileState = formatMobileNumberState();
+    if (newMobileState.countryCode !== "+61") {
+      Alert.alert(
+        "Error",
+        "IDEM only supports Australian numbers for mobile claims/verification"
+      );
+      setLoading(false);
+      return;
+    }
+
     try {
-      const otpResponse = await api.requestOtp({ mobileNumber });
+      const otpResponse = await api.requestOtp({
+        mobileNumber: `${newMobileState.countryCode}${newMobileState.number}`
+      });
       if (otpResponse.hash && otpResponse.expiryTimestamp) {
-        Alert.prompt("Enter your verification code", "", [
-          {
-            text: "OK",
-            onPress: async (value: string | undefined) => {
-              if (value) {
-                const verifyOtp = await api.verifyOtp({
-                  hash: otpResponse.hash,
-                  code: value,
-                  expiryTimestamp: otpResponse.expiryTimestamp,
-                  mobileNumber: mobileNumber
-                });
-                if (verifyOtp) {
-                  addClaim(claim.type, formState, selectedFileIds, true);
-                  Alert.alert("Your mobile has been verified");
-                  navigation.reset({
-                    routes: [{ name: "Home" }]
-                  });
-                } else {
-                  Alert.alert("Please try again, verification code invalid");
-                }
-              }
-            }
-          },
-          {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel"
-          }
-        ]);
+        setOtpContext(otpResponse);
+        setShowOtpDialog(true);
       }
     } catch (error) {
       console.error(error);
@@ -144,26 +180,73 @@ const ClaimScreen: React.FC = () => {
     setLoading(false);
   };
 
+  const handleSubmitOtp = React.useCallback(
+    async (otpCode: string | undefined) => {
+      if (!otpCode || !otpContext) return;
+      const { hash, expiryTimestamp } = otpContext;
+      const { countryCode, number } = formState["mobileNumber"];
+
+      try {
+        const verifyOtp = await api.verifyOtp({
+          hash,
+          code: otpCode,
+          expiryTimestamp,
+          mobileNumber: `${countryCode}${number}`
+        });
+
+        if (verifyOtp) {
+          addClaim(claim.type, formState, selectedFileIds, true);
+          Alert.alert("Your mobile has been verified");
+          navigation.reset({
+            routes: [{ name: "Home" }]
+          });
+        } else {
+          Alert.alert("Please try again, verification code invalid");
+        }
+      } catch (error: any) {
+        Alert.alert(AlertTitle.Error, error?.message);
+      }
+    },
+    [otpContext, api, addClaim, navigation]
+  );
+
   return (
     <View style={commonStyles.screen}>
+      <OtpDialog
+        showDialog={showOtpDialog}
+        onCancel={() => setShowOtpDialog(false)}
+        onSubmit={(otpCode) => {
+          handleSubmitOtp(otpCode).then(() => {
+            setShowOtpDialog(false);
+          });
+        }}
+      />
       <ScrollView style={commonStyles.screenContent}>
         <View>
+          <StatusBar hidden={false} />
           {claim.fields.map((field) => {
-            const onChange = (value: string) => {
+            const onChange = (value: string | PhoneType) => {
               setFormState((previous) => ({
                 ...previous,
                 [field.id]: value
               }));
             };
 
-            if (field.type === "text") {
+            if (["text", "number", "email", "house"].includes(field.type)) {
+              const possibleType = field.type as Extract<
+                FieldType,
+                "text" | "number" | "email" | "house"
+              >; // array.includes doesn't discriminate field.type for us :(
               return (
                 <View key={field.id}>
                   <Input
                     label={field.title}
                     clearButtonMode="always"
-                    value={formState[field.id]}
+                    keyboardType={keyboardTypeMap[possibleType]}
+                    autoCapitalize="none"
+                    value={formState[field.id] as string}
                     onChangeText={onChange}
+                    editable={emailInput}
                   />
                 </View>
               );
@@ -172,7 +255,7 @@ const ClaimScreen: React.FC = () => {
             if (field.type === "date") {
               return (
                 <Input
-                  value={formState[field.id]}
+                  value={formState[field.id] as string}
                   key={field.id}
                   label={field.title}
                   ref={(ref) =>
@@ -185,52 +268,31 @@ const ClaimScreen: React.FC = () => {
               );
             }
 
-            if (field.type === "number") {
-              return (
-                <View key={field.id}>
-                  <Input
-                    label={field.title}
-                    keyboardType={"number-pad"}
-                    value={formState[field.id]}
-                    onChangeText={onChange}
-                  />
-                </View>
-              );
-            }
-
-            if (field.type === "email") {
-              return (
-                <View key={field.id}>
-                  <Input
-                    label={field.title}
-                    keyboardType={"email-address"}
-                    value={formState[field.id]}
-                    onChangeText={onChange}
-                  />
-                </View>
-              );
-            }
-            if (field.type === "house") {
-              return (
-                <View key={field.id}>
-                  <Input
-                    label={field.title}
-                    keyboardType={"numbers-and-punctuation"}
-                    value={formState[field.id]}
-                    onChangeText={onChange}
-                  />
-                </View>
-              );
-            }
-
             if (field.type === "phone") {
+              const phone = (formState[field.id] as PhoneType) ?? {};
               return (
                 <View key={field.id}>
                   <Input
+                    label="Country code"
+                    keyboardType="phone-pad"
+                    value={phone.countryCode}
+                    defaultValue={"+61"}
+                    onChangeText={(value) => {
+                      onChange({ ...phone, countryCode: value });
+                    }}
+                    editable={false}
+                  />
+
+                  <Input
                     label={field.title}
-                    keyboardType={"phone-pad"}
-                    value={formState[field.id].toLowerCase()}
-                    onChangeText={onChange}
+                    keyboardType="phone-pad"
+                    value={phone.number}
+                    onChangeText={(value) => {
+                      onChange({
+                        countryCode: phone.countryCode ?? "+61",
+                        number: value
+                      });
+                    }}
                   />
                 </View>
               );
@@ -274,15 +336,17 @@ const ClaimScreen: React.FC = () => {
       <View style={styles.buttonWrapper}>
         {isOtpVerifyAction ? (
           <Button
-            title={"Verify"}
+            title="Verify"
             disabled={userClaim?.verified}
-            onPress={openVerifyOtpScreen}
+            onPress={() => {
+              openVerifyOtpScreen();
+            }}
             loading={loading}
           />
         ) : (
           <Button
             title={isVerifying ? "Save & Verify" : "Save"}
-            disabled={!canSave}
+            disabled={!canSave || disableButton}
             onPress={onSave}
             loading={loading}
           />
@@ -382,5 +446,37 @@ const VerificationFiles: React.FC<{
         </>
       ) : null}
     </View>
+  );
+};
+
+const OtpDialog: React.FC<{
+  showDialog: boolean;
+  onCancel: () => void;
+  onSubmit: (otpCode?: string) => void;
+}> = ({ showDialog, onCancel, onSubmit }) => {
+  const [otpCode, setOtpCode] = React.useState<string>();
+
+  return (
+    <Dialog.Container visible={showDialog} onBackdropPress={onCancel}>
+      <Dialog.Title>Enter your verification code</Dialog.Title>
+      <Dialog.Input
+        onChangeText={setOtpCode}
+        autoFocus={true}
+        keyboardType={"number-pad"}
+      ></Dialog.Input>
+      <Dialog.Button
+        onPress={onCancel}
+        label="Cancel"
+        bold={true}
+        color="#007ff9"
+      />
+      <Dialog.Button
+        onPress={() => {
+          onSubmit(otpCode);
+        }}
+        label="OK"
+        color="#007ff9"
+      />
+    </Dialog.Container>
   );
 };

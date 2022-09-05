@@ -1,4 +1,6 @@
-type FieldType =
+import { ClaimType } from "./claim";
+
+export type FieldType =
   | "text"
   | "date"
   | "boolean"
@@ -26,7 +28,7 @@ export type Vendor = {
   tagline: string;
   website: string;
   backgroundColor: string;
-  requiredClaimMnemonics: string[];
+  requiredClaimTypes: ClaimType[];
 };
 
 export type VerifyOnProxy = {

@@ -4,6 +4,8 @@ export type UserSignup = {
   lastName: string;
   password: string;
   email: string;
+  mobile?: string;
+  dob?: string;
 };
 
 export enum VendorEnum {
@@ -18,7 +20,7 @@ export type UserVerifyRequest = {
   firstName: string;
   lastName: string;
   dob: string;
-  email: string;
+  hashEmail: string;
   houseNumber: string;
   street: string;
   suburb: string;
@@ -38,10 +40,14 @@ export enum KycResult {
   Failed = "failed"
 }
 
-export type VerificationResponse = {
+type ClaimResponsePayload = Record<string, unknown>;
+
+export type IdemVerification = {
   result: KycResult;
   userId: string;
   thirdPartyVerified: boolean;
+  signature: string; //signed claim response
+  message: ClaimResponsePayload;
 };
 
 export type PutExpoTokenRequest = {
@@ -55,4 +61,26 @@ export type UserDetailRequest = {
   firstName: string;
   lastName: string;
   dob: string;
+};
+
+export type verifyPGPRequest = {
+  token: string;
+  addresses: string[];
+};
+
+export type uploadPublicKey = {
+  hashEmail: string;
+  publicKeyArmored: string;
+};
+
+export type UsersResponse = {
+  userId: string;
+  email: string;
+  createdAt: Date;
+  emailVerified: boolean;
+};
+
+export type SignupResponse = {
+  userId: string;
+  password?: string;
 };

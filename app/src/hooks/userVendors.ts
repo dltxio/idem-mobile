@@ -1,54 +1,76 @@
 import { Alert } from "react-native";
 import { AlertTitle } from "../constants/common";
 import { findNames } from "../utils/formatters";
-import { exchangeLocalStorage } from "../utils/local-storage";
+import {
+  exchangeLocalStorage,
+  verificationStorage
+} from "../utils/local-storage";
 import { createRandomPassword } from "../utils/randomPassword-utils";
 import { getVendor } from "../utils/vendor";
 import useApi from "./useApi";
 
+type UserInfo = {
+  name: string;
+  email: string;
+  mobile?: string;
+  dob?: string;
+};
+
 type Hooks = {
-  signup: (name: string, email: string, vendorId: number) => Promise<void>;
-  syncDetail: (
-    name: string,
-    password: string,
-    email: string,
-    dob: string,
-    vendorId: number
-  ) => Promise<void>;
+  signup: (userInfo: UserInfo, vendorId: number) => Promise<void>;
 };
 
 const useVendors = (): Hooks => {
   const api = useApi();
 
-  const signup = async (name: string, email: string, vendorId: number) => {
-    const vendor = getVendor(vendorId);
-    const randomTempPassword = createRandomPassword();
-    const splitName = findNames(name);
-    if (
-      splitName?.firstName &&
-      splitName.lastName &&
-      randomTempPassword &&
-      vendor
-    ) {
-      api
-        .vendorSignup({
+  const signup = async (userInfo: UserInfo, vendorId: number) => {
+    const { name, email, mobile, dob } = userInfo;
+    try {
+      const verification = await verificationStorage.get();
+      if (!verification) {
+        throw new Error(
+          "The required claims have not been verified. Please verify these claims on the profile page first."
+        );
+      }
+
+      const vendor = getVendor(vendorId);
+      if (!vendor) throw new Error("Vendor not found");
+
+      const splitName = findNames(name);
+      const hasFullName = splitName?.firstName && splitName.lastName;
+      if (!hasFullName) throw new Error("Missing Full Name");
+
+      const randomTempPassword = createRandomPassword();
+
+      const response = await api.vendorSignup(
+        {
           source: vendorId,
           firstName: splitName?.firstName,
           lastName: splitName?.lastName,
-          email: email,
-          password: randomTempPassword
-        })
-        .then(async (response) => {
-          await exchangeLocalStorage.save({
-            vendor: vendor,
-            signup: true,
-            userId: response
-          });
-          shareDetailsAlert(randomTempPassword);
-        })
-        .catch((error) => {
-          Alert.alert(error.message);
-        });
+          email,
+          mobile: mobile?.replace(" ", ""),
+          password: randomTempPassword,
+          dob
+        },
+        verification
+      );
+      let tempPassword: string;
+      let userId;
+      if (vendorId === 5) {
+        userId = response.userId;
+        tempPassword = response.password ?? randomTempPassword;
+      } else {
+        userId = response.userId;
+        tempPassword = randomTempPassword;
+      }
+      await exchangeLocalStorage.save({
+        vendor: vendor,
+        signup: true,
+        userId
+      });
+      shareDetailsAlert(tempPassword);
+    } catch (error: any) {
+      Alert.alert(error?.message);
     }
   };
 
@@ -73,49 +95,7 @@ const useVendors = (): Hooks => {
     );
   };
 
-  const syncDetail = async (
-    name: string,
-    password: string,
-    email: string,
-    dob: string,
-    vendorId: number
-  ) => {
-    if (name && password && email && dob) {
-      const splitName = findNames(name);
-      api
-        .syncDetail({
-          source: vendorId,
-          email: email,
-          password: password,
-          firstName: splitName?.firstName ?? "",
-          lastName: splitName?.lastName ?? "",
-          dob: dob
-        })
-        .then(() => {
-          Alert.alert(AlertTitle.Success, "Your detail sync successful", [
-            {
-              text: "OK",
-              onPress: () => console.log(""),
-              style: "destructive"
-            }
-          ]);
-        })
-        .catch(() => {
-          Alert.alert(
-            AlertTitle.Error,
-            "Something wrong, please check your password",
-            [
-              {
-                text: "OK",
-                onPress: () => console.log(""),
-                style: "destructive"
-              }
-            ]
-          );
-        });
-    }
-  };
-  return { signup, syncDetail };
+  return { signup };
 };
 
 export default useVendors;

@@ -1,14 +1,14 @@
-name: EAS PIPELINE
+name: EAS PIPELINE FOR PRODUCTION
 on:
   push:
     branches:
-      - development
+      - main
 
 concurrency:
   group: build_app
 jobs:
   merge:
-    name: Merge development into BUILD
+    name: Merge main into BUILD
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Branch
@@ -47,12 +47,12 @@ jobs:
       - shell: bash
         run: |
           cd app
-          sed -i -e 's/PROXY_USERNAME_STAGING_TOKEN/${{ secrets.PROXY_USERNAME_STAGING }}/g' eas.json
-          sed -i -e 's/PROXY_PASSWORD_STAGING_TOKEN/${{ secrets.PROXY_PASSWORD_STAGING }}/g' eas.json
+          sed -i -e 's/PROXY_USERNAME_TOKEN/${{ secrets.PROXY_USERNAME }}/g' eas.json
+          sed -i -e 's/PROXY_PASSWORD_TOKEN/${{ secrets.PROXY_PASSWORD }}/g' eas.json
           cat eas.json
 
       - name: Build on EAS
-        run: EXPO_APPLE_APP_SPECIFIC_PASSWORD=${{ secrets.EXPO_APPLE_APP_SPECIFIC_PASSWORD }} npx eas-cli build --platform ios --non-interactive --auto-submit --no-wait --profile staging
+        run: EXPO_APPLE_APP_SPECIFIC_PASSWORD=${{ secrets.EXPO_APPLE_APP_SPECIFIC_PASSWORD }} npx eas-cli build --platform ios --non-interactive --auto-submit --no-wait --profile production
         working-directory: ./app
 
       - name: Pull
@@ -65,7 +65,7 @@ jobs:
           commit_message: Bump version number
 
       - name: Notify Slack
-        if: ${{ always() && github.ref == 'refs/heads/development' }}
+        if: ${{ always() && github.ref == 'refs/heads/main' }}
         uses: ./.github/actions
         with:
           slack-channel: "idem-bots"

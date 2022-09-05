@@ -1,26 +1,29 @@
-import axios from "axios";
+import { ethers } from "ethers";
 import { Alert } from "react-native";
 import OpenPGP from "react-native-fast-openpgp";
-import { AlertTitle } from "../constants/common";
-import { UploadPGPKeyResponse } from "../types/general";
+import { AlertTitle, ClaimTypeConstants } from "../constants/common";
+import { useClaimsStore } from "../context/ClaimsStore";
+import { UsersResponse } from "../types/user";
 import { PGP } from "../types/wallet";
 import { pgpLocalStorage } from "../utils/local-storage";
 import { createRandomPassword } from "../utils/randomPassword-utils";
+import useApi from "./useApi";
 
 type Hooks = {
   generateKeyPair: (
     name: string | undefined,
     email: string | undefined
   ) => Promise<void>;
-  createPublicKey: (privateKey: string | undefined) => Promise<void>;
-  publishPGPPublicKey: (
-    publicKey: string | undefined,
-    email: string | undefined
+  generateKeyPairFromPrivateKey: (
+    privateKey: string | undefined,
+    email: string
   ) => Promise<void>;
-  verifyPGPPublicKey: (email: string | undefined) => Promise<void>;
+  verifyPublicKey: (email: string | undefined) => Promise<void>;
 };
 
 const usePgp = (): Hooks => {
+  const api = useApi();
+  const { updateClaim } = useClaimsStore();
   const generateKeyPair = async (
     name: string | undefined,
     email: string | undefined
@@ -34,19 +37,20 @@ const usePgp = (): Hooks => {
         name: name,
         passphrase: password
       });
-
       const meta = await OpenPGP.getPublicKeyMetadata(publicKey);
 
       const pgp = {
         privateKey,
         publicKey,
-        fingerPrint: meta.keyIDShort
+        fingerPrint: meta.fingerprint
       } as PGP;
 
       await pgpLocalStorage.save(pgp);
+
+      await uploadPublicKey(email, publicKey);
       Alert.alert(
         AlertTitle.Success,
-        `Your PGP key has been created with the password ${password}`
+        `Your PGP key has been created with the password ${password} and uploaded, please check your email to confirm.`
       );
     } catch (error) {
       Alert.alert(
@@ -56,87 +60,76 @@ const usePgp = (): Hooks => {
     }
   };
 
-  const createPublicKey = async (privateKey: string | undefined) => {
+  const generateKeyPairFromPrivateKey = async (
+    privateKey: string | undefined,
+    email: string
+  ) => {
     try {
-      if (!privateKey) return;
+      if (!privateKey || !email) return;
       const publicKey = await OpenPGP.convertPrivateKeyToPublicKey(privateKey);
+      const meta = await OpenPGP.getPrivateKeyMetadata(privateKey);
       const pgp = {
         privateKey: privateKey,
-        publicKey: publicKey
+        publicKey: publicKey,
+        fingerPrint: meta.fingerprint
       } as PGP;
 
       await pgpLocalStorage.save(pgp);
-      Alert.alert(AlertTitle.Success, "Your PGP key has been saved");
-    } catch (error: any) {
+      await uploadPublicKey(email, publicKey);
       Alert.alert(
-        AlertTitle.Error,
+        AlertTitle.Success,
+        "Your PGP key has been saved and uploaded, please check your email to confirm."
+      );
+    } catch (error: any) {
+      throw new Error(
         `There was a problem generating your public key.\n > ${error.message}`
       );
     }
   };
 
-  const publishPGPPublicKey = async (
-    publicKey: string | undefined,
-    email: string | undefined
-  ) => {
-    try {
-      if (!publicKey || !email) return;
-      //Upload public key to openpgp server
-      const uploadResponse = await axios.post<UploadPGPKeyResponse>(
-        "https://keys.openpgp.org/vks/v1/upload",
-        JSON.stringify({
-          keytext: publicKey
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
-      );
-      //Verify key,send email
-      const verifyResponse = await axios.post(
-        "https://keys.openpgp.org/vks/v1/request-verify",
-        JSON.stringify({
-          token: uploadResponse.data.token,
-          addresses: [email]
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
-      );
-      if (verifyResponse.status === 200) {
-        Alert.alert(AlertTitle.Success, "Your PGP key has been uploaded");
-      }
-    } catch (error: any) {
-      console.error(error);
-      Alert.alert(AlertTitle.Error, error.message);
-    }
+  const uploadPublicKey = async (email: string, publicKey: string) => {
+    const formattedEmail = email.trim().toLowerCase();
+    await api
+      .uploadPublicKey({
+        hashEmail: ethers.utils.hashMessage(formattedEmail),
+        publicKeyArmored: publicKey
+      })
+      .catch((error) => {
+        Alert.alert(AlertTitle.Error, error.message);
+        throw error;
+      });
   };
 
-  const verifyPGPPublicKey = async (email: string | undefined) => {
-    try {
-      if (!email) return;
-      const encodeEmail = encodeURI(email);
-      const response = await axios.get(
-        `https://keys.openpgp.org/vks/v1/by-email/${encodeEmail}`
-      );
-      if (response.status === 200) {
-        Alert.alert(
-          `Email Verified`,
-          `Email has been verified with keys.openpgp.org`
-        );
-      }
-    } catch (error) {
-      Alert.alert(AlertTitle.Error, "Could not verify email.");
+  const verifyPublicKey = async (email: string | undefined) => {
+    if (!email) {
+      Alert.alert(AlertTitle.Error, `No email claim found`);
+      return;
     }
+    api
+      .getUser(email)
+      .then(async (result: UsersResponse) => {
+        if (result.emailVerified) {
+          await updateClaim(
+            ClaimTypeConstants.EmailCredential,
+            { email: email },
+            [],
+            true
+          );
+          {
+            Alert.alert(`Email Verified`, `Email has been verified`);
+          }
+        } else {
+          Alert.alert(AlertTitle.Error, `Email has not been verified`);
+        }
+      })
+      .catch((error) => {
+        Alert.alert(AlertTitle.Error, error.message);
+      });
   };
   return {
     generateKeyPair,
-    createPublicKey,
-    publishPGPPublicKey,
-    verifyPGPPublicKey
+    generateKeyPairFromPrivateKey,
+    verifyPublicKey
   };
 };
 

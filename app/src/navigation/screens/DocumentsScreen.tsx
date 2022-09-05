@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, StyleSheet, Text, Dimensions } from "react-native";
+import { View, StyleSheet, Text, Dimensions, StatusBar } from "react-native";
 import {
   connectActionSheet,
   useActionSheet
@@ -73,6 +73,7 @@ const DocumentsScreen: React.FC = () => {
 
   return (
     <View style={commonStyles.screenContent}>
+      <StatusBar hidden={false} />
       <View style={styles.documentsList}>
         <Text style={commonStyles.text.smallHeading}>Your documents</Text>
 
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   documentsList: {
-    height: Dimensions.get("window").height * 0.28
+    height: Dimensions.get("window").height * 0.25
   },
   bottomSection: {
     justifyContent: "flex-end",

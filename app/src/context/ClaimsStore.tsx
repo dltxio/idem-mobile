@@ -4,7 +4,12 @@ import allClaims from "../data/claims";
 import { claimsLocalStorage } from "../utils/local-storage";
 import { displayClaimValue } from "../utils/claim-utils";
 
-type AddClaim_Value = string | { [key: string]: string };
+type KeyValueObject = { [key: string]: string };
+
+type AddClaim_Value =
+  | string
+  | KeyValueObject
+  | { [key: string]: string | KeyValueObject };
 
 export type ClaimsVault = {
   unclaimedClaims: Claim[];
@@ -16,6 +21,12 @@ export type ClaimsVault = {
     verified?: boolean
   ) => Promise<void>;
   reset: () => void;
+  updateClaim: (
+    claimId: ClaimType,
+    claimValue: AddClaim_Value,
+    files: string[],
+    verified: boolean
+  ) => Promise<void>;
 };
 
 export const ClaimsContext = React.createContext<ClaimsVault | undefined>(
@@ -38,6 +49,27 @@ export const ClaimsProvider: React.FC<{
       }
     })();
   }, []);
+
+  const updateClaim = async (
+    claimType: ClaimType,
+    claimValue: AddClaim_Value,
+    files: string[],
+    verified: boolean
+  ) => {
+    const updatedClaimData = verifiedClaimTypes.map((claimData) => {
+      if (claimData.type !== claimType) return claimData;
+
+      return {
+        ...claimData,
+        claimValue,
+        files,
+        verified
+      };
+    });
+
+    setVerifiedClaimTypes(updatedClaimData);
+    claimsLocalStorage.save(updatedClaimData);
+  };
 
   const usersClaims: ClaimWithValue[] = React.useMemo(() => {
     const verifiedClaims: ClaimWithValue[] = [];
@@ -86,7 +118,7 @@ export const ClaimsProvider: React.FC<{
       const previousWithoutClaim = previous.filter((c) => c.type !== claimId);
       const updatedClaims = [
         ...previousWithoutClaim,
-        { type: claimId, value, verified: verified ? verified : false }
+        { type: claimId, value, verified }
       ];
       claimsLocalStorage.save(updatedClaims);
       return updatedClaims;
@@ -101,11 +133,12 @@ export const ClaimsProvider: React.FC<{
   const value = React.useMemo(
     () => ({
       unclaimedClaims,
+      updateClaim,
       usersClaims,
       addClaim,
       reset
     }),
-    [allClaims, verifiedClaimTypes, addClaim, reset]
+    [allClaims, verifiedClaimTypes, addClaim, reset, updateClaim]
   );
 
   return (

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Alert } from "react-native";
+import { ClaimTypeConstants } from "../constants/common";
 import { useClaimsStore } from "../context/ClaimsStore";
 import { ClaimData } from "../types/claim";
 import { check18Plus } from "../utils/birthday-utils";
@@ -20,34 +21,30 @@ const useClaimScreen = (): Hooks => {
 
   const saveAndCheckBirthday = async (claims: ClaimData[] | null) => {
     setLoading(true);
-    claims?.map((claim) => {
-      const findAge = claims.find((c) => c.type === "AdultCredential");
-      if (claim.type === "BirthCredential") {
-        if (check18Plus(claim)) {
-          save18Claim();
-        }
-        if (findAge?.value.over18 === "true" && !check18Plus(claim)) {
-          addClaim("AdultCredential", "false", selectedFileIds);
-        }
-      }
-    });
+    const claim = claims?.find(
+      (claim) => claim.type === ClaimTypeConstants.BirthCredential
+    );
+
+    if (claim && check18Plus(claim)) {
+      await addClaim(
+        ClaimTypeConstants.AdultCredential,
+        { over18: "true" },
+        selectedFileIds
+      );
+      Alert.alert(
+        `Over 18`,
+        `Your claim for being over 18 years of age has been saved.`,
+        [
+          {
+            text: "OK",
+            onPress: () => console.log(""),
+            style: "cancel"
+          }
+        ]
+      );
+    }
     setLoading(false);
     return true;
-  };
-
-  const save18Claim = async () => {
-    await addClaim("AdultCredential", "true", selectedFileIds);
-    Alert.alert(
-      `Over 18`,
-      `Your claim for being over 18 years of age has been saved.`,
-      [
-        {
-          text: "OK",
-          onPress: () => console.log(""),
-          style: "cancel"
-        }
-      ]
-    );
   };
 
   const onSelectFile = (fileId: string) => {
