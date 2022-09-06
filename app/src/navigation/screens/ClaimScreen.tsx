@@ -23,16 +23,17 @@ import {
 import { getClaimFromType } from "../../utils/claim-utils";
 import { Claim, RequestOptResponse } from "../../types/claim";
 import { FileList, Button } from "../../components";
-import { useClaimsStore } from "../../context/ClaimsStore";
+import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
 import { getDocumentFromDocumentType } from "../../utils/document-utils";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import useClaimScreen from "../../hooks/useClaimScreen";
 import { claimsLocalStorage } from "../../utils/local-storage";
 import useApi from "../../hooks/useApi";
-import { AlertTitle } from "../../constants/common";
+import { AlertTitle, ClaimTypeConstants } from "../../constants/common";
 import { FieldType } from "../../types/general";
 import PgpFields from "../../components/PgpFields";
+import usePgp from "../../hooks/usePpg";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -57,7 +58,7 @@ const ClaimScreen: React.FC = () => {
   const route = useRoute<ProfileStackNavigationRoute<"Claim">>();
   const api = useApi();
   const claim = getClaimFromType(route.params.claimType);
-
+  const emailClaimValue = useClaimValue(ClaimTypeConstants.EmailCredential);
   const { addClaim, usersClaims } = useClaimsStore();
   const [disableButton, setDisableButton] = React.useState(false);
   const [emailInput, setEmailInput] = React.useState(true);
@@ -106,6 +107,18 @@ const ClaimScreen: React.FC = () => {
     }
   };
 
+  const { verifyPublicKey } = usePgp();
+
+  const isEmail = claim.type === "EmailCredential";
+
+  const verifyEmail = () => {
+    verifyPublicKey(emailClaimValue);
+    Alert.alert(
+      "Email Sent",
+      "IDEM sent a verification email to your address, Please check your emails"
+    );
+  };
+
   const onSave = async () => {
     setLoading(true);
     let newFormState = formState;
@@ -114,6 +127,8 @@ const ClaimScreen: React.FC = () => {
         ...newFormState,
         email: (newFormState.email as string).toLowerCase()
       };
+      //disabled={emailClaim?.verified} disable if this is the case
+      verifyEmail();
     }
     await addClaim(claim.type, newFormState, selectedFileIds);
     const claims = await claimsLocalStorage.get();
@@ -349,7 +364,13 @@ const ClaimScreen: React.FC = () => {
           />
         ) : (
           <Button
-            title={isVerifying ? "Save & Verify" : "Save"}
+            title={
+              isVerifying
+                ? "Save & Verify"
+                : "Save" || isEmail
+                ? "Verify"
+                : "Save"
+            }
             disabled={!canSave || disableButton}
             onPress={onSave}
             loading={loading}

@@ -21,6 +21,7 @@ import {
   checkIfContentContainOnlyPublicKey,
   extractPrivateKeyFromContent
 } from "../utils/pgp-utils";
+import { useActionSheet } from "@expo/react-native-action-sheet";
 
 const importPrivateKeyFileFromDevice = async () => {
   const res = await DocumentPicker.getDocumentAsync({
@@ -41,7 +42,7 @@ const PgpFields = () => {
   const [keyText, setKeyText] = React.useState<string>();
   const emailClaimValue = useClaimValue(ClaimTypeConstants.EmailCredential);
   const nameClaimValue = useClaimValue(ClaimTypeConstants.NameCredential);
-
+  const { showActionSheetWithOptions } = useActionSheet();
   const { usersClaims } = useClaimsStore();
 
   const emailClaim = usersClaims.find(
@@ -150,7 +151,7 @@ const PgpFields = () => {
         contentContainerStyle={styles.scrollContent}
       >
         <StatusBar hidden={false} />
-        <TextInput
+        {/* <TextInput
           placeholder="Paste your PGP/GPG Private Key here"
           placeholderTextColor={"black"}
           onChangeText={setKeyText}
@@ -158,63 +159,57 @@ const PgpFields = () => {
           multiline={true}
           selectionColor={"white"}
           value={keyText}
-        />
+        /> */}
         <Text style={styles.warning}>
-          NOTE: Importing your keys saves them to your local storage. IDEM does
-          not have access to the keys you import.
+          Pretty Good Privacy (PGP) is an encryption program that provides
+          cryptographic privacy and authentication for data communication. PGP
+          is used for singing, encryption, and decrypting texts, e-mails, files,
+          directories, and whole disk partitions and to increase the security of
+          e-mail communications.
         </Text>
-
-        
-        <View style={styles.buttonWrapper}>
-          <View style={styles.button}>
-            <Button
-              title={"Import Private Key"}
-              onPress={async () =>
-                importMyPrivateKeyFromTextInput(
-                  keyText as string,
-                  emailClaimValue as string
-                )
-              }
-              disabled={!keyText || isKeyTextIsPublicKey || !emailClaimValue}
-            />
-          </View>
-        </View>
-        <View style={styles.buttonWrapper}>
-          <View style={styles.button}>
-            <Button
-              title={"Import Private Key from Device"}
-              onPress={async () =>
-                importPrivateKeyFromDevice(emailClaimValue as string)
-              }
-              disabled={!emailClaimValue || keyText !== undefined}
-            />
-          </View>
-        </View>
-
-        <View style={styles.buttonWrapper}>
-          <View style={styles.button}>
-            <Button
-              title={"Generate New PGP Key and Publish"}
-              disabled={shouldDisabledGeneratePgpKey || keyText !== undefined}
-              onPress={async () =>
-                generateAndPublishNewPgpKey(
-                  nameClaimValue as string,
-                  emailClaimValue as string
-                )
-              }
-            />
-          </View>
-          <View style={styles.button}>
-            <Button
-              title={"Verify Email"}
-              disabled={emailClaim?.verified}
-              onPress={() => verifyPublicKey(emailClaimValue)}
-            />
-          </View>
-        </View>
-
         <BottomNavBarSpacer />
       </ScrollView>
+      <View style={styles.buttonWrapper}>
+        <View style={styles.button}>
+          <Button
+            onPress={() =>
+              showActionSheetWithOptions(
+                {
+                  options: [
+                    "Import Private Key",
+                    "Import Private Key from Device",
+                    "Generate new PGP Key and publish",
+                    "cancel"
+                  ],
+                  cancelButtonIndex: 3
+                },
+                async (buttonIndex) => {
+                  if (buttonIndex === 0) {
+                    importMyPrivateKeyFromTextInput(
+                      keyText as string,
+                      emailClaimValue as string
+                    );
+                    //disabled={!keyText || isKeyTextIsPublicKey || !emailClaimValue}
+                  }
+                  if (buttonIndex === 1) {
+                    await importPrivateKeyFromDevice(emailClaimValue as string);
+                    //   disabled={!emailClaimValue || keyText !== undefined}
+                  }
+                  if (buttonIndex === 2) {
+                    await generateAndPublishNewPgpKey(
+                      nameClaimValue as string,
+                      emailClaimValue as string
+                    );
+                    // disabled={shouldDisabledGeneratePgpKey || keyText !== undefined}
+                  }
+                }
+              )
+            }
+          >
+            Set Up PGP Key
+          </Button>
+        </View>
+      </View>
     </KeyboardAvoidingView>
   );
 };
