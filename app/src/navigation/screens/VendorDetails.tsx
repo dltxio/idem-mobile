@@ -93,6 +93,17 @@ const VendorDetailsScreen: React.FC = () => {
         <Button
           onPress={async () => {
             if (vendor && getVendor(vendor.id) && name && email) {
+              //TODO: Quick fix for now, need update this with new sites.json
+              const userClaim = usersClaims.find(
+                (claim) => claim.type === ClaimTypeConstants.EmailCredential
+              );
+              if (!userClaim?.verified) {
+                Alert.alert(
+                  "Email not verified",
+                  "Please verify your email before signing up"
+                );
+                return;
+              }
               await signup({ name, email, mobile, dob }, vendor.id);
               setSigned(true);
             } else {
