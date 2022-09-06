@@ -91,8 +91,8 @@ const usePgp = (): Hooks => {
     const formattedEmail = email.trim().toLowerCase();
     await api
       .uploadPublicKey({
-        hashEmail: ethers.utils.hashMessage(formattedEmail),
-        publicKeyArmored: publicKey
+        email: ethers.utils.hashMessage(formattedEmail),
+        pgpPublicKey: publicKey
       })
       .catch((error) => {
         Alert.alert(AlertTitle.Error, error.message);

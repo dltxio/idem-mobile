@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Claim, ClaimType, ClaimWithValue, ClaimData } from "../types/claim";
 import allClaims from "../data/claims";
-import { claimsLocalStorage } from "../utils/local-storage";
+import { claimsLocalStorage, pgpLocalStorage } from "../utils/local-storage";
 import { displayClaimValue } from "../utils/claim-utils";
 
 type KeyValueObject = { [key: string]: string };

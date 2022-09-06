@@ -22,6 +22,7 @@ import { UserVerifyRequest } from "../../types/user";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
 import { ClaimTypeConstants } from "../../constants/common";
 import IdemButton from "../../components/Button";
+import { ethers } from "ethers";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -44,10 +45,7 @@ const Home: React.FC = () => {
   const verifyUserOnProxy = async () => {
     if (splitName && dob && address && email) {
       const formattedEmail = email.trim().toLowerCase();
-      const hashEmail = await Crypto.digestStringAsync(
-        Crypto.CryptoDigestAlgorithm.SHA256,
-        formattedEmail
-      );
+      const hashEmail = ethers.utils.hashMessage(formattedEmail);
 
       const userClaims = {
         firstName: splitName.firstName,
