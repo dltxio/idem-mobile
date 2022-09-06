@@ -34,6 +34,7 @@ import { AlertTitle, ClaimTypeConstants } from "../../constants/common";
 import { FieldType } from "../../types/general";
 import PgpFields from "../../components/PgpFields";
 import usePgp from "../../hooks/usePpg";
+import { UsersResponse } from "../../types/user";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -61,6 +62,7 @@ const ClaimScreen: React.FC = () => {
   const emailClaimValue = useClaimValue(ClaimTypeConstants.EmailCredential);
   const { addClaim, usersClaims } = useClaimsStore();
   const [disableButton, setDisableButton] = React.useState(false);
+  const [disableEmailButton, setDisableEmailButton] = React.useState(false);
   const [emailInput, setEmailInput] = React.useState(true);
   const userClaim = usersClaims.find((c) => c.type === claim.type);
   const [formState, setFormState] = React.useState<FormState>(
@@ -107,35 +109,47 @@ const ClaimScreen: React.FC = () => {
     }
   };
 
-  const { verifyPublicKey } = usePgp();
-
   const isEmail = claim.type === "EmailCredential";
+  const emailClaim = usersClaims.find(
+    (c) => c.type === ClaimTypeConstants.EmailCredential
+  );
+  const disableEmailVerifyButton = () => {
+    if (isEmail && emailClaim?.verified) {
+      setDisableEmailButton(true);
+    }
+  };
 
-  const verifyEmail = () => {
-    verifyPublicKey(emailClaimValue);
-    Alert.alert(
-      "Email Sent",
-      "IDEM sent a verification email to your address, Please check your emails"
-    );
+  const verifyPublicKey = (email: string | undefined) => {
+    // do the call to the keyserver here.
+    return true;
   };
 
   const onSave = async () => {
     setLoading(true);
     let newFormState = formState;
     if (claim.type === "EmailCredential") {
+      const email = (newFormState.email as string).toLowerCase();
       newFormState = {
         ...newFormState,
-        email: (newFormState.email as string).toLowerCase()
+        email: emailClaimValue as string
       };
-      //disabled={emailClaim?.verified} disable if this is the case
-      verifyEmail();
+      const verfied = verifyPublicKey(email);
+
+      if (verfied) {
+        Alert.alert("Sucess", "blahhhhh");
+        disableEmailVerifyButton();
+      } else {
+        Alert.alert("Warning", "blahhhh");
+      }
     }
     await addClaim(claim.type, newFormState, selectedFileIds);
     const claims = await claimsLocalStorage.get();
     if (claim.type === "BirthCredential") saveAndCheckBirthday(claims);
+
     navigation.reset({
       routes: [{ name: "Home" }]
     });
+
     setLoading(false);
   };
 
@@ -348,7 +362,9 @@ const ClaimScreen: React.FC = () => {
               onSelectFile={onSelectFile}
             />
           )}
-          {showPgpFields && <PgpFields />}
+          {showPgpFields && (
+            <PgpFields emailInput={formState["email"] as string} />
+          )}
         </View>
         <BottomNavBarSpacer />
       </ScrollView>
@@ -364,14 +380,8 @@ const ClaimScreen: React.FC = () => {
           />
         ) : (
           <Button
-            title={
-              isVerifying
-                ? "Save & Verify"
-                : "Save" || isEmail
-                ? "Verify"
-                : "Save"
-            }
-            disabled={!canSave || disableButton}
+            title={isVerifying ? "Save & Verify" : isEmail ? "Verify" : "Save"}
+            disabled={!canSave || disableButton || disableEmailButton}
             onPress={onSave}
             loading={loading}
           />

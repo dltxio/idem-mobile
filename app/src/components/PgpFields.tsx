@@ -16,13 +16,16 @@ import BottomNavBarSpacer from "../components/BottomNavBarSpacer";
 import { useClaimsStore, useClaimValue } from "../context/ClaimsStore";
 import usePgp from "../hooks/usePpg";
 import { AlertTitle, ClaimTypeConstants } from "../constants/common";
-import { pgpLocalStorage } from "../utils/local-storage";
+import { claimsLocalStorage, pgpLocalStorage } from "../utils/local-storage";
 import {
   checkIfContentContainOnlyPublicKey,
   extractPrivateKeyFromContent
 } from "../utils/pgp-utils";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 
+type Props = {
+  emailInput: string;
+};
 const importPrivateKeyFileFromDevice = async () => {
   const res = await DocumentPicker.getDocumentAsync({
     type: ["*/*"]
@@ -37,7 +40,7 @@ const importPrivateKeyFileFromDevice = async () => {
   return fileContent;
 };
 
-const PgpFields = () => {
+const PgpFields: React.FC<Props> = (props) => {
   // for user input
   const [keyText, setKeyText] = React.useState<string>();
   const emailClaimValue = useClaimValue(ClaimTypeConstants.EmailCredential);
@@ -172,6 +175,7 @@ const PgpFields = () => {
       <View style={styles.buttonWrapper}>
         <View style={styles.button}>
           <Button
+            disabled={!props.emailInput || !nameClaimValue}
             onPress={() =>
               showActionSheetWithOptions(
                 {
@@ -189,18 +193,15 @@ const PgpFields = () => {
                       keyText as string,
                       emailClaimValue as string
                     );
-                    //disabled={!keyText || isKeyTextIsPublicKey || !emailClaimValue}
                   }
                   if (buttonIndex === 1) {
                     await importPrivateKeyFromDevice(emailClaimValue as string);
-                    //   disabled={!emailClaimValue || keyText !== undefined}
                   }
                   if (buttonIndex === 2) {
                     await generateAndPublishNewPgpKey(
                       nameClaimValue as string,
                       emailClaimValue as string
                     );
-                    // disabled={shouldDisabledGeneratePgpKey || keyText !== undefined}
                   }
                 }
               )
