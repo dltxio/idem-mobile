@@ -78,6 +78,7 @@ const ClaimScreen: React.FC = () => {
   const [showOtpDialog, setShowOtpDialog] = React.useState<boolean>(false);
   const [otpContext, setOtpContext] = React.useState<RequestOptResponse>();
 
+  const { verifyPublicKey } = usePgp();
   const {
     saveAndCheckBirthday,
     onSelectFile,
@@ -119,8 +120,8 @@ const ClaimScreen: React.FC = () => {
     }
   };
 
-  const verifyPublicKey = (email: string | undefined) => {
-    // do the call to the keyserver here.
+  const verifyPublicKeyForPgp = () => {
+    verifyPublicKey;
     return true;
   };
 
@@ -133,8 +134,7 @@ const ClaimScreen: React.FC = () => {
         ...newFormState,
         email: emailClaimValue as string
       };
-      const verfied = verifyPublicKey(email);
-
+      const verfied = verifyPublicKeyForPgp();
       if (verfied) {
         Alert.alert("Sucess", "blahhhhh");
         disableEmailVerifyButton();
