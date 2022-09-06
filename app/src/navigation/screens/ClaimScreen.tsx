@@ -32,6 +32,7 @@ import { claimsLocalStorage } from "../../utils/local-storage";
 import useApi from "../../hooks/useApi";
 import { AlertTitle } from "../../constants/common";
 import { FieldType } from "../../types/general";
+import PgpFields from "../../components/PgpFields";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -137,6 +138,8 @@ const ClaimScreen: React.FC = () => {
 
   const isDocumentUploadVerifyAction =
     claim.verificationAction === "document-upload";
+
+  const showPgpFields = claim.type === "EmailCredential";
 
   const isOtpVerifyAction = claim.verificationAction === "otp";
 
@@ -330,6 +333,7 @@ const ClaimScreen: React.FC = () => {
               onSelectFile={onSelectFile}
             />
           )}
+          {showPgpFields && <PgpFields />}
         </View>
         <BottomNavBarSpacer />
       </ScrollView>
