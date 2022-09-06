@@ -98,11 +98,10 @@ const VendorDetailsScreen: React.FC = () => {
                 (claim) => claim.type === ClaimTypeConstants.EmailCredential
               );
               if (!userClaim?.verified) {
-                Alert.alert(
+                return Alert.alert(
                   "Email not verified",
                   "Please verify your email before sign up."
                 );
-                return;
               }
               await signup({ name, email, mobile, dob }, vendor.id);
               setSigned(true);
