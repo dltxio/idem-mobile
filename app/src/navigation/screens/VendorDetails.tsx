@@ -100,7 +100,7 @@ const VendorDetailsScreen: React.FC = () => {
               if (!userClaim?.verified) {
                 Alert.alert(
                   "Email not verified",
-                  "Please verify your email before signing up"
+                  "Please verify your email before sign up."
                 );
                 return;
               }
@@ -109,7 +109,7 @@ const VendorDetailsScreen: React.FC = () => {
             } else {
               Alert.alert(
                 "Missing Credentials",
-                "Please provide your name and email claims to sign up"
+                "Please provide your name and email claims to sign up."
               );
             }
           }}
