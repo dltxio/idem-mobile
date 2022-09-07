@@ -34,7 +34,6 @@ import { AlertTitle, ClaimTypeConstants } from "../../constants/common";
 import { FieldType } from "../../types/general";
 import PgpFields from "../../components/PgpFields";
 import usePgp from "../../hooks/usePpg";
-import { UsersResponse } from "../../types/user";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
