@@ -2,13 +2,13 @@ import * as React from "react";
 import {
   View,
   StyleSheet,
-  TextInput,
   Text,
   KeyboardAvoidingView,
   ScrollView,
   Alert,
   StatusBar
 } from "react-native";
+import QRCode from "react-qr-code";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import { Button } from "../components";
@@ -16,7 +16,7 @@ import BottomNavBarSpacer from "../components/BottomNavBarSpacer";
 import { useClaimsStore, useClaimValue } from "../context/ClaimsStore";
 import usePgp from "../hooks/usePpg";
 import { AlertTitle, ClaimTypeConstants } from "../constants/common";
-import { claimsLocalStorage, pgpLocalStorage } from "../utils/local-storage";
+import { pgpLocalStorage } from "../utils/local-storage";
 import {
   checkIfContentContainOnlyPublicKey,
   extractPrivateKeyFromContent
@@ -209,6 +209,12 @@ const PgpFields: React.FC<Props> = (props) => {
           >
             Set Up PGP Key
           </Button>
+          <QRCode
+            value={keyText as string}
+            size={256}
+            style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+          />
+          <Text>Didn't receive your verification email?</Text>
         </View>
       </View>
     </KeyboardAvoidingView>

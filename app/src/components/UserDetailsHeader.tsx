@@ -10,12 +10,7 @@ import { useDocumentStore } from "../context/DocumentStore";
 import { useNavigation } from "@react-navigation/native";
 import { ProfileStackNavigation } from "../types/navigation";
 import defaultProfilePicture from "../../assets/default-profile-picture.png";
-import { truncateAddress } from "../utils/wallet-utils";
-import useMnemonic from "../hooks/useMnemonic";
-import { pgpLocalStorage } from "../utils/local-storage";
-import { useEffect, useState } from "react";
 import { ClaimTypeConstants } from "../constants/common";
-import { formatFingerPrint } from "../utils/pgp-utils";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
