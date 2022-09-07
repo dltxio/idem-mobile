@@ -31,22 +31,22 @@ const UserDetailsHeader: React.FC = () => {
   const { selectPhotoFromCameraRoll } = useSelectPhoto(PROFILE_IMAGE_OPTIONS);
   const { addClaim } = useClaimsStore();
   const { addFile, files } = useDocumentStore();
-  const [pgpTitle, setPgpTitle] = useState<string | undefined>(
-    "Setup PGP key pair"
-  );
-  const { ethAddress } = useMnemonic();
+  // const [pgpTitle, setPgpTitle] = useState<string | undefined>(
+  //   "Setup PGP key pair"
+  // );
+  // const { ethAddress } = useMnemonic();
 
   const profilePictureFile = files.find((file) => file.id === profileImageId);
 
-  useEffect(() => {
-    const getFingerPrint = async () => {
-      const key = await pgpLocalStorage.get();
-      if (!key) return;
-      const fingerPrint = formatFingerPrint(key.fingerPrint);
-      setPgpTitle(fingerPrint);
-    };
-    return navigation.addListener("focus", getFingerPrint);
-  }, []);
+  // useEffect(() => {
+  //   const getFingerPrint = async () => {
+  //     const key = await pgpLocalStorage.get();
+  //     if (!key) return;
+  //     const fingerPrint = formatFingerPrint(key.fingerPrint);
+  //     setPgpTitle(fingerPrint);
+  //   };
+  //   return navigation.addListener("focus", getFingerPrint);
+  // }, []);
 
   const addProfileImageClaim = async () => {
     const file = await selectPhotoFromCameraRoll();
@@ -57,9 +57,9 @@ const UserDetailsHeader: React.FC = () => {
     addClaim("ProfileImageCredential", { fileId }, []);
   };
 
-  const showEthAddress = async () => {
-    if (ethAddress) Alert.alert("Your eth address", ethAddress);
-  };
+  // const showEthAddress = async () => {
+  //   if (ethAddress) Alert.alert("Your eth address", ethAddress);
+  // };
 
   return (
     <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
@@ -93,10 +93,10 @@ const UserDetailsHeader: React.FC = () => {
             })
           }
         />
-        <Text onPress={() => navigation.navigate("PGP")}>{pgpTitle}</Text>
+        {/* <Text onPress={() => navigation.navigate("PGP")}>{pgpTitle}</Text>
         <Text onPress={showEthAddress}>
           {ethAddress ? truncateAddress(ethAddress) : ""}
-        </Text>
+        </Text> */}
       </View>
     </View>
   );
