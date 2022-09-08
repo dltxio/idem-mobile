@@ -22,6 +22,8 @@ import {
 } from "../utils/pgp-utils";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import QRCode from "react-native-qrcode-svg";
+import { Switch } from "react-native";
+import colors from "../styles/colors";
 
 type Props = {
   emailInput: string;
@@ -45,6 +47,7 @@ const PgpFields: React.FC<Props> = (props) => {
   const [keyText, setKeyText] = React.useState<string>();
   const emailClaimValue = useClaimValue(ClaimTypeConstants.EmailCredential);
   const nameClaimValue = useClaimValue(ClaimTypeConstants.NameCredential);
+  const [isActive, setIsActive] = React.useState(false);
   const { showActionSheetWithOptions } = useActionSheet();
   const { usersClaims } = useClaimsStore();
 
@@ -114,7 +117,7 @@ const PgpFields: React.FC<Props> = (props) => {
     },
     [generateKeyPair]
   );
-
+  const toggleSwitch = () => setIsActive((previousState) => !previousState);
   const checkRequiredClaims = () => {
     if (emailClaimValue === "" || nameClaimValue === "") {
       Alert.alert(
@@ -147,6 +150,8 @@ const PgpFields: React.FC<Props> = (props) => {
     return checkIfContentContainOnlyPublicKey(keyText);
   }, [keyText]);
 
+  const ShowTextBox = () => {};
+
   return (
     <KeyboardAvoidingView style={styles.container}>
       <ScrollView
@@ -174,7 +179,16 @@ const PgpFields: React.FC<Props> = (props) => {
       </ScrollView>
       <View style={styles.qrCodeContainer}>
         <Text>QRCODE BOX</Text>
-        {/* <QRCode value="hey" /> */}
+      </View>
+      <View>
+        <Switch
+          trackColor={{ false: colors.white, true: colors.blue }}
+          thumbColor={isActive === true ? colors.white : colors.blue}
+          onValueChange={toggleSwitch}
+          onChange={ShowTextBox}
+          value={isActive}
+          style={styles.toggle}
+        />
       </View>
       <View style={styles.buttonWrapper}>
         <View style={styles.button}>
@@ -230,7 +244,7 @@ const styles = StyleSheet.create({
   },
   qrCodeContainer: {
     // to be removed after content is added
-    height: 250,
+    height: 200,
     borderColor: "red",
     borderWidth: 1,
     alignItems: "center",
@@ -250,7 +264,7 @@ const styles = StyleSheet.create({
   input: {
     marginVertical: 10,
     backgroundColor: "grey",
-    height: 200,
+    height: 150,
     padding: 10,
     overflow: "scroll",
     alignSelf: "stretch"
@@ -263,6 +277,9 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     alignSelf: "stretch",
     marginHorizontal: 10
+  },
+  toggle: {
+    margin: 10
   },
   warning: {
     alignSelf: "stretch",
