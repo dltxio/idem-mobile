@@ -49,20 +49,18 @@ const PgpFields: React.FC<Props> = (props) => {
   const nameClaimValue = useClaimValue(ClaimTypeConstants.NameCredential);
   const [isActive, setIsActive] = React.useState(false);
   const { showActionSheetWithOptions } = useActionSheet();
-  const { usersClaims } = useClaimsStore();
+  const [publicKey,setPublicKey] =React.useState<string>();
 
-  const emailClaim = usersClaims.find(
-    (c) => c.type === ClaimTypeConstants.EmailCredential
-  );
 
-  const { generateKeyPair, generateKeyPairFromPrivateKey, verifyPublicKey } =
+
+  const { generateKeyPair, generateKeyPairFromPrivateKey,resendVerificationEmail } =
     usePgp();
 
   const loadKeyFromLocalStorage = React.useCallback(async () => {
     const key = await pgpLocalStorage.get();
     if (!key) return;
-    setKeyText(key.publicKey);
-  }, [setKeyText]);
+    setPublicKey(key.publicKey);
+  }, [setPublicKey]);
 
   const extractAndLoadKeyPairFromContent = React.useCallback(
     async (content: string, email: string) => {
@@ -129,6 +127,8 @@ const PgpFields: React.FC<Props> = (props) => {
 
   const shouldDisabledGeneratePgpKey = !emailClaimValue || !nameClaimValue;
 
+  
+
   React.useEffect(() => {
     (async () => {
       checkRequiredClaims();
@@ -145,10 +145,6 @@ const PgpFields: React.FC<Props> = (props) => {
     }
   }, [shouldDisabledGeneratePgpKey]);
 
-  const isKeyTextIsPublicKey = React.useMemo(() => {
-    if (!keyText) return false;
-    return checkIfContentContainOnlyPublicKey(keyText);
-  }, [keyText]);
 
   const ShowTextBox = () => {};
 
@@ -159,15 +155,6 @@ const PgpFields: React.FC<Props> = (props) => {
         contentContainerStyle={styles.scrollContent}
       >
         <StatusBar hidden={false} />
-        {/* <TextInput
-          placeholder="Paste your PGP/GPG Private Key here"
-          placeholderTextColor={"black"}
-          onChangeText={setKeyText}
-          style={styles.input}
-          multiline={true}
-          selectionColor={"white"}
-          value={keyText}
-        /> */}
         <Text style={styles.warning}>
           Pretty Good Privacy (PGP) is an encryption program that provides
           cryptographic privacy and authentication for data communication. PGP
@@ -178,7 +165,7 @@ const PgpFields: React.FC<Props> = (props) => {
         <BottomNavBarSpacer />
       </ScrollView>
       <View style={styles.qrCodeContainer}>
-        <Text>QRCODE BOX</Text>
+        {publicKey && (!isActive? <QRCode value={publicKey} size={200} /> : <Text >{publicKey}</Text>)}
       </View>
       <View>
         <Switch
@@ -228,8 +215,8 @@ const PgpFields: React.FC<Props> = (props) => {
             Set Up PGP Key
           </Button>
 
-          <Text style={styles.didntGetEmailText}>
-            Didn't receive your verification email? keyText as string
+          <Text style={styles.didntGetEmailText} onPress={()=>resendVerificationEmail(props.emailInput)}>
+            Didn't receive your verification email?
           </Text>
         </View>
       </View>
@@ -243,10 +230,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   qrCodeContainer: {
-    // to be removed after content is added
-    height: 200,
-    borderColor: "red",
-    borderWidth: 1,
+    minHeight: 200,
     alignItems: "center",
     justtifyContent: "center"
   },

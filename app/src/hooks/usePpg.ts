@@ -20,6 +20,7 @@ type Hooks = {
     email: string
   ) => Promise<void>;
   verifyPublicKey: (email: string | undefined) => Promise<void>;
+  resendVerificationEmail : (email: string ) => Promise<void>;
 };
 
 const usePgp = (): Hooks => {
@@ -101,6 +102,18 @@ const usePgp = (): Hooks => {
       });
   };
 
+  const resendVerificationEmail = async (email:string) => {
+    const formattedEmail = email.trim().toLowerCase();
+    await api
+      .resendVerificationEmail({
+        hashedEmail: ethers.utils.hashMessage(formattedEmail)
+      })
+      .catch((error) => {
+        Alert.alert(AlertTitle.Error, error.message);
+        throw error;
+      });
+  }
+
   const verifyPublicKey =  React.useCallback(async (email: string | undefined) => {
     if (!email) {
       Alert.alert(AlertTitle.Error, `No email claim found`);
@@ -136,7 +149,8 @@ const usePgp = (): Hooks => {
   return {
     generateKeyPair,
     generateKeyPairFromPrivateKey,
-    verifyPublicKey
+    verifyPublicKey,
+    resendVerificationEmail
   };
 };
 
