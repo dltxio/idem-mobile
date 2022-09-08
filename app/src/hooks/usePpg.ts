@@ -112,7 +112,7 @@ const usePgp = (): Hooks => {
         if (response)
           return Alert.alert(
             "Email Sent",
-            "IDEM has sent another verification email"
+            "IDEM has sent another verification email."
           );
       })
       .catch((error) => {
@@ -124,7 +124,7 @@ const usePgp = (): Hooks => {
   const verifyPublicKey = React.useCallback(
     async (email: string | undefined) => {
       if (!email) {
-        Alert.alert(AlertTitle.Error, `No email claim found`);
+        Alert.alert(AlertTitle.Error, `No email claim found.`);
         return;
       }
       await api
@@ -140,13 +140,13 @@ const usePgp = (): Hooks => {
             {
               Alert.alert(
                 AlertTitle.Success,
-                "Your PGP key has been successfully verified by IDEM"
+                "Your PGP key has been successfully verified by IDEM."
               );
             }
           } else {
             Alert.alert(
-              `Email Sent`,
-              `Please check your email for a verification link`
+              `Warning`,
+              `Please check your email for a verification link and verify with IDEM once complete.`
             );
           }
         })

@@ -166,7 +166,7 @@ const ClaimScreen: React.FC = () => {
     if (newMobileState.countryCode !== "+61") {
       Alert.alert(
         "Error",
-        "IDEM only supports Australian numbers for mobile claims/verification"
+        "IDEM only supports Australian numbers for mobile claims/verification."
       );
       setLoading(false);
       return;
@@ -182,7 +182,7 @@ const ClaimScreen: React.FC = () => {
       }
     } catch (error) {
       console.error(error);
-      Alert.alert("Error", "Something went wrong");
+      Alert.alert("Error", "Something went wrong.");
     }
     setLoading(false);
   };
@@ -203,12 +203,12 @@ const ClaimScreen: React.FC = () => {
 
         if (verifyOtp) {
           addClaim(claim.type, formState, selectedFileIds, true);
-          Alert.alert("Your mobile has been verified");
+          Alert.alert("Your mobile has been verified.");
           navigation.reset({
             routes: [{ name: "Home" }]
           });
         } else {
-          Alert.alert("Please try again, verification code invalid");
+          Alert.alert("Please try again, verification code invalid.");
         }
       } catch (error: any) {
         Alert.alert(AlertTitle.Error, error?.message);

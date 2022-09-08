@@ -13,7 +13,7 @@ import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import { Button } from "../components";
 import BottomNavBarSpacer from "../components/BottomNavBarSpacer";
-import { useClaimValue } from "../context/ClaimsStore";
+import { useClaimsStore, useClaimValue } from "../context/ClaimsStore";
 import usePgp from "../hooks/usePpg";
 import { AlertTitle, ClaimTypeConstants } from "../constants/common";
 import { pgpLocalStorage } from "../utils/local-storage";
@@ -50,6 +50,7 @@ const PgpFields: React.FC<Props> = (props) => {
   const [isActive, setIsActive] = React.useState(false);
   const { showActionSheetWithOptions } = useActionSheet();
   const [publicKey, setPublicKey] = React.useState<string>();
+  const { addClaim } = useClaimsStore();
 
   const {
     generateKeyPair,
@@ -71,6 +72,7 @@ const PgpFields: React.FC<Props> = (props) => {
 
   const loadKeyFromLocalStorage = React.useCallback(async () => {
     const key = await pgpLocalStorage.get();
+    console.log(key, "KEY");
     if (!key) return;
     setPublicKey(key.publicKey);
   }, [setPublicKey]);
@@ -118,13 +120,11 @@ const PgpFields: React.FC<Props> = (props) => {
     },
     [extractAndLoadKeyPairFromContent]
   );
-
   const generateAndPublishNewPgpKey = React.useCallback(
     async (name: string, email: string) => {
       await generateKeyPair(name, email);
       await loadKeyFromLocalStorage();
-      const key = await pgpLocalStorage.get();
-      if (!key) return;
+      await addClaim(ClaimTypeConstants.EmailCredential, { email }, [], false);
     },
     [generateKeyPair]
   );
@@ -151,7 +151,7 @@ const PgpFields: React.FC<Props> = (props) => {
     if (shouldDisabledGeneratePgpKey) {
       Alert.alert(
         "Cannot generate PGP/GPG Key",
-        "Must have a name and email claim"
+        "Must have a name and email claim."
       );
     }
   }, [shouldDisabledGeneratePgpKey]);
