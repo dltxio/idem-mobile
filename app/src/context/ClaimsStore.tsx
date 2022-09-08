@@ -54,18 +54,20 @@ export const ClaimsProvider: React.FC<{
     files: string[],
     verified: boolean
   ) => {
-    const updatedClaimData = claimData.map((cd) => {
-      if (cd.type !== claimType) return cd;
-
-      return {
-        ...cd,
-        claimValue,
-        files,
-        verified
-      };
+    setClaimData(prevClaimData => {
+      const updatedClaimData = prevClaimData.map((cd) => {
+        if (cd.type !== claimType) return cd;
+  
+        return {
+          ...cd,
+          claimValue,
+          files,
+          verified
+        };
+      });
+      claimsLocalStorage.save(updatedClaimData);
+      return updatedClaimData
     });
-    await claimsLocalStorage.save(updatedClaimData);
-    setClaimData(updatedClaimData);
   };
 
   const usersClaims: ClaimWithValue[] = React.useMemo(() => {
@@ -106,13 +108,16 @@ export const ClaimsProvider: React.FC<{
       }, 2000)
     );
 
-    const otherClaimData = claimData.filter((cd) => cd.type !== claimId);
-    const updatedClaims = [
-      ...otherClaimData,
-      { type: claimId, value, verified }
-    ];
-    await claimsLocalStorage.save(updatedClaims);
-    setClaimData(updatedClaims);
+    setClaimData(prevClaimData => {
+      const otherClaimData = prevClaimData.filter((cd) => cd.type !== claimId);
+      const updatedClaims = [
+        ...otherClaimData,
+        { type: claimId, value, verified }
+      ];
+      claimsLocalStorage.save(updatedClaims);
+      return updatedClaims;
+
+    })
   };
 
   const reset = () => {
@@ -128,7 +133,7 @@ export const ClaimsProvider: React.FC<{
       addClaim,
       reset
     }),
-    [allClaims, claimData, addClaim, reset, updateClaim]
+    [allClaims, claimData,usersClaims, addClaim, reset, updateClaim]
   );
 
   return (

@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import React from "react";
 import { Alert } from "react-native";
 import OpenPGP from "react-native-fast-openpgp";
 import { AlertTitle, ClaimTypeConstants } from "../constants/common";
@@ -100,12 +101,12 @@ const usePgp = (): Hooks => {
       });
   };
 
-  const verifyPublicKey = async (email: string | undefined) => {
+  const verifyPublicKey =  React.useCallback(async (email: string | undefined) => {
     if (!email) {
       Alert.alert(AlertTitle.Error, `No email claim found`);
       return;
     }
-    api
+    await api
       .getUser(email)
       .then(async (result: UsersResponse) => {
         if (result.emailVerified) {
@@ -131,7 +132,7 @@ const usePgp = (): Hooks => {
       .catch((error) => {
         Alert.alert(AlertTitle.Error, error.message);
       });
-  };
+  },[updateClaim]);
   return {
     generateKeyPair,
     generateKeyPairFromPrivateKey,
