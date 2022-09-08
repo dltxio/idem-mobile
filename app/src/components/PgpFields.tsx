@@ -132,14 +132,14 @@ const PgpFields: React.FC<Props> = (props) => {
     })();
   }, []);
 
-  React.useEffect(() => {
-    if (shouldDisabledGeneratePgpKey) {
-      Alert.alert(
-        "Cannot generate PGP/GPG Key",
-        "Must have a name and email claim"
-      );
-    }
-  }, [shouldDisabledGeneratePgpKey]);
+  //   React.useEffect(() => {
+  //     if (shouldDisabledGeneratePgpKey) {
+  //       Alert.alert(
+  //         "Cannot generate PGP/GPG Key",
+  //         "Must have a name and email claim"
+  //       );
+  //     }
+  //   }, [shouldDisabledGeneratePgpKey]);
 
   const isKeyTextIsPublicKey = React.useMemo(() => {
     if (!keyText) return false;

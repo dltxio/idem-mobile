@@ -56,6 +56,7 @@ export const ClaimsProvider: React.FC<{
     files: string[],
     verified: boolean
   ) => {
+    console.log({ claimType, claimValue, files, verified });
     const updatedClaimData = verifiedClaimTypes.map((claimData) => {
       if (claimData.type !== claimType) return claimData;
 
@@ -73,6 +74,7 @@ export const ClaimsProvider: React.FC<{
 
   const usersClaims: ClaimWithValue[] = React.useMemo(() => {
     const verifiedClaims: ClaimWithValue[] = [];
+    console.log({ allClaims });
     allClaims.forEach((claim) => {
       const verifiedClaim = verifiedClaimTypes.find(
         (vc) => vc?.type === claim.type
