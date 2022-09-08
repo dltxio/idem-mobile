@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Alert, Pressable } from "react-native";
+import { View, StyleSheet, Text, Pressable, Alert } from "react-native";
 import { useClaimsStore, useClaimValue } from "../context/ClaimsStore";
 import { Avatar } from "@rneui/themed";
 import colors from "../styles/colors";
@@ -11,6 +11,8 @@ import { useNavigation } from "@react-navigation/native";
 import { ProfileStackNavigation } from "../types/navigation";
 import defaultProfilePicture from "../../assets/default-profile-picture.png";
 import { ClaimTypeConstants } from "../constants/common";
+import useMnemonic from "../hooks/useMnemonic";
+import { truncateAddress } from "../utils/wallet-utils";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -22,26 +24,11 @@ const UserDetailsHeader: React.FC = () => {
   const profileImageId = useClaimValue(
     ClaimTypeConstants.ProfileImageCredential
   );
-
+  const { ethAddress } = useMnemonic();
   const { selectPhotoFromCameraRoll } = useSelectPhoto(PROFILE_IMAGE_OPTIONS);
   const { addClaim } = useClaimsStore();
   const { addFile, files } = useDocumentStore();
-  // const [pgpTitle, setPgpTitle] = useState<string | undefined>(
-  //   "Setup PGP key pair"
-  // );
-  // const { ethAddress } = useMnemonic();
-
   const profilePictureFile = files.find((file) => file.id === profileImageId);
-
-  // useEffect(() => {
-  //   const getFingerPrint = async () => {
-  //     const key = await pgpLocalStorage.get();
-  //     if (!key) return;
-  //     const fingerPrint = formatFingerPrint(key.fingerPrint);
-  //     setPgpTitle(fingerPrint);
-  //   };
-  //   return navigation.addListener("focus", getFingerPrint);
-  // }, []);
 
   const addProfileImageClaim = async () => {
     const file = await selectPhotoFromCameraRoll();
@@ -52,9 +39,9 @@ const UserDetailsHeader: React.FC = () => {
     addClaim("ProfileImageCredential", { fileId }, []);
   };
 
-  // const showEthAddress = async () => {
-  //   if (ethAddress) Alert.alert("Your eth address", ethAddress);
-  // };
+  const showEthAddress = async () => {
+    if (ethAddress) Alert.alert("Your eth address", ethAddress);
+  };
 
   return (
     <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
@@ -88,10 +75,9 @@ const UserDetailsHeader: React.FC = () => {
             })
           }
         />
-        {/* <Text onPress={() => navigation.navigate("PGP")}>{pgpTitle}</Text>
         <Text onPress={showEthAddress}>
           {ethAddress ? truncateAddress(ethAddress) : ""}
-        </Text> */}
+        </Text>
       </View>
     </View>
   );

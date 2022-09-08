@@ -54,10 +54,10 @@ export const ClaimsProvider: React.FC<{
     files: string[],
     verified: boolean
   ) => {
-    setClaimData(prevClaimData => {
+    setClaimData((prevClaimData) => {
       const updatedClaimData = prevClaimData.map((cd) => {
         if (cd.type !== claimType) return cd;
-  
+
         return {
           ...cd,
           claimValue,
@@ -66,7 +66,7 @@ export const ClaimsProvider: React.FC<{
         };
       });
       claimsLocalStorage.save(updatedClaimData);
-      return updatedClaimData
+      return updatedClaimData;
     });
   };
 
@@ -108,7 +108,7 @@ export const ClaimsProvider: React.FC<{
       }, 2000)
     );
 
-    setClaimData(prevClaimData => {
+    setClaimData((prevClaimData) => {
       const otherClaimData = prevClaimData.filter((cd) => cd.type !== claimId);
       const updatedClaims = [
         ...otherClaimData,
@@ -116,8 +116,7 @@ export const ClaimsProvider: React.FC<{
       ];
       claimsLocalStorage.save(updatedClaims);
       return updatedClaims;
-
-    })
+    });
   };
 
   const reset = () => {
@@ -133,7 +132,7 @@ export const ClaimsProvider: React.FC<{
       addClaim,
       reset
     }),
-    [allClaims, claimData,usersClaims, addClaim, reset, updateClaim]
+    [allClaims, claimData, usersClaims, addClaim, reset, updateClaim]
   );
 
   return (

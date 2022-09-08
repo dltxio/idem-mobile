@@ -23,14 +23,14 @@ import {
 import { getClaimFromType } from "../../utils/claim-utils";
 import { Claim, RequestOptResponse } from "../../types/claim";
 import { FileList, Button } from "../../components";
-import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
+import { useClaimsStore } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
 import { getDocumentFromDocumentType } from "../../utils/document-utils";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import useClaimScreen from "../../hooks/useClaimScreen";
 import { claimsLocalStorage } from "../../utils/local-storage";
 import useApi from "../../hooks/useApi";
-import { AlertTitle, ClaimTypeConstants } from "../../constants/common";
+import { AlertTitle } from "../../constants/common";
 import { FieldType } from "../../types/general";
 import PgpFields from "../../components/PgpFields";
 import usePgp from "../../hooks/usePpg";

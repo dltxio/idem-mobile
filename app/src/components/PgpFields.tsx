@@ -16,11 +16,15 @@ import { useClaimValue } from "../context/ClaimsStore";
 import usePgp from "../hooks/usePpg";
 import { AlertTitle, ClaimTypeConstants } from "../constants/common";
 import { pgpLocalStorage } from "../utils/local-storage";
-import { extractPrivateKeyFromContent } from "../utils/pgp-utils";
+import {
+  extractPrivateKeyFromContent,
+  formatFingerPrint
+} from "../utils/pgp-utils";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import QRCode from "react-native-qrcode-svg";
 import { Switch } from "react-native";
 import colors from "../styles/colors";
+import useMnemonic from "../hooks/useMnemonic";
 
 type Props = {
   emailInput: string;
@@ -41,7 +45,7 @@ const importPrivateKeyFileFromDevice = async () => {
 
 const PgpFields: React.FC<Props> = (props) => {
   // for user input
-  const [keyText, setKeyText] = React.useState<string>();
+  const [keyText] = React.useState<string>();
   const emailClaimValue = useClaimValue(ClaimTypeConstants.EmailCredential);
   const nameClaimValue = useClaimValue(ClaimTypeConstants.NameCredential);
   const [isActive, setIsActive] = React.useState(false);
@@ -53,6 +57,18 @@ const PgpFields: React.FC<Props> = (props) => {
     generateKeyPairFromPrivateKey,
     resendVerificationEmail
   } = usePgp();
+
+  const [pgpTitle, setPgpTitle] = React.useState<string | undefined>();
+
+  React.useEffect(() => {
+    const getFingerPrint = async () => {
+      const key = await pgpLocalStorage.get();
+      if (!key) return;
+      const fingerPrint = formatFingerPrint(key.fingerPrint);
+      setPgpTitle(fingerPrint);
+    };
+    getFingerPrint();
+  }, []);
 
   const loadKeyFromLocalStorage = React.useCallback(async () => {
     const key = await pgpLocalStorage.get();
@@ -141,8 +157,6 @@ const PgpFields: React.FC<Props> = (props) => {
     }
   }, [shouldDisabledGeneratePgpKey]);
 
-  const ShowTextBox = () => {};
-
   return (
     <KeyboardAvoidingView style={styles.container}>
       <ScrollView
@@ -172,7 +186,6 @@ const PgpFields: React.FC<Props> = (props) => {
           trackColor={{ false: colors.white, true: colors.blue }}
           thumbColor={isActive === true ? colors.white : colors.blue}
           onValueChange={toggleSwitch}
-          onChange={ShowTextBox}
           value={isActive}
           style={styles.toggle}
         />
@@ -221,6 +234,9 @@ const PgpFields: React.FC<Props> = (props) => {
           >
             Didn't receive your verification email?
           </Text>
+          <View>
+            <Text style={styles.fingerPrint}>FingerPrint:{pgpTitle}</Text>
+          </View>
         </View>
       </View>
     </KeyboardAvoidingView>
@@ -231,6 +247,13 @@ export default PgpFields;
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  fingerPrint: {
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "stretch",
+    marginLeft: 100,
+    margin: 10
   },
   qrCodeContainer: {
     minHeight: 200,
@@ -248,8 +271,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     textDecorationLine: "underline",
-    margin: 15,
-    marginLeft: 50
+    alignSelf: "stretch",
+    marginLeft: 50,
+    margin: 10
   },
   input: {
     marginVertical: 10,
@@ -269,11 +293,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 10
   },
   toggle: {
-    margin: 10
+    margin: 10,
+    alignSelf: "stretch"
   },
   warning: {
-    alignSelf: "stretch",
-    marginHorizontal: 20,
-    marginTop: 10
+    alignSelf: "stretch"
   }
 });
