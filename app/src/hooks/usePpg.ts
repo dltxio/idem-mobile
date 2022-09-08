@@ -20,7 +20,7 @@ type Hooks = {
     email: string
   ) => Promise<void>;
   verifyPublicKey: (email: string | undefined) => Promise<void>;
-  resendVerificationEmail : (email: string ) => Promise<void>;
+  resendVerificationEmail: (email: string) => Promise<void>;
 };
 
 const usePgp = (): Hooks => {
@@ -102,50 +102,60 @@ const usePgp = (): Hooks => {
       });
   };
 
-  const resendVerificationEmail = async (email:string) => {
+  const resendVerificationEmail = async (email: string) => {
     const formattedEmail = email.trim().toLowerCase();
     await api
       .resendVerificationEmail({
         hashedEmail: ethers.utils.hashMessage(formattedEmail)
       })
+      .then((response) => {
+        if (response)
+          return Alert.alert(
+            "Email Sent",
+            "IDEM has sent another verification email"
+          );
+      })
       .catch((error) => {
         Alert.alert(AlertTitle.Error, error.message);
         throw error;
       });
-  }
+  };
 
-  const verifyPublicKey =  React.useCallback(async (email: string | undefined) => {
-    if (!email) {
-      Alert.alert(AlertTitle.Error, `No email claim found`);
-      return;
-    }
-    await api
-      .getUser(email)
-      .then(async (result: UsersResponse) => {
-        if (result.emailVerified) {
-          await updateClaim(
-            ClaimTypeConstants.EmailCredential,
-            { email },
-            [],
-            true
-          );
-          {
+  const verifyPublicKey = React.useCallback(
+    async (email: string | undefined) => {
+      if (!email) {
+        Alert.alert(AlertTitle.Error, `No email claim found`);
+        return;
+      }
+      await api
+        .getUser(email)
+        .then(async (result: UsersResponse) => {
+          if (result.emailVerified) {
+            await updateClaim(
+              ClaimTypeConstants.EmailCredential,
+              { email },
+              [],
+              true
+            );
+            {
+              Alert.alert(
+                AlertTitle.Success,
+                "Your PGP key has been successfully verified by IDEM"
+              );
+            }
+          } else {
             Alert.alert(
-              AlertTitle.Success,
-              "Your PGP key has been successfully verified by IDEM"
+              `Email Sent`,
+              `Please check your email for a verification link`
             );
           }
-        } else {
-          Alert.alert(
-            `Email Sent`,
-            `Please check your email for a verification link`
-          );
-        }
-      })
-      .catch((error) => {
-        Alert.alert(AlertTitle.Error, error.message);
-      });
-  },[updateClaim]);
+        })
+        .catch((error) => {
+          Alert.alert(AlertTitle.Error, error.message);
+        });
+    },
+    [updateClaim]
+  );
   return {
     generateKeyPair,
     generateKeyPairFromPrivateKey,

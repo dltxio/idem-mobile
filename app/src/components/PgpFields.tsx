@@ -12,14 +12,11 @@ import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import { Button } from "../components";
 import BottomNavBarSpacer from "../components/BottomNavBarSpacer";
-import { useClaimsStore, useClaimValue } from "../context/ClaimsStore";
+import { useClaimValue } from "../context/ClaimsStore";
 import usePgp from "../hooks/usePpg";
 import { AlertTitle, ClaimTypeConstants } from "../constants/common";
 import { pgpLocalStorage } from "../utils/local-storage";
-import {
-  checkIfContentContainOnlyPublicKey,
-  extractPrivateKeyFromContent
-} from "../utils/pgp-utils";
+import { extractPrivateKeyFromContent } from "../utils/pgp-utils";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import QRCode from "react-native-qrcode-svg";
 import { Switch } from "react-native";
@@ -49,12 +46,13 @@ const PgpFields: React.FC<Props> = (props) => {
   const nameClaimValue = useClaimValue(ClaimTypeConstants.NameCredential);
   const [isActive, setIsActive] = React.useState(false);
   const { showActionSheetWithOptions } = useActionSheet();
-  const [publicKey,setPublicKey] =React.useState<string>();
+  const [publicKey, setPublicKey] = React.useState<string>();
 
-
-
-  const { generateKeyPair, generateKeyPairFromPrivateKey,resendVerificationEmail } =
-    usePgp();
+  const {
+    generateKeyPair,
+    generateKeyPairFromPrivateKey,
+    resendVerificationEmail
+  } = usePgp();
 
   const loadKeyFromLocalStorage = React.useCallback(async () => {
     const key = await pgpLocalStorage.get();
@@ -127,8 +125,6 @@ const PgpFields: React.FC<Props> = (props) => {
 
   const shouldDisabledGeneratePgpKey = !emailClaimValue || !nameClaimValue;
 
-  
-
   React.useEffect(() => {
     (async () => {
       checkRequiredClaims();
@@ -144,7 +140,6 @@ const PgpFields: React.FC<Props> = (props) => {
       );
     }
   }, [shouldDisabledGeneratePgpKey]);
-
 
   const ShowTextBox = () => {};
 
@@ -165,7 +160,12 @@ const PgpFields: React.FC<Props> = (props) => {
         <BottomNavBarSpacer />
       </ScrollView>
       <View style={styles.qrCodeContainer}>
-        {publicKey && (!isActive? <QRCode value={publicKey} size={200} /> : <Text >{publicKey}</Text>)}
+        {publicKey &&
+          (!isActive ? (
+            <QRCode value={publicKey} size={200} />
+          ) : (
+            <Text>{publicKey}</Text>
+          ))}
       </View>
       <View>
         <Switch
@@ -215,7 +215,10 @@ const PgpFields: React.FC<Props> = (props) => {
             Set Up PGP Key
           </Button>
 
-          <Text style={styles.didntGetEmailText} onPress={()=>resendVerificationEmail(props.emailInput)}>
+          <Text
+            style={styles.didntGetEmailText}
+            onPress={() => resendVerificationEmail(props.emailInput)}
+          >
             Didn't receive your verification email?
           </Text>
         </View>
