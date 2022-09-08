@@ -245,8 +245,11 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   didntGetEmailText: {
+    alignItems: "center",
+    justifyContent: "center",
     textDecorationLine: "underline",
-    padding: 2
+    margin: 15,
+    marginLeft: 50
   },
   input: {
     marginVertical: 10,
