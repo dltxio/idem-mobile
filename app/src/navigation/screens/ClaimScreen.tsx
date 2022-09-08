@@ -227,7 +227,7 @@ const ClaimScreen: React.FC = () => {
           {claim.type === "MobileCredential" ? (
             <Text style={styles.mobileWarningText}>
               Only Australian mobile numbers are supported, denoted by the +61
-              country code
+              country code.
             </Text>
           ) : null}
           {claim.fields.map((field) => {
