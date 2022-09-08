@@ -37,7 +37,6 @@ const usePgp = (): Hooks => {
         name: name,
         passphrase: password
       });
-
       const meta = await OpenPGP.getPublicKeyMetadata(publicKey);
 
       const pgp = {
@@ -49,7 +48,6 @@ const usePgp = (): Hooks => {
       await pgpLocalStorage.save(pgp);
 
       await uploadPublicKey(email, publicKey);
-
       Alert.alert(
         AlertTitle.Success,
         `Your PGP key has been created with the password ${password} and uploaded, please check your email to confirm.`
@@ -110,9 +108,7 @@ const usePgp = (): Hooks => {
     api
       .getUser(email)
       .then(async (result: UsersResponse) => {
-        if (
-          true //result.emailVerified
-        ) {
+        if (result.emailVerified) {
           await updateClaim(
             ClaimTypeConstants.EmailCredential,
             { email: email },

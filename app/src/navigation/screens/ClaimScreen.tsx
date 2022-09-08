@@ -76,7 +76,6 @@ const ClaimScreen: React.FC = () => {
   const [otpContext, setOtpContext] = React.useState<RequestOptResponse>();
 
   const { verifyPublicKey } = usePgp();
-
   const {
     saveAndCheckBirthday,
     onSelectFile,
@@ -109,6 +108,47 @@ const ClaimScreen: React.FC = () => {
   };
 
   const isEmail = claim.type === "EmailCredential";
+  const emailClaim = usersClaims.find(
+    (c) => c.type === ClaimTypeConstants.EmailCredential
+  );
+  const disableEmailVerifyButton = () => {
+    if (isEmail && emailClaim?.verified) {
+      setDisableEmailButton(true);
+    }
+  };
+
+  const verifyPublicKeyForPgp = () => {
+    verifyPublicKey;
+    return true;
+  };
+
+  // const onSave = async () => {
+  //   setLoading(true);
+  //   let newFormState = formState;
+  //   if (claim.type === "EmailCredential") {
+  //     const email = (newFormState.email as string).toLowerCase();
+  //     newFormState = {
+  //       ...newFormState,
+  //       email: emailClaimValue as string
+  //     };
+  //     const verfied = verifyPublicKeyForPgp();
+  //     if (verfied) {
+  //       Alert.alert("Sucess", "blahhhhh");
+  //       disableEmailVerifyButton();
+  //     } else {
+  //       Alert.alert("Warning", "blahhhh");
+  //     }
+  //   }
+  //   await addClaim(claim.type, newFormState, selectedFileIds);
+  //   const claims = await claimsLocalStorage.get();
+  //   if (claim.type === "BirthCredential") saveAndCheckBirthday(claims);
+
+  //   navigation.reset({
+  //     routes: [{ name: "Home" }]
+  //   });
+
+  //   setLoading(false);
+  // };
 
   const onSave = async () => {
     setLoading(true);
@@ -135,7 +175,6 @@ const ClaimScreen: React.FC = () => {
     ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
 
   React.useEffect(() => {
-    // console.log({ userClaim });
     if (userClaim?.type === "EmailCredential" && userClaim.verified) {
       setDisableButton(true);
       setEmailInput(false);
