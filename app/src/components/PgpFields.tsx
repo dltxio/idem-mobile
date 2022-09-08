@@ -24,7 +24,6 @@ import { useActionSheet } from "@expo/react-native-action-sheet";
 import QRCode from "react-native-qrcode-svg";
 import { Switch } from "react-native";
 import colors from "../styles/colors";
-import useMnemonic from "../hooks/useMnemonic";
 
 type Props = {
   emailInput: string;
