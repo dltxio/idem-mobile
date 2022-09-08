@@ -83,15 +83,8 @@ const useVendors = (): Hooks => {
           text: "OK",
           onPress: () => console.log(""),
           style: "destructive"
-        },
-        {
-          text: "Cancel",
-          style: "cancel"
         }
-      ],
-      {
-        cancelable: true
-      }
+      ]
     );
   };
 
