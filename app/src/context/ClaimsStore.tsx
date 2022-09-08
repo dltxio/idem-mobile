@@ -36,16 +36,14 @@ export const ClaimsContext = React.createContext<ClaimsVault | undefined>(
 export const ClaimsProvider: React.FC<{
   children: React.ReactNode;
 }> = (props) => {
-  const [verifiedClaimTypes, setVerifiedClaimTypes] = React.useState<
-    ClaimData[]
-  >([]);
+  const [claimData, setClaimData] = React.useState<ClaimData[]>([]);
 
   React.useEffect(() => {
     (async () => {
       const initialClaims = await claimsLocalStorage.get();
 
       if (initialClaims) {
-        setVerifiedClaimTypes(initialClaims);
+        setClaimData(initialClaims);
       }
     })();
   }, []);
@@ -56,27 +54,24 @@ export const ClaimsProvider: React.FC<{
     files: string[],
     verified: boolean
   ) => {
-    const updatedClaimData = verifiedClaimTypes.map((claimData) => {
-      if (claimData.type !== claimType) return claimData;
+    const updatedClaimData = claimData.map((cd) => {
+      if (cd.type !== claimType) return cd;
 
       return {
-        ...claimData,
+        ...cd,
         claimValue,
         files,
         verified
       };
     });
-
-    setVerifiedClaimTypes(updatedClaimData);
     await claimsLocalStorage.save(updatedClaimData);
+    setClaimData(updatedClaimData);
   };
 
   const usersClaims: ClaimWithValue[] = React.useMemo(() => {
     const verifiedClaims: ClaimWithValue[] = [];
     allClaims.forEach((claim) => {
-      const verifiedClaim = verifiedClaimTypes.find(
-        (vc) => vc?.type === claim.type
-      );
+      const verifiedClaim = claimData.find((vc) => vc?.type === claim.type);
       if (verifiedClaim !== undefined) {
         verifiedClaims.push({
           ...claim,
@@ -85,17 +80,14 @@ export const ClaimsProvider: React.FC<{
       }
     });
     return verifiedClaims;
-  }, [verifiedClaimTypes]);
+  }, [claimData]);
 
   const unclaimedClaims = React.useMemo(
     () =>
       allClaims.filter(
-        (claim) =>
-          !verifiedClaimTypes.find(
-            (verifiedClaim) => verifiedClaim.type === claim.type
-          )
+        (claim) => !claimData.find((cd) => cd.type === claim.type)
       ),
-    [verifiedClaimTypes]
+    [claimData]
   );
 
   const addClaim = async (
@@ -114,20 +106,18 @@ export const ClaimsProvider: React.FC<{
       }, 2000)
     );
 
-    setVerifiedClaimTypes((previous) => {
-      const previousWithoutClaim = previous.filter((c) => c.type !== claimId);
-      const updatedClaims = [
-        ...previousWithoutClaim,
-        { type: claimId, value, verified }
-      ];
-      claimsLocalStorage.save(updatedClaims);
-      return updatedClaims;
-    });
+    const otherClaimData = claimData.filter((cd) => cd.type !== claimId);
+    const updatedClaims = [
+      ...otherClaimData,
+      { type: claimId, value, verified }
+    ];
+    await claimsLocalStorage.save(updatedClaims);
+    setClaimData(updatedClaims);
   };
 
   const reset = () => {
     claimsLocalStorage.clear();
-    setVerifiedClaimTypes([]);
+    setClaimData([]);
   };
 
   const value = React.useMemo(
@@ -138,7 +128,7 @@ export const ClaimsProvider: React.FC<{
       addClaim,
       reset
     }),
-    [allClaims, verifiedClaimTypes, addClaim, reset, updateClaim]
+    [allClaims, claimData, addClaim, reset, updateClaim]
   );
 
   return (

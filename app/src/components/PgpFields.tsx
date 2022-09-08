@@ -21,6 +21,7 @@ import {
   extractPrivateKeyFromContent
 } from "../utils/pgp-utils";
 import { useActionSheet } from "@expo/react-native-action-sheet";
+import QRCode from "react-native-qrcode-svg";
 
 type Props = {
   emailInput: string;
@@ -172,7 +173,8 @@ const PgpFields: React.FC<Props> = (props) => {
         <BottomNavBarSpacer />
       </ScrollView>
       <View style={styles.qrCodeContainer}>
-        <Text>BOX</Text>
+        <Text>QRCODE BOX</Text>
+        {/* <QRCode value="hey" /> */}
       </View>
       <View style={styles.buttonWrapper}>
         <View style={styles.button}>
@@ -200,10 +202,6 @@ const PgpFields: React.FC<Props> = (props) => {
                     await importPrivateKeyFromDevice(emailClaimValue as string);
                   }
                   if (buttonIndex === 2) {
-                    console.log({
-                      name: nameClaimValue,
-                      email: props.emailInput
-                    });
                     await generateAndPublishNewPgpKey(
                       nameClaimValue as string,
                       props.emailInput as string
@@ -215,12 +213,10 @@ const PgpFields: React.FC<Props> = (props) => {
           >
             Set Up PGP Key
           </Button>
-          {/* <QRCode
-            value={keyText as string}
-            size={256}
-            style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-          /> */}
-          <Text>Didn't receive your verification email?</Text>
+
+          <Text style={styles.didntGetEmailText}>
+            Didn't receive your verification email? keyText as string
+          </Text>
         </View>
       </View>
     </KeyboardAvoidingView>
@@ -233,8 +229,12 @@ const styles = StyleSheet.create({
     flex: 1
   },
   qrCodeContainer: {
-    width: 200, // to be removed after content is added
-    height: 250
+    // to be removed after content is added
+    height: 250,
+    borderColor: "red",
+    borderWidth: 1,
+    alignItems: "center",
+    justtifyContent: "center"
   },
   scrollContent: {
     justifyContent: "flex-start",
@@ -242,6 +242,10 @@ const styles = StyleSheet.create({
   },
   introText: {
     marginBottom: 10
+  },
+  didntGetEmailText: {
+    textDecorationLine: "underline",
+    padding: 2
   },
   input: {
     marginVertical: 10,

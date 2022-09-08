@@ -111,7 +111,7 @@ const usePgp = (): Hooks => {
         if (result.emailVerified) {
           await updateClaim(
             ClaimTypeConstants.EmailCredential,
-            { email: email },
+            { email },
             [],
             true
           );

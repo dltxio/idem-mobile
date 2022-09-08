@@ -111,13 +111,13 @@ const ClaimScreen: React.FC = () => {
 
   const onSave = async () => {
     setLoading(true);
-    let newFormState = formState;
+    await addClaim(claim.type, formState, selectedFileIds);
+
     if (claim.type === "EmailCredential") {
-      const email = (newFormState.email as string).toLowerCase();
+      const email = (formState.email as string).toLowerCase();
       await verifyPublicKey(email);
     }
 
-    await addClaim(claim.type, newFormState, selectedFileIds);
     const claims = await claimsLocalStorage.get();
     if (claim.type === "BirthCredential") saveAndCheckBirthday(claims);
 
