@@ -231,6 +231,12 @@ const ClaimScreen: React.FC = () => {
       <ScrollView style={commonStyles.screenContent}>
         <View>
           <StatusBar hidden={false} />
+          {claim.type === "MobileCredential" ? (
+            <Text style={styles.mobileWarningText}>
+              Only Australian mobile numbers are supported, denoted by the +61
+              country code.
+            </Text>
+          ) : null}
           {claim.fields.map((field) => {
             const onChange = (value: string | PhoneType) => {
               setFormState((previous) => ({
@@ -379,6 +385,10 @@ const styles = StyleSheet.create({
   },
   datePicker: {
     height: 500
+  },
+  mobileWarningText: {
+    marginHorizontal: 10,
+    marginBottom: 20
   }
 });
 
