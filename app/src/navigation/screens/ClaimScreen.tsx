@@ -58,10 +58,8 @@ const ClaimScreen: React.FC = () => {
   const route = useRoute<ProfileStackNavigationRoute<"Claim">>();
   const api = useApi();
   const claim = getClaimFromType(route.params.claimType);
-  const emailClaimValue = useClaimValue(ClaimTypeConstants.EmailCredential);
   const { addClaim, usersClaims } = useClaimsStore();
   const [disableButton, setDisableButton] = React.useState(false);
-  const [disableEmailButton, setDisableEmailButton] = React.useState(false);
   const [emailInput, setEmailInput] = React.useState(true);
   const userClaim = usersClaims.find((c) => c.type === claim.type);
   const [formState, setFormState] = React.useState<FormState>(
@@ -120,6 +118,7 @@ const ClaimScreen: React.FC = () => {
       await verifyPublicKey(email);
     }
 
+    await addClaim(claim.type, newFormState, selectedFileIds);
     const claims = await claimsLocalStorage.get();
     if (claim.type === "BirthCredential") saveAndCheckBirthday(claims);
 
@@ -359,7 +358,7 @@ const ClaimScreen: React.FC = () => {
         ) : (
           <Button
             title={isVerifying ? "Save & Verify" : isEmail ? "Verify" : "Save"}
-            disabled={!canSave || disableButton || disableEmailButton}
+            disabled={!canSave || disableButton}
             onPress={onSave}
             loading={loading}
           />

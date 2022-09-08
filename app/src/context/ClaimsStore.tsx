@@ -69,7 +69,7 @@ export const ClaimsProvider: React.FC<{
     });
 
     setVerifiedClaimTypes(updatedClaimData);
-    claimsLocalStorage.save(updatedClaimData);
+    await claimsLocalStorage.save(updatedClaimData);
   };
 
   const usersClaims: ClaimWithValue[] = React.useMemo(() => {

@@ -171,6 +171,9 @@ const PgpFields: React.FC<Props> = (props) => {
         </Text>
         <BottomNavBarSpacer />
       </ScrollView>
+      <View style={styles.qrCodeContainer}>
+        <Text>BOX</Text>
+      </View>
       <View style={styles.buttonWrapper}>
         <View style={styles.button}>
           <Button
@@ -190,16 +193,20 @@ const PgpFields: React.FC<Props> = (props) => {
                   if (buttonIndex === 0) {
                     importMyPrivateKeyFromTextInput(
                       keyText as string,
-                      emailClaimValue as string
+                      props.emailInput as string
                     );
                   }
                   if (buttonIndex === 1) {
                     await importPrivateKeyFromDevice(emailClaimValue as string);
                   }
                   if (buttonIndex === 2) {
+                    console.log({
+                      name: nameClaimValue,
+                      email: props.emailInput
+                    });
                     await generateAndPublishNewPgpKey(
                       nameClaimValue as string,
-                      emailClaimValue as string
+                      props.emailInput as string
                     );
                   }
                 }
@@ -224,6 +231,10 @@ export default PgpFields;
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  qrCodeContainer: {
+    width: 200, // to be removed after content is added
+    height: 250
   },
   scrollContent: {
     justifyContent: "flex-start",

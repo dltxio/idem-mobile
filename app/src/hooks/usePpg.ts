@@ -120,10 +120,16 @@ const usePgp = (): Hooks => {
             true
           );
           {
-            Alert.alert(`Email Verified`, `Email has been verified`);
+            Alert.alert(
+              AlertTitle.Success,
+              "Your PGP key has been successfully verified by IDEM"
+            );
           }
         } else {
-          Alert.alert(AlertTitle.Error, `Email has not been verified`);
+          Alert.alert(
+            `Email Sent`,
+            `Please check your email for a verification link`
+          );
         }
       })
       .catch((error) => {
