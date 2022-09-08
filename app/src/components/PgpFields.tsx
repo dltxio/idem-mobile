@@ -6,7 +6,8 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Alert,
-  StatusBar
+  StatusBar,
+  Switch
 } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
@@ -22,7 +23,6 @@ import {
 } from "../utils/pgp-utils";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import QRCode from "react-native-qrcode-svg";
-import { Switch } from "react-native";
 import colors from "../styles/colors";
 
 type Props = {
