@@ -1,3 +1,4 @@
+import { hexValue } from "ethers/lib/utils";
 import { Claim } from "../types/claim";
 const claims: Claim[] = [
   {

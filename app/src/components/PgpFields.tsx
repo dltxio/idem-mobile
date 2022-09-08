@@ -8,7 +8,6 @@ import {
   Alert,
   StatusBar
 } from "react-native";
-import QRCode from "react-qr-code";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import { Button } from "../components";
@@ -209,11 +208,11 @@ const PgpFields: React.FC<Props> = (props) => {
           >
             Set Up PGP Key
           </Button>
-          <QRCode
+          {/* <QRCode
             value={keyText as string}
             size={256}
             style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-          />
+          /> */}
           <Text>Didn't receive your verification email?</Text>
         </View>
       </View>

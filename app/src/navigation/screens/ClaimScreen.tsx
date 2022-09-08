@@ -124,24 +124,57 @@ const ClaimScreen: React.FC = () => {
     return true;
   };
 
+  // const onSave = async () => {
+  //   setLoading(true);
+  //   let newFormState = formState;
+  //   if (claim.type === "EmailCredential") {
+  //     const email = (newFormState.email as string).toLowerCase();
+  //     newFormState = {
+  //       ...newFormState,
+  //       email: emailClaimValue as string
+  //     };
+  //     const verfied = verifyPublicKeyForPgp();
+  //     if (verfied) {
+  //       Alert.alert("Sucess", "blahhhhh");
+  //       disableEmailVerifyButton();
+  //     } else {
+  //       Alert.alert("Warning", "blahhhh");
+  //     }
+  //   }
+  //   await addClaim(claim.type, newFormState, selectedFileIds);
+  //   const claims = await claimsLocalStorage.get();
+  //   if (claim.type === "BirthCredential") saveAndCheckBirthday(claims);
+
+  //   navigation.reset({
+  //     routes: [{ name: "Home" }]
+  //   });
+
+  //   setLoading(false);
+  // };
+
   const onSave = async () => {
     setLoading(true);
     let newFormState = formState;
     if (claim.type === "EmailCredential") {
       const email = (newFormState.email as string).toLowerCase();
-      newFormState = {
-        ...newFormState,
-        email: emailClaimValue as string
-      };
-      const verfied = verifyPublicKeyForPgp();
-      if (verfied) {
-        Alert.alert("Sucess", "blahhhhh");
-        disableEmailVerifyButton();
-      } else {
-        Alert.alert("Warning", "blahhhh");
-      }
+      await verifyPublicKey(email);
     }
-    await addClaim(claim.type, newFormState, selectedFileIds);
+    // const verfied = verifyPublicKeyForPgp();
+    console.log(newFormState, "NEW FORM STATE");
+    // if (verfied) {
+    //   Alert.alert("Sucess", "blahhhhh");
+    //   disableEmailVerifyButton();
+    //   newFormState =  {
+    //     ...newFormState,
+    //     verified:true
+    //   }
+    // } else {
+    //   newFormState =  {
+    //     ...newFormState,
+    //     verfied:false
+    //   }
+    //   Alert.alert("Warning", "blahhhh");
+    // }
     const claims = await claimsLocalStorage.get();
     if (claim.type === "BirthCredential") saveAndCheckBirthday(claims);
 
