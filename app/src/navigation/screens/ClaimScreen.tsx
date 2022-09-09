@@ -32,6 +32,8 @@ import { claimsLocalStorage } from "../../utils/local-storage";
 import useApi from "../../hooks/useApi";
 import { AlertTitle } from "../../constants/common";
 import { FieldType } from "../../types/general";
+import PgpSection from "../../components/PgpSection";
+import usePgp from "../../hooks/usePpg";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -56,10 +58,9 @@ const ClaimScreen: React.FC = () => {
   const route = useRoute<ProfileStackNavigationRoute<"Claim">>();
   const api = useApi();
   const claim = getClaimFromType(route.params.claimType);
-
   const { addClaim, usersClaims } = useClaimsStore();
   const [disableButton, setDisableButton] = React.useState(false);
-  const [emailInput, setEmailInput] = React.useState(true);
+  const [disabledEmailInput, setDisabledEmailInput] = React.useState(false);
   const userClaim = usersClaims.find((c) => c.type === claim.type);
   const [formState, setFormState] = React.useState<FormState>(
     userClaim?.value ?? {}
@@ -74,6 +75,7 @@ const ClaimScreen: React.FC = () => {
   const [showOtpDialog, setShowOtpDialog] = React.useState<boolean>(false);
   const [otpContext, setOtpContext] = React.useState<RequestOptResponse>();
 
+  const { verifyPublicKey } = usePgp();
   const {
     saveAndCheckBirthday,
     onSelectFile,
@@ -105,21 +107,24 @@ const ClaimScreen: React.FC = () => {
     }
   };
 
+  const isEmail = claim.type === "EmailCredential";
+
   const onSave = async () => {
     setLoading(true);
-    let newFormState = formState;
+    await addClaim(claim.type, formState, selectedFileIds);
+
     if (claim.type === "EmailCredential") {
-      newFormState = {
-        ...newFormState,
-        email: (newFormState.email as string).toLowerCase()
-      };
+      const email = (formState.email as string).toLowerCase();
+      await verifyPublicKey(email);
     }
-    await addClaim(claim.type, newFormState, selectedFileIds);
+
     const claims = await claimsLocalStorage.get();
     if (claim.type === "BirthCredential") saveAndCheckBirthday(claims);
+
     navigation.reset({
       routes: [{ name: "Home" }]
     });
+
     setLoading(false);
   };
 
@@ -128,15 +133,19 @@ const ClaimScreen: React.FC = () => {
       claim.fields.length &&
     ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
 
+  const isEmailVerified =
+    userClaim?.type === "EmailCredential" && userClaim.verified;
   React.useEffect(() => {
-    if (userClaim?.type === "EmailCredential" && userClaim.verified) {
+    if (isEmailVerified) {
       setDisableButton(true);
-      setEmailInput(false);
+      setDisabledEmailInput(true);
     }
   }, [userClaim]);
 
   const isDocumentUploadVerifyAction =
     claim.verificationAction === "document-upload";
+
+  const showPgpFields = claim.type === "EmailCredential";
 
   const isOtpVerifyAction = claim.verificationAction === "otp";
 
@@ -159,7 +168,7 @@ const ClaimScreen: React.FC = () => {
     if (newMobileState.countryCode !== "+61") {
       Alert.alert(
         "Error",
-        "IDEM only supports Australian numbers for mobile claims/verification"
+        "IDEM only supports Australian numbers for mobile claims/verification."
       );
       setLoading(false);
       return;
@@ -175,7 +184,7 @@ const ClaimScreen: React.FC = () => {
       }
     } catch (error) {
       console.error(error);
-      Alert.alert("Error", "Something went wrong");
+      Alert.alert("Error", "Something went wrong.");
     }
     setLoading(false);
   };
@@ -196,12 +205,12 @@ const ClaimScreen: React.FC = () => {
 
         if (verifyOtp) {
           addClaim(claim.type, formState, selectedFileIds, true);
-          Alert.alert("Your mobile has been verified");
+          Alert.alert("Your mobile has been verified.");
           navigation.reset({
             routes: [{ name: "Home" }]
           });
         } else {
-          Alert.alert("Please try again, verification code invalid");
+          Alert.alert("Please try again, verification code invalid.");
         }
       } catch (error: any) {
         Alert.alert(AlertTitle.Error, error?.message);
@@ -222,7 +231,7 @@ const ClaimScreen: React.FC = () => {
         }}
       />
       <ScrollView style={commonStyles.screenContent}>
-        <View>
+        <View style={styles.content}>
           <StatusBar hidden={false} />
           {claim.type === "MobileCredential" ? (
             <Text style={styles.mobileWarningText}>
@@ -238,10 +247,10 @@ const ClaimScreen: React.FC = () => {
               }));
             };
 
-            if (["text", "number", "email", "house"].includes(field.type)) {
+            if (["text", "number", "house"].includes(field.type)) {
               const possibleType = field.type as Extract<
                 FieldType,
-                "text" | "number" | "email" | "house"
+                "text" | "number" | "house"
               >; // array.includes doesn't discriminate field.type for us :(
               return (
                 <View key={field.id}>
@@ -252,7 +261,21 @@ const ClaimScreen: React.FC = () => {
                     autoCapitalize="none"
                     value={formState[field.id] as string}
                     onChangeText={onChange}
-                    editable={emailInput}
+                  />
+                </View>
+              );
+            }
+            if (field.type === "email") {
+              return (
+                <View key={field.id}>
+                  <Input
+                    label={field.title}
+                    clearButtonMode="always"
+                    keyboardType={keyboardTypeMap["email"]}
+                    autoCapitalize="none"
+                    value={formState[field.id] as string}
+                    onChangeText={onChange}
+                    disabled={disabledEmailInput}
                   />
                 </View>
               );
@@ -336,8 +359,13 @@ const ClaimScreen: React.FC = () => {
               onSelectFile={onSelectFile}
             />
           )}
+          {showPgpFields && (
+            <PgpSection
+              emailInput={formState["email"] as string}
+              isEmailVerified={isEmailVerified}
+            />
+          )}
         </View>
-        <BottomNavBarSpacer />
       </ScrollView>
       <View style={styles.buttonWrapper}>
         {isOtpVerifyAction ? (
@@ -351,7 +379,7 @@ const ClaimScreen: React.FC = () => {
           />
         ) : (
           <Button
-            title={isVerifying ? "Save & Verify" : "Save"}
+            title={isVerifying ? "Save & Verify" : isEmail ? "Verify" : "Save"}
             disabled={!canSave || disableButton}
             onPress={onSave}
             loading={loading}
@@ -365,6 +393,7 @@ const ClaimScreen: React.FC = () => {
 export default ClaimScreen;
 
 const styles = StyleSheet.create({
+  content: { marginBottom: 10 },
   introText: {
     marginBottom: 10
   },
