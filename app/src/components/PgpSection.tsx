@@ -68,22 +68,6 @@ const PgpSection: React.FC<Props> = (props) => {
     [generateKeyPairFromPrivateKey, loadKeyFromLocalStorage]
   );
 
-  const importMyPrivateKeyFromTextInput = React.useCallback(
-    async (content: string, email: string) => {
-      try {
-        await extractAndLoadKeyPairFromContent(content, email);
-      } catch (error: any) {
-        Alert.alert(
-          AlertTitle.Error,
-          `Failed to parse the Private Key \n> ${
-            error?.message ?? "unknown error"
-          }`
-        );
-      }
-    },
-    [extractAndLoadKeyPairFromContent]
-  );
-
   const importPrivateKeyFromDevice = React.useCallback(
     async (email: string) => {
       try {
