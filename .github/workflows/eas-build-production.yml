@@ -8,7 +8,7 @@ concurrency:
   group: build_app
 jobs:
   merge:
-    name: Merge main into BUILD
+    name: Merge main into BUILD_PROD
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Branch
@@ -16,7 +16,7 @@ jobs:
 
       - uses: morbalint/git-merge-action@v1
         with:
-          target: "BUILD"
+          target: "BUILD_PROD"
           strategy_options: "ours"
 
   build:
@@ -27,7 +27,7 @@ jobs:
       - name: Checkout Branch
         uses: actions/checkout@v2
         with:
-          ref: "BUILD"
+          ref: "BUILD_PROD"
 
       - name: Setup Node
         uses: actions/setup-node@v3
