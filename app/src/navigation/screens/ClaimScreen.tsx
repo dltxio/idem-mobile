@@ -60,7 +60,7 @@ const ClaimScreen: React.FC = () => {
   const claim = getClaimFromType(route.params.claimType);
   const { addClaim, usersClaims } = useClaimsStore();
   const [disableButton, setDisableButton] = React.useState(false);
-  const [emailInput, setEmailInput] = React.useState(true);
+  const [disabledEmailInput, setDisabledEmailInput] = React.useState(false);
   const userClaim = usersClaims.find((c) => c.type === claim.type);
   const [formState, setFormState] = React.useState<FormState>(
     userClaim?.value ?? {}
@@ -138,7 +138,7 @@ const ClaimScreen: React.FC = () => {
   React.useEffect(() => {
     if (isEmailVerified) {
       setDisableButton(true);
-      setEmailInput(false);
+      setDisabledEmailInput(true);
     }
   }, [userClaim]);
 
@@ -247,10 +247,10 @@ const ClaimScreen: React.FC = () => {
               }));
             };
 
-            if (["text", "number", "email", "house"].includes(field.type)) {
+            if (["text", "number", "house"].includes(field.type)) {
               const possibleType = field.type as Extract<
                 FieldType,
-                "text" | "number" | "email" | "house"
+                "text" | "number" | "house"
               >; // array.includes doesn't discriminate field.type for us :(
               return (
                 <View key={field.id}>
@@ -261,7 +261,21 @@ const ClaimScreen: React.FC = () => {
                     autoCapitalize="none"
                     value={formState[field.id] as string}
                     onChangeText={onChange}
-                    editable={emailInput}
+                  />
+                </View>
+              );
+            }
+            if (field.type === "email") {
+              return (
+                <View key={field.id}>
+                  <Input
+                    label={field.title}
+                    clearButtonMode="always"
+                    keyboardType={keyboardTypeMap["email"]}
+                    autoCapitalize="none"
+                    value={formState[field.id] as string}
+                    onChangeText={onChange}
+                    disabled={disabledEmailInput}
                   />
                 </View>
               );

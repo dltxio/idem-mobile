@@ -143,7 +143,9 @@ const PgpSection: React.FC<Props> = (props) => {
       <View style={styles.buttonWrapper}>
         <View style={styles.button}>
           <Button
-            disabled={!props.emailInput || !nameClaimValue}
+            disabled={
+              props.isEmailVerified || !props.emailInput || !nameClaimValue
+            }
             onPress={() =>
               showActionSheetWithOptions(
                 {
