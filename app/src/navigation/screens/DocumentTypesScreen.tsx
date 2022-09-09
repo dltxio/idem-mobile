@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import commonStyles from "../../styles/styles";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import IdemListItem from "../../components/IdemListItem";
@@ -44,5 +44,3 @@ const DocumentTypesScreen: React.FC = () => {
   );
 };
 export default DocumentTypesScreen;
-
-const styles = StyleSheet.create({});

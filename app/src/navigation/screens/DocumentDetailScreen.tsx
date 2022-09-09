@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, StyleSheet, Text, Alert } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { connectActionSheet } from "@expo/react-native-action-sheet";
 import { Button, FileList, Modal } from "../../components";
 import { useDocumentStore } from "../../context/DocumentStore";
