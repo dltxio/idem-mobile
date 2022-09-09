@@ -24,6 +24,7 @@ import { TextInput } from "react-native-gesture-handler";
 
 type Props = {
   emailInput: string;
+  isEmailVerified: boolean | undefined;
 };
 
 const PgpSection: React.FC<Props> = (props) => {
@@ -43,20 +44,12 @@ const PgpSection: React.FC<Props> = (props) => {
 
   const [pgpTitle, setPgpTitle] = React.useState<string | undefined>();
 
-  React.useEffect(() => {
-    const getFingerPrint = async () => {
-      const key = await pgpLocalStorage.get();
-      if (!key) return;
-      const fingerPrint = formatFingerPrint(key.fingerPrint);
-      setPgpTitle(fingerPrint);
-    };
-    getFingerPrint();
-  }, []);
-
   const loadKeyFromLocalStorage = React.useCallback(async () => {
     const key = await pgpLocalStorage.get();
     if (!key) return;
     setPublicKey(key.publicKey);
+    const fingerPrint = formatFingerPrint(key.fingerPrint);
+    setPgpTitle(fingerPrint);
   }, [setPublicKey]);
 
   const extractAndLoadKeyPairFromContent = React.useCallback(
@@ -94,20 +87,13 @@ const PgpSection: React.FC<Props> = (props) => {
     [generateKeyPair]
   );
   const toggleSwitch = () => setIsActive((previousState) => !previousState);
-  const checkRequiredClaims = () => {
-    if (emailClaimValue === "" || nameClaimValue === "") {
-      Alert.alert(
-        AlertTitle.Error,
-        "Email and Name claims must be set before a PGP/GPG Key can be generated."
-      );
-    }
-  };
 
   const shouldDisabledGeneratePgpKey = !emailClaimValue || !nameClaimValue;
 
+  const shouldShowPublicKey = publicKey && props.isEmailVerified;
+
   React.useEffect(() => {
     (async () => {
-      checkRequiredClaims();
       await loadKeyFromLocalStorage();
     })();
   }, []);
@@ -136,7 +122,7 @@ const PgpSection: React.FC<Props> = (props) => {
         </Text>
       </ScrollView>
       <View style={styles.qrCodeContainer}>
-        {publicKey &&
+        {shouldShowPublicKey &&
           (!isActive ? (
             <QRCode value={publicKey} size={250} />
           ) : (
@@ -144,13 +130,15 @@ const PgpSection: React.FC<Props> = (props) => {
           ))}
       </View>
       <View>
-        <Switch
-          trackColor={{ false: colors.white, true: colors.blue }}
-          thumbColor={isActive === true ? colors.white : colors.blue}
-          onValueChange={toggleSwitch}
-          value={isActive}
-          style={styles.toggle}
-        />
+        {shouldShowPublicKey && (
+          <Switch
+            trackColor={{ false: colors.white, true: colors.blue }}
+            thumbColor={isActive === true ? colors.white : colors.blue}
+            onValueChange={toggleSwitch}
+            value={isActive}
+            style={styles.toggle}
+          />
+        )}
       </View>
       <View style={styles.buttonWrapper}>
         <View style={styles.button}>
@@ -183,15 +171,18 @@ const PgpSection: React.FC<Props> = (props) => {
             Set Up PGP Key
           </Button>
 
-          <Text
-            style={styles.didntGetEmailText}
-            onPress={() => resendVerificationEmail(props.emailInput)}
-          >
-            Didn't receive your verification email?
-          </Text>
-          <View>
-            <Text style={styles.fingerPrint}>FingerPrint:{pgpTitle}</Text>
-          </View>
+          {publicKey && !props.isEmailVerified && (
+            <View>
+              <Text
+                style={styles.didntGetEmailText}
+                onPress={() => resendVerificationEmail(props.emailInput)}
+              >
+                Didn't receive your verification email?
+              </Text>
+
+              <Text style={styles.fingerPrint}>FingerPrint:{pgpTitle}</Text>
+            </View>
+          )}
         </View>
       </View>
     </KeyboardAvoidingView>

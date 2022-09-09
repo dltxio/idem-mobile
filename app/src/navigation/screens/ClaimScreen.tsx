@@ -133,8 +133,10 @@ const ClaimScreen: React.FC = () => {
       claim.fields.length &&
     ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
 
+  const isEmailVerified =
+    userClaim?.type === "EmailCredential" && userClaim.verified;
   React.useEffect(() => {
-    if (userClaim?.type === "EmailCredential" && userClaim.verified) {
+    if (isEmailVerified) {
       setDisableButton(true);
       setEmailInput(false);
     }
@@ -344,7 +346,10 @@ const ClaimScreen: React.FC = () => {
             />
           )}
           {showPgpFields && (
-            <PgpSection emailInput={formState["email"] as string} />
+            <PgpSection
+              emailInput={formState["email"] as string}
+              isEmailVerified={isEmailVerified}
+            />
           )}
         </View>
         <BottomNavBarSpacer />
