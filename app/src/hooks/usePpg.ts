@@ -22,7 +22,7 @@ type Hooks = {
     email: string
   ) => Promise<void>;
   verifyPublicKey: (email: string | undefined) => Promise<void>;
-  resendVerificationEmail: (email: string) => Promise<boolean>;
+  resendVerificationEmail: (email: string) => Promise<void>;
   importPrivateKeyFileFromDevice: () => Promise<string | undefined>;
 };
 
