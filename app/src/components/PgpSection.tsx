@@ -6,13 +6,9 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Alert,
-  StatusBar,
   Switch
 } from "react-native";
-import * as DocumentPicker from "expo-document-picker";
-import * as FileSystem from "expo-file-system";
-import { Button } from "../components";
-import BottomNavBarSpacer from "../components/BottomNavBarSpacer";
+import { Button } from ".";
 import { useClaimsStore, useClaimValue } from "../context/ClaimsStore";
 import usePgp from "../hooks/usePpg";
 import { AlertTitle, ClaimTypeConstants } from "../constants/common";
@@ -24,27 +20,13 @@ import {
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import QRCode from "react-native-qrcode-svg";
 import colors from "../styles/colors";
+import { TextInput } from "react-native-gesture-handler";
 
 type Props = {
   emailInput: string;
 };
-const importPrivateKeyFileFromDevice = async () => {
-  const res = await DocumentPicker.getDocumentAsync({
-    type: ["*/*"]
-  });
-  if (res.type === "cancel") return;
-  const isCorrectFileType =
-    res.name.endsWith(".asc") || res.name.endsWith(".key");
-  if (!isCorrectFileType) {
-    throw new Error("Invalid file type : expecting .asc or .key");
-  }
-  const fileContent = await FileSystem.readAsStringAsync(res.uri);
-  return fileContent;
-};
 
-const PgpFields: React.FC<Props> = (props) => {
-  // for user input
-  const [keyText] = React.useState<string>();
+const PgpSection: React.FC<Props> = (props) => {
   const emailClaimValue = useClaimValue(ClaimTypeConstants.EmailCredential);
   const nameClaimValue = useClaimValue(ClaimTypeConstants.NameCredential);
   const [isActive, setIsActive] = React.useState(false);
@@ -55,7 +37,8 @@ const PgpFields: React.FC<Props> = (props) => {
   const {
     generateKeyPair,
     generateKeyPairFromPrivateKey,
-    resendVerificationEmail
+    resendVerificationEmail,
+    importPrivateKeyFileFromDevice
   } = usePgp();
 
   const [pgpTitle, setPgpTitle] = React.useState<string | undefined>();
@@ -72,7 +55,6 @@ const PgpFields: React.FC<Props> = (props) => {
 
   const loadKeyFromLocalStorage = React.useCallback(async () => {
     const key = await pgpLocalStorage.get();
-    console.log(key, "KEY");
     if (!key) return;
     setPublicKey(key.publicKey);
   }, [setPublicKey]);
@@ -115,7 +97,6 @@ const PgpFields: React.FC<Props> = (props) => {
             error?.message ?? "unknown error"
           }`
         );
-        console.error(error);
       }
     },
     [extractAndLoadKeyPairFromContent]
@@ -123,8 +104,8 @@ const PgpFields: React.FC<Props> = (props) => {
   const generateAndPublishNewPgpKey = React.useCallback(
     async (name: string, email: string) => {
       await generateKeyPair(name, email);
-      await loadKeyFromLocalStorage();
       await addClaim(ClaimTypeConstants.EmailCredential, { email }, [], false);
+      await loadKeyFromLocalStorage();
     },
     [generateKeyPair]
   );
@@ -162,7 +143,6 @@ const PgpFields: React.FC<Props> = (props) => {
         style={styles.container}
         contentContainerStyle={styles.scrollContent}
       >
-        <StatusBar hidden={false} />
         <Text style={styles.warning}>
           Pretty Good Privacy (PGP) is an encryption program that provides
           cryptographic privacy and authentication for data communication. PGP
@@ -170,14 +150,13 @@ const PgpFields: React.FC<Props> = (props) => {
           directories, and whole disk partitions and to increase the security of
           e-mail communications.
         </Text>
-        <BottomNavBarSpacer />
       </ScrollView>
       <View style={styles.qrCodeContainer}>
         {publicKey &&
           (!isActive ? (
-            <QRCode value={publicKey} size={200} />
+            <QRCode value={publicKey} size={250} />
           ) : (
-            <Text>{publicKey}</Text>
+            <TextInput value={publicKey} multiline={true} />
           ))}
       </View>
       <View>
@@ -198,27 +177,20 @@ const PgpFields: React.FC<Props> = (props) => {
                 {
                   options: [
                     "Import Private Key",
-                    "Import Private Key from Device",
                     "Generate new PGP Key and publish",
                     "cancel"
                   ],
-                  cancelButtonIndex: 3
+                  cancelButtonIndex: 2
                 },
                 async (buttonIndex) => {
-                  if (buttonIndex === 0) {
-                    importMyPrivateKeyFromTextInput(
-                      keyText as string,
-                      props.emailInput as string
-                    );
-                  }
-                  if (buttonIndex === 1) {
-                    await importPrivateKeyFromDevice(emailClaimValue as string);
-                  }
-                  if (buttonIndex === 2) {
-                    await generateAndPublishNewPgpKey(
-                      nameClaimValue as string,
-                      props.emailInput as string
-                    );
+                  switch (buttonIndex) {
+                    case 0:
+                      await importPrivateKeyFromDevice(props.emailInput);
+                    case 1:
+                      await generateAndPublishNewPgpKey(
+                        nameClaimValue as string,
+                        props.emailInput as string
+                      );
                   }
                 }
               )
@@ -241,7 +213,7 @@ const PgpFields: React.FC<Props> = (props) => {
     </KeyboardAvoidingView>
   );
 };
-export default PgpFields;
+export default PgpSection;
 
 const styles = StyleSheet.create({
   container: {
@@ -255,7 +227,8 @@ const styles = StyleSheet.create({
     margin: 10
   },
   qrCodeContainer: {
-    minHeight: 200,
+    marginTop: 15,
+    minHeight: 250,
     alignItems: "center",
     justtifyContent: "center"
   },
@@ -292,7 +265,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10
   },
   toggle: {
-    margin: 10,
+    margin: 5,
     alignSelf: "stretch"
   },
   warning: {

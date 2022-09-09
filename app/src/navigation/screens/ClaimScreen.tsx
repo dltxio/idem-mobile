@@ -32,7 +32,7 @@ import { claimsLocalStorage } from "../../utils/local-storage";
 import useApi from "../../hooks/useApi";
 import { AlertTitle } from "../../constants/common";
 import { FieldType } from "../../types/general";
-import PgpFields from "../../components/PgpFields";
+import PgpSection from "../../components/PgpSection";
 import usePgp from "../../hooks/usePpg";
 
 type Navigation = ProfileStackNavigation<"Claim">;
@@ -344,7 +344,7 @@ const ClaimScreen: React.FC = () => {
             />
           )}
           {showPgpFields && (
-            <PgpFields emailInput={formState["email"] as string} />
+            <PgpSection emailInput={formState["email"] as string} />
           )}
         </View>
         <BottomNavBarSpacer />

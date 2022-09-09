@@ -2,6 +2,8 @@ import { ethers } from "ethers";
 import React from "react";
 import { Alert } from "react-native";
 import OpenPGP from "react-native-fast-openpgp";
+import * as DocumentPicker from "expo-document-picker";
+import * as FileSystem from "expo-file-system";
 import { AlertTitle, ClaimTypeConstants } from "../constants/common";
 import { useClaimsStore } from "../context/ClaimsStore";
 import { UsersResponse } from "../types/user";
@@ -20,7 +22,8 @@ type Hooks = {
     email: string
   ) => Promise<void>;
   verifyPublicKey: (email: string | undefined) => Promise<void>;
-  resendVerificationEmail: (email: string) => Promise<void>;
+  resendVerificationEmail: (email: string) => Promise<boolean>;
+  importPrivateKeyFileFromDevice: () => Promise<string | undefined>;
 };
 
 const usePgp = (): Hooks => {
@@ -156,11 +159,26 @@ const usePgp = (): Hooks => {
     },
     [updateClaim]
   );
+
+  const importPrivateKeyFileFromDevice = async () => {
+    const res = await DocumentPicker.getDocumentAsync({
+      type: ["*/*"]
+    });
+    if (res.type === "cancel") return;
+    const isCorrectFileType =
+      res.name.endsWith(".asc") || res.name.endsWith(".key");
+    if (!isCorrectFileType) {
+      throw new Error("Invalid file type : expecting .asc or .key");
+    }
+    const fileContent = await FileSystem.readAsStringAsync(res.uri);
+    return fileContent;
+  };
   return {
     generateKeyPair,
     generateKeyPairFromPrivateKey,
     verifyPublicKey,
-    resendVerificationEmail
+    resendVerificationEmail,
+    importPrivateKeyFileFromDevice
   };
 };
 
