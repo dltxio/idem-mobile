@@ -113,7 +113,7 @@ const usePgp = (): Hooks => {
       })
       .then((response) => {
         if (response)
-          return Alert.alert(
+          Alert.alert(
             "Email Sent",
             "IDEM has sent another verification email."
           );
