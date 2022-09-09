@@ -42,7 +42,7 @@ const PgpSection: React.FC<Props> = (props) => {
     importPrivateKeyFileFromDevice
   } = usePgp();
 
-  const [pgpTitle, setPgpTitle] = React.useState<string | undefined>();
+  const [pgpTitle, setPgpTitle] = React.useState<string>();
 
   const loadKeyFromLocalStorage = React.useCallback(async () => {
     const key = await pgpLocalStorage.get();
