@@ -172,20 +172,22 @@ const PgpSection: React.FC<Props> = (props) => {
           >
             Setup PGP Key
           </Button>
-
-          {publicKey && !props.isEmailVerified && (
-            <View>
-              <Text
-                style={styles.didntGetEmailText}
-                onPress={() => resendVerificationEmail(props.emailInput)}
-              >
-                Didn't receive your verification email?
-              </Text>
-
-              <Text style={styles.fingerPrint}>FingerPrint:{pgpTitle}</Text>
-            </View>
-          )}
         </View>
+      </View>
+
+      <View>
+        {publicKey && !props.isEmailVerified && (
+          <Text
+            style={styles.didntGetEmailText}
+            onPress={() => resendVerificationEmail(props.emailInput)}
+          >
+            Didn't receive your verification email?
+          </Text>
+        )}
+
+        {shouldShowPublicKey && (
+          <Text style={styles.fingerPrint}>Fingerprint : {pgpTitle}</Text>
+        )}
       </View>
     </KeyboardAvoidingView>
   );
