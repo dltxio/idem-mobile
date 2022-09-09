@@ -231,7 +231,7 @@ const ClaimScreen: React.FC = () => {
         }}
       />
       <ScrollView style={commonStyles.screenContent}>
-        <View>
+        <View style={styles.content}>
           <StatusBar hidden={false} />
           {claim.type === "MobileCredential" ? (
             <Text style={styles.mobileWarningText}>
@@ -366,7 +366,6 @@ const ClaimScreen: React.FC = () => {
             />
           )}
         </View>
-        <BottomNavBarSpacer />
       </ScrollView>
       <View style={styles.buttonWrapper}>
         {isOtpVerifyAction ? (
@@ -394,6 +393,7 @@ const ClaimScreen: React.FC = () => {
 export default ClaimScreen;
 
 const styles = StyleSheet.create({
+  content: { marginBottom: 10 },
   introText: {
     marginBottom: 10
   },
