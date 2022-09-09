@@ -160,11 +160,14 @@ const PgpSection: React.FC<Props> = (props) => {
                   switch (buttonIndex) {
                     case 0:
                       await importPrivateKeyFromDevice(props.emailInput);
+                      break;
+
                     case 1:
                       await generateAndPublishNewPgpKey(
                         nameClaimValue as string,
                         props.emailInput as string
                       );
+                      break;
                   }
                 }
               )
