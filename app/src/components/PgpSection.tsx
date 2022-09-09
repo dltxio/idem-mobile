@@ -170,7 +170,7 @@ const PgpSection: React.FC<Props> = (props) => {
               )
             }
           >
-            Set Up PGP Key
+            Setup PGP Key
           </Button>
 
           {publicKey && !props.isEmailVerified && (
