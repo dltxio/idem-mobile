@@ -67,7 +67,7 @@ const usePushNotifications = (): Hooks => {
         })
       ).data;
     } else {
-      Alert.alert("Must use physical device for Push Notifications");
+      Alert.alert("Must use physical device for Push Notifications.");
     }
 
     //Allows push notifications on Android
