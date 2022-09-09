@@ -74,6 +74,7 @@ export type uploadPublicKey = {
 };
 
 export type UsersResponse = {
+  verifyPublicKey: boolean;
   userId: string;
   email: string;
   createdAt: Date;
