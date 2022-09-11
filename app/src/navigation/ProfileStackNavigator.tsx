@@ -5,7 +5,6 @@ import ClaimScreen from "./screens/ClaimScreen";
 import { ClaimType } from "../types/claim";
 import { getClaimFromType } from "../utils/claim-utils";
 import ViewFile from "./screens/ViewFileScreen";
-import PGPScreen from "./screens/PGPScreen";
 
 export type ProfileStackParamList = {
   Home: undefined;
@@ -35,11 +34,6 @@ const ProfileStackNavigator = () => {
           headerShown: false
         })}
         component={ProfileScreen}
-      />
-      <Stack.Screen
-        name="PGP"
-        options={{ title: "Setup PGP key pair" }}
-        component={PGPScreen}
       />
       <Stack.Screen
         name="Claim"

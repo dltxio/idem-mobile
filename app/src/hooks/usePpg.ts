@@ -1,6 +1,9 @@
 import { ethers } from "ethers";
+import React from "react";
 import { Alert } from "react-native";
 import OpenPGP from "react-native-fast-openpgp";
+import * as DocumentPicker from "expo-document-picker";
+import * as FileSystem from "expo-file-system";
 import { AlertTitle, ClaimTypeConstants } from "../constants/common";
 import { useClaimsStore } from "../context/ClaimsStore";
 import { UsersResponse } from "../types/user";
@@ -19,6 +22,8 @@ type Hooks = {
     email: string
   ) => Promise<void>;
   verifyPublicKey: (email: string | undefined) => Promise<void>;
+  resendVerificationEmail: (email: string) => Promise<void>;
+  importPrivateKeyFileFromDevice: () => Promise<string | undefined>;
 };
 
 const usePgp = (): Hooks => {
@@ -100,36 +105,80 @@ const usePgp = (): Hooks => {
       });
   };
 
-  const verifyPublicKey = async (email: string | undefined) => {
-    if (!email) {
-      Alert.alert(AlertTitle.Error, `No email claim found`);
-      return;
-    }
-    api
-      .getUser(email)
-      .then(async (result: UsersResponse) => {
-        if (result.emailVerified) {
-          await updateClaim(
-            ClaimTypeConstants.EmailCredential,
-            { email: email },
-            [],
-            true
+  const resendVerificationEmail = async (email: string) => {
+    const formattedEmail = email.trim().toLowerCase();
+    await api
+      .resendVerificationEmail({
+        hashedEmail: ethers.utils.hashMessage(formattedEmail)
+      })
+      .then((response) => {
+        if (response)
+          Alert.alert(
+            "Email Sent",
+            "IDEM has sent another verification email."
           );
-          {
-            Alert.alert(`Email Verified`, `Email has been verified`);
-          }
-        } else {
-          Alert.alert(AlertTitle.Error, `Email has not been verified`);
-        }
       })
       .catch((error) => {
         Alert.alert(AlertTitle.Error, error.message);
+        throw error;
       });
+  };
+
+  const verifyPublicKey = React.useCallback(
+    async (email: string | undefined) => {
+      if (!email) {
+        Alert.alert(AlertTitle.Error, `No email claim found.`);
+        return;
+      }
+      await api
+        .getUser(email)
+        .then(async (result: UsersResponse) => {
+          if (result.emailVerified) {
+            await updateClaim(
+              ClaimTypeConstants.EmailCredential,
+              { email },
+              [],
+              true
+            );
+            {
+              Alert.alert(
+                AlertTitle.Success,
+                "Your PGP key has been successfully verified by IDEM."
+              );
+            }
+          } else {
+            Alert.alert(
+              `Warning`,
+              `Please check your email for a verification link and verify with IDEM once complete.`
+            );
+          }
+        })
+        .catch((error) => {
+          Alert.alert(AlertTitle.Error, error.message);
+        });
+    },
+    [updateClaim]
+  );
+
+  const importPrivateKeyFileFromDevice = async () => {
+    const res = await DocumentPicker.getDocumentAsync({
+      type: ["*/*"]
+    });
+    if (res.type === "cancel") return;
+    const isCorrectFileType =
+      res.name.endsWith(".asc") || res.name.endsWith(".key");
+    if (!isCorrectFileType) {
+      throw new Error("Invalid file type : expecting .asc or .key");
+    }
+    const fileContent = await FileSystem.readAsStringAsync(res.uri);
+    return fileContent;
   };
   return {
     generateKeyPair,
     generateKeyPairFromPrivateKey,
-    verifyPublicKey
+    verifyPublicKey,
+    resendVerificationEmail,
+    importPrivateKeyFileFromDevice
   };
 };
 
