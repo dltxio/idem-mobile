@@ -164,7 +164,7 @@ const PgpSection: React.FC<Props> = (props) => {
 
                     case 1:
                       await generateAndPublishNewPgpKey(
-                        nameClaimValue as string,
+                        nameClaimValue?.toLocaleLowerCase() as string,
                         props.emailInput as string
                       );
                       break;
