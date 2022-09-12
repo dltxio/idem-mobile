@@ -167,7 +167,7 @@ const ClaimScreen: React.FC = () => {
     const newMobileState = formatMobileNumberState();
     if (newMobileState.countryCode !== "+61") {
       Alert.alert(
-        "Error",
+        AlertTitle.Error,
         "IDEM only supports Australian numbers for mobile claims/verification."
       );
       setLoading(false);
@@ -183,8 +183,7 @@ const ClaimScreen: React.FC = () => {
         setShowOtpDialog(true);
       }
     } catch (error) {
-      console.error(error);
-      Alert.alert("Error", "Something went wrong.");
+      Alert.alert(AlertTitle.Error, "Something went wrong.");
     }
     setLoading(false);
   };
