@@ -15,10 +15,6 @@ export type Field = {
   type: FieldType;
 };
 
-export type UploadPGPKeyResponse = {
-  token: string;
-};
-
 export type Vendor = {
   id: number;
   description: string;
