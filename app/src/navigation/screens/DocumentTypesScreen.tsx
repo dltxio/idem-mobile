@@ -15,24 +15,21 @@ const DocumentTypesScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
   const { documents } = useDocumentStore();
 
-  const navigateToDocument = (document: Document) => {
-    navigation.navigate("DocumentDetail", { document: document });
+  const onPressDocument = (document: Document) => {
+    const savedDoc =
+      documents.find((doc) => doc.type === document.type) ?? document;
+    navigation.navigate("DocumentDetail", { document: savedDoc });
   };
 
   return (
     <View style={commonStyles.screen}>
       <ScrollView style={commonStyles.screenContent}>
         <View>
-          {allDocuments.map((document, index) => (
+          {allDocuments.map((document) => (
             <IdemListItem
               title={document.title}
-              onPress={async () => {
-                const savedDoc =
-                  documents.find((doc) => doc.type === document.type) ??
-                  document;
-                navigateToDocument(savedDoc);
-              }}
-              key={index}
+              onPress={() => onPressDocument(document)}
+              key={document.type}
             />
           ))}
         </View>
