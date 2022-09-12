@@ -14,6 +14,7 @@ import { Input } from "@rneui/themed";
 import useSelectPhoto from "../../hooks/useSelectPhoto";
 import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/image-utils";
 import * as DocumentPicker from "expo-document-picker";
+import { Field } from "../../types/document";
 
 type Navigation = DocumentsStackNavigation<"DocumentDetail">;
 
@@ -106,13 +107,27 @@ const DocumentDetailScreen: React.FC = () => {
     });
   };
 
-  const savable = (): boolean => {
-    let savable = true;
-    document.fields?.forEach((field) => {
-      if (!field.optional && field.value === "") savable = false;
-    });
-    return savable;
-  };
+  const shouldDisableSaveButton = React.useMemo(() => {
+    const eitherOptionalOrNotEmpty = (field: any) =>
+      field.optional || field.value !== "";
+    const allRequiredFieldHaveValue = document.fields?.every(
+      eitherOptionalOrNotEmpty
+    );
+    return !allRequiredFieldHaveValue;
+  }, [document]);
+
+  const onChange = React.useCallback(
+    (input: string, field: Field) => {
+      if (!field.valueOptions || field.valueOptions.includes(input)) {
+        field.value = input;
+        setFormState((previous) => ({
+          ...previous,
+          [field.title]: input
+        }));
+      }
+    },
+    [setFormState]
+  );
 
   return (
     <View>
@@ -145,17 +160,8 @@ const DocumentDetailScreen: React.FC = () => {
       </Modal>
       <ScrollView style={{ marginHorizontal: 20, paddingTop: 20 }}>
         {document?.fields?.map((field, index) => {
-          let keyboardType: "default" | "numeric" = "default";
-          if (field.type === "number") keyboardType = "numeric";
-          const onChange = (input: string) => {
-            if (!field.valueOptions || field.valueOptions.includes(input)) {
-              field.value = input;
-              setFormState((previous) => ({
-                ...previous,
-                [field.title]: input
-              }));
-            }
-          };
+          const keyboardType = field.type === "number" ? "numeric" : "default";
+
           return (
             <Input
               label={field.title}
@@ -163,7 +169,7 @@ const DocumentDetailScreen: React.FC = () => {
               keyboardType={keyboardType}
               autoCapitalize="none"
               value={formState[field.title]}
-              onChangeText={onChange}
+              onChangeText={(input) => onChange(input, field)}
               editable={true}
               key={index}
             />
@@ -192,7 +198,11 @@ const DocumentDetailScreen: React.FC = () => {
           <Button title="Attach" onPress={attachFile} />
         </View>
         <View style={styles.button}>
-          <Button title="Save" onPress={saveDocument} disabled={!savable()} />
+          <Button
+            title="Save"
+            onPress={saveDocument}
+            disabled={shouldDisableSaveButton}
+          />
         </View>
         <BottomNavBarSpacer />
       </ScrollView>

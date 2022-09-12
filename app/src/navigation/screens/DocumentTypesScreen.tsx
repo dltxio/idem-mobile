@@ -23,20 +23,18 @@ const DocumentTypesScreen: React.FC = () => {
     <View style={commonStyles.screen}>
       <ScrollView style={commonStyles.screenContent}>
         <View>
-          {allDocuments.map((document, index) => {
-            return (
-              <IdemListItem
-                title={document.title}
-                onPress={async () => {
-                  const savedDoc =
-                    documents.find((doc) => doc.type === document.type) ??
-                    document;
-                  navigateToDocument(savedDoc);
-                }}
-                key={index}
-              />
-            );
-          })}
+          {allDocuments.map((document, index) => (
+            <IdemListItem
+              title={document.title}
+              onPress={async () => {
+                const savedDoc =
+                  documents.find((doc) => doc.type === document.type) ??
+                  document;
+                navigateToDocument(savedDoc);
+              }}
+              key={index}
+            />
+          ))}
         </View>
         <BottomNavBarSpacer />
       </ScrollView>
