@@ -19,33 +19,35 @@ const VendorsScreen: React.FC = () => {
       <StatusBar hidden={false} />
       {vendors.length > 0 &&
         vendors.map((vendor) => {
-          const content = (
-            <>
-              <ListItem.Content>
-                <ListItem.Title style={styles.vendorName}>
-                  {vendor.name}
-                </ListItem.Title>
-                <ListItem.Subtitle style={styles.tagLine}>
-                  {vendor.tagline}
-                </ListItem.Subtitle>
-              </ListItem.Content>
-              <AntDesign name="right" style={styles.icon} />
-            </>
-          );
+          if (vendor.enabled) {
+            const content = (
+              <>
+                <ListItem.Content>
+                  <ListItem.Title style={styles.vendorName}>
+                    {vendor.name}
+                  </ListItem.Title>
+                  <ListItem.Subtitle style={styles.tagLine}>
+                    {vendor.tagline}
+                  </ListItem.Subtitle>
+                </ListItem.Content>
+                <AntDesign name="right" style={styles.icon} />
+              </>
+            );
 
-          return (
-            <ListItem
-              key={vendor.name}
-              style={styles.container}
-              onPress={() =>
-                navigation.navigate("VendorDetails", {
-                  id: vendor.id
-                })
-              }
-            >
-              {content}
-            </ListItem>
-          );
+            return (
+              <ListItem
+                key={vendor.name}
+                style={styles.container}
+                onPress={() =>
+                  navigation.navigate("VendorDetails", {
+                    id: vendor.id
+                  })
+                }
+              >
+                {content}
+              </ListItem>
+            );
+          }
         })}
     </View>
   );
