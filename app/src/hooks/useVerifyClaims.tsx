@@ -18,11 +18,14 @@ const useVerifyClaims = (): Hooks => {
     expoToken: string | undefined
   ) => {
     api
-      .verify(verifyRequest)
+      .verifyClaims(verifyRequest)
       .then(async (response) => {
         await verificationStorage.save(response);
-        if (response.userId && expoToken) {
-          await api.putExpoToken(response.userId, { token: expoToken });
+        if (expoToken) {
+          await api.putUser(verifyRequest.hashEmail, {
+            email: verifyRequest.hashEmail,
+            expoToken: expoToken
+          });
         }
       })
       .then(() => {
@@ -32,8 +35,7 @@ const useVerifyClaims = (): Hooks => {
         );
       })
       .catch((error) => {
-        console.log(error);
-        Alert.alert(AlertTitle.Error, `${error}`);
+        Alert.alert(AlertTitle.Error, `${error.message}`);
       });
   };
 
