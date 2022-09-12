@@ -9,26 +9,33 @@
     "signup": "https://digitalsurge.com.au/api/registration/sign-up/",
     "useProxy": true,
     "requiredClaimTypes": [
-      "EmailCredential",
-      "NameCredential",
-      "MobileCredential"
+      { "EmailCredential": "required", "verified": true },
+      { "NameCredential": "required", "verified": false },
+      { "MobileCredential": "required", "verified": true }
     ],
-    "backgroundColor": "#FFFFFF"
+    "backgroundColor": "#FFFFFF",
+    "tempPassword": false,
+    "passwordComplexity": "/^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[W_])[A-Za-zdW_]{8,}$/",
+    "verifyClaims": false,
+    "enable": true
   },
   {
     "id": 1,
     "name": "Get Paid In Bitcoin",
     "tagline": "The easiest way to get paid in Bitcoin",
     "description": "",
-    "website": "https://getpaidinbitcoin.com.au",
+    "website": "https://getpaidinbitcoin.com.au/",
     "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/GPIB_logo.png",
     "signup": "https://portal.getpaidinbitcoin.com.au/register",
     "backgroundColor": "#be2596",
     "requiredClaimTypes": [
-      "EmailCredential",
-      "NameCredential",
-      "MobileCredential"
-    ]
+      { "EmailCredential": "required", "verified": false },
+      { "NameCredential": "required", "verified": false }
+    ],
+    "tempPassword": true,
+    "passwordComplexity": "/^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[W_])[A-Za-zdW_]{8,}$/",
+    "verifyClaims": true,
+    "enable": true
   },
   {
     "id": 2,
@@ -39,10 +46,14 @@
     "signup": "https://coinstash.com.au/auth/signup",
     "backgroundColor": "#0012d0",
     "requiredClaimTypes": [
-      "EmailCredential",
-      "NameCredential",
-      "AddressCredential"
-    ]
+      { "EmailCredential": "required", "verified": false },
+      { "NameCredential": "required", "verified": false },
+      { "AddressCredential": "required", "verified": false }
+    ],
+    "tempPassword": true,
+    "passwordComplexity": "/^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[W_])[A-Za-zdW_]{8,}$/",
+    "verifyClaims": true,
+    "enable": false
   },
   {
     "id": 3,
@@ -52,7 +63,16 @@
     "website": "https://cointree.com/",
     "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/cointree_logo.png",
     "signup": "https://auth.cointree.com/Account/Register?registerwith=${email}",
-    "backgroundColor": "#00de78"
+    "backgroundColor": "#00de78",
+    "requiredClaimTypes": [
+      { "EmailCredential": "required", "verified": false },
+      { "NameCredential": "required", "verified": false },
+      { "AddressCredential": "required", "verified": false }
+    ],
+    "tempPassword": true,
+    "passwordComplexity": "/^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[W_])[A-Za-zdW_]{8,}$/",
+    "verifyClaims": false,
+    "enable": false
   },
   {
     "id": 4,
@@ -62,6 +82,15 @@
     "website": "https://easycrypto.com/au",
     "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/easycrypto_logo.png",
     "signup": "https://easycrypto.com/au",
-    "backgroundColor": "#8c75d9"
+    "backgroundColor": "#8c75d9",
+    "requiredClaimTypes": [
+      { "EmailCredential": "required", "verified": false },
+      { "NameCredential": "required", "verified": false },
+      { "AddressCredential": "required", "verified": false }
+    ],
+    "tempPassword": true,
+    "passwordComplexity": "/^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[W_])[A-Za-zdW_]{8,}$/",
+    "verifyClaims": false,
+    "enable": false
   }
 ]
