@@ -14,7 +14,6 @@ import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import { useNavigation } from "@react-navigation/native";
 import { ClaimType } from "../../types/claim";
 import usePushNotifications from "../../hooks/usePushNotifications";
-import * as Crypto from "expo-crypto";
 import CreateMnemonicController from "../../components/CreateMnemonicController";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { findNames } from "../../utils/formatters";
@@ -22,6 +21,7 @@ import { UserVerifyRequest } from "../../types/user";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
 import { ClaimTypeConstants } from "../../constants/common";
 import IdemButton from "../../components/Button";
+import { ethers } from "ethers";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -44,10 +44,7 @@ const Home: React.FC = () => {
   const verifyUserOnProxy = async () => {
     if (splitName && dob && address && email) {
       const formattedEmail = email.trim().toLowerCase();
-      const hashEmail = await Crypto.digestStringAsync(
-        Crypto.CryptoDigestAlgorithm.SHA256,
-        formattedEmail
-      );
+      const hashEmail = ethers.utils.hashMessage(formattedEmail);
 
       const userClaims = {
         firstName: splitName.firstName,
