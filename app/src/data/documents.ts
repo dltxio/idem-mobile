@@ -80,7 +80,7 @@ const documents: Document[] = [
     title: "Medicare Card",
     fields: [
       {
-        title: "Card type",
+        title: "Card Type",
         type: "string",
         valueOptions: ["Green", "Yellow", "Blue"]
       },
