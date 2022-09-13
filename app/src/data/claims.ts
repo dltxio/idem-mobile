@@ -29,6 +29,7 @@ const claims: Claim[] = [
     verificationAction: "document-upload",
     fields: [
       { id: "firstName", title: "First name", type: "text" },
+      { id: "middleName", title: "Middle name", type: "text" },
       { id: "lastName", title: "Last name", type: "text" }
     ],
     verificationDocuments: [

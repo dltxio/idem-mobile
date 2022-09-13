@@ -58,7 +58,7 @@ const UserDetailsHeader: React.FC = () => {
       <View style={styles.userDetails}>
         <DetailOrPlaceholder
           value={name}
-          bold={true}
+          bold={true}     
           placeholderWidth={90}
           onPress={() =>
             navigation.navigate("Claim", {
