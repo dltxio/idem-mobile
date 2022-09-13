@@ -1,14 +1,13 @@
 import * as React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { connectActionSheet } from "@expo/react-native-action-sheet";
-import { Button, FileList, Modal } from "../../components";
+import { BottomNavBarSpacer, Button, FileList, Modal } from "../../components";
 import { useDocumentStore } from "../../context/DocumentStore";
 import {
   DocumentsStackNavigation,
   DocumentsStackNavigationRoute
 } from "../../types/navigation";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { ScrollView } from "react-native-gesture-handler";
 import { Input } from "@rneui/themed";
 import useSelectPhoto from "../../hooks/useSelectPhoto";
@@ -52,6 +51,10 @@ const DocumentDetailScreen: React.FC = () => {
 
   const attachFile = () => {
     setShowAttachModal(true);
+  };
+
+  const closeAttachFile = () => {
+    setShowAttachModal(false);
   };
 
   const saveDocument = () => {
@@ -131,11 +134,7 @@ const DocumentDetailScreen: React.FC = () => {
 
   return (
     <View>
-      <Modal
-        title=""
-        show={showAttachModal}
-        onClose={() => setShowAttachModal(false)}
-      >
+      <Modal title="" show={showAttachModal} onClose={closeAttachFile}>
         <View style={styles.button}>
           <Button
             title="Select From Device"
@@ -158,7 +157,7 @@ const DocumentDetailScreen: React.FC = () => {
           />
         </View>
       </Modal>
-      <ScrollView style={{ marginHorizontal: 20, paddingTop: 20 }}>
+      <ScrollView style={styles.scrollView}>
         {document?.fields?.map((field, index) => {
           const keyboardType = field.type === "number" ? "numeric" : "default";
 
@@ -175,7 +174,7 @@ const DocumentDetailScreen: React.FC = () => {
             />
           );
         })}
-        <View style={{ height: 100 }}>
+        <View style={styles.fileList}>
           {selectedDocuments.length === 0 ? (
             <View>
               <Text style={{}}>
@@ -215,5 +214,14 @@ export default connectActionSheet(DocumentDetailScreen);
 const styles = StyleSheet.create({
   button: {
     marginVertical: 5
+  },
+
+  scrollView: {
+    marginHorizontal: 20,
+    paddingTop: 20
+  },
+
+  fileList: {
+    height: 100
   }
 });
