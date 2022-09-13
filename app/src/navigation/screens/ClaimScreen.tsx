@@ -112,10 +112,11 @@ const ClaimScreen: React.FC = () => {
 
   const onSave = async () => {
     setLoading(true);
-    if (claim.type === "EmailCredential" && !isEmail(formState.email as string))
-      return;
-    {
-      Alert.alert(
+    if (
+      claim.type === "EmailCredential" &&
+      !isEmail(formState.email as string)
+    ) {
+      return Alert.alert(
         AlertTitle.Warning,
         "Please type a valid email claim value in the input field."
       );
