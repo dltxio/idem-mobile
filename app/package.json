@@ -56,7 +56,8 @@
     "react-native-uuid": "^2.0.1",
     "react-native-webview": "11.18.1",
     "secure-random-password": "^0.2.3",
-    "sentry-expo": "^4.2.0"
+    "sentry-expo": "^4.2.0",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.5",
