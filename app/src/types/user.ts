@@ -18,6 +18,7 @@ export enum VendorEnum {
 
 export type UserVerifyRequest = {
   firstName: string;
+  middleName: string;
   lastName: string;
   dob: string;
   hashEmail: string;
