@@ -177,7 +177,7 @@ const DocumentDetailScreen: React.FC = () => {
         <View style={styles.fileList}>
           {selectedDocuments.length === 0 ? (
             <View>
-              <Text style={{}}>
+              <Text>
                 You haven't attached any files yet. Get started by selecting a
                 document below.
               </Text>
