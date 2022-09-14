@@ -48,6 +48,7 @@ const Home: React.FC = () => {
 
       const userClaims = {
         firstName: splitName.firstName,
+        middleName: splitName.middleName,
         lastName: splitName.lastName,
         dob,
         hashEmail,
