@@ -37,8 +37,6 @@ const Home: React.FC = () => {
   const email = useClaimValue(ClaimTypeConstants.EmailCredential);
   const dob = useClaimValue(ClaimTypeConstants.BirthCredential);
   const name = useClaimValue(ClaimTypeConstants.NameCredential);
-  const [disableverifybutton, setdisableverifybutton] =
-    React.useState<boolean>(false);
   const splitName = findNames(name);
   const addressValue = usersClaims.find(
     (claim) => claim.type === ClaimTypeConstants.AddressCredential
