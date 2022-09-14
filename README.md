@@ -326,5 +326,4 @@ PRgoCIfAqhnv2QK2fjlrTwcXcSaxHTaGITA=
 
 - https://www.servicesaustralia.gov.au/individuals/topics/confirm-your-identity/29166
 - https://en.bitcoin.it/wiki/Seed_phrase
-- Transactions on the Ethereum Test Network "Kovan" will be signed with the ETH account `0xE4ed9ceF6989CFE9da7c1Eec8c2299141dD9e7cC`
 - [Microsoft claims class for .net](https://docs.microsoft.com/en-us/dotnet/api/system.security.claims.claim?view=net-5.0).
