@@ -22,6 +22,8 @@ import useVerifyClaims from "../../hooks/useVerifyClaims";
 import { ClaimTypeConstants } from "../../constants/common";
 import IdemButton from "../../components/Button";
 import { ethers } from "ethers";
+import documents from "../../data/documents";
+import { DocumentStore } from "../../context/DocumentStore";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -36,12 +38,15 @@ const Home: React.FC = () => {
   const email = useClaimValue(ClaimTypeConstants.EmailCredential);
   const dob = useClaimValue(ClaimTypeConstants.BirthCredential);
   const name = useClaimValue(ClaimTypeConstants.NameCredential);
+  const [disableverifybutton, setdisableverifybutton] =
+    React.useState<boolean>(false);
   const splitName = findNames(name);
   const addressValue = usersClaims.find(
     (claim) => claim.type === ClaimTypeConstants.AddressCredential
   )?.value;
   const { verifyClaims } = useVerifyClaims();
   const verifyUserOnProxy = async () => {
+    //adjust what is being sent to the proxy for veification talk to alex about adjusting on the back end also
     if (splitName && dob && address && email) {
       const formattedEmail = email.trim().toLowerCase();
       const hashEmail = ethers.utils.hashMessage(formattedEmail);
@@ -61,6 +66,27 @@ const Home: React.FC = () => {
       } as UserVerifyRequest;
 
       await verifyClaims(userClaims, expoPushToken);
+    }
+  };
+  const documentMedicareCard = documents?.find(
+    (document) => document.type === DocumentsValue.medicare-card
+  );
+
+  const documentDriversLicence = documents?.find(
+    (document) => document.type === DocumentsValue.drivers-licence
+  );
+
+  const completedRequiredClaimsAndDocuments = () => {
+    if (
+      !dob &&
+      !splitName &&
+      !documentMedicareCard &&
+      !documentDriversLicence
+    ) {
+      disableverifybutton;
+    }
+    {
+      setdisableverifybutton(true);
     }
   };
 
@@ -93,18 +119,22 @@ const Home: React.FC = () => {
             />
           </>
         ) : null}
+        <View>
+          <Text style={styles.completeClaimsText}>
+            Complete your Name and DOB claims and attached Medicare or Driver
+            Licence documents to verify.
+          </Text>
+        </View>
         <View style={styles.buttonWrapper}>
-          {name && dob && address && email && (
-            <View style={styles.buttonWrapper}>
-              <IdemButton
-                title="Verify My Claims"
-                // disabled={signed ? false : true}
-                onPress={async () => {
-                  verifyUserOnProxy();
-                }}
-              />
-            </View>
-          )}
+          <View style={styles.buttonWrapper}>
+            <IdemButton
+              title="Verify My Claims"
+              disabled={completedRequiredClaimsAndDocuments()}
+              onPress={async () => {
+                verifyUserOnProxy();
+              }}
+            />
+          </View>
         </View>
         <BottomNavBarSpacer />
       </ScrollView>
@@ -120,5 +150,14 @@ const styles = StyleSheet.create({
   buttonWrapper: {
     alignSelf: "center",
     width: Dimensions.get("window").width * 0.9
+  },
+
+  completeClaimsText: {
+    marginBottom: 10,
+    marginTop: 5,
+    textAlign: "center"
   }
 });
+function setdisableverifybutton(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}
