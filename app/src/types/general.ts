@@ -25,6 +25,10 @@ export type Vendor = {
   website: string;
   backgroundColor: string;
   requiredClaimTypes: ClaimType[];
+  useProxy?: boolean;
+  tempPassword?: boolean;
+  verifyClaims?: boolean;
+  enable?: boolean;
 };
 
 export type VerifyOnProxy = {
