@@ -23,7 +23,6 @@ import { ClaimTypeConstants } from "../../constants/common";
 import IdemButton from "../../components/Button";
 import { ethers } from "ethers";
 import documents from "../../data/documents";
-import { DocumentStore } from "../../context/DocumentStore";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -69,11 +68,11 @@ const Home: React.FC = () => {
     }
   };
   const documentMedicareCard = documents?.find(
-    (document) => document.type === DocumentsValue.medicare-card
+    (document) => document.type === "medicare-card"
   );
 
   const documentDriversLicence = documents?.find(
-    (document) => document.type === DocumentsValue.drivers-licence
+    (document) => document.type === "drivers-licence"
   );
 
   const completedRequiredClaimsAndDocuments = () => {
@@ -83,11 +82,9 @@ const Home: React.FC = () => {
       !documentMedicareCard &&
       !documentDriversLicence
     ) {
-      disableverifybutton;
+      return false;
     }
-    {
-      setdisableverifybutton(true);
-    }
+    return true;
   };
 
   return (
@@ -158,6 +155,4 @@ const styles = StyleSheet.create({
     textAlign: "center"
   }
 });
-function setdisableverifybutton(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}
+
