@@ -10,8 +10,9 @@ export const findNames = (fullname: string | undefined) => {
     const fullNameArray = fullname.split(" ");
     const lastIndex = fullNameArray.lastIndexOf("");
     const firstName = fullNameArray.slice(0, 1).join("");
+    const middleName = fullNameArray.slice(1, lastIndex).join(" ");
     const lastName = fullNameArray.slice(lastIndex).join("");
-    return { firstName, lastName };
+    return { firstName, middleName, lastName };
   }
   return null;
 };
