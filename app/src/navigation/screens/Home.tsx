@@ -24,7 +24,6 @@ import {
   ClaimTypeDocumentConstants
 } from "../../constants/common";
 import IdemButton from "../../components/Button";
-import { ethers } from "ethers";
 import documents from "../../data/documents";
 
 type Navigation = ProfileStackNavigation<"Home">;
@@ -41,15 +40,13 @@ const Home: React.FC = () => {
   const dob = useClaimValue(ClaimTypeConstants.BirthCredential);
   const name = useClaimValue(ClaimTypeConstants.NameCredential);
   //JASMINS CODE BELOW
-  const medicareCard = useClaimValue(ClaimTypeDocumentConstants.medicareCard);
-  const driversLicence = useClaimValue(
-    ClaimTypeDocumentConstants.driversLicence
-  );
+  const medicareCard = documents(ClaimTypeDocumentConstants.medicareCard);
+  const driversLicence = documents(ClaimTypeDocumentConstants.driversLicence);
   //JASMINS CODE ABOVE
   const splitName = findNames(name);
-  const addressValue = usersClaims.find(
-    (claim) => claim.type === ClaimTypeConstants.AddressCredential
-  )?.value;
+  // const addressValue = usersClaims.find(
+  //   (claim) => claim.type === ClaimTypeConstants.AddressCredential
+  // )?.value;
   const { verifyClaims } = useVerifyClaims();
   const verifyUserOnProxy = async () => {
     //adjust what is being sent to the proxy for veification talk to alex about adjusting on the back end also
