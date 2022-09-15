@@ -21,6 +21,7 @@ import { useActionSheet } from "@expo/react-native-action-sheet";
 import QRCode from "react-native-qrcode-svg";
 import colors from "../styles/colors";
 import { TextInput } from "react-native-gesture-handler";
+import isEmail from "validator/lib/isEmail";
 
 type Props = {
   emailInput: string;
@@ -63,6 +64,12 @@ const PgpSection: React.FC<Props> = (props) => {
 
   const importPrivateKeyFromDevice = React.useCallback(
     async (email: string) => {
+      if (!isEmail(email)) {
+        return Alert.alert(
+          AlertTitle.Warning,
+          "Please type a valid email claim value in the input field."
+        );
+      }
       try {
         const content = await importPrivateKeyFileFromDevice();
         if (!content) return;
@@ -80,6 +87,12 @@ const PgpSection: React.FC<Props> = (props) => {
   );
   const generateAndPublishNewPgpKey = React.useCallback(
     async (name: string, email: string) => {
+      if (!isEmail(email)) {
+        return Alert.alert(
+          AlertTitle.Warning,
+          "Please type a valid email claim value in the input field."
+        );
+      }
       await generateKeyPair(name, email);
       await addClaim(ClaimTypeConstants.EmailCredential, { email }, [], false);
       await loadKeyFromLocalStorage();
