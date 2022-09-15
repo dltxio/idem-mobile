@@ -21,17 +21,11 @@ const useVerifyClaims = (): Hooks => {
       .verifyClaims(verifyRequest)
       .then(async (response) => {
         await verificationStorage.save(response);
-        if (expoToken) {
-          await api.putUser(verifyRequest.hashEmail, {
-            email: verifyRequest.hashEmail,
-            expoToken: expoToken
-          });
-        }
       })
       .then(() => {
         Alert.alert(
           AlertTitle.Success,
-          "Your name, date of birth, email, and address have been sent to IDEM to be verified!"
+          "Your name, date of birth, and documents have been sent to IDEM to be verified!"
         );
       })
       .catch((error) => {

@@ -19,7 +19,10 @@ import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { findNames } from "../../utils/formatters";
 import { UserVerifyRequest } from "../../types/user";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
-import { ClaimTypeConstants } from "../../constants/common";
+import {
+  ClaimTypeConstants,
+  ClaimTypeDocumentConstants
+} from "../../constants/common";
 import IdemButton from "../../components/Button";
 import { ethers } from "ethers";
 import documents from "../../data/documents";
@@ -37,6 +40,10 @@ const Home: React.FC = () => {
   const email = useClaimValue(ClaimTypeConstants.EmailCredential);
   const dob = useClaimValue(ClaimTypeConstants.BirthCredential);
   const name = useClaimValue(ClaimTypeConstants.NameCredential);
+  //JASMINS CODE BELOW
+  const medicareCard = useClaimValue(ClaimTypeDocumentConstants.medicareCard);
+  const driversLicence = useClaimValue(ClaimTypeDocumentConstants.driversLicence);
+  //JASMINS CODE ABOVE
   const splitName = findNames(name);
   const addressValue = usersClaims.find(
     (claim) => claim.type === ClaimTypeConstants.AddressCredential
@@ -53,13 +60,12 @@ const Home: React.FC = () => {
         middleName: splitName.middleName,
         lastName: splitName.lastName,
         dob,
-        hashEmail,
-        houseNumber: addressValue.houseNumber,
-        street: addressValue.street,
-        suburb: addressValue.suburb,
-        postcode: addressValue.postCode,
-        state: addressValue.state,
-        country: addressValue.country
+        licence: driversLicence,
+        firstName: splitName.firstName,
+        middleName: splitName.middleName,
+        lastName: splitName.lastName,
+        dob,
+        medicare: medicareCard
       } as UserVerifyRequest;
 
       await verifyClaims(userClaims, expoPushToken);
@@ -153,4 +159,3 @@ const styles = StyleSheet.create({
     textAlign: "center"
   }
 });
-

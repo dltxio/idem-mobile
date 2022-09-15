@@ -17,18 +17,45 @@ export enum VendorEnum {
 }
 
 export type UserVerifyRequest = {
-  firstName: string;
-  middleName: string;
-  lastName: string;
-  dob: string;
-  hashEmail: string;
-  houseNumber: string;
-  street: string;
-  suburb: string;
-  postcode: string;
-  state: string;
-  country: string;
-  userId: string;
+  user: {
+    ruleId: "default";
+    name: {
+      givenName: string;
+      middleNames?: string;
+      surname: string;
+    };
+    dob: {
+      day: number;
+      month: number;
+      year: number;
+    };
+  };
+  licence?: {
+    state: "QLD" | "NSW" | "ACT" | "VIC" | "NT" | "SA" | "WA" | "TAS";
+    licenceNumber: string;
+    cardNumber: string;
+    name: {
+      givenName: string;
+      middleNames?: string;
+      surname: string;
+    };
+    dob: {
+      day: number;
+      month: number;
+      year: number;
+    };
+  };
+  medicare?: {
+    colour: "Green" | "Blue" | "Yellow";
+    number: string;
+    individualReferenceNumber: string;
+    name: string;
+    dob: string;
+    expiry: string;
+    name2?: string;
+    name3?: string;
+    name4?: string;
+  };
 };
 
 export type RequestOtpRequest = {
