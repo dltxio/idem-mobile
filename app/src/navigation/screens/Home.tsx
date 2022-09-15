@@ -42,7 +42,9 @@ const Home: React.FC = () => {
   const name = useClaimValue(ClaimTypeConstants.NameCredential);
   //JASMINS CODE BELOW
   const medicareCard = useClaimValue(ClaimTypeDocumentConstants.medicareCard);
-  const driversLicence = useClaimValue(ClaimTypeDocumentConstants.driversLicence);
+  const driversLicence = useClaimValue(
+    ClaimTypeDocumentConstants.driversLicence
+  );
   //JASMINS CODE ABOVE
   const splitName = findNames(name);
   const addressValue = usersClaims.find(
@@ -51,10 +53,7 @@ const Home: React.FC = () => {
   const { verifyClaims } = useVerifyClaims();
   const verifyUserOnProxy = async () => {
     //adjust what is being sent to the proxy for veification talk to alex about adjusting on the back end also
-    if (splitName && dob && address && email) {
-      const formattedEmail = email.trim().toLowerCase();
-      const hashEmail = ethers.utils.hashMessage(formattedEmail);
-
+    if (splitName && dob && medicareCard && driversLicence) {
       const userClaims = {
         firstName: splitName.firstName,
         middleName: splitName.middleName,
