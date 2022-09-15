@@ -112,6 +112,7 @@ const ClaimScreen: React.FC = () => {
 
   const onSave = async () => {
     setLoading(true);
+    await addClaim(claim.type, formState, selectedFileIds);
     if (isEmailClaim) {
       if (!isEmail(formState.email as string)) {
         return Alert.alert(
@@ -119,11 +120,10 @@ const ClaimScreen: React.FC = () => {
           "Please type a valid email claim value in the input field."
         );
       }
+      setLoading(false);
       const email = (formState.email as string).toLowerCase();
       await verifyPublicKey(email);
     }
-    await addClaim(claim.type, formState, selectedFileIds);
-
     const claims = await claimsLocalStorage.get();
     if (claim.type === "BirthCredential") saveAndCheckBirthday(claims);
 
