@@ -6,6 +6,7 @@ import { VendorStackNavigation } from "../../types/navigation";
 import useVendorsList from "../../hooks/useVendorsList";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../../styles/colors";
+import commonStyles from "../../styles/styles";
 
 type Navigation = VendorStackNavigation<"Vendors">;
 
@@ -15,7 +16,7 @@ const VendorsScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, { marginTop: 20 }]}>
-      <Text style={styles.headingText}>Supported Exchanges</Text>
+      <Text style={commonStyles.text.smallHeading}>Supported Exchanges</Text>
       <StatusBar hidden={false} />
       {vendors.length > 0 &&
         vendors.map((vendor) => {
