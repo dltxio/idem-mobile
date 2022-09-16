@@ -25,7 +25,7 @@ const DocumentsStackNavigator = () => {
         name="ViewFile"
         options={() => {
           return {
-            title: ""
+            title: "Document Details"
           };
         }}
         component={ViewFile}

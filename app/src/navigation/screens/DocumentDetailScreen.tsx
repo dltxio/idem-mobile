@@ -75,6 +75,9 @@ const DocumentDetailScreen: React.FC = () => {
 
   const pickPhotoFromLibrary = async () => {
     setShowAttachModal(false);
+    await new Promise((resolve) => {
+      setTimeout(resolve, 100);
+    });
     const file = await selectPhotoFromCameraRoll();
 
     if (!file.cancelled) {
@@ -84,6 +87,9 @@ const DocumentDetailScreen: React.FC = () => {
 
   const takePhoto = async () => {
     setShowAttachModal(false);
+    await new Promise((resolve) => {
+      setTimeout(resolve, 100);
+    });
     const result = await selectPhotoFromCamera();
     if (result && !result.cancelled) {
       saveFile(result.uri);
@@ -92,6 +98,9 @@ const DocumentDetailScreen: React.FC = () => {
 
   const uploadFile = async () => {
     setShowAttachModal(false);
+    await new Promise((resolve) => {
+      setTimeout(resolve, 100);
+    });
     try {
       const res = await DocumentPicker.getDocumentAsync({
         type: "*/*"
@@ -112,12 +121,12 @@ const DocumentDetailScreen: React.FC = () => {
 
   const shouldDisableSaveButton = React.useMemo(() => {
     const eitherOptionalOrNotEmpty = (field: any) =>
-      field.optional || field.value !== "";
+      field.optional || formState[field.title] !== "";
     const allRequiredFieldHaveValue = document.fields?.every(
       eitherOptionalOrNotEmpty
     );
     return !allRequiredFieldHaveValue;
-  }, [document]);
+  }, [document, formState]);
 
   const onChange = React.useCallback(
     (input: string, field: Field) => {
@@ -134,6 +143,7 @@ const DocumentDetailScreen: React.FC = () => {
 
   return (
     <View>
+      <Button title="Take A Photo" onPress={takePhoto} style={styles.button} />
       <Modal title="" show={showAttachModal} onClose={closeAttachFile}>
         <View style={styles.button}>
           <Button
