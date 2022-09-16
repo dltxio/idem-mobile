@@ -22,7 +22,7 @@ import {
 } from "../../types/navigation";
 import { getClaimFromType } from "../../utils/claim-utils";
 import { Claim, RequestOptResponse } from "../../types/claim";
-import { FileList, Button } from "../../components";
+import { Button, DocumentList } from "../../components";
 import { useClaimsStore } from "../../context/ClaimsStore";
 import { useDocumentStore } from "../../context/DocumentStore";
 import { getDocumentFromDocumentType } from "../../utils/document-utils";
@@ -431,23 +431,25 @@ const VerificationFiles: React.FC<{
   onSelectFile,
   setIsVerifying
 }) => {
-  const { files } = useDocumentStore();
+  const { documents } = useDocumentStore();
 
-  const filesThatCanBeUsedToVerify = files.filter((file) =>
-    claim.verificationDocuments.includes(file.documentType)
+  const documentsThatCanBeUsedToVerify = documents.filter((document) =>
+    claim.verificationDocuments.includes(document.type)
   );
 
-  const filesWithSelected = filesThatCanBeUsedToVerify.map((file) => ({
-    ...file,
-    selected: selectedFileIds.includes(file.id)
-  }));
+  const documentsWithSelected = documentsThatCanBeUsedToVerify.map(
+    (document) => ({
+      ...document,
+      selected: selectedFileIds.includes(document.id ?? "")
+    })
+  );
 
   const validDocumentNames = claim.verificationDocuments.map((document) => {
     return `- ${getDocumentFromDocumentType(document).title}`;
   });
 
   React.useLayoutEffect(() => {
-    if (isVerifying && filesThatCanBeUsedToVerify.length === 0) {
+    if (isVerifying && documentsThatCanBeUsedToVerify.length === 0) {
       setIsVerifying(false);
       Alert.alert(
         "No valid documents",
@@ -483,9 +485,9 @@ const VerificationFiles: React.FC<{
             The following documents can be used to verify your{" "}
             {claim.title.toLowerCase()} claim:
           </Text>
-          <FileList
-            files={filesWithSelected}
-            onFilePress={onSelectFile}
+          <DocumentList
+            documents={documentsWithSelected}
+            onItemPress={onSelectFile}
             isCheckList={true}
           />
           <BottomNavBarSpacer />
