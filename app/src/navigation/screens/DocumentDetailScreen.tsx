@@ -143,7 +143,6 @@ const DocumentDetailScreen: React.FC = () => {
 
   return (
     <View>
-      <Button title="Take A Photo" onPress={takePhoto} style={styles.button} />
       <Modal title="" show={showAttachModal} onClose={closeAttachFile}>
         <View style={styles.button}>
           <Button
