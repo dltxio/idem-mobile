@@ -154,56 +154,53 @@ const PgpSection: React.FC<Props> = (props) => {
         )}
       </View>
       <View style={styles.buttonWrapper}>
-        <View style={styles.button}>
-          <Button
-            disabled={
-              props.isEmailVerified || !props.emailInput || !nameClaimValue
-            }
-            onPress={() =>
-              showActionSheetWithOptions(
-                {
-                  options: [
-                    "Import Private Key",
-                    "Generate new PGP Key and publish",
-                    "cancel"
-                  ],
-                  cancelButtonIndex: 2
-                },
-                async (buttonIndex) => {
-                  switch (buttonIndex) {
-                    case 0:
-                      await importPrivateKeyFromDevice(props.emailInput);
-                      break;
+        <Button
+          disabled={
+            props.isEmailVerified || !props.emailInput || !nameClaimValue
+          }
+          onPress={() =>
+            showActionSheetWithOptions(
+              {
+                options: [
+                  "Import Private Key",
+                  "Generate new PGP Key",
+                  "cancel"
+                ],
+                cancelButtonIndex: 2
+              },
+              async (buttonIndex) => {
+                switch (buttonIndex) {
+                  case 0:
+                    await importPrivateKeyFromDevice(props.emailInput);
+                    break;
 
-                    case 1:
-                      await generateAndPublishNewPgpKey(
-                        nameClaimValue?.toLocaleLowerCase() as string,
-                        props.emailInput as string
-                      );
-                      break;
-                  }
+                  case 1:
+                    await generateAndPublishNewPgpKey(
+                      nameClaimValue?.toLocaleLowerCase() as string,
+                      props.emailInput as string
+                    );
+                    break;
                 }
-              )
-            }
-          >
-            Setup PGP Key
-          </Button>
+              }
+            )
+          }
+        >
+          Setup PGP Key
+        </Button>
+        <View style={styles.didntGetEmailText}>
+          {publicKey && !props.isEmailVerified && (
+            <Text
+              style={styles.textStyle}
+              onPress={() => resendVerificationEmail(props.emailInput)}
+            >
+              Didn't receive your verification email?
+            </Text>
+          )}
         </View>
       </View>
 
-      <View>
-        {publicKey && !props.isEmailVerified && (
-          <Text
-            style={styles.didntGetEmailText}
-            onPress={() => resendVerificationEmail(props.emailInput)}
-          >
-            Didn't receive your verification email?
-          </Text>
-        )}
-
-        {shouldShowPublicKey && (
-          <Text style={styles.fingerPrint}>Fingerprint : {pgpTitle}</Text>
-        )}
+      <View style={styles.fingerPrint}>
+        {shouldShowPublicKey && <Text>Fingerprint : {pgpTitle}</Text>}
       </View>
     </KeyboardAvoidingView>
   );
@@ -214,12 +211,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  textStyle: {
+    textDecorationLine: "underline"
+  },
   fingerPrint: {
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "stretch",
-    marginLeft: 100,
     margin: 10
+  },
+  didntGetEmailText: {
+    alignItems: "center",
+    justtifyContent: "center",
+    margin: 10,
+    alignSelf: "stretch"
   },
   qrCodeContainer: {
     marginTop: 15,
@@ -234,14 +239,6 @@ const styles = StyleSheet.create({
   introText: {
     marginBottom: 10
   },
-  didntGetEmailText: {
-    alignItems: "center",
-    justifyContent: "center",
-    textDecorationLine: "underline",
-    alignSelf: "stretch",
-    marginLeft: 50,
-    margin: 10
-  },
   input: {
     marginVertical: 10,
     backgroundColor: "grey",
@@ -253,11 +250,6 @@ const styles = StyleSheet.create({
   buttonWrapper: {
     justifyContent: "flex-end",
     alignSelf: "stretch"
-  },
-  button: {
-    marginVertical: 5,
-    alignSelf: "stretch",
-    marginHorizontal: 10
   },
   toggle: {
     margin: 5,
