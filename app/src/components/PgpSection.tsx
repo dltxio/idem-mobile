@@ -198,7 +198,6 @@ const PgpSection: React.FC<Props> = (props) => {
           </Text>
         )}
       </View>
-
       <View style={styles.fingerPrint}>
         {shouldShowPublicKey && <Text>Fingerprint : {pgpTitle}</Text>}
       </View>
@@ -214,6 +213,7 @@ const styles = StyleSheet.create({
   textStyle: {
     textDecorationLine: "underline"
   },
+
   fingerPrint: {
     alignItems: "center",
     justifyContent: "center",
