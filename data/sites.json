@@ -29,39 +29,5 @@
       "NameCredential",
       "MobileCredential"
     ]
-  },
-  {
-    "id": 2,
-    "name": "Coin Stash",
-    "tagline": "Crypto made Simple",
-    "description": "",
-    "logo": "Coinstash_logo_resized.png",
-    "signup": "https://coinstash.com.au/auth/signup",
-    "backgroundColor": "#0012d0",
-    "requiredClaimTypes": [
-      "EmailCredential",
-      "NameCredential",
-      "AddressCredential"
-    ]
-  },
-  {
-    "id": 3,
-    "name": "cointree",
-    "tagline": "Grow your wealth with the world of crypto.",
-    "description": "Buy, sell and trade on Australia's best crypto exchange",
-    "website": "https://cointree.com/",
-    "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/cointree_logo.png",
-    "signup": "https://auth.cointree.com/Account/Register?registerwith=${email}",
-    "backgroundColor": "#00de78"
-  },
-  {
-    "id": 4,
-    "name": "Easy Crypto",
-    "tagline": "We make it easy for Aussies to buy and sell crypto",
-    "description": "Buy and sell instantly with Australia's fastest and safest crypto retailer. Deliver to any wallet address or withdraw to your bank account in as little as two minutes. Easy!",
-    "website": "https://easycrypto.com/au",
-    "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/easycrypto_logo.png",
-    "signup": "https://easycrypto.com/au",
-    "backgroundColor": "#8c75d9"
   }
 ]
