@@ -85,11 +85,9 @@ const ClaimScreen: React.FC = () => {
   } = usePgp();
 
   React.useEffect(() => {
-    (async () => {
-      if (pgp) {
-        setHasPgp(true);
-      }
-    })();
+    if (pgp) {
+      setHasPgp(true);
+    }
   }, [pgp]);
 
   const {
