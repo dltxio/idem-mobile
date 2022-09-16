@@ -7,7 +7,6 @@ import { verificationStorage } from "../utils/local-storage";
 type Hooks = {
   verifyClaims: (
     verifyRequest: UserVerifyRequest,
-    expoToken: string | undefined
   ) => Promise<void>;
 };
 
@@ -15,7 +14,6 @@ const useVerifyClaims = (): Hooks => {
   const api = useApi();
   const verifyClaims = async (
     verifyRequest: UserVerifyRequest,
-    expoToken: string | undefined
   ) => {
     api
       .verifyClaims(verifyRequest)

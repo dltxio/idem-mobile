@@ -15,7 +15,3 @@ export enum ClaimTypeConstants {
   ProfileImageCredential = "ProfileImageCredential"
 }
 
-export enum ClaimTypeDocumentConstants {
-  medicareCard = "medicareCard",
-  driversLicence = "driversLicence"
-}

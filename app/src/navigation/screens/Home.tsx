@@ -13,58 +13,34 @@ import { ClaimsList, UserDetailsHeader } from "../../components";
 import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import { useNavigation } from "@react-navigation/native";
 import { ClaimType } from "../../types/claim";
-import usePushNotifications from "../../hooks/usePushNotifications";
 import CreateMnemonicController from "../../components/CreateMnemonicController";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { findNames } from "../../utils/formatters";
-import { UserVerifyRequest } from "../../types/user";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
-import {
-  ClaimTypeConstants,
-  ClaimTypeDocumentConstants
-} from "../../constants/common";
+import { ClaimTypeConstants } from "../../constants/common";
 import IdemButton from "../../components/Button";
-import documents from "../../data/documents";
+import { useDocumentStore } from "../../context/DocumentStore";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
 const Home: React.FC = () => {
   const { usersClaims, unclaimedClaims } = useClaimsStore();
+  const { documents } = useDocumentStore();
   const navigation = useNavigation<Navigation>();
-  const { expoPushToken } = usePushNotifications();
   const navigateToClaim = (claimType: ClaimType) => {
     navigation.navigate("Claim", { claimType });
   };
-  const address = useClaimValue(ClaimTypeConstants.AddressCredential);
-  const email = useClaimValue(ClaimTypeConstants.EmailCredential);
   const dob = useClaimValue(ClaimTypeConstants.BirthCredential);
   const name = useClaimValue(ClaimTypeConstants.NameCredential);
-  //JASMINS CODE BELOW
-  const medicareCard = documents(ClaimTypeDocumentConstants.medicareCard);
-  const driversLicence = documents(ClaimTypeDocumentConstants.driversLicence);
-  //JASMINS CODE ABOVE
+
   const splitName = findNames(name);
-  // const addressValue = usersClaims.find(
-  //   (claim) => claim.type === ClaimTypeConstants.AddressCredential
-  // )?.value;
   const { verifyClaims } = useVerifyClaims();
   const verifyUserOnProxy = async () => {
     //adjust what is being sent to the proxy for veification talk to alex about adjusting on the back end also
-    if (splitName && dob && medicareCard && driversLicence) {
+        if (splitName && dob && medicareCard && driversLicence) {
       const userClaims = {
-        firstName: splitName.firstName,
-        middleName: splitName.middleName,
-        lastName: splitName.lastName,
-        dob,
-        licence: driversLicence,
-        firstName: splitName.firstName,
-        middleName: splitName.middleName,
-        lastName: splitName.lastName,
-        dob,
-        medicare: medicareCard
-      } as UserVerifyRequest;
-
-      await verifyClaims(userClaims, expoPushToken);
+blah: 
+      await verifyClaims(userClaims);
     }
   };
   const documentMedicareCard = documents?.find(
