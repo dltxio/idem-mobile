@@ -31,6 +31,7 @@ const usePgp = (): Hooks => {
   const api = useApi();
   const [pgp, setPgp] = useState<PGP | undefined>(undefined);
   const { updateClaim } = useClaimsStore();
+
   const generateKeyPair = async (
     name: string | undefined,
     email: string | undefined
@@ -52,9 +53,8 @@ const usePgp = (): Hooks => {
         fingerPrint: meta.fingerprint
       } as PGP;
 
-      setPgp(pgp);
       await pgpLocalStorage.save(pgp);
-
+      setPgp(pgp);
       await uploadPublicKey(email, publicKey);
       Alert.alert(
         AlertTitle.Success,

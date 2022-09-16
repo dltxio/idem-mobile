@@ -74,9 +74,24 @@ const ClaimScreen: React.FC = () => {
   const [rawDate, setRawDate] = React.useState<Date>();
   const [showOtpDialog, setShowOtpDialog] = React.useState<boolean>(false);
   const [otpContext, setOtpContext] = React.useState<RequestOptResponse>();
-  const { pgp } = usePgp();
+  const [hasPgp, setHasPgp] = React.useState<boolean>(false);
+  const {
+    verifyPublicKey,
+    pgp,
+    generateKeyPair,
+    generateKeyPairFromPrivateKey,
+    resendVerificationEmail,
+    importPrivateKeyFileFromDevice
+  } = usePgp();
 
-  const { verifyPublicKey } = usePgp();
+  React.useEffect(() => {
+    (async () => {
+      if (pgp) {
+        setHasPgp(true);
+      }
+    })();
+  }, [pgp]);
+
   const {
     saveAndCheckBirthday,
     onSelectFile,
@@ -115,6 +130,13 @@ const ClaimScreen: React.FC = () => {
     await addClaim(claim.type, formState, selectedFileIds);
 
     if (claim.type === "EmailCredential") {
+      if (!hasPgp) {
+        setLoading(false);
+        return Alert.alert(
+          AlertTitle.Warning,
+          "Your Email has been saved, please add a PGP key to verify your email."
+        );
+      }
       const email = (formState.email as string).toLowerCase();
       await verifyPublicKey(email);
     }
@@ -184,7 +206,6 @@ const ClaimScreen: React.FC = () => {
         setShowOtpDialog(true);
       }
     } catch (error) {
-      console.error(error);
       Alert.alert("Error", "Something went wrong.");
     }
     setLoading(false);
@@ -219,8 +240,6 @@ const ClaimScreen: React.FC = () => {
     },
     [otpContext, api, addClaim, navigation]
   );
-
-  console.log(pgp);
 
   return (
     <View style={commonStyles.screen}>
@@ -366,6 +385,10 @@ const ClaimScreen: React.FC = () => {
             <PgpSection
               emailInput={formState["email"] as string}
               isEmailVerified={isEmailVerified}
+              generateKeyPair={generateKeyPair}
+              generateKeyPairFromPrivateKey={generateKeyPairFromPrivateKey}
+              resendVerificationEmail={resendVerificationEmail}
+              importPrivateKeyFileFromDevice={importPrivateKeyFileFromDevice}
             />
           )}
         </View>
@@ -383,7 +406,11 @@ const ClaimScreen: React.FC = () => {
         ) : (
           <Button
             title={
-              isVerifying ? "Save & Verify" : isEmail && pgp ? "Verify" : "Save"
+              isVerifying
+                ? "Save & Verify"
+                : isEmail && hasPgp
+                ? "Verify"
+                : "Save"
             }
             disabled={!canSave || disableButton}
             onPress={onSave}

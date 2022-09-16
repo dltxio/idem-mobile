@@ -40,8 +40,6 @@ export const ClaimsProvider: React.FC<{
 
   React.useEffect(() => {
     (async () => {
-      claimsLocalStorage.clear();
-      pgpLocalStorage.clear();
       const initialClaims = await claimsLocalStorage.get();
 
       if (initialClaims) {
