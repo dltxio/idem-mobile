@@ -24,7 +24,7 @@ export type Field = {
   value?: string;
 };
 
-export type FieldType = "string" | "date" | "number";
+export type FieldType = "string" | "date" | "number" | "dropdown";
 
 export type File = {
   id: string;

@@ -33,6 +33,11 @@ const documents: Document[] = [
     title: "Driver Licence",
     fields: [
       {
+        title: "State",
+        type: "dropdown",
+        valueOptions: ["QLD", "NSW", "VIC", "SA", "WA", "TAS", "NT", "ACT"]
+      },
+      {
         title: "License Number",
         type: "number"
       },
