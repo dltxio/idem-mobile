@@ -83,7 +83,9 @@ const VendorDetailsScreen: React.FC = () => {
       <View style={{ height: 80 }}>
         {!hasAllRequiredClaims && (
           <View style={{ marginTop: 30 }}>
-            <Text style={{ textAlign: "center" }}>
+            <Text
+              style={{ textAlign: "center", fontSize: 15, fontWeight: "bold" }}
+            >
               {vendor?.name} requires your {requirementText} to be completed.
             </Text>
           </View>
