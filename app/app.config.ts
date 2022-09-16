@@ -3,7 +3,7 @@ import { ExpoConfig, ConfigContext } from "@expo/config";
 export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     extra: {
-      apiEndpoint: process.env.API_ENDPOINT ?? "https://proxy.idem.com.au/",
+      apiEndpoint: process.env.API_ENDPOINT ?? "https://uat-proxy.idem.com.au/",
       userName: process.env.PROXY_USERNAME ?? "<userName>",
       password: process.env.PROXY_PASSWORD ?? "<password>",
       sentryDSN:
