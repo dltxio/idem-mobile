@@ -74,6 +74,7 @@ const ClaimScreen: React.FC = () => {
   const [rawDate, setRawDate] = React.useState<Date>();
   const [showOtpDialog, setShowOtpDialog] = React.useState<boolean>(false);
   const [otpContext, setOtpContext] = React.useState<RequestOptResponse>();
+  const { pgp } = usePgp();
 
   const { verifyPublicKey } = usePgp();
   const {
@@ -218,6 +219,8 @@ const ClaimScreen: React.FC = () => {
     },
     [otpContext, api, addClaim, navigation]
   );
+
+  console.log(pgp);
 
   return (
     <View style={commonStyles.screen}>
@@ -379,7 +382,9 @@ const ClaimScreen: React.FC = () => {
           />
         ) : (
           <Button
-            title={isVerifying ? "Save & Verify" : isEmail ? "Verify" : "Save"}
+            title={
+              isVerifying ? "Save & Verify" : isEmail && pgp ? "Verify" : "Save"
+            }
             disabled={!canSave || disableButton}
             onPress={onSave}
             loading={loading}

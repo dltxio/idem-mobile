@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Claim, ClaimType, ClaimWithValue, ClaimData } from "../types/claim";
 import allClaims from "../data/claims";
-import { claimsLocalStorage } from "../utils/local-storage";
+import { claimsLocalStorage, pgpLocalStorage } from "../utils/local-storage";
 import { displayClaimValue } from "../utils/claim-utils";
 
 type KeyValueObject = { [key: string]: string };
@@ -40,6 +40,8 @@ export const ClaimsProvider: React.FC<{
 
   React.useEffect(() => {
     (async () => {
+      claimsLocalStorage.clear();
+      pgpLocalStorage.clear();
       const initialClaims = await claimsLocalStorage.get();
 
       if (initialClaims) {
