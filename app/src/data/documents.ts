@@ -38,7 +38,7 @@ const documents: Document[] = [
       },
       {
         title: "Card Number",
-        type: "number"
+        type: "string"
       },
       {
         title: "First Name",
