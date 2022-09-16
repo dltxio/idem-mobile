@@ -33,7 +33,7 @@ export default class Api extends HTTPClient {
   };
 
   public resendVerificationEmail = async (body: { hashedEmail: string }) =>
-    this.post<boolean>(`user/resend-email`, body);
+    this.post<boolean>(`users/resend-email`, body);
 
   public requestOtp = async (body: RequestOtpRequest) =>
     this.post<RequestOptResponse>(`otp/request`, body);
