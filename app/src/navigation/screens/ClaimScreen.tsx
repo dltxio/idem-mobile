@@ -114,6 +114,7 @@ const ClaimScreen: React.FC = () => {
     setLoading(true);
     if (isEmailClaim) {
       if (!isEmail(formState.email as string)) {
+        setLoading(false);
         return Alert.alert(
           AlertTitle.Warning,
           "Please type a valid email claim value in the input field."
