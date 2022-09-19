@@ -109,7 +109,7 @@ Websites and exchange who have integrated with IDEM, can list their site on the 
 
 ### User Story 2. Existing (to the website or exchange) user
 
-An existing website user can log into the website and is then shown a QR code on their profile page or similar. The QR code specifies the claims the website requires in their profile. Once the user can scan the QR code (using _IDEM_) and they confirm the claims they want to share, the app then POSTs the claims to the website's API in the WC3 VC format for the website to validate and save.
+An existing website user can log into the website and is then shown a QR code on their profile page or similar. The QR code specifies the claims the website requires in their profile. Once the user can scan the QR code (using _IDEM_) and they confirm the claims they want to share, the app then POSTs the claims to the website's API in the W3C VC format for the website to validate and save.
 
 ```text
 As an existing unverified customer of the website,
@@ -326,5 +326,4 @@ PRgoCIfAqhnv2QK2fjlrTwcXcSaxHTaGITA=
 
 - https://www.servicesaustralia.gov.au/individuals/topics/confirm-your-identity/29166
 - https://en.bitcoin.it/wiki/Seed_phrase
-- Transactions on the Ethereum Test Network "Kovan" will be signed with the ETH account `0xE4ed9ceF6989CFE9da7c1Eec8c2299141dD9e7cC`
 - [Microsoft claims class for .net](https://docs.microsoft.com/en-us/dotnet/api/system.security.claims.claim?view=net-5.0).

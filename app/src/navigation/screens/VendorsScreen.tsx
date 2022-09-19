@@ -1,6 +1,7 @@
 import * as React from "react";
 import { View, StyleSheet, Dimensions, StatusBar, Text } from "react-native";
 import { ListItem } from "@rneui/themed";
+import commonStyles from "../../styles/styles";
 import { useNavigation } from "@react-navigation/native";
 import { VendorStackNavigation } from "../../types/navigation";
 import useVendorsList from "../../hooks/useVendorsList";
@@ -14,12 +15,12 @@ const VendorsScreen: React.FC = () => {
   const { vendors } = useVendorsList();
 
   return (
-    <View style={[styles.container, { marginTop: 20 }]}>
-      <Text style={styles.headingText}>Supported Exchanges</Text>
-      <StatusBar hidden={false} />
-      {vendors.length > 0 &&
-        vendors.map((vendor) => {
-          if (vendor.enabled) {
+    <View style={[styles.container]}>
+      <View style={commonStyles.screenContent}>
+        <Text style={commonStyles.text.smallHeading}>Supported Exchanges</Text>
+        <StatusBar hidden={false} />
+        {vendors.length > 0 &&
+          vendors.map((vendor) => {
             const content = (
               <>
                 <ListItem.Content>
@@ -47,8 +48,8 @@ const VendorsScreen: React.FC = () => {
                 {content}
               </ListItem>
             );
-          }
-        })}
+          })}
+      </View>
     </View>
   );
 };

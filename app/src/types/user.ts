@@ -18,6 +18,7 @@ export enum VendorEnum {
 
 export type UserVerifyRequest = {
   firstName: string;
+  middleName?: string;
   lastName: string;
   dob: string;
   hashEmail: string;
@@ -50,8 +51,10 @@ export type IdemVerification = {
   message: ClaimResponsePayload;
 };
 
-export type PutExpoTokenRequest = {
-  token: string;
+export type UserDto = {
+  email: string;
+  expoToken?: string;
+  pgpPublicKey?: string;
 };
 
 export type UserDetailRequest = {
@@ -69,8 +72,8 @@ export type verifyPGPRequest = {
 };
 
 export type uploadPublicKey = {
-  hashEmail: string;
-  publicKeyArmored: string;
+  email: string; //hashed email
+  pgpPublicKey: string;
 };
 
 export type UsersResponse = {

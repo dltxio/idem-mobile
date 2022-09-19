@@ -34,6 +34,7 @@ import { AlertTitle } from "../../constants/common";
 import { FieldType } from "../../types/general";
 import PgpSection from "../../components/PgpSection";
 import usePgp from "../../hooks/usePpg";
+import isEmail from "validator/lib/isEmail";
 
 type Navigation = ProfileStackNavigation<"Claim">;
 
@@ -107,17 +108,22 @@ const ClaimScreen: React.FC = () => {
     }
   };
 
-  const isEmail = claim.type === "EmailCredential";
+  const isEmailClaim = claim.type === "EmailCredential";
 
   const onSave = async () => {
     setLoading(true);
     await addClaim(claim.type, formState, selectedFileIds);
-
-    if (claim.type === "EmailCredential") {
+    if (isEmailClaim) {
+      if (!isEmail(formState.email as string)) {
+        return Alert.alert(
+          AlertTitle.Warning,
+          "Please type a valid email claim value in the input field."
+        );
+      }
+      setLoading(false);
       const email = (formState.email as string).toLowerCase();
       await verifyPublicKey(email);
     }
-
     const claims = await claimsLocalStorage.get();
     if (claim.type === "BirthCredential") saveAndCheckBirthday(claims);
 
@@ -167,7 +173,7 @@ const ClaimScreen: React.FC = () => {
     const newMobileState = formatMobileNumberState();
     if (newMobileState.countryCode !== "+61") {
       Alert.alert(
-        "Error",
+        AlertTitle.Error,
         "IDEM only supports Australian numbers for mobile claims/verification."
       );
       setLoading(false);
@@ -183,8 +189,7 @@ const ClaimScreen: React.FC = () => {
         setShowOtpDialog(true);
       }
     } catch (error) {
-      console.error(error);
-      Alert.alert("Error", "Something went wrong.");
+      Alert.alert(AlertTitle.Error, "Something went wrong.");
     }
     setLoading(false);
   };
@@ -379,7 +384,9 @@ const ClaimScreen: React.FC = () => {
           />
         ) : (
           <Button
-            title={isVerifying ? "Save & Verify" : isEmail ? "Verify" : "Save"}
+            title={
+              isVerifying ? "Save & Verify" : isEmailClaim ? "Verify" : "Save"
+            }
             disabled={!canSave || disableButton}
             onPress={onSave}
             loading={loading}

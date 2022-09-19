@@ -21,6 +21,7 @@ import { useActionSheet } from "@expo/react-native-action-sheet";
 import QRCode from "react-native-qrcode-svg";
 import colors from "../styles/colors";
 import { TextInput } from "react-native-gesture-handler";
+import isEmail from "validator/lib/isEmail";
 
 type Props = {
   emailInput: string;
@@ -63,6 +64,12 @@ const PgpSection: React.FC<Props> = (props) => {
 
   const importPrivateKeyFromDevice = React.useCallback(
     async (email: string) => {
+      if (!isEmail(email)) {
+        return Alert.alert(
+          AlertTitle.Warning,
+          "Please type a valid email claim value in the input field."
+        );
+      }
       try {
         const content = await importPrivateKeyFileFromDevice();
         if (!content) return;
@@ -80,6 +87,12 @@ const PgpSection: React.FC<Props> = (props) => {
   );
   const generateAndPublishNewPgpKey = React.useCallback(
     async (name: string, email: string) => {
+      if (!isEmail(email)) {
+        return Alert.alert(
+          AlertTitle.Warning,
+          "Please type a valid email claim value in the input field."
+        );
+      }
       await generateKeyPair(name, email);
       await addClaim(ClaimTypeConstants.EmailCredential, { email }, [], false);
       await loadKeyFromLocalStorage();
@@ -141,56 +154,52 @@ const PgpSection: React.FC<Props> = (props) => {
         )}
       </View>
       <View style={styles.buttonWrapper}>
-        <View style={styles.button}>
-          <Button
-            disabled={
-              props.isEmailVerified || !props.emailInput || !nameClaimValue
-            }
-            onPress={() =>
-              showActionSheetWithOptions(
-                {
-                  options: [
-                    "Import Private Key",
-                    "Generate new PGP Key and publish",
-                    "cancel"
-                  ],
-                  cancelButtonIndex: 2
-                },
-                async (buttonIndex) => {
-                  switch (buttonIndex) {
-                    case 0:
-                      await importPrivateKeyFromDevice(props.emailInput);
-                      break;
+        <Button
+          disabled={
+            props.isEmailVerified || !props.emailInput || !nameClaimValue
+          }
+          onPress={() =>
+            showActionSheetWithOptions(
+              {
+                options: [
+                  "Import Private Key",
+                  "Generate new PGP Key",
+                  "cancel"
+                ],
+                cancelButtonIndex: 2
+              },
+              async (buttonIndex) => {
+                switch (buttonIndex) {
+                  case 0:
+                    await importPrivateKeyFromDevice(props.emailInput);
+                    break;
 
-                    case 1:
-                      await generateAndPublishNewPgpKey(
-                        nameClaimValue as string,
-                        props.emailInput as string
-                      );
-                      break;
-                  }
+                  case 1:
+                    await generateAndPublishNewPgpKey(
+                      nameClaimValue?.toLocaleLowerCase() as string,
+                      props.emailInput as string
+                    );
+                    break;
                 }
-              )
-            }
-          >
-            Setup PGP Key
-          </Button>
-        </View>
+              }
+            )
+          }
+        >
+          Setup PGP Key
+        </Button>
       </View>
-
-      <View>
+      <View style={styles.didntGetEmailText}>
         {publicKey && !props.isEmailVerified && (
           <Text
-            style={styles.didntGetEmailText}
+            style={styles.textStyle}
             onPress={() => resendVerificationEmail(props.emailInput)}
           >
             Didn't receive your verification email?
           </Text>
         )}
-
-        {shouldShowPublicKey && (
-          <Text style={styles.fingerPrint}>Fingerprint : {pgpTitle}</Text>
-        )}
+      </View>
+      <View style={styles.fingerPrint}>
+        {shouldShowPublicKey && <Text>Fingerprint : {pgpTitle}</Text>}
       </View>
     </KeyboardAvoidingView>
   );
@@ -201,12 +210,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  textStyle: {
+    textDecorationLine: "underline"
+  },
+
   fingerPrint: {
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "stretch",
-    marginLeft: 100,
     margin: 10
+  },
+  didntGetEmailText: {
+    alignItems: "center",
+    justtifyContent: "center",
+    margin: 10,
+    alignSelf: "stretch"
   },
   qrCodeContainer: {
     marginTop: 15,
@@ -221,14 +239,6 @@ const styles = StyleSheet.create({
   introText: {
     marginBottom: 10
   },
-  didntGetEmailText: {
-    alignItems: "center",
-    justifyContent: "center",
-    textDecorationLine: "underline",
-    alignSelf: "stretch",
-    marginLeft: 50,
-    margin: 10
-  },
   input: {
     marginVertical: 10,
     backgroundColor: "grey",
@@ -240,11 +250,6 @@ const styles = StyleSheet.create({
   buttonWrapper: {
     justifyContent: "flex-end",
     alignSelf: "stretch"
-  },
-  button: {
-    marginVertical: 5,
-    alignSelf: "stretch",
-    marginHorizontal: 10
   },
   toggle: {
     margin: 5,
