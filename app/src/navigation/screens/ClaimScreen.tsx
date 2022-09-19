@@ -28,6 +28,8 @@ import { useDocumentStore } from "../../context/DocumentStore";
 import { getDocumentFromDocumentType } from "../../utils/document-utils";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import useClaimScreen from "../../hooks/useClaimScreen";
+
+// TODO: remove
 import { claimsLocalStorage } from "../../utils/local-storage";
 import useApi from "../../hooks/useApi";
 import { AlertTitle } from "../../constants/common";
@@ -58,10 +60,13 @@ const keyboardTypeMap: { [key: string]: KeyboardTypeOptions | undefined } = {
 const ClaimScreen: React.FC = () => {
   const route = useRoute<ProfileStackNavigationRoute<"Claim">>();
   const api = useApi();
+  
   const claim = getClaimFromType(route.params.claimType);
   const { addClaim, usersClaims } = useClaimsStore();
+  
   const [disableButton, setDisableButton] = React.useState(false);
   const [disabledEmailInput, setDisabledEmailInput] = React.useState(false);
+  
   const userClaim = usersClaims.find((c) => c.type === claim.type);
   const [formState, setFormState] = React.useState<FormState>(
     userClaim?.value ?? {}
@@ -69,9 +74,11 @@ const ClaimScreen: React.FC = () => {
 
   const navigation = useNavigation<Navigation>();
   const dateRefs = React.useRef<{ [key: string]: any }>({});
+  
   const [showDatePickerForFieldId, setShowDatePickerForFieldId] =
     React.useState<string>();
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
+  
   const [rawDate, setRawDate] = React.useState<Date>();
   const [showOtpDialog, setShowOtpDialog] = React.useState<boolean>(false);
   const [otpContext, setOtpContext] = React.useState<RequestOptResponse>();

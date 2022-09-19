@@ -1,4 +1,6 @@
 import { Claim } from "../types/claim";
+
+// remove
 const claims: Claim[] = [
   {
     type: "EmailCredential",

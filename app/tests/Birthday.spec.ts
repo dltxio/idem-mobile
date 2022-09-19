@@ -1,4 +1,5 @@
 import { expect } from "chai";
+import { Birthday } from "../src/claims/birthday";
 import { check18Plus } from "../src/utils/birthday-utils";
 
 describe("Check if I'm 18", () => {
@@ -50,5 +51,10 @@ describe("Check if I'm 18", () => {
         verified: false
       })
     ).to.equal(false);
+  });
+
+  it("should create birthday claim object", () => {
+    const claim = new Birthday();
+    expect(claim.description).to.equal("Users date of birth");
   });
 });

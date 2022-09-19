@@ -1,3 +1,4 @@
+import { AlertTitle } from "../constants/common";
 import { ClaimType } from "./claim";
 
 export type FieldType =
@@ -44,3 +45,8 @@ export type VerifyOnProxy = {
   country: string;
   userId: string;
 };
+
+export type AlertResponse = {
+  title: AlertTitle
+  message: string;
+}
