@@ -26,7 +26,7 @@ export default class Api extends HTTPClient {
   };
 
   public verifyClaims = async (body: UserVerifyRequest) =>
-    this.post<IdemVerification>(`users/verify`, body);
+    this.post<IdemVerification>(`users/verify-claims`, body);
 
   public putUser = async (email: string, body: UserDto) => {
     this.put(`users/${email}`, body);
@@ -36,7 +36,7 @@ export default class Api extends HTTPClient {
     this.post<boolean>(`users/resend-email`, body);
 
   public requestOtp = async (body: RequestOtpRequest) =>
-    this.post<RequestOptResponse>(`otp/request`, body);
+    this.get<RequestOptResponse>(`otp/request`, body);
 
   public verifyOtp = async (body: VerifyOtpRequest) =>
     this.post<boolean>(`otp/verify`, body);
