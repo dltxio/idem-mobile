@@ -61,3 +61,8 @@ export type VerifyOtpRequest = {
   expiryTimestamp: number;
   mobileNumber: string;
 };
+
+export type RequiredClaimsType = {
+  type: string;
+  verified: boolean;
+};

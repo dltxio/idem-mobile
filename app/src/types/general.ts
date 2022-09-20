@@ -36,6 +36,7 @@ export type RequiredClaimType = {
   type: ClaimType;
   verified: boolean;
 };
+
 export type VerifyOnProxy = {
   firstName: string;
   lastName: string;
