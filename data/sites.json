@@ -15,7 +15,6 @@
     ],
     "backgroundColor": "#FFFFFF",
     "tempPassword": false,
-    "passwordComplexity": "/^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[W_])[A-Za-zdW_]{8,}$/",
     "verifyClaims": false,
     "enabled": true
   },
@@ -34,7 +33,6 @@
       { "type": "MobileCredential", "verified": true }
     ],
     "tempPassword": true,
-    "passwordComplexity": "/^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[W_])[A-Za-zdW_]{8,}$/",
     "verifyClaims": true,
     "enabled": true
   },
@@ -52,7 +50,6 @@
       { "type": "AddressCredential", "verified": false }
     ],
     "tempPassword": true,
-    "passwordComplexity": "/^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[W_])[A-Za-zdW_]{8,}$/",
     "verifyClaims": true,
     "enabled": false
   },
@@ -71,7 +68,6 @@
       { "type": "AddressCredential", "verified": false }
     ],
     "tempPassword": true,
-    "passwordComplexity": "/^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[W_])[A-Za-zdW_]{8,}$/",
     "verifyClaims": false,
     "enabled": false
   },
@@ -90,7 +86,6 @@
       { "type": "AddressCredential", "verified": false }
     ],
     "tempPassword": true,
-    "passwordComplexity": "/^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[W_])[A-Za-zdW_]{8,}$/",
     "verifyClaims": false,
     "enabled": false
   }
