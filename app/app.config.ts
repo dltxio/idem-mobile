@@ -4,8 +4,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     extra: {
       apiEndpoint: process.env.API_ENDPOINT ?? "https://uat-proxy.idem.com.au/",
-      userName: process.env.PROXY_USERNAME ?? "<username>",
-      password: process.env.PROXY_PASSWORD ?? "<password>",
+      userName: process.env.PROXY_USERNAME ?? "myusername",
+      password: process.env.PROXY_PASSWORD ?? "password123",
       sentryDSN:
         process.env.SENTRY_DSN ??
         "https://6965f2d7058b49e9a642b8d60f704eb1@o1345931.ingest.sentry.io/6623100",

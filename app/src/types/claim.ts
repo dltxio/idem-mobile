@@ -61,3 +61,18 @@ export type VerifyOtpRequest = {
   expiryTimestamp: number;
   mobileNumber: string;
 };
+
+export type PhoneType = {
+  countryCode: string;
+  number: string;
+};
+
+export type FormState = {
+  [key: string]: string | PhoneType;
+  mobileNumber: PhoneType;
+};
+
+export type MobileClaimFormState = {
+  countryCode: string;
+  number: string;
+};

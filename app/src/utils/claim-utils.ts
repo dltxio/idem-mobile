@@ -9,6 +9,25 @@ import {
   ClaimWithValue
 } from "../types/claim";
 
+export const getClaimScreenByType = (claimType: ClaimType) => {
+  switch (claimType) {
+    case "NameCredential":
+      return "NameClaim";
+    case "MobileCredential":
+      return "MobileClaim";
+    case "BirthCredential":
+      return "BirthClaim";
+    // case "AddressCredential":
+    //   return "AddressClaim";
+    // case "AdultCredential":
+    //   return "AdultClaim";
+    // case "EmailCredential":
+    //   return "EmailClaim";
+    default:
+      return null;
+  }
+};
+
 export const getClaimFromType = (claimType: ClaimType): Claim => {
   const claim = allClaims.find((claim) => claim.type === claimType);
   if (claim) return claim;

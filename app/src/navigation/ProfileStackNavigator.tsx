@@ -5,6 +5,9 @@ import ClaimScreen from "./screens/ClaimScreen";
 import { ClaimType } from "../types/claim";
 import { getClaimFromType } from "../utils/claim-utils";
 import ViewFile from "./screens/ViewFileScreen";
+import NameClaimScreen from "./screens/ClaimScreens/NameClaimScreen";
+import BirthClaimScreen from "./screens/ClaimScreens/BirthClaimScreen";
+import MobileClaimScreen from "./screens/ClaimScreens/MobileClaimScreen";
 
 export type ProfileStackParamList = {
   Home: undefined;
@@ -16,6 +19,9 @@ export type ProfileStackParamList = {
   };
   Mnemonic: undefined;
   PGP: undefined;
+  NameClaim: undefined;
+  BirthClaim: undefined;
+  MobileClaim: undefined;
 };
 
 const Stack = createStackNavigator<ProfileStackParamList>();
@@ -54,6 +60,34 @@ const ProfileStackNavigator = () => {
           };
         }}
         component={ViewFile}
+      />
+
+      <Stack.Screen
+        name="NameClaim"
+        options={() => {
+          return {
+            title: "Full Name"
+          };
+        }}
+        component={NameClaimScreen}
+      />
+
+      <Stack.Screen
+        name="BirthClaim"
+        options={() => {
+          return {
+            title: "Date of Birth"
+          };
+        }}
+        component={BirthClaimScreen}
+      />
+
+      <Stack.Screen
+        name="MobileClaim"
+        options={() => {
+          return { title: "Mobile Number" };
+        }}
+        component={MobileClaimScreen}
       />
     </Stack.Navigator>
   );

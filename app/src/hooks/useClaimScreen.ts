@@ -7,7 +7,7 @@ import { check18Plus } from "../utils/birthday-utils";
 
 type Hooks = {
   loading: boolean;
-  saveAndCheckBirthday: (claims: ClaimData[] | null) => void;
+  saveAndCheckBirthday: (claims: ClaimData[] | null) => Promise<void>;
   onSelectFile: (fileId: string) => void;
   selectedFileIds: string[];
   setLoading: (loading: boolean) => void;
@@ -44,7 +44,6 @@ const useClaimScreen = (): Hooks => {
       );
     }
     setLoading(false);
-    return true;
   };
 
   const onSelectFile = (fileId: string) => {
