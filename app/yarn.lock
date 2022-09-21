@@ -7271,6 +7271,11 @@ react-native-dialog@^9.2.2:
   resolved "https://registry.npmjs.org/react-native-dialog/-/react-native-dialog-9.2.2.tgz"
   integrity sha512-d2w3fyqB6G8Os0DYJKnfVl6PgqQwplW8dHSvzkQpczXzmX5V4BXOJTTXqoiKwI+nsS6QEHYb6Bk8VG7vV9WuXQ==
 
+react-native-dropdown@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-dropdown/-/react-native-dropdown-0.0.6.tgz#f4b899b4082c4823340c7377fbe73bc01399148d"
+  integrity sha512-6FmZCcz5nizCEKkQCAICUYrz7/XHrRrRmrWbTk+Bm9eeh5E+C0XNLT48Kxzgi+yjRQQz6uwIkXDF2MLCdTjJsA==
+
 react-native-fast-openpgp@^2.4.2:
   version "2.4.2"
   resolved "https://registry.npmjs.org/react-native-fast-openpgp/-/react-native-fast-openpgp-2.4.2.tgz"
