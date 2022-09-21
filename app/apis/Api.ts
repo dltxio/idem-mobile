@@ -36,7 +36,7 @@ export default class Api extends HTTPClient {
     this.post<boolean>(`users/resend-email`, body);
 
   public requestOtp = async (body: RequestOtpRequest) =>
-    this.get<RequestOptResponse>(`otp/request`, body);
+    this.get<RequestOptResponse>(`otp/request/${body.mobileNumber}`);
 
   public verifyOtp = async (body: VerifyOtpRequest) =>
     this.post<boolean>(`otp/verify`, body);
