@@ -1,7 +1,7 @@
 import React from "react";
 import { ListItem, Button } from "@rneui/themed";
-import { AntDesign } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import {} from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 import { StyleSheet, View } from "react-native";
 import colors from "../styles/colors";
@@ -37,24 +37,20 @@ const DocumentList: React.FC<Props> = ({
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const docID = document.id!;
 
+          const rightIcon = !isCheckList ? (
+            <AntDesign name="right" style={styles.icon} />
+          ) : document.selected ? (
+            <MaterialIcons name="radio-button-checked" style={styles.icon} />
+          ) : (
+            <MaterialIcons name="radio-button-unchecked" style={styles.icon} />
+          );
+
           const content = (
             <>
               <ListItem.Content>
                 <ListItem.Title>{document.title}</ListItem.Title>
               </ListItem.Content>
-              {!isCheckList ? (
-                <AntDesign name="right" style={styles.icon} />
-              ) : document.selected ? (
-                <MaterialIcons
-                  name="radio-button-checked"
-                  style={styles.icon}
-                />
-              ) : (
-                <MaterialIcons
-                  name="radio-button-unchecked"
-                  style={styles.icon}
-                />
-              )}
+              {rightIcon}
             </>
           );
 
