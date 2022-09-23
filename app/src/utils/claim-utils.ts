@@ -1,4 +1,5 @@
 import * as Linking from "expo-linking";
+import { KeyboardTypeOptions } from "react-native";
 import claims from "../data/claims";
 import allClaims from "../data/claims";
 import {
@@ -8,6 +9,38 @@ import {
   ClaimRequest,
   ClaimWithValue
 } from "../types/claim";
+
+export const getClaimScreenByType = (claimType: ClaimType) => {
+  switch (claimType) {
+    case "AddressCredential":
+      return "AddressClaim";
+    case "AdultCredential":
+      return "AdultClaim";
+    case "BirthCredential":
+      return "BirthClaim";
+    case "EmailCredential":
+      return "EmailClaim";
+    case "MobileCredential":
+      return "MobileClaim";
+    case "NameCredential":
+      return "NameClaim";
+    default:
+      return "Home";
+  }
+};
+
+export const getUserClaimByType = (
+  claimType: ClaimType,
+  usersClaims: ClaimWithValue[]
+) => {
+  const claim = getClaimFromType(claimType);
+  const userClaim = usersClaims.find((c) => c.type === claim.type);
+
+  return {
+    claim,
+    userClaim
+  };
+};
 
 export const getClaimFromType = (claimType: ClaimType): Claim => {
   const claim = allClaims.find((claim) => claim.type === claimType);
@@ -67,7 +100,9 @@ export const displayClaimValue = (claim: ClaimWithValue): string => {
     AdultCredential: (value: any) => value.over18,
     BirthCredential: (value: any) => value.dob,
     NameCredential: (value: any) =>
-      `${value.firstName} ${value.middleName} ${value.lastName}`,
+      `${value.firstName} ${value.middleName ? value.middleName : ""} ${
+        value.lastName
+      }`,
     EmailCredential: (value: any) => value.email,
     MobileCredential: (value: any) => {
       const { countryCode, number } = value.mobileNumber;
@@ -122,4 +157,13 @@ export const generateClaimRequestResponsePayload = (
     },
     verifiableCredential
   };
+};
+
+export const keyboardTypeMap: {
+  [key: string]: KeyboardTypeOptions | undefined;
+} = {
+  house: "numbers-and-punctuation",
+  email: "email-address",
+  number: "number-pad",
+  text: undefined
 };

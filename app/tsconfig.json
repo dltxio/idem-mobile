@@ -7,5 +7,5 @@
     "jsx": "react-native",
     "lib": ["DOM", "es6"]
   },
-  "include": ["./**/*"]
+  "include": ["./**/*", "../../tests/sites.json"]
 }

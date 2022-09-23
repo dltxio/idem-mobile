@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import React from "react";
+import React, { useState } from "react";
 import { Alert } from "react-native";
 import OpenPGP from "react-native-fast-openpgp";
 import * as DocumentPicker from "expo-document-picker";
@@ -24,9 +24,11 @@ type Hooks = {
   verifyPublicKey: (email: string | undefined) => Promise<void>;
   resendVerificationEmail: (email: string) => Promise<void>;
   importPrivateKeyFileFromDevice: () => Promise<string | undefined>;
+  pgpKey: PGP | undefined;
 };
 
 const usePgp = (): Hooks => {
+  const [pgpKey, setPgpKey] = useState<PGP | undefined>(undefined);
   const api = useApi();
   const { updateClaim } = useClaimsStore();
   const generateKeyPair = async (
@@ -51,6 +53,7 @@ const usePgp = (): Hooks => {
       } as PGP;
 
       await pgpLocalStorage.save(pgp);
+      setPgpKey(pgp);
 
       await uploadPublicKey(email, publicKey);
       Alert.alert(
@@ -80,6 +83,7 @@ const usePgp = (): Hooks => {
       } as PGP;
 
       await pgpLocalStorage.save(pgp);
+      setPgpKey(pgp);
       await uploadPublicKey(email, publicKey);
       Alert.alert(
         AlertTitle.Success,
@@ -178,7 +182,8 @@ const usePgp = (): Hooks => {
     generateKeyPairFromPrivateKey,
     verifyPublicKey,
     resendVerificationEmail,
-    importPrivateKeyFileFromDevice
+    importPrivateKeyFileFromDevice,
+    pgpKey
   };
 };
 
