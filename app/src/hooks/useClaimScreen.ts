@@ -25,12 +25,19 @@ const useClaimScreen = (): Hooks => {
       (claim) => claim.type === ClaimTypeConstants.BirthCredential
     );
 
-    if (claim && check18Plus(claim)) {
-      await addClaim(
-        ClaimTypeConstants.AdultCredential,
-        { over18: "true" },
-        selectedFileIds
-      );
+    if (!claim) {
+      setLoading(false);
+      return;
+    }
+
+    const eighteenPlus = check18Plus(claim);
+
+    await addClaim(
+      ClaimTypeConstants.AdultCredential,
+      { over18: eighteenPlus.toString() },
+      selectedFileIds
+    );
+    if (eighteenPlus) {
       Alert.alert(
         `Over 18`,
         `Your claim for being over 18 years of age has been saved.`,

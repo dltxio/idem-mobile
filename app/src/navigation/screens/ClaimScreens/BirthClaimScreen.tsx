@@ -1,9 +1,8 @@
 import React from "react";
 import { ScrollView, View, StatusBar, Keyboard } from "react-native";
 import { ClaimTypeConstants } from "../../../constants/common";
-import { useClaimsStore } from "../../../context/ClaimsStore";
 import { FormState } from "../../../types/claim";
-import { getClaimFromType } from "../../../utils/claim-utils";
+import { getUserClaimByType } from "../../../utils/claim-utils";
 import commonStyles from "../../../styles/styles";
 import ClaimScreenStyles from "../../../styles/ClaimScreenStyles";
 import { Input } from "@rneui/themed";
@@ -13,14 +12,16 @@ import useBaseClaim from "../../../hooks/useBaseClaim";
 import { Button } from "@rneui/base";
 import { useNavigation } from "@react-navigation/native";
 import { ProfileStackNavigation } from "../../../types/navigation";
+import VerificationFiles from "../../../components/VerificationFiles";
+import useClaimScreen from "../../../hooks/useClaimScreen";
 
 type Navigation = ProfileStackNavigation<"BirthClaim">;
 
 const BirthClaimScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
-  const claim = getClaimFromType(ClaimTypeConstants.BirthCredential);
-  const { usersClaims } = useClaimsStore();
-  const userClaim = usersClaims.find((c) => c.type === claim.type);
+  const { claim, userClaim } = getUserClaimByType(
+    ClaimTypeConstants.BirthCredential
+  );
   const [formState, setFormState] = React.useState<FormState>(
     userClaim?.value ?? {}
   );
@@ -56,6 +57,14 @@ const BirthClaimScreen: React.FC = () => {
 
   const canSave = formState["dob"];
 
+  const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
+
+  const isDocumentUploadVerifyAction =
+    claim.verificationAction === "document-upload";
+
+  const { onSelectFile, selectedFileIds, setSelectedFileIds } =
+    useClaimScreen();
+
   return (
     <View style={commonStyles.screen}>
       <ScrollView style={commonStyles.screenContent}>
@@ -82,6 +91,18 @@ const BirthClaimScreen: React.FC = () => {
             <DateTimePicker
               onChange={(_event, date) => onDateSelect(date)}
               value={rawDate ?? new Date()}
+            />
+          )}
+          {isDocumentUploadVerifyAction && (
+            <VerificationFiles
+              claim={claim}
+              isVerifying={isVerifying}
+              setIsVerifying={(newValue) => {
+                setIsVerifying(newValue);
+                setSelectedFileIds([]);
+              }}
+              selectedFileIds={selectedFileIds}
+              onSelectFile={onSelectFile}
             />
           )}
         </View>

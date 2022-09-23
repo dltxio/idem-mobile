@@ -1,12 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { ScrollView, StatusBar, View } from "react-native";
+import { ScrollView, StatusBar, View, Text } from "react-native";
 import { ClaimTypeConstants } from "../../../constants/common";
-import { useClaimsStore } from "../../../context/ClaimsStore";
 import ClaimScreenStyles from "../../../styles/ClaimScreenStyles";
 import { FormState, PhoneType } from "../../../types/claim";
 import { ProfileStackNavigation } from "../../../types/navigation";
-import { getClaimFromType } from "../../../utils/claim-utils";
+import { getUserClaimByType } from "../../../utils/claim-utils";
 import commonStyles from "../../../styles/styles";
 import { Button, Input } from "@rneui/themed";
 import useMobileClaim from "../../../hooks/useMobileClaim";
@@ -16,9 +15,9 @@ export type Navigation = ProfileStackNavigation<"MobileClaim">;
 
 const MobileClaimScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
-  const claim = getClaimFromType(ClaimTypeConstants.MobileCredential);
-  const { usersClaims } = useClaimsStore();
-  const userClaim = usersClaims.find((c) => c.type === claim.type);
+  const { claim, userClaim } = getUserClaimByType(
+    ClaimTypeConstants.MobileCredential
+  );
   const [formState, setFormState] = React.useState<FormState>(
     userClaim?.value ?? {}
   );
@@ -62,6 +61,11 @@ const MobileClaimScreen: React.FC = () => {
       <ScrollView style={commonStyles.screenContent}>
         <View style={ClaimScreenStyles.content}>
           <StatusBar hidden={false} />
+          <Text style={ClaimScreenStyles.mobileWarningText}>
+            Only Australian mobile numbers are supported, denoted by the +61
+            country code.
+          </Text>
+
           {claim.fields.map((field) => {
             const onChange = (value: string | PhoneType) => {
               setFormState((previous) => ({

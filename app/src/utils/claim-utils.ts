@@ -1,4 +1,6 @@
 import * as Linking from "expo-linking";
+import { KeyboardTypeOptions } from "react-native";
+import { useClaimsStore } from "../context/ClaimsStore";
 import claims from "../data/claims";
 import allClaims from "../data/claims";
 import {
@@ -17,15 +19,26 @@ export const getClaimScreenByType = (claimType: ClaimType) => {
       return "MobileClaim";
     case "BirthCredential":
       return "BirthClaim";
-    // case "AddressCredential":
-    //   return "AddressClaim";
-    // case "AdultCredential":
-    //   return "AdultClaim";
-    // case "EmailCredential":
-    //   return "EmailClaim";
+    case "AddressCredential":
+      return "AddressClaim";
+    case "AdultCredential":
+      return "AdultClaim";
+    case "EmailCredential":
+      return "EmailClaim";
     default:
-      return null;
+      return "Home";
   }
+};
+
+export const getUserClaimByType = (claimType: ClaimType) => {
+  const claim = getClaimFromType(claimType);
+  const { usersClaims } = useClaimsStore();
+  const userClaim = usersClaims.find((c) => c.type === claim.type);
+
+  return {
+    claim,
+    userClaim
+  };
 };
 
 export const getClaimFromType = (claimType: ClaimType): Claim => {
@@ -86,7 +99,9 @@ export const displayClaimValue = (claim: ClaimWithValue): string => {
     AdultCredential: (value: any) => value.over18,
     BirthCredential: (value: any) => value.dob,
     NameCredential: (value: any) =>
-      `${value.firstName} ${value.middleName} ${value.lastName}`,
+      `${value.firstName} ${value.middleName ? value.middleName : ""} ${
+        value.lastName
+      }`,
     EmailCredential: (value: any) => value.email,
     MobileCredential: (value: any) => {
       const { countryCode, number } = value.mobileNumber;
@@ -141,4 +156,13 @@ export const generateClaimRequestResponsePayload = (
     },
     verifiableCredential
   };
+};
+
+export const keyboardTypeMap: {
+  [key: string]: KeyboardTypeOptions | undefined;
+} = {
+  house: "numbers-and-punctuation",
+  email: "email-address",
+  number: "number-pad",
+  text: undefined
 };

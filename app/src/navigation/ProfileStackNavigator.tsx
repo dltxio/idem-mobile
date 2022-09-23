@@ -1,17 +1,16 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import ProfileScreen from "./screens/Home";
-import ClaimScreen from "./screens/ClaimScreen";
-import { ClaimType } from "../types/claim";
-import { getClaimFromType } from "../utils/claim-utils";
 import ViewFile from "./screens/ViewFileScreen";
 import NameClaimScreen from "./screens/ClaimScreens/NameClaimScreen";
 import BirthClaimScreen from "./screens/ClaimScreens/BirthClaimScreen";
 import MobileClaimScreen from "./screens/ClaimScreens/MobileClaimScreen";
+import AddressClaimScreen from "./screens/ClaimScreens/AddressClaimScreen";
+import AdultClaimScreen from "./screens/ClaimScreens/AdultClaimScreen";
+import EmailClaimScreen from "./screens/ClaimScreens/EmailClaimScreen";
 
 export type ProfileStackParamList = {
   Home: undefined;
-  Claim: { claimType: ClaimType };
   VerifyOtp: { mobileNumber: string };
   ViewFile: {
     fileId: string;
@@ -22,6 +21,9 @@ export type ProfileStackParamList = {
   NameClaim: undefined;
   BirthClaim: undefined;
   MobileClaim: undefined;
+  AddressClaim: undefined;
+  AdultClaim: undefined;
+  EmailClaim: undefined;
 };
 
 const Stack = createStackNavigator<ProfileStackParamList>();
@@ -40,16 +42,6 @@ const ProfileStackNavigator = () => {
           headerShown: false
         })}
         component={ProfileScreen}
-      />
-      <Stack.Screen
-        name="Claim"
-        options={(props) => {
-          const claim = getClaimFromType(props.route.params.claimType);
-          return {
-            title: claim.title
-          };
-        }}
-        component={ClaimScreen}
       />
 
       <Stack.Screen
@@ -88,6 +80,30 @@ const ProfileStackNavigator = () => {
           return { title: "Mobile Number" };
         }}
         component={MobileClaimScreen}
+      />
+
+      <Stack.Screen
+        name="AddressClaim"
+        options={() => {
+          return { title: "Address" };
+        }}
+        component={AddressClaimScreen}
+      />
+
+      <Stack.Screen
+        name="AdultClaim"
+        options={() => {
+          return { title: "18+" };
+        }}
+        component={AdultClaimScreen}
+      />
+
+      <Stack.Screen
+        name="EmailClaim"
+        options={() => {
+          return { title: "Email" };
+        }}
+        component={EmailClaimScreen}
       />
     </Stack.Navigator>
   );

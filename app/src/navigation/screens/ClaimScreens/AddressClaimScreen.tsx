@@ -1,25 +1,30 @@
-import { ScrollView, View, StatusBar } from "react-native";
+import { ScrollView, StatusBar, View } from "react-native";
 import ClaimScreenStyles from "../../../styles/ClaimScreenStyles";
-import commonStyles from "../../../styles/styles";
-import { getUserClaimByType } from "../../../utils/claim-utils";
-import { ClaimTypeConstants } from "../../../constants/common";
-import { Input } from "@rneui/themed";
-import React from "react";
-import { FormState } from "../../../types/claim";
-import { Button } from "@rneui/base";
-import useBaseClaim from "../../../hooks/useBaseClaim";
 import { ProfileStackNavigation } from "../../../types/navigation";
+import commonStyles from "../../../styles/styles";
 import { useNavigation } from "@react-navigation/native";
-import VerificationFiles from "../../../components/VerificationFiles";
+import {
+  getUserClaimByType,
+  keyboardTypeMap
+} from "../../../utils/claim-utils";
+import { ClaimTypeConstants } from "../../../constants/common";
+import { FormState } from "../../../types/claim";
+import React from "react";
+import { FieldType } from "../../../types/document";
+import { Input } from "@rneui/themed";
+import useBaseClaim from "../../../hooks/useBaseClaim";
 import useClaimScreen from "../../../hooks/useClaimScreen";
+import VerificationFiles from "../../../components/VerificationFiles";
+import { Button } from "@rneui/base";
 
-type Navigation = ProfileStackNavigation<"NameClaim">;
+type Navigation = ProfileStackNavigation<"AddressClaim">;
 
-const NameClaimScreen: React.FC = () => {
+const AddressClaimScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
   const { claim, userClaim } = getUserClaimByType(
-    ClaimTypeConstants.NameCredential
+    ClaimTypeConstants.AddressCredential
   );
+
   const [formState, setFormState] = React.useState<FormState>(
     userClaim?.value ?? {}
   );
@@ -33,7 +38,10 @@ const NameClaimScreen: React.FC = () => {
   const { onSelectFile, selectedFileIds, setSelectedFileIds } =
     useClaimScreen();
 
-  const canSave = formState["firstName"] && formState["lastName"];
+  const canSave =
+    claim.fields.filter((field) => formState[field.id]).length ===
+      claim.fields.length &&
+    ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
 
   return (
     <View style={commonStyles.screen}>
@@ -47,11 +55,16 @@ const NameClaimScreen: React.FC = () => {
                 [field.id]: value
               }));
             };
+            const possibleType = field.type as Extract<
+              FieldType,
+              "text" | "number" | "house"
+            >; // array.includes doesn't discriminate field.type for us :(
             return (
               <View key={field.id}>
                 <Input
                   label={field.title}
                   clearButtonMode="always"
+                  keyboardType={keyboardTypeMap[possibleType]}
                   autoCapitalize="none"
                   value={formState[field.id] as string}
                   onChangeText={onChange}
@@ -85,4 +98,4 @@ const NameClaimScreen: React.FC = () => {
   );
 };
 
-export default NameClaimScreen;
+export default AddressClaimScreen;
