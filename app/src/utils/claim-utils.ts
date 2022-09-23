@@ -1,5 +1,6 @@
+import { isEmail } from "validator/lib/isEmail";
 import * as Linking from "expo-linking";
-import { KeyboardTypeOptions } from "react-native";
+import { Alert, KeyboardTypeOptions } from "react-native";
 import claims from "../data/claims";
 import allClaims from "../data/claims";
 import {
@@ -9,6 +10,7 @@ import {
   ClaimRequest,
   ClaimWithValue
 } from "../types/claim";
+import { AlertTitle } from "../constants/common";
 
 export const getClaimScreenByType = (claimType: ClaimType) => {
   switch (claimType) {

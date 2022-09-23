@@ -15,6 +15,7 @@ import { Button, Input } from "@rneui/themed";
 import PgpSection from "../../../components/PgpSection";
 import usePgp from "../../../hooks/usePpg";
 import { useClaimsStore } from "../../../context/ClaimsStore";
+import isEmail from "validator/lib/isEmail";
 
 type Navigation = ProfileStackNavigation<"EmailClaim">;
 
@@ -62,6 +63,12 @@ const EmailClaimScreen: React.FC = () => {
   }, [pgpKey]);
 
   const handleSave = async () => {
+    if (!isEmail(formState.email as string)) {
+      return Alert.alert(
+        AlertTitle.Warning,
+        "Please type a valid email claim value in the input field."
+      );
+    }
     await onSave(formState, claim.type, navigation);
     if (!hasPgp) {
       return Alert.alert(
