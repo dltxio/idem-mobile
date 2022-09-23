@@ -62,7 +62,17 @@ export type VerifyOtpRequest = {
   mobileNumber: string;
 };
 
-export type RequiredClaimsType = {
-  type: string;
-  verified: boolean;
+export type PhoneType = {
+  countryCode: string;
+  number: string;
+};
+
+export type FormState = {
+  [key: string]: string | PhoneType;
+  mobileNumber: PhoneType;
+};
+
+export type MobileClaimFormState = {
+  countryCode: string;
+  number: string;
 };

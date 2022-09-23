@@ -23,7 +23,8 @@ export default {
     smallHeading: {
       fontWeight: "500" as any,
       fontSize: 18,
-      marginBottom: 10
+      marginBottom: 10,
+      marginLeft: 10
     }
   }
 };

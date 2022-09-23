@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import SettingsScreen from "./SettingsScreen";
 
 export type SettingsStackParamList = {
-  Settings: undefined;
+  SettingScreen: undefined;
 };
 
 const Stack = createStackNavigator<SettingsStackParamList>();
@@ -11,7 +11,7 @@ const Stack = createStackNavigator<SettingsStackParamList>();
 const SettingsStackNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Settings" component={SettingsScreen} />
+      <Stack.Screen name="SettingScreen" component={SettingsScreen} />
     </Stack.Navigator>
   );
 };
