@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Alert } from "react-native";
 import { AlertTitle, ClaimTypeConstants } from "../constants/common";
 import { useClaimsStore } from "../context/ClaimsStore";
 import { ClaimData, ClaimType, FormState } from "../types/claim";
 import { check18Plus } from "../utils/birthday-utils";
 import { claimsLocalStorage } from "../utils/local-storage";
-import useClaimScreen from "./useClaimScreen";
 import usePgp from "./usePpg";
 
 type Hooks = {
