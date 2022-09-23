@@ -1,12 +1,12 @@
 export type DocumentType =
-  | "passport"
   | "drivers-licence"
-  | "birth-certificate"
-  | "bank-statement"
-  | "rates-notice"
-  | "utility-account"
   | "medicare-card"
   | "profile-image";
+// | "birth-certificate"
+// | "bank-statement"
+// | "rates-notice"
+// | "utility-account"
+// | "passport";
 
 export type Document = {
   id?: string;

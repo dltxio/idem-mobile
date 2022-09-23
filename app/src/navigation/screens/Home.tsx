@@ -22,6 +22,7 @@ import useVerifyClaims from "../../hooks/useVerifyClaims";
 import { ClaimTypeConstants } from "../../constants/common";
 import IdemButton from "../../components/Button";
 import { ethers } from "ethers";
+import { getClaimScreenByType } from "../../utils/claim-utils";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
@@ -29,8 +30,12 @@ const Home: React.FC = () => {
   const { usersClaims, unclaimedClaims } = useClaimsStore();
   const navigation = useNavigation<Navigation>();
   const { expoPushToken } = usePushNotifications();
+
   const navigateToClaim = (claimType: ClaimType) => {
-    navigation.navigate("Claim", { claimType });
+    const screenName = getClaimScreenByType(claimType);
+    if (screenName) {
+      navigation.navigate(screenName);
+    }
   };
   const address = useClaimValue(ClaimTypeConstants.AddressCredential);
   const email = useClaimValue(ClaimTypeConstants.EmailCredential);
