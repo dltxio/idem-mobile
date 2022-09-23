@@ -130,13 +130,11 @@ const DocumentDetailScreen: React.FC = () => {
 
   const onChange = React.useCallback(
     (input: string, field: Field) => {
-      if (!field.valueOptions || field.valueOptions.includes(input)) {
-        field.value = input;
-        setFormState((previous) => ({
-          ...previous,
-          [field.title]: input
-        }));
-      }
+      field.value = input;
+      setFormState((previous) => ({
+        ...previous,
+        [field.title]: input
+      }));
     },
     [setFormState]
   );

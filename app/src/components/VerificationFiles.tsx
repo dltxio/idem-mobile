@@ -29,10 +29,12 @@ const VerificationFiles: React.FC<Hooks> = ({
   );
 
   const documentsWithSelected = documentsThatCanBeUsedToVerify.map(
-    (document) => ({
-      ...document,
-      selected: selectedFileIds.includes(document.id ?? "")
-    })
+    (document) => {
+      return {
+        ...document,
+        selected: selectedFileIds.includes(document.id ?? "")
+      };
+    }
   );
 
   const validDocumentNames = claim.verificationDocuments.map((document) => {
