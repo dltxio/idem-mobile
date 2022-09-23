@@ -66,7 +66,7 @@ const EmailClaimScreen: React.FC = () => {
     if (!isEmail(formState.email as string)) {
       return Alert.alert(
         AlertTitle.Warning,
-        "Please type a valid email claim value in the input field."
+        "Please enter a valid email address."
       );
     }
     await onSave(formState, claim.type, navigation);

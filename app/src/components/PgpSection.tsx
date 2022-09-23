@@ -69,7 +69,7 @@ const PgpSection: React.FC<Props> = (props) => {
       if (!isEmail(email)) {
         return Alert.alert(
           AlertTitle.Warning,
-          "Please type a valid email claim value in the input field."
+          "Please enter a valid email address."
         );
       }
       try {
@@ -92,7 +92,7 @@ const PgpSection: React.FC<Props> = (props) => {
       if (!isEmail(email)) {
         return Alert.alert(
           AlertTitle.Warning,
-          "Please type a valid email claim value in the input field."
+          "Please enter a valid email address."
         );
       }
       await props.generateKeyPair(name, email);
