@@ -10,5 +10,6 @@ declare namespace config {
     password?: string;
     sentryDSN: string;
     sentryDebugEnable: boolean;
+    exchangeSitesJsonUrl: string;
   };
 }
