@@ -34,7 +34,8 @@ const RequestClaimsModal: React.FC<Props> = ({ claimRequest, onClose }) => {
       return {
         ...claim,
         value: userClaim?.value,
-        verified: userClaim?.verified
+        verified: userClaim?.verified,
+        files: userClaim?.files ?? []
       };
     });
 
