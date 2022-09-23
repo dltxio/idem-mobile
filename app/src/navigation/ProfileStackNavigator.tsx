@@ -2,12 +2,14 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import ProfileScreen from "./screens/Home";
 import ViewFile from "./screens/ViewFileScreen";
-import NameClaimScreen from "./screens/ClaimScreens/NameClaimScreen";
-import BirthClaimScreen from "./screens/ClaimScreens/BirthClaimScreen";
-import MobileClaimScreen from "./screens/ClaimScreens/MobileClaimScreen";
-import AddressClaimScreen from "./screens/ClaimScreens/AddressClaimScreen";
-import AdultClaimScreen from "./screens/ClaimScreens/AdultClaimScreen";
-import EmailClaimScreen from "./screens/ClaimScreens/EmailClaimScreen";
+import {
+  AddressClaimScreen,
+  AdultClaimScreen,
+  BirthClaimScreen,
+  EmailClaimScreen,
+  MobileClaimScreen,
+  NameClaimScreen
+} from "./screens/ClaimScreens/index";
 
 export type ProfileStackParamList = {
   Home: undefined;

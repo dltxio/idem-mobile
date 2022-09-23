@@ -1,6 +1,5 @@
 import * as Linking from "expo-linking";
 import { KeyboardTypeOptions } from "react-native";
-import { useClaimsStore } from "../context/ClaimsStore";
 import claims from "../data/claims";
 import allClaims from "../data/claims";
 import {
@@ -13,26 +12,28 @@ import {
 
 export const getClaimScreenByType = (claimType: ClaimType) => {
   switch (claimType) {
-    case "NameCredential":
-      return "NameClaim";
-    case "MobileCredential":
-      return "MobileClaim";
-    case "BirthCredential":
-      return "BirthClaim";
     case "AddressCredential":
       return "AddressClaim";
     case "AdultCredential":
       return "AdultClaim";
+    case "BirthCredential":
+      return "BirthClaim";
     case "EmailCredential":
       return "EmailClaim";
+    case "MobileCredential":
+      return "MobileClaim";
+    case "NameCredential":
+      return "NameClaim";
     default:
       return "Home";
   }
 };
 
-export const getUserClaimByType = (claimType: ClaimType) => {
+export const getUserClaimByType = (
+  claimType: ClaimType,
+  usersClaims: ClaimWithValue[]
+) => {
   const claim = getClaimFromType(claimType);
-  const { usersClaims } = useClaimsStore();
   const userClaim = usersClaims.find((c) => c.type === claim.type);
 
   return {

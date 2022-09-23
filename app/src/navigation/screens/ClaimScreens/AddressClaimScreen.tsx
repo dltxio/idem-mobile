@@ -16,13 +16,16 @@ import useBaseClaim from "../../../hooks/useBaseClaim";
 import useClaimScreen from "../../../hooks/useClaimScreen";
 import VerificationFiles from "../../../components/VerificationFiles";
 import { Button } from "@rneui/base";
+import { useClaimsStore } from "../../../context/ClaimsStore";
 
 type Navigation = ProfileStackNavigation<"AddressClaim">;
 
 const AddressClaimScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
+  const { usersClaims } = useClaimsStore();
   const { claim, userClaim } = getUserClaimByType(
-    ClaimTypeConstants.AddressCredential
+    ClaimTypeConstants.AddressCredential,
+    usersClaims
   );
 
   const [formState, setFormState] = React.useState<FormState>(

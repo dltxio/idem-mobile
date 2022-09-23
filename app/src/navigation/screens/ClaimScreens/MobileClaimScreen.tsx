@@ -10,13 +10,16 @@ import commonStyles from "../../../styles/styles";
 import { Button, Input } from "@rneui/themed";
 import useMobileClaim from "../../../hooks/useMobileClaim";
 import Dialog from "react-native-dialog";
+import { useClaimsStore } from "../../../context/ClaimsStore";
 
 export type Navigation = ProfileStackNavigation<"MobileClaim">;
 
 const MobileClaimScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
+  const { usersClaims } = useClaimsStore();
   const { claim, userClaim } = getUserClaimByType(
-    ClaimTypeConstants.MobileCredential
+    ClaimTypeConstants.MobileCredential,
+    usersClaims
   );
   const [formState, setFormState] = React.useState<FormState>(
     userClaim?.value ?? {}

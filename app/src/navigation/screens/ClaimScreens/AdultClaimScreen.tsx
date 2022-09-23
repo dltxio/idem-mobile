@@ -11,13 +11,16 @@ import { getUserClaimByType } from "../../../utils/claim-utils";
 import commonStyles from "../../../styles/styles";
 import { Button, Switch } from "@rneui/themed";
 import VerificationFiles from "../../../components/VerificationFiles";
+import { useClaimsStore } from "../../../context/ClaimsStore";
 
 type Navigation = ProfileStackNavigation<"AdultClaim">;
 
 const AdultClaimScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
+  const { usersClaims } = useClaimsStore();
   const { claim, userClaim } = getUserClaimByType(
-    ClaimTypeConstants.AdultCredential
+    ClaimTypeConstants.AdultCredential,
+    usersClaims
   );
   const [formState, setFormState] = React.useState<FormState>(
     userClaim?.value ?? {}

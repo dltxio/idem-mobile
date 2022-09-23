@@ -14,13 +14,16 @@ import commonStyles from "../../../styles/styles";
 import { Button, Input } from "@rneui/themed";
 import PgpSection from "../../../components/PgpSection";
 import usePgp from "../../../hooks/usePpg";
+import { useClaimsStore } from "../../../context/ClaimsStore";
 
 type Navigation = ProfileStackNavigation<"EmailClaim">;
 
 const EmailClaimScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
+  const { usersClaims } = useClaimsStore();
   const { claim, userClaim } = getUserClaimByType(
-    ClaimTypeConstants.EmailCredential
+    ClaimTypeConstants.EmailCredential,
+    usersClaims
   );
   const [formState, setFormState] = React.useState<FormState>(
     userClaim?.value ?? {}

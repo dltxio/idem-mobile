@@ -14,13 +14,16 @@ import { useNavigation } from "@react-navigation/native";
 import { ProfileStackNavigation } from "../../../types/navigation";
 import VerificationFiles from "../../../components/VerificationFiles";
 import useClaimScreen from "../../../hooks/useClaimScreen";
+import { useClaimsStore } from "../../../context/ClaimsStore";
 
 type Navigation = ProfileStackNavigation<"BirthClaim">;
 
 const BirthClaimScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
+  const { usersClaims } = useClaimsStore();
   const { claim, userClaim } = getUserClaimByType(
-    ClaimTypeConstants.BirthCredential
+    ClaimTypeConstants.BirthCredential,
+    usersClaims
   );
   const [formState, setFormState] = React.useState<FormState>(
     userClaim?.value ?? {}

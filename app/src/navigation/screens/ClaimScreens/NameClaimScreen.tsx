@@ -12,13 +12,16 @@ import { ProfileStackNavigation } from "../../../types/navigation";
 import { useNavigation } from "@react-navigation/native";
 import VerificationFiles from "../../../components/VerificationFiles";
 import useClaimScreen from "../../../hooks/useClaimScreen";
+import { useClaimsStore } from "../../../context/ClaimsStore";
 
 type Navigation = ProfileStackNavigation<"NameClaim">;
 
 const NameClaimScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
+  const { usersClaims } = useClaimsStore();
   const { claim, userClaim } = getUserClaimByType(
-    ClaimTypeConstants.NameCredential
+    ClaimTypeConstants.NameCredential,
+    usersClaims
   );
   const [formState, setFormState] = React.useState<FormState>(
     userClaim?.value ?? {}
