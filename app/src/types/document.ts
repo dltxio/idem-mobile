@@ -1,16 +1,30 @@
 export type DocumentType =
-  | "passport"
   | "drivers-licence"
-  | "birth-certificate"
-  | "bank-statement"
-  | "rates-notice"
-  | "utility-account"
   | "medicare-card"
   | "profile-image";
+// | "birth-certificate"
+// | "bank-statement"
+// | "rates-notice"
+// | "utility-account"
+// | "passport";
+
 export type Document = {
+  id?: string;
   type: DocumentType;
   title: string;
+  fields?: Field[];
+  fileIds?: string[];
 };
+
+export type Field = {
+  title: string;
+  type: FieldType;
+  optional?: boolean;
+  valueOptions?: string[];
+  value?: string;
+};
+
+export type FieldType = "string" | "date" | "number";
 
 export type File = {
   id: string;

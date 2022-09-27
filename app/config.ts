@@ -5,7 +5,8 @@ const devConfig: config.Config = {
   userName: Constants?.manifest?.extra?.userName,
   password: Constants?.manifest?.extra?.password,
   sentryDSN: Constants?.manifest?.extra?.sentryDSN,
-  sentryDebugEnable: Constants?.manifest?.extra?.sentryDebugEnable
+  sentryDebugEnable: Constants?.manifest?.extra?.sentryDebugEnable,
+  exchangeSitesJsonUrl: Constants?.manifest?.extra?.exchangeSitesJsonUrl
 };
 
 const getChannelConfig = () => {

@@ -1,4 +1,5 @@
 import {
+  ExchangeSignupRequest,
   RequestOtpRequest,
   SignupResponse,
   uploadPublicKey,
@@ -16,9 +17,9 @@ import { RequestOptResponse, VerifyOtpRequest } from "../src/types/claim";
 export default class Api extends HTTPClient {
   public vendorSignup = async (
     body: UserSignup,
-    verification: IdemVerification
+    verification: IdemVerification | undefined
   ) => {
-    const payload = {
+    const payload: ExchangeSignupRequest = {
       ...body,
       verification
     };
@@ -26,17 +27,17 @@ export default class Api extends HTTPClient {
   };
 
   public verifyClaims = async (body: UserVerifyRequest) =>
-    this.post<IdemVerification>(`users/verify`, body);
+    this.post<IdemVerification>(`users/verify-claims`, body);
 
   public putUser = async (email: string, body: UserDto) => {
     this.put(`users/${email}`, body);
   };
 
   public resendVerificationEmail = async (body: { hashedEmail: string }) =>
-    this.post<boolean>(`user/resend-email`, body);
+    this.post<boolean>(`users/resend-email`, body);
 
   public requestOtp = async (body: RequestOtpRequest) =>
-    this.post<RequestOptResponse>(`otp/request`, body);
+    this.get<RequestOptResponse>(`otp/request/${body.mobileNumber}`);
 
   public verifyOtp = async (body: VerifyOtpRequest) =>
     this.post<boolean>(`otp/verify`, body);

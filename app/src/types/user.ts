@@ -18,6 +18,7 @@ export enum VendorEnum {
 
 export type UserVerifyRequest = {
   firstName: string;
+  middleName?: string;
   lastName: string;
   dob: string;
   hashEmail: string;
@@ -86,4 +87,15 @@ export type UsersResponse = {
 export type SignupResponse = {
   userId: string;
   password?: string;
+};
+
+export type ExchangeSignupRequest = {
+  verification: IdemVerification | undefined;
+  source: number;
+  firstName: string;
+  lastName: string;
+  password: string;
+  email: string;
+  mobile?: string | undefined;
+  dob?: string | undefined;
 };

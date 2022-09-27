@@ -14,14 +14,14 @@ import useVendorsList from "../../hooks/useVendorsList";
 import { VendorStackNavigationRoute } from "../../types/navigation";
 import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import useVendors from "../../hooks/userVendors";
-import { getVendor } from "../../utils/vendor";
+import { getVendor, getUnVerifiedClaimText } from "../../utils/vendor";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
-import { ClaimTypeConstants } from "../../constants/common";
-import { getClaimsFromTypes } from "../../utils/claim-utils";
+import { AlertTitle, ClaimTypeConstants } from "../../constants/common";
+import { verificationStorage } from "../../utils/local-storage";
 
 const VendorDetailsScreen: React.FC = () => {
-  const { usersClaims } = useClaimsStore();
   const { vendors } = useVendorsList();
+  const { usersClaims } = useClaimsStore();
   const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
   const vendor = vendors.find((v) => v.id == route.params.id);
   const [signed, setSigned] = React.useState<boolean>(false);
@@ -31,39 +31,26 @@ const VendorDetailsScreen: React.FC = () => {
   const name = useClaimValue(ClaimTypeConstants.NameCredential);
   const mobile = useClaimValue(ClaimTypeConstants.MobileCredential);
 
-  const missingClaimTypes = React.useMemo(() => {
-    if (!vendor || !vendor.requiredClaimTypes) {
-      return [];
-    }
+  const unVerifiedClaimsText = getUnVerifiedClaimText(vendor, usersClaims);
 
-    const userClaimTypeMap = usersClaims.reduce(
-      (acc, claim) => {
-        acc[claim.type] = true;
-        return acc;
-      },
-      {} as {
-        [key: string]: boolean;
+  const vendorSignUp = async () => {
+    if (vendor && getVendor(vendor.id) && name && email) {
+      const verification = await verificationStorage.get();
+      if (vendor.verifyClaims && !verification) {
+        return Alert.alert(
+          AlertTitle.Warning,
+          "Please go to profile screen and verify your claims before signing up."
+        );
       }
-    );
-    return vendor.requiredClaimTypes.filter(
-      (claimType) => !userClaimTypeMap[claimType]
-    );
-  }, [usersClaims, vendor]);
-
-  const hasAllRequiredClaims = missingClaimTypes.length === 0;
-
-  const requirementText = React.useMemo(() => {
-    if (hasAllRequiredClaims) return "";
-    const missingClaims = getClaimsFromTypes(missingClaimTypes);
-    const missingClaimsTitle = missingClaims.map((claim) => claim.title);
-
-    if (missingClaimsTitle.length === 1) return missingClaimsTitle[0];
-    return (
-      missingClaimsTitle.slice(0, -1).join(", ") +
-      " and " +
-      missingClaimsTitle.slice(-1)
-    );
-  }, [missingClaimTypes]);
+      await signup({ name, email, mobile, dob }, vendor);
+      setSigned(true);
+    } else {
+      Alert.alert(
+        "Missing Credentials",
+        "Please provide your name and email claims to sign up."
+      );
+    }
+  };
 
   return (
     <ScrollView
@@ -81,39 +68,20 @@ const VendorDetailsScreen: React.FC = () => {
       />
 
       <View style={{ height: 80 }}>
-        {!hasAllRequiredClaims && (
-          <View style={{ marginTop: 30 }}>
-            <Text style={{ textAlign: "center" }}>
-              {vendor?.name} requires your {requirementText} to be completed.
+        {unVerifiedClaimsText !== undefined && (
+          <View style={styles.requiredClaimView}>
+            <Text style={styles.requiredClaimText}>
+              {vendor?.name} requires your {unVerifiedClaimsText} to be
+              completed.
             </Text>
           </View>
         )}
       </View>
       <View style={styles.buttonWrapper}>
         <Button
-          onPress={async () => {
-            if (vendor && getVendor(vendor.id) && name && email) {
-              //TODO: Quick fix for now, need update this with new sites.json
-              const userClaim = usersClaims.find(
-                (claim) => claim.type === ClaimTypeConstants.EmailCredential
-              );
-              if (!userClaim?.verified) {
-                return Alert.alert(
-                  "Email not verified",
-                  "Please verify your email before sign up."
-                );
-              }
-              await signup({ name, email, mobile, dob }, vendor.id);
-              setSigned(true);
-            } else {
-              Alert.alert(
-                "Missing Credentials",
-                "Please provide your name and email claims to sign up."
-              );
-            }
-          }}
+          onPress={vendorSignUp}
           title="Sign Up"
-          disabled={signed || !hasAllRequiredClaims}
+          disabled={signed || unVerifiedClaimsText !== undefined}
         />
       </View>
       <BottomNavBarSpacer />
@@ -152,5 +120,11 @@ const styles = StyleSheet.create({
   tagLine: {
     marginVertical: 5,
     fontSize: 15
-  }
+  },
+  requiredClaimText: {
+    textAlign: "center",
+    fontSize: 13,
+    fontWeight: "bold"
+  },
+  requiredClaimView: { marginTop: 30, marginLeft: 5, marginRight: 5 }
 });
