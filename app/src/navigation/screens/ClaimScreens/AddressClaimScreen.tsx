@@ -13,7 +13,6 @@ import React from "react";
 import { FieldType } from "../../../types/document";
 import { Input } from "@rneui/themed";
 import useBaseClaim from "../../../hooks/useBaseClaim";
-import useClaimScreen from "../../../hooks/useClaimScreen";
 import VerificationFiles from "../../../components/VerificationFiles";
 import { Button } from "@rneui/base";
 import { useClaimsStore } from "../../../context/ClaimsStore";
@@ -32,19 +31,22 @@ const AddressClaimScreen: React.FC = () => {
     userClaim?.value ?? {}
   );
 
-  const { loading, onSave } = useBaseClaim();
+  const { loading, onSave, onSelectFile, selectedFileIds, setSelectedFileIds } =
+    useBaseClaim();
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
 
   const isDocumentUploadVerifyAction =
     claim.verificationAction === "document-upload";
 
-  const { onSelectFile, selectedFileIds, setSelectedFileIds } =
-    useClaimScreen();
-
   const canSave =
     claim.fields.filter((field) => formState[field.id]).length ===
       claim.fields.length &&
     ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
+
+  React.useEffect(() => {
+    setSelectedFileIds(userClaim?.files ?? []);
+    if ((userClaim?.files?.length ?? 0) > 0) setIsVerifying(true);
+  }, []);
 
   return (
     <View style={commonStyles.screen}>

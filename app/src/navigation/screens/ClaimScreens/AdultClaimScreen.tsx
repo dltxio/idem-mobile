@@ -3,7 +3,6 @@ import React from "react";
 import { ScrollView, StatusBar, View, Text } from "react-native";
 import { ClaimTypeConstants } from "../../../constants/common";
 import useBaseClaim from "../../../hooks/useBaseClaim";
-import useClaimScreen from "../../../hooks/useClaimScreen";
 import ClaimScreenStyles from "../../../styles/ClaimScreenStyles";
 import { FormState } from "../../../types/claim";
 import { ProfileStackNavigation } from "../../../types/navigation";
@@ -26,19 +25,22 @@ const AdultClaimScreen: React.FC = () => {
     userClaim?.value ?? {}
   );
 
-  const { loading, onSave } = useBaseClaim();
+  const { loading, onSave, onSelectFile, selectedFileIds, setSelectedFileIds } =
+    useBaseClaim();
   const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
 
   const isDocumentUploadVerifyAction =
     claim.verificationAction === "document-upload";
 
-  const { onSelectFile, selectedFileIds, setSelectedFileIds } =
-    useClaimScreen();
-
   const canSave =
     claim.fields.filter((field) => formState[field.id]).length ===
       claim.fields.length &&
     ((isVerifying && selectedFileIds.length > 0) || !isVerifying);
+
+  React.useEffect(() => {
+    setSelectedFileIds(userClaim?.files ?? []);
+    if ((userClaim?.files?.length ?? 0) > 0) setIsVerifying(true);
+  }, []);
 
   return (
     <View style={commonStyles.screen}>

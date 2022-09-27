@@ -51,6 +51,7 @@ const claims: Claim[] = [
     fields: [
       { id: "houseNumber", title: "House Number", type: "house" },
       { id: "street", title: "Street", type: "text" },
+      { id: "streetType", title: "Street Type", type: "text" },
       { id: "suburb", title: "Suburb", type: "text" },
       { id: "postCode", title: "Post Code", type: "number" },
       { id: "state", title: "State", type: "text" },

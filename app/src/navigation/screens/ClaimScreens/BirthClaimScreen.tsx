@@ -13,7 +13,6 @@ import { Button } from "@rneui/base";
 import { useNavigation } from "@react-navigation/native";
 import { ProfileStackNavigation } from "../../../types/navigation";
 import VerificationFiles from "../../../components/VerificationFiles";
-import useClaimScreen from "../../../hooks/useClaimScreen";
 import { useClaimsStore } from "../../../context/ClaimsStore";
 
 type Navigation = ProfileStackNavigation<"BirthClaim">;
@@ -32,7 +31,8 @@ const BirthClaimScreen: React.FC = () => {
   const [showDatePickerForFieldId, setShowDatePickerForFieldId] =
     React.useState<string>();
 
-  const { loading, onSave } = useBaseClaim();
+  const { loading, onSave, onSelectFile, selectedFileIds, setSelectedFileIds } =
+    useBaseClaim();
 
   const showDatePickerFor = (fieldId: string) => {
     Keyboard.dismiss();
@@ -65,8 +65,10 @@ const BirthClaimScreen: React.FC = () => {
   const isDocumentUploadVerifyAction =
     claim.verificationAction === "document-upload";
 
-  const { onSelectFile, selectedFileIds, setSelectedFileIds } =
-    useClaimScreen();
+  React.useEffect(() => {
+    setSelectedFileIds(userClaim?.files ?? []);
+    if ((userClaim?.files?.length ?? 0) > 0) setIsVerifying(true);
+  }, []);
 
   return (
     <View style={commonStyles.screen}>

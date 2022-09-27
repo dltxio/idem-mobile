@@ -4,14 +4,13 @@ import commonStyles from "../../../styles/styles";
 import { getUserClaimByType } from "../../../utils/claim-utils";
 import { ClaimTypeConstants } from "../../../constants/common";
 import { Input } from "@rneui/themed";
-import React from "react";
+import React, { useEffect } from "react";
 import { FormState } from "../../../types/claim";
 import { Button } from "@rneui/base";
 import useBaseClaim from "../../../hooks/useBaseClaim";
 import { ProfileStackNavigation } from "../../../types/navigation";
 import { useNavigation } from "@react-navigation/native";
 import VerificationFiles from "../../../components/VerificationFiles";
-import useClaimScreen from "../../../hooks/useClaimScreen";
 import { useClaimsStore } from "../../../context/ClaimsStore";
 
 type Navigation = ProfileStackNavigation<"NameClaim">;
@@ -27,16 +26,25 @@ const NameClaimScreen: React.FC = () => {
     userClaim?.value ?? {}
   );
 
-  const { loading, onSave } = useBaseClaim();
-  const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
+  const {
+    loading,
+    onSave,
+    setIsVerifying,
+    isVerifying,
+    onSelectFile,
+    selectedFileIds,
+    setSelectedFileIds
+  } = useBaseClaim();
 
   const isDocumentUploadVerifyAction =
     claim.verificationAction === "document-upload";
 
-  const { onSelectFile, selectedFileIds, setSelectedFileIds } =
-    useClaimScreen();
-
   const canSave = formState["firstName"] && formState["lastName"];
+
+  useEffect(() => {
+    setSelectedFileIds(userClaim?.files ?? []);
+    if ((userClaim?.files?.length ?? 0) > 0) setIsVerifying(true);
+  }, []);
 
   return (
     <View style={commonStyles.screen}>
@@ -80,7 +88,9 @@ const NameClaimScreen: React.FC = () => {
         <Button
           title={"Save"}
           loading={loading}
-          onPress={() => onSave(formState, claim.type, navigation)}
+          onPress={() =>
+            onSave(formState, claim.type, navigation, selectedFileIds)
+          }
           disabled={!canSave}
         />
       </View>
