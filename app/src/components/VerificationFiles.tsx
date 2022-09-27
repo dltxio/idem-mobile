@@ -4,7 +4,7 @@ import { useDocumentStore } from "../context/DocumentStore";
 import { Claim } from "../types/claim";
 import { getDocumentFromDocumentType } from "../utils/document-utils";
 import BottomNavBarSpacer from "./BottomNavBarSpacer";
-import { FileList } from "../components";
+import { DocumentList } from "../components";
 import ClaimScreenStyles from "../styles/ClaimScreenStyles";
 
 type Hooks = {
@@ -22,23 +22,27 @@ const VerificationFiles: React.FC<Hooks> = ({
   onSelectFile,
   setIsVerifying
 }) => {
-  const { files } = useDocumentStore();
+  const { documents } = useDocumentStore();
 
-  const filesThatCanBeUsedToVerify = files.filter((file) =>
-    claim.verificationDocuments.includes(file.documentType)
+  const documentsThatCanBeUsedToVerify = documents.filter((document) =>
+    claim.verificationDocuments.includes(document.type)
   );
 
-  const filesWithSelected = filesThatCanBeUsedToVerify.map((file) => ({
-    ...file,
-    selected: selectedFileIds.includes(file.id)
-  }));
+  const documentsWithSelected = documentsThatCanBeUsedToVerify.map(
+    (document) => {
+      return {
+        ...document,
+        selected: selectedFileIds.includes(document.id ?? "")
+      };
+    }
+  );
 
   const validDocumentNames = claim.verificationDocuments.map((document) => {
     return `- ${getDocumentFromDocumentType(document).title}`;
   });
 
   React.useLayoutEffect(() => {
-    if (isVerifying && filesThatCanBeUsedToVerify.length === 0) {
+    if (isVerifying && documentsThatCanBeUsedToVerify.length === 0) {
       setIsVerifying(false);
       Alert.alert(
         "No valid documents",
@@ -74,9 +78,9 @@ const VerificationFiles: React.FC<Hooks> = ({
             The following documents can be used to verify your{" "}
             {claim.title.toLowerCase()} claim:
           </Text>
-          <FileList
-            files={filesWithSelected}
-            onFilePress={onSelectFile}
+          <DocumentList
+            documents={documentsWithSelected}
+            onItemPress={onSelectFile}
             isCheckList={true}
           />
           <BottomNavBarSpacer />
