@@ -7,7 +7,11 @@ import {
   DocumentsStackNavigation,
   DocumentsStackNavigationRoute
 } from "../../types/navigation";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute
+} from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Input } from "@rneui/themed";
 import useSelectPhoto from "../../hooks/useSelectPhoto";
@@ -33,6 +37,7 @@ const DocumentDetailScreen: React.FC = () => {
 
   const [showAttachModal, setShowAttachModal] = React.useState<boolean>(false);
   const [formState, setFormState] = React.useState<FormState>({});
+  const [errorState, setErrorState] = React.useState<FormState>({});
   const [updateDocs, setUpdateDocs] = React.useState<boolean>(false);
 
   const selectedDocuments = React.useMemo(
@@ -40,14 +45,16 @@ const DocumentDetailScreen: React.FC = () => {
     [files, updateDocs]
   );
 
-  React.useEffect(() => {
-    document.fileIds = document.fileIds ? document.fileIds : [];
-    const newForm = { ...formState };
-    document.fields?.forEach((field) => {
-      newForm[field.title] = field.value ?? "";
-    });
-    setFormState(newForm);
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      document.fileIds = document.fileIds ? document.fileIds : [];
+      const newForm = { ...formState };
+      document.fields?.forEach((field) => {
+        newForm[field.title] = field.value ?? "";
+      });
+      setFormState(newForm);
+    }, [])
+  );
 
   const attachFile = () => {
     setShowAttachModal(true);
@@ -57,7 +64,40 @@ const DocumentDetailScreen: React.FC = () => {
     setShowAttachModal(false);
   };
 
+  const checkFields = (): boolean => {
+    let output = true;
+    document.fields?.forEach((field) => {
+      if (
+        field.valueOptions &&
+        !field.valueOptions.includes(formState[field.title])
+      ) {
+        output = false;
+        setErrorState((previous) => ({
+          ...previous,
+          [field.title]: `Must to be one of ${field.valueOptions?.join(", ")}`
+        }));
+      } else {
+        setErrorState((previous) => ({
+          ...previous,
+          [field.title]: ""
+        }));
+      }
+    });
+    return output;
+  };
+
+  const saveButton = () => {
+    console.log(checkFields());
+    if (checkFields()) {
+      saveDocument();
+      navigation.pop();
+    }
+  };
+
   const saveDocument = () => {
+    document.fields?.forEach((field) => {
+      field.value = formState[field.title];
+    });
     addDocument(document);
   };
 
@@ -130,7 +170,6 @@ const DocumentDetailScreen: React.FC = () => {
 
   const onChange = React.useCallback(
     (input: string, field: Field) => {
-      field.value = input;
       setFormState((previous) => ({
         ...previous,
         [field.title]: input
@@ -178,6 +217,7 @@ const DocumentDetailScreen: React.FC = () => {
               onChangeText={(input) => onChange(input, field)}
               editable={true}
               key={index}
+              errorMessage={errorState[field.title]}
             />
           );
         })}
@@ -206,7 +246,7 @@ const DocumentDetailScreen: React.FC = () => {
         <View style={styles.button}>
           <Button
             title="Save"
-            onPress={saveDocument}
+            onPress={saveButton}
             disabled={shouldDisableSaveButton}
           />
         </View>
