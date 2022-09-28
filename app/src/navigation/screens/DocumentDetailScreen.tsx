@@ -222,6 +222,7 @@ const DocumentDetailScreen: React.FC = () => {
           );
         })}
         <View style={styles.fileList}>
+          <Text style={styles.fileHeader}>Files</Text>
           {selectedDocuments.length === 0 ? (
             <View>
               <Text>
@@ -269,6 +270,11 @@ const styles = StyleSheet.create({
   },
 
   fileList: {
-    height: 100
+    height: 130
+  },
+
+  fileHeader: {
+    fontSize: 20,
+    marginBottom: 10
   }
 });
