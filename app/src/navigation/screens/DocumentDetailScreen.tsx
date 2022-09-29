@@ -226,13 +226,13 @@ const DocumentDetailScreen: React.FC = () => {
               value={formState[field.title] as string}
               label={field.title}
               onFocus={() => setShowDate(true, field)}
+              showSoftInputOnFocus={false}
             />
             {showDateState[field.title] && (
               <DateTimePicker
                 onChange={(_event, date) => {
-                  console.log();
-                  onChange(moment(date).format("DD/MM/yyyy") ?? "", field);
                   setShowDate(false, field);
+                  onChange(moment(date).format("DD/MM/yyyy") ?? "", field);
                 }}
                 value={new Date()}
               />
