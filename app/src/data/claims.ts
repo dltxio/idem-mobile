@@ -34,10 +34,10 @@ const claims: Claim[] = [
     ],
     verificationDocuments: [
       "drivers-licence",
-      "passport",
-      "birth-certificate",
-      "bank-statement",
-      "rates-notice",
+      // "passport",
+      // "birth-certificate",
+      // "bank-statement",
+      // "rates-notice",
       "medicare-card"
     ]
   },
@@ -51,17 +51,18 @@ const claims: Claim[] = [
     fields: [
       { id: "houseNumber", title: "House Number", type: "house" },
       { id: "street", title: "Street", type: "text" },
+      { id: "streetType", title: "Street Type", type: "text" },
       { id: "suburb", title: "Suburb", type: "text" },
       { id: "postCode", title: "Post Code", type: "number" },
       { id: "state", title: "State", type: "text" },
       { id: "country", title: "Country", type: "text" }
     ],
     verificationDocuments: [
-      "drivers-licence",
-      "passport",
-      "bank-statement",
-      "rates-notice",
-      "utility-account"
+      "drivers-licence"
+      // "passport",
+      // "bank-statement",
+      // "rates-notice",
+      // "utility-account"
     ]
   },
   {
@@ -78,7 +79,7 @@ const claims: Claim[] = [
         type: "date"
       }
     ],
-    verificationDocuments: ["drivers-licence", "passport", "birth-certificate"]
+    verificationDocuments: ["drivers-licence"] //"passport", "birth-certificate"
   },
   {
     type: "AdultCredential",
@@ -96,16 +97,17 @@ const claims: Claim[] = [
     ],
     verificationDocuments: ["drivers-licence"]
   },
-  {
-    type: "TaxCredential",
-    key: "0x06",
-    mnemonic: "taxnumber",
-    title: "Tax File Number",
-    description: "Users tax file number",
-    verificationAction: "action",
-    fields: [{ id: "taxFileNumber", title: "Tax File Number", type: "number" }],
-    verificationDocuments: []
-  },
+  // {
+  //   type: "TaxCredential",
+  //   key: "0x06",
+  //   mnemonic: "taxnumber",
+  //   title: "Tax File Number",
+  //   description: "Users tax file number",
+  //   verificationAction: "action",
+  //   fields: [{ id: "taxFileNumber", title: "Tax File Number", type: "number" }],
+  //   verificationDocuments: [],
+  //   hideFromList: true
+  // },
   {
     type: "ProfileImageCredential",
     key: "0x07",

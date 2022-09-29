@@ -9,7 +9,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       sentryDSN:
         process.env.SENTRY_DSN ??
         "https://6965f2d7058b49e9a642b8d60f704eb1@o1345931.ingest.sentry.io/6623100",
-      SENTRY_DEBUG_ENABLE: true
+      SENTRY_DEBUG_ENABLE: true,
+      exchangeSitesJsonUrl:
+        process.env.EXCHANGE_JSON_URL ??
+        "https://raw.githubusercontent.com/dltxio/idem-mobile/development/data/sites.json"
     },
     ...(config as ExpoConfig),
     hooks: {

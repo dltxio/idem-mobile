@@ -60,20 +60,12 @@ const UserDetailsHeader: React.FC = () => {
           value={name}
           bold={true}
           placeholderWidth={90}
-          onPress={() =>
-            navigation.navigate("Claim", {
-              claimType: ClaimTypeConstants.NameCredential
-            })
-          }
+          onPress={() => navigation.navigate("NameClaim")}
         />
         <DetailOrPlaceholder
           value={email}
           placeholderWidth={150}
-          onPress={() =>
-            navigation.navigate("Claim", {
-              claimType: ClaimTypeConstants.EmailCredential
-            })
-          }
+          onPress={() => navigation.navigate("EmailClaim")}
         />
         <Text onPress={showEthAddress}>
           {ethAddress ? truncateAddress(ethAddress) : ""}

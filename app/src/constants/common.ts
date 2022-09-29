@@ -1,7 +1,8 @@
 export enum AlertTitle {
   Success = "Success",
   Error = "Error",
-  Warning = "Warning"
+  Warning = "Warning",
+  InvalidEmail = "InvalidEmail"
 }
 
 export enum ClaimTypeConstants {
@@ -13,4 +14,9 @@ export enum ClaimTypeConstants {
   AddressCredential = "AddressCredential",
   TaxCredential = "TaxCredential",
   ProfileImageCredential = "ProfileImageCredential"
+}
+
+export enum DocumentTypeConstants {
+  LicenceDocument = "drivers-licence",
+  MedicareDocument = "medicare-card"
 }

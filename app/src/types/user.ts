@@ -1,3 +1,6 @@
+import { ClaimType } from "./claim";
+import { DOB, Fullname, LicenceData, MedicareData } from "./document";
+
 export type UserSignup = {
   source: number;
   firstName: string;
@@ -17,18 +20,12 @@ export enum VendorEnum {
 }
 
 export type UserVerifyRequest = {
-  firstName: string;
-  middleName?: string;
-  lastName: string;
-  dob: string;
+  fullName: Fullname;
+  dob: DOB;
   hashEmail: string;
-  houseNumber: string;
-  street: string;
-  suburb: string;
-  postcode: string;
-  state: string;
-  country: string;
-  userId: string;
+  address?: Address;
+  driversLicence: LicenceData;
+  medicareCard: MedicareData;
 };
 
 export type RequestOtpRequest = {
@@ -45,10 +42,16 @@ type ClaimResponsePayload = Record<string, unknown>;
 
 export type IdemVerification = {
   result: KycResult;
-  userId: string;
   thirdPartyVerified: boolean;
   signature: string; //signed claim response
   message: ClaimResponsePayload;
+  hashedPayload: string;
+  JWTs: JWT[];
+};
+
+export type JWT = {
+  claimType: ClaimType;
+  jwt: string;
 };
 
 export type UserDto = {
@@ -87,4 +90,26 @@ export type UsersResponse = {
 export type SignupResponse = {
   userId: string;
   password?: string;
+};
+
+export type ExchangeSignupRequest = {
+  verification: IdemVerification | undefined;
+  source: number;
+  firstName: string;
+  lastName: string;
+  password: string;
+  email: string;
+  mobile?: string | undefined;
+  dob?: string | undefined;
+};
+
+export type Address = {
+  flatNumber?: string;
+  streetNumber: string;
+  streetName: string;
+  streetType: string;
+  postcode: string;
+  suburb: string;
+  state: string;
+  country: string;
 };

@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { Button } from ".";
 import { useClaimsStore, useClaimValue } from "../context/ClaimsStore";
-import usePgp from "../hooks/usePpg";
 import { AlertTitle, ClaimTypeConstants } from "../constants/common";
 import { pgpLocalStorage } from "../utils/local-storage";
 import {
@@ -26,6 +25,16 @@ import isEmail from "validator/lib/isEmail";
 type Props = {
   emailInput: string;
   isEmailVerified: boolean | undefined;
+  generateKeyPair: (
+    name: string | undefined,
+    email: string | undefined
+  ) => Promise<void>;
+  generateKeyPairFromPrivateKey: (
+    privateKey: string | undefined,
+    email: string
+  ) => Promise<void>;
+  resendVerificationEmail: (email: string) => Promise<void>;
+  importPrivateKeyFileFromDevice: () => Promise<string | undefined>;
 };
 
 const PgpSection: React.FC<Props> = (props) => {
@@ -35,13 +44,6 @@ const PgpSection: React.FC<Props> = (props) => {
   const { showActionSheetWithOptions } = useActionSheet();
   const [publicKey, setPublicKey] = React.useState<string>();
   const { addClaim } = useClaimsStore();
-
-  const {
-    generateKeyPair,
-    generateKeyPairFromPrivateKey,
-    resendVerificationEmail,
-    importPrivateKeyFileFromDevice
-  } = usePgp();
 
   const [pgpTitle, setPgpTitle] = React.useState<string>();
 
@@ -56,10 +58,10 @@ const PgpSection: React.FC<Props> = (props) => {
   const extractAndLoadKeyPairFromContent = React.useCallback(
     async (content: string, email: string) => {
       const privateKey = extractPrivateKeyFromContent(content);
-      await generateKeyPairFromPrivateKey(privateKey, email);
+      await props.generateKeyPairFromPrivateKey(privateKey, email);
       await loadKeyFromLocalStorage();
     },
-    [generateKeyPairFromPrivateKey, loadKeyFromLocalStorage]
+    [props.generateKeyPairFromPrivateKey, loadKeyFromLocalStorage]
   );
 
   const importPrivateKeyFromDevice = React.useCallback(
@@ -67,11 +69,11 @@ const PgpSection: React.FC<Props> = (props) => {
       if (!isEmail(email)) {
         return Alert.alert(
           AlertTitle.Warning,
-          "Please type a valid email claim value in the input field."
+          "Please enter a valid email address."
         );
       }
       try {
-        const content = await importPrivateKeyFileFromDevice();
+        const content = await props.importPrivateKeyFileFromDevice();
         if (!content) return;
         await extractAndLoadKeyPairFromContent(content, email);
       } catch (error: any) {
@@ -90,14 +92,14 @@ const PgpSection: React.FC<Props> = (props) => {
       if (!isEmail(email)) {
         return Alert.alert(
           AlertTitle.Warning,
-          "Please type a valid email claim value in the input field."
+          "Please enter a valid email address."
         );
       }
-      await generateKeyPair(name, email);
+      await props.generateKeyPair(name, email);
       await addClaim(ClaimTypeConstants.EmailCredential, { email }, [], false);
       await loadKeyFromLocalStorage();
     },
-    [generateKeyPair]
+    [props.generateKeyPair]
   );
   const toggleSwitch = () => setIsActive((previousState) => !previousState);
 
@@ -192,7 +194,7 @@ const PgpSection: React.FC<Props> = (props) => {
         {publicKey && !props.isEmailVerified && (
           <Text
             style={styles.textStyle}
-            onPress={() => resendVerificationEmail(props.emailInput)}
+            onPress={() => props.resendVerificationEmail(props.emailInput)}
           >
             Didn't receive your verification email?
           </Text>
