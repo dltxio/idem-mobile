@@ -186,25 +186,10 @@ export const userCanVerify = (
     DocumentTypeConstants.LicenceDocument,
     DocumentTypeConstants.MedicareDocument
   ];
-  //The claims that will be verified and therefore can't already be verified to continue
-  const needsToBeUnverified = [
-    // ClaimTypeConstants.AddressCredential,
-    ClaimTypeConstants.BirthCredential,
-    ClaimTypeConstants.NameCredential
-  ];
 
-  let alreadyVerified = false;
   const userDocumentTypes: string[] = [];
 
   const userClaimTypes = userClaims.map((claim) => {
-    //check if claim is already verified but need to be unverified
-    if (
-      needsToBeUnverified.includes(ClaimTypeConstants[claim.type]) &&
-      claim.verified
-    ) {
-      alreadyVerified = true;
-    }
-
     if (requiredClaimsToVerify.includes(ClaimTypeConstants[claim.type])) {
       //check if the required docuements are attached to any claim in requiredClaimsToVerify
       claim.files?.forEach((docId) => {
@@ -219,8 +204,31 @@ export const userCanVerify = (
   });
 
   return (
-    !alreadyVerified &&
     requiredClaimsToVerify.every((type) => userClaimTypes.includes(type)) &&
     requiredDocumentsToVerify.every((type) => userDocumentTypes.includes(type))
   );
+};
+
+/// if every claim that should get verified by greenId is verified this returns true
+/// otherwise returns false
+export const userHasVerified = (userClaims: ClaimWithValue[]) => {
+  //The claims that need to be checked for verification
+  const needsToBeUnverified = [
+    // ClaimTypeConstants.AddressCredential,
+    ClaimTypeConstants.BirthCredential,
+    ClaimTypeConstants.NameCredential
+  ];
+
+  let alreadyVerified = true;
+
+  userClaims.forEach((claim) => {
+    if (
+      needsToBeUnverified.includes(ClaimTypeConstants[claim.type]) &&
+      !claim.verified
+    ) {
+      alreadyVerified = false;
+    }
+  });
+
+  return alreadyVerified;
 };

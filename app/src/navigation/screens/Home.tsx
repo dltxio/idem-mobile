@@ -22,7 +22,11 @@ import useVerifyClaims from "../../hooks/useVerifyClaims";
 import { ClaimTypeConstants } from "../../constants/common";
 import IdemButton from "../../components/Button";
 import { ethers } from "ethers";
-import { getClaimScreenByType, userCanVerify } from "../../utils/claim-utils";
+import {
+  getClaimScreenByType,
+  userCanVerify,
+  userHasVerified
+} from "../../utils/claim-utils";
 import { useDocumentStore } from "../../context/DocumentStore";
 import {
   getLicenceValuesAsObject,
@@ -57,6 +61,10 @@ const Home: React.FC = () => {
 
   const canVerify = React.useMemo(() => {
     return userCanVerify(usersClaims, documents);
+  }, [usersClaims, documents]);
+
+  const hasVerified = React.useMemo(() => {
+    return userHasVerified(usersClaims);
   }, [usersClaims, documents]);
 
   const verifyUserOnProxy = async () => {
@@ -149,7 +157,7 @@ const Home: React.FC = () => {
           <IdemButton
             title="Verify My Claims"
             loading={isVerifying}
-            disabled={!canVerify}
+            disabled={!canVerify || hasVerified}
             onPress={verifyUserOnProxy}
           />
         </View>
