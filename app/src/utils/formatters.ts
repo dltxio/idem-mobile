@@ -7,7 +7,10 @@ export const findYOB = (dob: string) => {
 
 export const findNames = (fullname: string | undefined) => {
   if (fullname) {
-    const fullNameArray = fullname.trim().split(" ");
+    const fullNameArray = fullname
+      .trim()
+      .split(" ")
+      .filter((s) => s !== "");
     const lastIndex = fullNameArray.lastIndexOf("");
     const firstName = fullNameArray.slice(0, 1).join("");
     const middleName = fullNameArray.slice(1, lastIndex).join(" ");
