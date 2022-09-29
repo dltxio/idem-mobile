@@ -48,7 +48,6 @@ const Home: React.FC = () => {
       navigation.navigate(screenName);
     }
   };
-  const address = useClaimValue(ClaimTypeConstants.AddressCredential);
   const email = useClaimValue(ClaimTypeConstants.EmailCredential);
   const dob = useClaimValue(ClaimTypeConstants.BirthCredential);
   const name = useClaimValue(ClaimTypeConstants.NameCredential);
@@ -68,7 +67,7 @@ const Home: React.FC = () => {
   }, [usersClaims, documents]);
 
   const verifyUserOnProxy = async () => {
-    if (splitName && dob && address && email) {
+    if (splitName && email) {
       setIsVerifying(true);
       await new Promise((resolve) => {
         setTimeout(resolve, 1);
@@ -150,7 +149,7 @@ const Home: React.FC = () => {
         <View style={styles.buttonWrapper}>
           {!canVerify && (
             <Text style={styles.verifyText}>
-              Complete your Name and DOB claims and attached Medicare and Driver
+              Complete your Name, DOB and Email claims and attached Medicare and
               Licence documents to verify
             </Text>
           )}
