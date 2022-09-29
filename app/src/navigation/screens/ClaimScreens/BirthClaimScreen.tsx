@@ -116,7 +116,9 @@ const BirthClaimScreen: React.FC = () => {
         <Button
           title={"Save"}
           loading={loading}
-          onPress={() => onSave(formState, claim.type, navigation)}
+          onPress={() =>
+            onSave(formState, claim.type, navigation, selectedFileIds)
+          }
           disabled={!canSave}
         />
       </View>

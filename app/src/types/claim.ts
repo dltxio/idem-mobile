@@ -31,12 +31,14 @@ export type ClaimData = {
   value: any; // each claim type has it own value type. todo - make generic
   files?: string[];
   verified?: boolean;
+  proof?: string;
 };
 
 export type ClaimWithValue = Claim & {
   value: any; // each claim type has it own value type. todo - make generic
   verified?: boolean;
   files?: string[];
+  proof?: string;
 };
 
 export type ClaimRequestParams = {

@@ -1,26 +1,29 @@
-import { Alert } from "react-native";
 import useApi from "./useApi";
 import { UserVerifyRequest } from "../types/user";
-import { AlertTitle } from "../constants/common";
 import { verificationStorage } from "../utils/local-storage";
+import { useClaimsStore } from "../context/ClaimsStore";
 
 type Hooks = {
   verifyClaims: (
     verifyRequest: UserVerifyRequest,
     expoToken: string | undefined
-  ) => Promise<void>;
+  ) => Promise<string>;
 };
 
 const useVerifyClaims = (): Hooks => {
   const api = useApi();
+  const { updateClaim } = useClaimsStore();
   const verifyClaims = async (
     verifyRequest: UserVerifyRequest,
     expoToken: string | undefined
-  ) => {
-    api
+  ): Promise<string> => {
+    return api
       .verifyClaims(verifyRequest)
       .then(async (response) => {
         await verificationStorage.save(response);
+        response.JWTs.forEach((proof) => {
+          updateClaim(proof.claimType, undefined, undefined, true, proof.jwt);
+        });
         if (expoToken) {
           await api.putUser(verifyRequest.hashEmail, {
             email: verifyRequest.hashEmail,
@@ -29,13 +32,10 @@ const useVerifyClaims = (): Hooks => {
         }
       })
       .then(() => {
-        Alert.alert(
-          AlertTitle.Success,
-          "Your name, date of birth, email, and address have been sent to IDEM to be verified!"
-        );
+        return "Your name, date of birth, email and documents have been sent to IDEM to be verified!";
       })
       .catch((error) => {
-        Alert.alert(AlertTitle.Error, `${error.message}`);
+        return error.message;
       });
   };
 
