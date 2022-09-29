@@ -232,7 +232,8 @@ const DocumentDetailScreen: React.FC = () => {
               <DateTimePicker
                 onChange={(_event, date) => {
                   setShowDate(false, field);
-                  onChange(moment(date).format("DD/MM/yyyy") ?? "", field);
+                  if (_event.type === "set")
+                    onChange(moment(date).format("DD/MM/yyyy") ?? "", field);
                 }}
                 value={new Date()}
               />
