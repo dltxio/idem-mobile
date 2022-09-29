@@ -4,8 +4,8 @@ import {
   View,
   ScrollView,
   Text,
-  Dimensions,
-  StatusBar
+  StatusBar,
+  Alert
 } from "react-native";
 import commonStyles from "../../styles/styles";
 import { ProfileStackNavigation } from "../../types/navigation";
@@ -17,17 +17,28 @@ import usePushNotifications from "../../hooks/usePushNotifications";
 import CreateMnemonicController from "../../components/CreateMnemonicController";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { findNames } from "../../utils/formatters";
-import { UserVerifyRequest } from "../../types/user";
+import { Address, UserVerifyRequest } from "../../types/user";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
 import { ClaimTypeConstants } from "../../constants/common";
 import IdemButton from "../../components/Button";
 import { ethers } from "ethers";
-import { getClaimScreenByType } from "../../utils/claim-utils";
+import {
+  getClaimScreenByType,
+  userCanVerify,
+  userHasVerified
+} from "../../utils/claim-utils";
+import { useDocumentStore } from "../../context/DocumentStore";
+import {
+  getLicenceValuesAsObject,
+  getMedicareValuesAsObject,
+  splitDob
+} from "../../utils/document-utils";
 
 type Navigation = ProfileStackNavigation<"Home">;
 
 const Home: React.FC = () => {
   const { usersClaims, unclaimedClaims } = useClaimsStore();
+  const { documents } = useDocumentStore();
   const navigation = useNavigation<Navigation>();
   const { expoPushToken } = usePushNotifications();
 
@@ -37,7 +48,6 @@ const Home: React.FC = () => {
       navigation.navigate(screenName);
     }
   };
-  const address = useClaimValue(ClaimTypeConstants.AddressCredential);
   const email = useClaimValue(ClaimTypeConstants.EmailCredential);
   const dob = useClaimValue(ClaimTypeConstants.BirthCredential);
   const name = useClaimValue(ClaimTypeConstants.NameCredential);
@@ -46,26 +56,64 @@ const Home: React.FC = () => {
     (claim) => claim.type === ClaimTypeConstants.AddressCredential
   )?.value;
   const { verifyClaims } = useVerifyClaims();
+  const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
+
+  const canVerify = React.useMemo(() => {
+    return userCanVerify(usersClaims, documents);
+  }, [usersClaims, documents]);
+
+  const hasVerified = React.useMemo(() => {
+    return userHasVerified(usersClaims);
+  }, [usersClaims, documents]);
+
   const verifyUserOnProxy = async () => {
-    if (splitName && dob && address && email) {
-      const formattedEmail = email.trim().toLowerCase();
-      const hashEmail = ethers.utils.hashMessage(formattedEmail);
+    if (splitName && email) {
+      setIsVerifying(true);
+      await new Promise((resolve) => {
+        setTimeout(resolve, 1);
+      });
+      try {
+        const formattedEmail = email.trim().toLowerCase();
+        const hashEmail = ethers.utils.hashMessage(formattedEmail);
+        const licenceDocument = documents.find(
+          (doc) => doc.type === "drivers-licence"
+        );
+        const medicareDocument = documents.find(
+          (doc) => doc.type === "medicare-card"
+        );
 
-      const userClaims = {
-        firstName: splitName.firstName,
-        middleName: splitName.middleName,
-        lastName: splitName.lastName,
-        dob,
-        hashEmail,
-        houseNumber: addressValue.houseNumber,
-        street: addressValue.street,
-        suburb: addressValue.suburb,
-        postcode: addressValue.postCode,
-        state: addressValue.state,
-        country: addressValue.country
-      } as UserVerifyRequest;
+        const address = addressValue
+          ? ({
+              streetNumber: addressValue.houseNumber,
+              streetName: addressValue.street,
+              streetType: addressValue.streetType,
+              suburb: addressValue.suburb,
+              postcode: addressValue.postCode,
+              state: addressValue.state,
+              country: addressValue.country
+            } as Address)
+          : undefined;
 
-      await verifyClaims(userClaims, expoPushToken);
+        const userClaims = {
+          fullName: {
+            givenName: splitName.firstName,
+            middleNames: splitName.middleName,
+            surname: splitName.lastName
+          },
+          dob: splitDob(dob),
+          hashEmail,
+          address: address,
+          driversLicence: getLicenceValuesAsObject(licenceDocument),
+          medicareCard: getMedicareValuesAsObject(medicareDocument)
+        } as UserVerifyRequest;
+
+        const result = await verifyClaims(userClaims, expoPushToken);
+        setIsVerifying(false);
+        Alert.alert("", result);
+      } catch (error) {
+        setIsVerifying(false);
+        console.log(error);
+      }
     }
   };
 
@@ -99,17 +147,18 @@ const Home: React.FC = () => {
           </>
         ) : null}
         <View style={styles.buttonWrapper}>
-          {name && dob && address && email && (
-            <View style={styles.buttonWrapper}>
-              <IdemButton
-                title="Verify My Claims"
-                // disabled={signed ? false : true}
-                onPress={async () => {
-                  verifyUserOnProxy();
-                }}
-              />
-            </View>
+          {!canVerify && (
+            <Text style={styles.verifyText}>
+              Complete your Name, DOB and Email claims and attached Medicare and
+              Licence documents to verify
+            </Text>
           )}
+          <IdemButton
+            title="Verify My Claims"
+            loading={isVerifying}
+            disabled={!canVerify || hasVerified}
+            onPress={verifyUserOnProxy}
+          />
         </View>
         <BottomNavBarSpacer />
       </ScrollView>
@@ -123,7 +172,11 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   buttonWrapper: {
-    alignSelf: "center",
-    width: Dimensions.get("window").width * 0.9
+    alignSelf: "stretch"
+  },
+  verifyText: {
+    marginHorizontal: 15,
+    marginBottom: 10,
+    fontSize: 12
   }
 });

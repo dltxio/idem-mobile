@@ -1,7 +1,9 @@
 import * as Linking from "expo-linking";
 import { KeyboardTypeOptions } from "react-native";
+import { ClaimTypeConstants, DocumentTypeConstants } from "../constants/common";
 import claims from "../data/claims";
 import allClaims from "../data/claims";
+import { Document } from "../types/document";
 import {
   Claim,
   ClaimRequestParams,
@@ -166,4 +168,67 @@ export const keyboardTypeMap: {
   email: "email-address",
   number: "number-pad",
   text: undefined
+};
+
+export const userCanVerify = (
+  userClaims: ClaimWithValue[],
+  userDocuments: Document[]
+): boolean => {
+  //The user needs all these claims saved to verify
+  const requiredClaimsToVerify = [
+    // ClaimTypeConstants.AddressCredential,
+    ClaimTypeConstants.EmailCredential,
+    ClaimTypeConstants.BirthCredential,
+    ClaimTypeConstants.NameCredential
+  ];
+  //The user needs these documents attached to any claim in requiredClaimsToVerify
+  const requiredDocumentsToVerify = [
+    DocumentTypeConstants.LicenceDocument,
+    DocumentTypeConstants.MedicareDocument
+  ];
+
+  const userDocumentTypes: string[] = [];
+
+  const userClaimTypes = userClaims.map((claim) => {
+    if (requiredClaimsToVerify.includes(ClaimTypeConstants[claim.type])) {
+      //check if the required docuements are attached to any claim in requiredClaimsToVerify
+      claim.files?.forEach((docId) => {
+        const docType = userDocuments.find((doc) => doc.id === docId)?.type;
+        if (docType && !userDocumentTypes.includes(docType))
+          userDocumentTypes.push(docType);
+      });
+
+      //if the claim has a value assume the user has filled it out and it can be verified
+      if (claim.value) return ClaimTypeConstants[claim.type];
+    }
+  });
+
+  return (
+    requiredClaimsToVerify.every((type) => userClaimTypes.includes(type)) &&
+    requiredDocumentsToVerify.every((type) => userDocumentTypes.includes(type))
+  );
+};
+
+/// if every claim that should get verified by greenId is verified this returns true
+/// otherwise returns false
+export const userHasVerified = (userClaims: ClaimWithValue[]) => {
+  //The claims that need to be checked for verification
+  const needsToBeUnverified = [
+    // ClaimTypeConstants.AddressCredential,
+    ClaimTypeConstants.BirthCredential,
+    ClaimTypeConstants.NameCredential
+  ];
+
+  let alreadyVerified = true;
+
+  userClaims.forEach((claim) => {
+    if (
+      needsToBeUnverified.includes(ClaimTypeConstants[claim.type]) &&
+      !claim.verified
+    ) {
+      alreadyVerified = false;
+    }
+  });
+
+  return alreadyVerified;
 };
