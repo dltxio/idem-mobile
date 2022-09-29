@@ -56,3 +56,9 @@ If you want to build for ios successfully you will need to add the following to 
 
 **If a new package is added to the project, a new build will need to be made and everyone will need to download the newest internal distribution build**
 
+## Testing GreenID Verification
+* set driver's licence number to 11111111
+* set medicare card number to 2111111111
+
+### Testing documentation for greenID verification
+https://vixverify.atlassian.net/wiki/spaces/GREEN/pages/8880678/Data+Testing#DataTesting-Codesforinteractivechecks(Australia)
