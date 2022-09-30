@@ -15,10 +15,6 @@ export type Field = {
   type: FieldType;
 };
 
-export type UploadPGPKeyResponse = {
-  token: string;
-};
-
 export type Vendor = {
   id: number;
   description: string;
@@ -28,7 +24,17 @@ export type Vendor = {
   tagline: string;
   website: string;
   backgroundColor: string;
-  requiredClaimTypes: ClaimType[];
+  requiredClaimTypes: RequiredClaimType[];
+  useProxy: boolean;
+  tempPassword: boolean;
+  passwordComplexity: string;
+  verifyClaims: boolean;
+  enabled: boolean;
+};
+
+export type RequiredClaimType = {
+  type: ClaimType;
+  verified: boolean;
 };
 
 export type VerifyOnProxy = {

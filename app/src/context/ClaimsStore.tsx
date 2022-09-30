@@ -23,9 +23,10 @@ export type ClaimsVault = {
   reset: () => void;
   updateClaim: (
     claimId: ClaimType,
-    claimValue: AddClaim_Value,
-    files: string[],
-    verified: boolean
+    claimValue?: AddClaim_Value,
+    files?: string[],
+    verified?: boolean,
+    proof?: string
   ) => Promise<void>;
 };
 
@@ -50,9 +51,10 @@ export const ClaimsProvider: React.FC<{
 
   const updateClaim = async (
     claimType: ClaimType,
-    claimValue: AddClaim_Value,
-    files: string[],
-    verified: boolean
+    claimValue?: AddClaim_Value,
+    files?: string[],
+    verified?: boolean,
+    proof?: string
   ) => {
     setClaimData((prevClaimData) => {
       const updatedClaimData = prevClaimData.map((cd) => {
@@ -60,9 +62,10 @@ export const ClaimsProvider: React.FC<{
 
         return {
           ...cd,
-          claimValue,
-          files,
-          verified
+          claimValue: claimValue ?? cd.value,
+          files: files ?? cd.files,
+          verified: verified ?? cd.verified,
+          proof: proof ?? cd.proof
         };
       });
       claimsLocalStorage.save(updatedClaimData);
@@ -93,14 +96,14 @@ export const ClaimsProvider: React.FC<{
   );
 
   const addClaim = async (
-    claimId: ClaimType,
+    claimType: ClaimType,
     value: AddClaim_Value,
     files: string[],
     verified?: boolean
   ) => {
     // This is a mock function.
     // In the future we will send this data off to an api to be verified
-    console.log("making a claim", claimId, value, files);
+    console.log("making a claim", claimType, value, files);
 
     await new Promise((resolve) =>
       setTimeout(() => {
@@ -109,10 +112,12 @@ export const ClaimsProvider: React.FC<{
     );
 
     setClaimData((prevClaimData) => {
-      const otherClaimData = prevClaimData.filter((cd) => cd.type !== claimId);
+      const otherClaimData = prevClaimData.filter(
+        (cd) => cd.type !== claimType
+      );
       const updatedClaims = [
         ...otherClaimData,
-        { type: claimId, value, verified }
+        { type: claimType, value, files, verified }
       ];
       claimsLocalStorage.save(updatedClaims);
       return updatedClaims;

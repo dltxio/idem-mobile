@@ -20,6 +20,7 @@ import { useActionSheet } from "@expo/react-native-action-sheet";
 import QRCode from "react-native-qrcode-svg";
 import colors from "../styles/colors";
 import { TextInput } from "react-native-gesture-handler";
+import isEmail from "validator/lib/isEmail";
 
 type Props = {
   emailInput: string;
@@ -65,6 +66,12 @@ const PgpSection: React.FC<Props> = (props) => {
 
   const importPrivateKeyFromDevice = React.useCallback(
     async (email: string) => {
+      if (!isEmail(email)) {
+        return Alert.alert(
+          AlertTitle.Warning,
+          "Please enter a valid email address."
+        );
+      }
       try {
         const content = await props.importPrivateKeyFileFromDevice();
         if (!content) return;
@@ -82,6 +89,12 @@ const PgpSection: React.FC<Props> = (props) => {
   );
   const generateAndPublishNewPgpKey = React.useCallback(
     async (name: string, email: string) => {
+      if (!isEmail(email)) {
+        return Alert.alert(
+          AlertTitle.Warning,
+          "Please enter a valid email address."
+        );
+      }
       await props.generateKeyPair(name, email);
       await addClaim(ClaimTypeConstants.EmailCredential, { email }, [], false);
       await loadKeyFromLocalStorage();
@@ -177,7 +190,6 @@ const PgpSection: React.FC<Props> = (props) => {
           Setup PGP Key
         </Button>
       </View>
-
       <View style={styles.didntGetEmailText}>
         {publicKey && !props.isEmailVerified && (
           <Text
@@ -187,10 +199,9 @@ const PgpSection: React.FC<Props> = (props) => {
             Didn't receive your verification email?
           </Text>
         )}
-
-        <View style={styles.fingerPrint}>
-          {shouldShowPublicKey && <Text>Fingerprint : {pgpTitle}</Text>}
-        </View>
+      </View>
+      <View style={styles.fingerPrint}>
+        {shouldShowPublicKey && <Text>Fingerprint : {pgpTitle}</Text>}
       </View>
     </KeyboardAvoidingView>
   );
@@ -210,6 +221,12 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     margin: 10
   },
+  didntGetEmailText: {
+    alignItems: "center",
+    justtifyContent: "center",
+    margin: 10,
+    alignSelf: "stretch"
+  },
   qrCodeContainer: {
     marginTop: 15,
     minHeight: 250,
@@ -222,12 +239,6 @@ const styles = StyleSheet.create({
   },
   introText: {
     marginBottom: 10
-  },
-  didntGetEmailText: {
-    alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "stretch",
-    margin: 10
   },
   input: {
     marginVertical: 10,
