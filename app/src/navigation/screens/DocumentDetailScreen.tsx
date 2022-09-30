@@ -18,6 +18,7 @@ import useSelectPhoto from "../../hooks/useSelectPhoto";
 import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/image-utils";
 import * as DocumentPicker from "expo-document-picker";
 import { Field } from "../../types/document";
+import ModalDropdown from "react-native-modal-dropdown";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 
@@ -240,6 +241,21 @@ const DocumentDetailScreen: React.FC = () => {
             )}
           </View>
         );
+      case "dropdown":
+        return (
+          <View style={styles.dropdownContainer}>
+            <Text style={styles.dropdownTitle}>{field.title}</Text>
+            <View style={styles.dropdownSelect}>
+              <View style={styles.flex} />
+              <ModalDropdown
+                style={styles.flex}
+                dropdownStyle={styles.dropdownItems}
+                options={field.valueOptions}
+                onSelect={(index, value) => onChange(value, field)}
+              />
+            </View>
+          </View>
+        );
       default:
         return (
           <Input
@@ -337,5 +353,32 @@ const styles = StyleSheet.create({
   fileHeader: {
     fontSize: 20,
     marginBottom: 10
+  },
+
+  flex: {
+    flex: 1
+  },
+
+  dropdownContainer: {
+    paddingHorizontal: 10,
+    minHeight: 60,
+    marginBottom: 20
+  },
+
+  dropdownTitle: {
+    fontSize: 16,
+    color: "#86939e",
+    fontWeight: "bold"
+  },
+
+  dropdownSelect: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderColor: "#86939e",
+    justifyContent: "flex-end"
+  },
+
+  dropdownItems: {
+    width: 100
   }
 });
