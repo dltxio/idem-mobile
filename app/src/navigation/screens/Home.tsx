@@ -109,7 +109,12 @@ const Home: React.FC = () => {
 
         const result = await verifyClaims(userClaims, expoPushToken);
         setIsVerifying(false);
-        Alert.alert(AlertTitle.Message, result);
+        result.success
+          ? Alert.alert(
+              AlertTitle.Success,
+              "Your claims have been successfully verified"
+            )
+          : Alert.alert(AlertTitle.Error, result.message);
       } catch (error: any) {
         setIsVerifying(false);
         Alert.alert(AlertTitle.Error, error.message);
