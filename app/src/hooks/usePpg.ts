@@ -24,12 +24,12 @@ type Hooks = {
   verifyPublicKey: (email: string | undefined) => Promise<void>;
   resendVerificationEmail: (email: string) => Promise<void>;
   importPrivateKeyFileFromDevice: () => Promise<string | undefined>;
-  pgp: PGP | undefined;
+  pgpKey: PGP | undefined;
 };
 
 const usePgp = (): Hooks => {
+  const [pgpKey, setPgpKey] = useState<PGP | undefined>(undefined);
   const api = useApi();
-  const [pgp, setPgp] = useState<PGP | undefined>(undefined);
   const { updateClaim } = useClaimsStore();
 
   const generateKeyPair = async (
@@ -54,7 +54,8 @@ const usePgp = (): Hooks => {
       } as PGP;
 
       await pgpLocalStorage.save(pgp);
-      setPgp(pgp);
+      setPgpKey(pgp);
+
       await uploadPublicKey(email, publicKey);
       Alert.alert(
         AlertTitle.Success,
@@ -82,8 +83,8 @@ const usePgp = (): Hooks => {
         fingerPrint: meta.fingerprint
       } as PGP;
 
-      setPgp(pgp);
       await pgpLocalStorage.save(pgp);
+      setPgpKey(pgp);
       await uploadPublicKey(email, publicKey);
       Alert.alert(
         AlertTitle.Success,
@@ -100,8 +101,8 @@ const usePgp = (): Hooks => {
     const formattedEmail = email.trim().toLowerCase();
     await api
       .uploadPublicKey({
-        hashEmail: ethers.utils.hashMessage(formattedEmail),
-        publicKeyArmored: publicKey
+        email: ethers.utils.hashMessage(formattedEmail),
+        pgpPublicKey: publicKey
       })
       .catch((error) => {
         Alert.alert(AlertTitle.Error, error.message);
@@ -183,7 +184,7 @@ const usePgp = (): Hooks => {
     verifyPublicKey,
     resendVerificationEmail,
     importPrivateKeyFileFromDevice,
-    pgp
+    pgpKey
   };
 };
 

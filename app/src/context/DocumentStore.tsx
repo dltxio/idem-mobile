@@ -2,9 +2,9 @@ import * as React from "react";
 import * as FileSystem from "expo-file-system";
 import * as Crypto from "expo-crypto";
 import uuid from "react-native-uuid";
-import { DocumentType, File } from "../types/document";
+import { Document, DocumentType, File } from "../types/document";
 import { getImageFileName } from "../utils/document-utils";
-import { fileLocalStorage } from "../utils/local-storage";
+import { documentLocalStorage, fileLocalStorage } from "../utils/local-storage";
 import { keccak256 } from "ethers/lib/utils";
 import { Buffer } from "buffer";
 import { Alert } from "react-native";
@@ -14,7 +14,11 @@ export type DocumentsValue = {
   files: File[];
   addFile: (documentType: DocumentType, uri: string) => Promise<string>;
   deleteFile: (fileId: string) => void;
-  reset: () => void;
+  resetFiles: () => void;
+  documents: Document[];
+  addDocument: (_document: Document) => Promise<string>;
+  deleteDocument: (documentId: string) => void;
+  resetDocuments: () => void;
 };
 
 export const DocumentsContext = React.createContext<DocumentsValue | undefined>(
@@ -25,14 +29,15 @@ export const DocumentProvider: React.FC<{
   children: React.ReactNode;
 }> = (props) => {
   const [files, setFiles] = React.useState<File[]>([]);
+  const [documents, setDocuments] = React.useState<Document[]>([]);
 
   React.useEffect(() => {
     (async () => {
-      const initialDocuments = await fileLocalStorage.get();
+      const initialFiles = await fileLocalStorage.get();
+      const initialDocuments = await documentLocalStorage.get();
 
-      if (initialDocuments) {
-        setFiles(initialDocuments);
-      }
+      if (initialFiles) setFiles(initialFiles);
+      if (initialDocuments) setDocuments(initialDocuments);
     })();
   }, []);
 
@@ -112,9 +117,38 @@ export const DocumentProvider: React.FC<{
     setFiles(updatedFiles);
   };
 
-  const reset = () => {
+  const resetFiles = () => {
     fileLocalStorage.clear();
     setFiles([]);
+  };
+
+  const addDocument = async (_document: Document): Promise<string> => {
+    const id = uuid.v4() as string;
+
+    const newDocument: Document = {
+      id,
+      ..._document
+    };
+
+    setDocuments((previous) => {
+      const oldDocs = previous.filter((doc) => doc.id !== newDocument.id);
+      const updatedDocuments = [...oldDocs, newDocument];
+      documentLocalStorage.save(updatedDocuments);
+      return updatedDocuments;
+    });
+
+    return id;
+  };
+
+  const deleteDocument = (documentId: string) => {
+    const updatedDocuments = documents.filter((doc) => doc.id !== documentId);
+    documentLocalStorage.save(updatedDocuments);
+    setDocuments(updatedDocuments);
+  };
+
+  const resetDocuments = () => {
+    documentLocalStorage.clear();
+    setDocuments([]);
   };
 
   const value = React.useMemo(
@@ -122,9 +156,13 @@ export const DocumentProvider: React.FC<{
       files,
       addFile,
       deleteFile,
-      reset
+      resetFiles,
+      documents,
+      addDocument,
+      deleteDocument,
+      resetDocuments
     }),
-    [files, addFile, reset]
+    [files, addFile, resetFiles, documents, addDocument, resetDocuments]
   );
 
   return (
