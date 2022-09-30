@@ -251,6 +251,7 @@ const DocumentDetailScreen: React.FC = () => {
                 dropdownStyle={styles.dropdownItems}
                 options={field.valueOptions}
                 onSelect={(index, value) => onChange(value, field)}
+                defaultValue={formState[field.title]}
               />
             </View>
           </View>
