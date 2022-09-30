@@ -18,6 +18,7 @@ import useSelectPhoto from "../../hooks/useSelectPhoto";
 import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/image-utils";
 import * as DocumentPicker from "expo-document-picker";
 import { Field } from "../../types/document";
+import ModalDropdown from "react-native-modal-dropdown";
 
 type Navigation = DocumentsStackNavigation<"DocumentDetail">;
 
@@ -206,6 +207,10 @@ const DocumentDetailScreen: React.FC = () => {
       <ScrollView style={styles.scrollView}>
         {document?.fields?.map((field, index) => {
           const keyboardType = field.type === "number" ? "numeric" : "default";
+
+          if (field.type === "dropdown") {
+            return <ModalDropdown options={field.valueOptions} />;
+          }
 
           return (
             <Input
