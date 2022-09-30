@@ -77,7 +77,7 @@ const DocumentDetailScreen: React.FC = () => {
     document.fields?.forEach((field) => {
       if (
         field.valueOptions &&
-        !field.valueOptions.includes(formState[field.title].toLowerCase())
+        !field.valueOptions.includes(formState[field.title])
       ) {
         output = false;
         setErrorState((previous) => ({
@@ -95,7 +95,6 @@ const DocumentDetailScreen: React.FC = () => {
   };
 
   const saveButton = () => {
-    console.log(checkFields());
     if (checkFields()) {
       saveDocument();
       navigation.pop();
