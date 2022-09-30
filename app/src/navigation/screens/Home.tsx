@@ -149,7 +149,7 @@ const Home: React.FC = () => {
         <View style={styles.buttonWrapper}>
           {!canVerify && (
             <Text style={styles.verifyText}>
-              Complete your Name, DOB and Email claims and attached Medicare and
+              Complete your Name, DOB and Email claims and attach Medicare and
               Licence documents to verify
             </Text>
           )}
