@@ -82,7 +82,7 @@ const documents: Document[] = [
       {
         title: "Card Type",
         type: "string",
-        valueOptions: ["Green", "Yellow", "Blue"]
+        valueOptions: ["green", "yellow", "blue"]
       },
       {
         title: "Medicare Card Number",

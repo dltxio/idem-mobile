@@ -60,7 +60,7 @@ export type LicenceData = {
 };
 
 export type MedicareData = {
-  colour: "Green" | "Blue" | "Yellow";
+  colour: "green" | "blue" | "yellow";
   number: string;
   individualReferenceNumber: string;
   name: string;

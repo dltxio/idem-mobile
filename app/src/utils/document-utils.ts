@@ -79,7 +79,7 @@ export const getMedicareValuesAsObject = (
   }
 
   const fields: MedicareData = {
-    colour: "Green",
+    colour: "green",
     number: "",
     individualReferenceNumber: "",
     name: "",
@@ -97,7 +97,7 @@ export const getMedicareValuesAsObject = (
     }
     switch (field.title) {
       case "Card Type":
-        fields.colour = (field.value as "Green" | "Blue" | "Yellow") ?? "Green";
+        fields.colour = (field.value as "green" | "blue" | "yellow") ?? "green";
         break;
       case "Medicare Card Number":
         fields.number = field.value ?? "";
