@@ -2,7 +2,8 @@ export enum AlertTitle {
   Success = "Success",
   Error = "Error",
   Warning = "Warning",
-  InvalidEmail = "InvalidEmail"
+  InvalidEmail = "InvalidEmail",
+  Message = "Message"
 }
 
 export enum ClaimTypeConstants {
