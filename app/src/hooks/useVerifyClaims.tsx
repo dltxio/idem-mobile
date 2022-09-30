@@ -7,7 +7,12 @@ type Hooks = {
   verifyClaims: (
     verifyRequest: UserVerifyRequest,
     expoToken: string | undefined
-  ) => Promise<string>;
+  ) => Promise<VerifyClaimResponse>;
+};
+
+type VerifyClaimResponse = {
+  success: boolean;
+  message?: string;
 };
 
 const useVerifyClaims = (): Hooks => {
@@ -16,7 +21,7 @@ const useVerifyClaims = (): Hooks => {
   const verifyClaims = async (
     verifyRequest: UserVerifyRequest,
     expoToken: string | undefined
-  ): Promise<string> => {
+  ): Promise<VerifyClaimResponse> => {
     return api
       .verifyClaims(verifyRequest)
       .then(async (response) => {
@@ -32,10 +37,10 @@ const useVerifyClaims = (): Hooks => {
         }
       })
       .then(() => {
-        return "Your name, date of birth, email and documents have been sent to IDEM to be verified!";
+        return { success: true };
       })
       .catch((error) => {
-        return error.message;
+        return { success: false, message: error.message };
       });
   };
 
