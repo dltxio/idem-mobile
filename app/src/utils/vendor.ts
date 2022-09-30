@@ -1,6 +1,7 @@
 import { Vendor } from "./../types/general";
 import { VendorEnum } from "../types/user";
 import { ClaimWithValue } from "../types/claim";
+import claims from "../data/claims";
 
 export const getVendor = (vendorId: number) => {
   switch (vendorId) {
@@ -25,15 +26,21 @@ export const getUnVerifyClaims = (
 ) => {
   if (!vendor) return;
 
-  return vendor.requiredClaimTypes.filter((requiredClaim) => {
+  return vendor.requiredClaimTypes.map((requiredClaim) => {
     const userClaim = usersClaims.find(
       (claim) => claim.type === requiredClaim.type
     );
+    if (!userClaim) {
+      const claimTitle = claims.find(
+        (c) => c.type === requiredClaim.type
+      )?.title;
+      return `${claimTitle?.toLocaleLowerCase()} claim to be completed`;
+    }
     if (
-      !userClaim ||
-      (requiredClaim.verified && userClaim?.verified !== requiredClaim.verified)
+      requiredClaim.verified &&
+      userClaim?.verified !== requiredClaim.verified
     ) {
-      return requiredClaim;
+      return `${userClaim.title.toLocaleLowerCase()} claim to be verified`;
     }
   });
 };
@@ -50,13 +57,15 @@ export const getUnVerifiedClaimText = (
     return;
   }
 
-  const unVerifiedClaimsTitle = unVerifiedClaims.map((claim) => claim.type);
+  const filterUnVerifiedClaims = unVerifiedClaims.filter(
+    (unVerifiedClaim) => unVerifiedClaim !== undefined
+  );
 
-  if (unVerifiedClaimsTitle.length === 1) return unVerifiedClaimsTitle[0];
+  if (filterUnVerifiedClaims.length === 1) return filterUnVerifiedClaims[0];
 
   return (
-    unVerifiedClaimsTitle.slice(0, -1).join(", ") +
+    filterUnVerifiedClaims.slice(0, -1).join(", ") +
     " and " +
-    unVerifiedClaimsTitle.slice(-1)
+    filterUnVerifiedClaims.slice(-1)
   );
 };
