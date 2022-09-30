@@ -19,7 +19,7 @@ import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { findNames } from "../../utils/formatters";
 import { Address, UserVerifyRequest } from "../../types/user";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
-import { ClaimTypeConstants } from "../../constants/common";
+import { AlertTitle, ClaimTypeConstants } from "../../constants/common";
 import IdemButton from "../../components/Button";
 import { ethers } from "ethers";
 import {
@@ -109,10 +109,10 @@ const Home: React.FC = () => {
 
         const result = await verifyClaims(userClaims, expoPushToken);
         setIsVerifying(false);
-        Alert.alert("", result);
-      } catch (error) {
+        Alert.alert(AlertTitle.Message, result);
+      } catch (error: any) {
         setIsVerifying(false);
-        console.log(error);
+        Alert.alert(AlertTitle.Error, error.message);
       }
     }
   };
