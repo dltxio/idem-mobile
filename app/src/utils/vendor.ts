@@ -61,6 +61,8 @@ export const getUnVerifiedClaimText = (
     (unVerifiedClaim) => unVerifiedClaim !== undefined
   );
 
+  if (filterUnVerifiedClaims.length === 0) return;
+
   if (filterUnVerifiedClaims.length === 1) return filterUnVerifiedClaims[0];
 
   return (
