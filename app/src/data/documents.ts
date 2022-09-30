@@ -86,8 +86,8 @@ const documents: Document[] = [
     fields: [
       {
         title: "Card Type",
-        type: "string",
-        valueOptions: ["Green", "Yellow", "Blue"]
+        type: "dropdown",
+        valueOptions: ["green", "yellow", "blue"]
       },
       {
         title: "Medicare Card Number",

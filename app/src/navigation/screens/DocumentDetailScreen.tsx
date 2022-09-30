@@ -19,11 +19,17 @@ import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/image-utils";
 import * as DocumentPicker from "expo-document-picker";
 import { Field } from "../../types/document";
 import ModalDropdown from "react-native-modal-dropdown";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import moment from "moment";
 
 type Navigation = DocumentsStackNavigation<"DocumentDetail">;
 
 type FormState = {
   [key: string]: string;
+};
+
+type ShowDateState = {
+  [key: string]: boolean;
 };
 
 const DocumentDetailScreen: React.FC = () => {
@@ -40,6 +46,7 @@ const DocumentDetailScreen: React.FC = () => {
   const [formState, setFormState] = React.useState<FormState>({});
   const [errorState, setErrorState] = React.useState<FormState>({});
   const [updateDocs, setUpdateDocs] = React.useState<boolean>(false);
+  const [showDateState, setShowDateState] = React.useState<ShowDateState>({});
 
   const selectedDocuments = React.useMemo(
     () => files.filter((file) => document.fileIds?.includes(file.id)),
@@ -70,7 +77,7 @@ const DocumentDetailScreen: React.FC = () => {
     document.fields?.forEach((field) => {
       if (
         field.valueOptions &&
-        !field.valueOptions.includes(formState[field.title])
+        !field.valueOptions.includes(formState[field.title].toLowerCase())
       ) {
         output = false;
         setErrorState((previous) => ({
@@ -179,6 +186,89 @@ const DocumentDetailScreen: React.FC = () => {
     [setFormState]
   );
 
+  const setShowDate = React.useCallback(
+    (input: boolean, field: Field) => {
+      setShowDateState((previous) => ({
+        ...previous,
+        [field.title]: input
+      }));
+    },
+    [setFormState]
+  );
+
+  const documentInput = (field: Field) => {
+    switch (field.type) {
+      case "string":
+        return (
+          <Input
+            label={field.title}
+            keyboardType="default"
+            autoCapitalize="none"
+            value={formState[field.title]}
+            onChangeText={(input) => onChange(input, field)}
+            errorMessage={errorState[field.title]}
+          />
+        );
+      case "number":
+        return (
+          <Input
+            label={field.title}
+            keyboardType="numeric"
+            autoCapitalize="none"
+            value={formState[field.title]}
+            onChangeText={(input) => onChange(input, field)}
+            errorMessage={errorState[field.title]}
+          />
+        );
+      case "date":
+        return (
+          <View>
+            <Input
+              value={formState[field.title] as string}
+              label={field.title}
+              onFocus={() => setShowDate(true, field)}
+              showSoftInputOnFocus={false}
+            />
+            {showDateState[field.title] && (
+              <DateTimePicker
+                onChange={(_event, date) => {
+                  setShowDate(false, field);
+                  if (_event.type === "set")
+                    onChange(moment(date).format("DD/MM/yyyy") ?? "", field);
+                }}
+                value={new Date()}
+              />
+            )}
+          </View>
+        );
+      case "dropdown":
+        return (
+          <View style={styles.dropdownContainer}>
+            <Text style={styles.dropdownTitle}>{field.title}</Text>
+            <View style={styles.dropdownSelect}>
+              <View style={styles.flex} />
+              <ModalDropdown
+                style={styles.flex}
+                dropdownStyle={styles.dropdownItems}
+                options={field.valueOptions}
+                onSelect={(index, value) => onChange(value, field)}
+              />
+            </View>
+          </View>
+        );
+      default:
+        return (
+          <Input
+            label={field.title}
+            autoCapitalize="none"
+            value={formState[field.title]}
+            onChangeText={(input) => onChange(input, field)}
+            errorMessage={errorState[field.title]}
+          />
+        );
+    }
+  };
+
   return (
     <View>
       <Modal title="" show={showAttachModal} onClose={closeAttachFile}>
@@ -206,25 +296,7 @@ const DocumentDetailScreen: React.FC = () => {
       </Modal>
       <ScrollView style={styles.scrollView}>
         {document?.fields?.map((field, index) => {
-          const keyboardType = field.type === "number" ? "numeric" : "default";
-
-          if (field.type === "dropdown") {
-            return <ModalDropdown options={field.valueOptions} />;
-          }
-
-          return (
-            <Input
-              label={field.title}
-              clearButtonMode="always"
-              keyboardType={keyboardType}
-              autoCapitalize="none"
-              value={formState[field.title]}
-              onChangeText={(input) => onChange(input, field)}
-              editable={true}
-              key={index}
-              errorMessage={errorState[field.title]}
-            />
-          );
+          return <View key={index}>{documentInput(field)}</View>;
         })}
         <View style={styles.fileList}>
           <Text style={styles.fileHeader}>Files</Text>
@@ -281,5 +353,32 @@ const styles = StyleSheet.create({
   fileHeader: {
     fontSize: 20,
     marginBottom: 10
+  },
+
+  flex: {
+    flex: 1
+  },
+
+  dropdownContainer: {
+    paddingHorizontal: 10,
+    minHeight: 60,
+    marginBottom: 20
+  },
+
+  dropdownTitle: {
+    fontSize: 16,
+    color: "#86939e",
+    fontWeight: "bold"
+  },
+
+  dropdownSelect: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderColor: "#86939e",
+    justifyContent: "flex-end"
+  },
+
+  dropdownItems: {
+    width: 100
   }
 });
