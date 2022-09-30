@@ -31,6 +31,7 @@ const usePgp = (): Hooks => {
   const [pgpKey, setPgpKey] = useState<PGP | undefined>(undefined);
   const api = useApi();
   const { updateClaim } = useClaimsStore();
+
   const generateKeyPair = async (
     name: string | undefined,
     email: string | undefined

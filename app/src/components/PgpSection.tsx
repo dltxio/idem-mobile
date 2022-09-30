@@ -215,7 +215,6 @@ const styles = StyleSheet.create({
   textStyle: {
     textDecorationLine: "underline"
   },
-
   fingerPrint: {
     alignItems: "center",
     justifyContent: "center",
@@ -255,7 +254,7 @@ const styles = StyleSheet.create({
   },
   toggle: {
     margin: 5,
-    alignSelf: "stretch"
+    alignSelf: "center"
   },
   warning: {
     alignSelf: "stretch"
