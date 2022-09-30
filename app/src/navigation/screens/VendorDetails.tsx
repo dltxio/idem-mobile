@@ -71,8 +71,7 @@ const VendorDetailsScreen: React.FC = () => {
         {unVerifiedClaimsText !== undefined && (
           <View style={styles.requiredClaimView}>
             <Text style={styles.requiredClaimText}>
-              {vendor?.name} requires your {unVerifiedClaimsText} to be
-              completed.
+              {vendor?.name} requires your {unVerifiedClaimsText}.
             </Text>
           </View>
         )}
