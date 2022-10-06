@@ -12,7 +12,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       SENTRY_DEBUG_ENABLE: true,
       exchangeSitesJsonUrl:
         process.env.EXCHANGE_JSON_URL ??
-        "https://raw.githubusercontent.com/dltxio/idem-mobile/development/data/sites.json"
+        "https://raw.githubusercontent.com/dltxio/idem-mobile/development/data/sites.json",
+      eas: {
+        projectId: "574370e2-908d-4881-ae61-0453066c1e8a"
+      }
     },
     ...(config as ExpoConfig),
     hooks: {
