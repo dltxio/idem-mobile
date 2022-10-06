@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Keyboard } from "react-native";
 import { connectActionSheet } from "@expo/react-native-action-sheet";
 import { BottomNavBarSpacer, Button, FileList, Modal } from "../../components";
 import { useDocumentStore } from "../../context/DocumentStore";
@@ -28,10 +28,6 @@ type FormState = {
   [key: string]: string;
 };
 
-type ShowDateState = {
-  [key: string]: boolean;
-};
-
 const DocumentDetailScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
   const route = useRoute<DocumentsStackNavigationRoute<"DocumentDetail">>();
@@ -46,12 +42,38 @@ const DocumentDetailScreen: React.FC = () => {
   const [formState, setFormState] = React.useState<FormState>({});
   const [errorState, setErrorState] = React.useState<FormState>({});
   const [updateDocs, setUpdateDocs] = React.useState<boolean>(false);
-  const [showDateState, setShowDateState] = React.useState<ShowDateState>({});
 
   const selectedDocuments = React.useMemo(
     () => files.filter((file) => document.fileIds?.includes(file.id)),
     [files, updateDocs]
   );
+
+  const dateRefs = React.useRef<{ [key: string]: any }>({});
+  const [rawDate, setRawDate] = React.useState<Date>();
+  const [showDatePickerForFieldId, setShowDatePickerForFieldId] =
+    React.useState<string>();
+
+  const hideDatePicker = () => {
+    setShowDatePickerForFieldId(undefined);
+    Keyboard.dismiss();
+  };
+
+  const onDateSelect = (date: Date | undefined) => {
+    if (showDatePickerForFieldId) {
+      hideDatePicker();
+      setRawDate(date);
+      setFormState((previous) => ({
+        ...previous,
+        [showDatePickerForFieldId]: moment(date).format("DD/MM/YYYY")
+      }));
+    }
+  };
+
+  const showDatePickerFor = (fieldId: string) => {
+    Keyboard.dismiss();
+    dateRefs.current[fieldId].blur();
+    setShowDatePickerForFieldId(fieldId);
+  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -185,16 +207,6 @@ const DocumentDetailScreen: React.FC = () => {
     [setFormState]
   );
 
-  const setShowDate = React.useCallback(
-    (input: boolean, field: Field) => {
-      setShowDateState((previous) => ({
-        ...previous,
-        [field.title]: input
-      }));
-    },
-    [setFormState]
-  );
-
   const documentInput = (field: Field) => {
     switch (field.type) {
       case "string":
@@ -225,17 +237,18 @@ const DocumentDetailScreen: React.FC = () => {
             <Input
               value={formState[field.title] as string}
               label={field.title}
-              onFocus={() => setShowDate(true, field)}
+              ref={(ref) =>
+                (dateRefs.current = {
+                  [field.title]: ref
+                })
+              }
+              onFocus={() => showDatePickerFor(field.title)}
               showSoftInputOnFocus={false}
             />
-            {showDateState[field.title] && (
+            {showDatePickerForFieldId && (
               <DateTimePicker
-                onChange={(_event, date) => {
-                  setShowDate(false, field);
-                  if (_event.type === "set")
-                    onChange(moment(date).format("DD/MM/yyyy") ?? "", field);
-                }}
-                value={new Date()}
+                onChange={(_event, date) => onDateSelect(date)}
+                value={rawDate ?? new Date()}
               />
             )}
           </View>
