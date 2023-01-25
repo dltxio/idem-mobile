@@ -1,5 +1,6 @@
 name: EAS PIPELINE
 on:
+  workflow_dispatch:
   push:
     branches:
       - development
