@@ -48,7 +48,7 @@
     "react": "18.2.0",
     "react-native": "0.71.3",
     "react-native-dialog": "^9.2.2",
-    "react-native-fast-openpgp": "^2.4.2",
+    "react-native-fast-openpgp": "^2.6.0",
     "react-native-gesture-handler": "~2.9.0",
     "react-native-get-random-values": "~1.8.0",
     "react-native-modal-dropdown": "^1.0.2",
