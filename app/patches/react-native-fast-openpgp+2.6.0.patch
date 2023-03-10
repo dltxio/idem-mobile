@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-fast-openpgp/android/build.gradle b/node_modules/react-native-fast-openpgp/android/build.gradle
+index 05110d0..340a512 100644
+--- a/node_modules/react-native-fast-openpgp/android/build.gradle
++++ b/node_modules/react-native-fast-openpgp/android/build.gradle
+@@ -46,7 +46,7 @@ android {
+ 
+     externalNativeBuild {
+         cmake {
+-            version '3.10.2'
++            version '3.22.1'
+             path "CMakeLists.txt"
+         }
+     }

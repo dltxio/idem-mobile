@@ -149,8 +149,8 @@ const DocumentDetailScreen: React.FC = () => {
     });
     const file = await selectPhotoFromCameraRoll();
 
-    if (!file.cancelled) {
-      saveFile(file.uri);
+    if (!file.canceled) {
+      saveFile(file.assets[0].uri);
     }
   };
 
@@ -160,8 +160,8 @@ const DocumentDetailScreen: React.FC = () => {
       setTimeout(resolve, 100);
     });
     const result = await selectPhotoFromCamera();
-    if (result && !result.cancelled) {
-      saveFile(result.uri);
+    if (result && !result.canceled) {
+      saveFile(result.assets[0].uri);
     }
   };
 
@@ -237,7 +237,7 @@ const DocumentDetailScreen: React.FC = () => {
             <Input
               value={formState[field.title] as string}
               label={field.title}
-              ref={(ref) =>
+              ref={(ref: any) =>
                 (dateRefs.current = {
                   [field.title]: ref
                 })
@@ -347,7 +347,7 @@ const DocumentDetailScreen: React.FC = () => {
   );
 };
 
-export default connectActionSheet(DocumentDetailScreen);
+export default connectActionSheet(DocumentDetailScreen) as React.FC;
 
 const styles = StyleSheet.create({
   button: {
