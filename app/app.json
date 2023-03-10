@@ -3,7 +3,6 @@
     "name": "idemID",
     "slug": "IDEM",
     "version": "2.1.46",
-    "entryPoint": "./src/App.tsx",
     "orientation": "portrait",
     "scheme": "idem",
     "icon": "./assets/iosLogo.png",
@@ -16,9 +15,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "config": {
         "usesNonExemptEncryption": false
