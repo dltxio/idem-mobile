@@ -9,7 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import { DocumentsStackNavigation } from "../../types/navigation";
 import { useDocumentStore } from "../../context/DocumentStore";
 
-type Navigation = DocumentsStackNavigation<"Document Types">;
+type Navigation = DocumentsStackNavigation<"Documents">;
 
 const DocumentTypesScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();

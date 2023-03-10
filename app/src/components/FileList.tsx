@@ -12,7 +12,7 @@ import { getDocumentFromDocumentType } from "../utils/document-utils";
 
 type FileItem = File & { selected?: boolean };
 
-type Navigation = DocumentsStackNavigation<"Document Types">;
+type Navigation = DocumentsStackNavigation<"Documents">;
 
 type Props = {
   files: FileItem[];
