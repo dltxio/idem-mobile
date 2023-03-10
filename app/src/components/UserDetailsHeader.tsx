@@ -32,10 +32,10 @@ const UserDetailsHeader: React.FC = () => {
 
   const addProfileImageClaim = async () => {
     const file = await selectPhotoFromCameraRoll();
-    if (file.cancelled) {
+    if (file.canceled) {
       return;
     }
-    const fileId = await addFile("profile-image", file.uri);
+    const fileId = await addFile("profile-image", file.assets[0].uri);
     addClaim("ProfileImageCredential", { fileId }, []);
   };
 

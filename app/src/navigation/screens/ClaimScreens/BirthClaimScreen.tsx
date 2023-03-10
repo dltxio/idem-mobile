@@ -82,7 +82,7 @@ const BirthClaimScreen: React.FC = () => {
                   value={formState[field.id] as string}
                   key={field.id}
                   label={field.title}
-                  ref={(ref) =>
+                  ref={(ref: any) =>
                     (dateRefs.current = {
                       [field.id]: ref
                     })
