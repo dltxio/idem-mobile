@@ -88,7 +88,7 @@ const TabNavigator = () => {
       <Tab.Screen
         name="DocumentsTab"
         options={{
-          title: "Document Types"
+          title: "Documents"
         }}
         component={DocumentsStackNavigator}
       />

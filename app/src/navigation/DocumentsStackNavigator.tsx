@@ -6,7 +6,7 @@ import DocumentDetailScreen from "./screens/DocumentDetailScreen";
 import { Document } from "../types/document";
 
 export type DocumentsStackParamList = {
-  "Document Types": undefined;
+  "Documents": undefined;
   ViewFile: {
     fileId: string;
   };
@@ -19,8 +19,8 @@ const Stack = createStackNavigator<DocumentsStackParamList>();
 
 const DocumentsStackNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="Document Types">
-      <Stack.Screen name="Document Types" component={DocumentTypesScreen} />
+    <Stack.Navigator initialRouteName="Documents">
+      <Stack.Screen name="Documents" component={DocumentTypesScreen} />
       <Stack.Screen
         name="ViewFile"
         options={() => {
