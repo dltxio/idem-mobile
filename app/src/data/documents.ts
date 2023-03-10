@@ -38,7 +38,7 @@ const documents: Document[] = [
         valueOptions: ["QLD", "NSW", "VIC", "SA", "WA", "TAS", "NT", "ACT"]
       },
       {
-        title: "License Number",
+        title: "Licence Number",
         type: "number"
       },
       {
