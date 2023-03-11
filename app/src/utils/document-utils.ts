@@ -47,7 +47,7 @@ export const getLicenceValuesAsObject = (
       throw new Error("invalid drivers licence data");
     }
     switch (field.title) {
-      case "License Number":
+      case "Licence Number":
         fields.licenceNumber = field.value ?? "";
         break;
       case "Card Number":
