@@ -11,7 +11,7 @@ export type UserSignup = {
   dob?: string;
 };
 
-export enum VendorEnum {
+export enum PartnerEnum {
   GPIB = "GPIB",
   CoinStash = "CoinStash",
   CoinTree = "CoinTree",
