@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { getVendor } from "../src/utils/vendor";
+import { getPartner } from "../src/utils/partner";
 
 describe("Partners", () => {
   it("should get partner from id", () => {
-    expect(getVendor(1)).to.equal("GPIB");
+    expect(getPartner(1)).to.equal("GPIB");
   });
 });

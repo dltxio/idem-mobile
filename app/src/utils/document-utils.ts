@@ -1,4 +1,5 @@
 import allDocuments from "../data/documents";
+import { ClaimType } from "../types/claim";
 import {
   DOB,
   Document,
@@ -139,5 +140,25 @@ export const splitDob = (dob: string | undefined): DOB => {
     throw new Error(
       "Failed to parse Date of birth. Make sure it is in the form dd/mm/yyyy"
     );
+  }
+};
+
+// TODO: REMOVE, PUT HERE TO UNIT TEST
+export const getClaimScreenByType = (claimType: ClaimType) => {
+  switch (claimType) {
+    case "AddressCredential":
+      return "AddressClaim";
+    case "AdultCredential":
+      return "AdultClaim";
+    case "BirthCredential":
+      return "BirthClaim";
+    case "EmailCredential":
+      return "EmailClaim";
+    case "MobileCredential":
+      return "MobileClaim";
+    case "NameCredential":
+      return "NameClaim";
+    default:
+      return "Home";
   }
 };

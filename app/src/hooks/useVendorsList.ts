@@ -3,24 +3,26 @@ import { Vendor } from "../types/general";
 import axios from "axios";
 import config from "../../config";
 
-export type GetVendorsResponse = {
+export type GetPartnersResponse = {
   data: Vendor[];
 };
 
 type Hooks = {
-  vendors: Vendor[];
-  getVendors: () => Promise<void>;
+  partners: Vendor[];
+  getPartners: () => Promise<void>;
 };
 
 const useVendorsList = (): Hooks => {
-  const [vendors, setVendors] = React.useState<Vendor[]>([]);
+  const [partners, setPartners] = React.useState<Vendor[]>([]);
 
-  const getVendors = async () => {
+  const getPartners = async () => {
     try {
       const sitesUrl = config.exchangeSitesJsonUrl;
       if (sitesUrl) {
-        const { data: vendors }: GetVendorsResponse = await axios.get(sitesUrl);
-        setVendors(vendors);
+        const { data: partners }: GetPartnersResponse = await axios.get(
+          sitesUrl
+        );
+        setPartners(partners);
       }
     } catch (error) {
       const err = error as any;
@@ -29,10 +31,10 @@ const useVendorsList = (): Hooks => {
   };
 
   React.useLayoutEffect(() => {
-    getVendors();
+    getPartners();
   }, []);
 
-  return { vendors, getVendors };
+  return { partners, getPartners };
 };
 
 export default useVendorsList;
