@@ -1,7 +1,7 @@
-import { VendorEnum } from "./user";
+import { PartnerEnum } from "./user";
 
 export type Exchange = {
-  vendor: VendorEnum;
+  vendor: PartnerEnum;
   signup: boolean;
   userId: string;
 };

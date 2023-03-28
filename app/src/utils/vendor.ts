@@ -1,20 +1,20 @@
 import { Vendor } from "./../types/general";
-import { VendorEnum } from "../types/user";
+import { PartnerEnum } from "../types/user";
 import { ClaimWithValue } from "../types/claim";
 import claims from "../data/claims";
 
-export const getVendor = (vendorId: number) => {
-  switch (vendorId) {
+export const getVendor = (partnerId: number) => {
+  switch (partnerId) {
     case 1:
-      return VendorEnum.GPIB;
+      return PartnerEnum.GPIB;
     case 2:
-      return VendorEnum.CoinStash;
+      return PartnerEnum.CoinStash;
     case 3:
-      return VendorEnum.CoinTree;
+      return PartnerEnum.CoinTree;
     case 4:
-      return VendorEnum.EasyCrypto;
+      return PartnerEnum.EasyCrypto;
     case 5:
-      return VendorEnum.DigitalSurge;
+      return PartnerEnum.DigitalSurge;
     default:
       return undefined;
   }
