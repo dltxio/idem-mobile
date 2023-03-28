@@ -3,14 +3,14 @@ import { View, StyleSheet, Dimensions, StatusBar, Text } from "react-native";
 import { ListItem } from "@rneui/themed";
 import commonStyles from "../../styles/styles";
 import { useNavigation } from "@react-navigation/native";
-import { VendorStackNavigation } from "../../types/navigation";
+import { PartnersStackNavigaton } from "../../types/navigation";
 import useVendorsList from "../../hooks/useVendorsList";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../../styles/colors";
 
-type Navigation = VendorStackNavigation<"Vendors">;
+type Navigation = PartnersStackNavigaton<"Partners">;
 
-const VendorsScreen: React.FC = () => {
+const PartnersScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
   const { vendors } = useVendorsList();
 
@@ -55,7 +55,7 @@ const VendorsScreen: React.FC = () => {
   );
 };
 
-export default VendorsScreen;
+export default PartnersScreen;
 
 const styles = StyleSheet.create({
   container: {

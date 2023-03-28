@@ -1,6 +1,6 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import VendorsScreen from "./screens/VendorsScreen";
+import VendorsScreen from "./screens/PartnersScreen";
 import VendorDetailsScreen from "./screens/VendorDetails";
 
 export type PartnersStackParamList = {
@@ -10,7 +10,7 @@ export type PartnersStackParamList = {
 
 const Stack = createStackNavigator<PartnersStackParamList>();
 
-const VendorsStackNavigator = () => {
+const PartnersStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -32,4 +32,4 @@ const VendorsStackNavigator = () => {
   );
 };
 
-export default VendorsStackNavigator;
+export default PartnersStackNavigator;

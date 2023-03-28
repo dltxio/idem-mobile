@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { Button } from "../../components";
 import useVendorsList from "../../hooks/useVendorsList";
-import { VendorStackNavigationRoute } from "../../types/navigation";
+import { PartnersStackNavigationRoute } from "../../types/navigation";
 import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import useVendors from "../../hooks/userVendors";
 import { getVendor, getUnVerifiedClaimText } from "../../utils/vendor";
@@ -22,7 +22,7 @@ import { verificationStorage } from "../../utils/local-storage";
 const VendorDetailsScreen: React.FC = () => {
   const { vendors } = useVendorsList();
   const { usersClaims } = useClaimsStore();
-  const route = useRoute<VendorStackNavigationRoute<"VendorDetails">>();
+  const route = useRoute<PartnersStackNavigationRoute<"VendorDetails">>();
   const vendor = vendors.find((v) => v.id == route.params.id);
   const [signed, setSigned] = React.useState<boolean>(false);
   const { signup } = useVendors();
