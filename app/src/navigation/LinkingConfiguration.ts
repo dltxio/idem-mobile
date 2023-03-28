@@ -14,11 +14,11 @@ const linking: LinkingOptions<MainTabParamList> = {
           Claim: "profile/claim"
         }
       },
-      SupportedExchanges: {
-        initialRouteName: "Vendors",
+      Partners: {
+        initialRouteName: "Partners",
         screens: {
-          Vendors: "exchange/vendors",
-          VendorDetails: "exchange/vendors/:id"
+          Partners: "exchange/partners",
+          PartnerDetails: "exchange/partners/:id"
         }
       },
       DocumentsTab: {

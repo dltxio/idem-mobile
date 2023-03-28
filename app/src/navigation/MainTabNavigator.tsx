@@ -5,8 +5,8 @@ import DocumentsStackNavigator from "./DocumentsStackNavigator";
 import ProfileStackNavigator from "./ProfileStackNavigator";
 import SettingsStackNavigator from "./screens/SettingsTabNavigator";
 import VendorsStackNavigator, {
-  VendorStackParamList
-} from "./VendorsStackNavigator";
+  PartnersStackParamList,
+} from "./PartnersStackNavigator";
 import {
   CommonActions,
   ParamListBase,
@@ -22,7 +22,7 @@ export type MainTabParamList = {
   Profile: undefined;
   Partners:
     | undefined
-    | { screen: string; params: PathConfig<VendorStackParamList> };
+    | { screen: string; params: PathConfig<PartnersStackParamList> };
   DocumentsTab: undefined;
   Settings: undefined;
 };
