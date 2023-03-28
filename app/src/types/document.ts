@@ -24,6 +24,7 @@ export type Field = {
   value?: string;
 };
 
+// Should these be enums?
 export type FieldType = "string" | "date" | "number" | "dropdown";
 
 export type File = {

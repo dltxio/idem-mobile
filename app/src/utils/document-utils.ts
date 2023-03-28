@@ -38,7 +38,7 @@ export const getLicenceValuesAsObject = (
     dob: {
       day: 1,
       month: 1,
-      year: 1
+      year: 1900
     }
   };
 
