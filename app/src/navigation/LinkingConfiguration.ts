@@ -17,7 +17,7 @@ const linking: LinkingOptions<MainTabParamList> = {
       Partners: {
         initialRouteName: "Partners",
         screens: {
-          Partners: "exchange/partners",
+          PartnersList: "exchange/partners",
           PartnerDetails: "exchange/partners/:id"
         }
       },
