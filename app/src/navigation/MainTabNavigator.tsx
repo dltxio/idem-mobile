@@ -20,7 +20,7 @@ import { Linking } from "react-native";
 
 export type MainTabParamList = {
   Profile: undefined;
-  SupportedExchanges:
+  Partners:
     | undefined
     | { screen: string; params: PathConfig<VendorStackParamList> };
   DocumentsTab: undefined;
@@ -44,7 +44,7 @@ const TabNavigator = () => {
             index: 0,
             routes: [
               {
-                name: "SupportedExchanges",
+                name: "Partners",
                 state: {
                   type: "stack",
                   index: 1,
@@ -81,9 +81,9 @@ const TabNavigator = () => {
       <Tab.Screen name="Profile" component={ProfileStackNavigator} />
 
       <Tab.Screen
-        name="SupportedExchanges"
+        name="Partners"
         component={VendorsStackNavigator}
-        options={{ title: "Exchanges" }}
+        options={{ title: "Partners" }}
       />
       <Tab.Screen
         name="DocumentsTab"

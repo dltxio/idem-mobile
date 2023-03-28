@@ -166,7 +166,7 @@ const PgpSection: React.FC<Props> = (props) => {
                 options: [
                   "Import Private Key",
                   "Generate new PGP Key",
-                  "cancel"
+                  "Cancel"
                 ],
                 cancelButtonIndex: 2
               },

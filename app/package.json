@@ -42,6 +42,7 @@
     "expo-image-picker": "~14.1.1",
     "expo-linking": "~4.0.1",
     "expo-notifications": "~0.18.1",
+    "expo-splash-screen": "~0.18.1",
     "expo-status-bar": "~1.4.4",
     "expo-updates": "~0.16.3",
     "mocha": "^10.0.0",
@@ -60,8 +61,7 @@
     "react-native-webview": "11.26.0",
     "secure-random-password": "^0.2.3",
     "sentry-expo": "~6.1.0",
-    "validator": "^13.7.0",
-    "expo-splash-screen": "~0.18.1"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
