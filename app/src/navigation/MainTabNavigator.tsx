@@ -4,7 +4,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import DocumentsStackNavigator from "./DocumentsStackNavigator";
 import ProfileStackNavigator from "./ProfileStackNavigator";
 import SettingsStackNavigator from "./screens/SettingsTabNavigator";
-import VendorsStackNavigator, {
+import PartnersStackNavigator, {
   PartnersStackParamList,
 } from "./PartnersStackNavigator";
 import {
@@ -36,7 +36,7 @@ const TabNavigator = () => {
 
   useEffect(() => {
     Linking.addEventListener("url", ({ url }) => {
-      if (url.includes("exchange/vendors")) {
+      if (url.includes("exchange/partners")) {
         const [vendorId] = url.slice(-1);
         navigation.dispatch(
           CommonActions.reset({
@@ -50,10 +50,10 @@ const TabNavigator = () => {
                   index: 1,
                   routes: [
                     {
-                      name: "Vendors"
+                      name: "PartnersList"
                     },
                     {
-                      name: "VendorDetails",
+                      name: "PartnersDetails",
                       params: {
                         id: vendorId
                       }
@@ -82,7 +82,7 @@ const TabNavigator = () => {
 
       <Tab.Screen
         name="Partners"
-        component={VendorsStackNavigator}
+        component={PartnersStackNavigator}
         options={{ title: "Partners" }}
       />
       <Tab.Screen
@@ -113,7 +113,7 @@ const renderTabIcon = (
 ) => {
   const iconFromRouteName: { [key: string]: string } = {
     Profile: "address-book",
-    SupportedExchanges: "university",
+    Partners: "university",
     DocumentsTab: "cog",
     Settings: "bars"
   };

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import VendorsScreen from "./screens/PartnersScreen";
-import VendorDetailsScreen from "./screens/VendorDetails";
+import PartnersScreen from "./screens/PartnersScreen";
+import VendorDetailsScreen from "./screens/VendorDetailsScreen";
 
 export type PartnersStackParamList = {
   Partners: undefined;
@@ -14,7 +14,7 @@ const PartnersStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        component={VendorsScreen}
+        component={PartnersScreen}
         name="Partners"
         options={{ title: "Partners" }}
       />
