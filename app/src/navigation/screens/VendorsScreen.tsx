@@ -17,7 +17,6 @@ const VendorsScreen: React.FC = () => {
   return (
     <View style={[styles.container]}>
       <View style={commonStyles.screenContent}>
-        <Text style={commonStyles.text.smallHeading}>Supported Exchanges</Text>
         <StatusBar hidden={false} />
         {vendors.length > 0 &&
           vendors.map((vendor) => {
