@@ -1,3 +1,4 @@
+import { DocumentTypeConstants } from "../constants/common";
 import { Document } from "../types/document";
 
 const documents: Document[] = [
@@ -29,7 +30,7 @@ const documents: Document[] = [
   //   ]
   // },
   {
-    type: "drivers-licence",
+    type: DocumentTypeConstants.LicenceDocument,
     title: "Driver Licence",
     fields: [
       {
@@ -81,7 +82,7 @@ const documents: Document[] = [
   //   title: "Utility Account"
   // },
   {
-    type: "medicare-card",
+    type: DocumentTypeConstants.MedicareDocument,
     title: "Medicare Card",
     fields: [
       {

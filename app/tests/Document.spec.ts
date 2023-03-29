@@ -1,4 +1,5 @@
 import { expect } from "chai";
+import { DocumentTypeConstants } from "../src/constants/common";
 import { Document, Field, FieldType } from "../src/types/document";
 import {
   getClaimScreenByType,
@@ -15,7 +16,9 @@ describe("Document-Utils", () => {
   });
 
   it.skip("should get document from document type", () => {
-    const actual = getDocumentFromDocumentType("drivers-licence");
+    const actual = getDocumentFromDocumentType(
+      DocumentTypeConstants.LicenceDocument
+    );
     expect(actual).to.be.eq("drivers-licence");
   });
 
@@ -38,7 +41,7 @@ describe("Document-Utils", () => {
 
     const mock: Document = {
       id: "1",
-      type: "drivers-licence",
+      type: DocumentTypeConstants.LicenceDocument,
       title: "Drivers Licence",
       fields: [
         {
@@ -90,6 +93,6 @@ describe("Document-Utils", () => {
 describe("Claims", () => {
   it("should get claim screen by type", () => {
     const actual = getClaimScreenByType("AdultCredential");
-    expect(actual).to.be.eq("AdultCredential");
+    expect(actual).to.be.eq("AddressClaim");
   });
 });

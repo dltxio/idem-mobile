@@ -1,16 +1,18 @@
-export type DocumentType =
-  | "drivers-licence"
-  | "medicare-card"
-  | "profile-image";
-// | "birth-certificate"
-// | "bank-statement"
-// | "rates-notice"
-// | "utility-account"
-// | "passport";
+// export type DocumentType =
+//   | "drivers-licence"
+//   | "medicare-card"
+//   | "profile-image";
+// // | "birth-certificate"
+// // | "bank-statement"
+// // | "rates-notice"
+// // | "utility-account"
+// // | "passport";
+
+import { DocumentTypeConstants } from "../constants/common";
 
 export type Document = {
   id?: string;
-  type: DocumentType;
+  type: DocumentTypeConstants;
   title: string;
   fields?: Field[];
   fileIds?: string[];
@@ -29,7 +31,7 @@ export type FieldType = "string" | "date" | "number" | "dropdown";
 
 export type File = {
   id: string;
-  documentType: DocumentType;
+  documentType: DocumentTypeConstants;
   name: string;
   uri: string;
   hashes: {
@@ -61,7 +63,7 @@ export type LicenceData = {
 };
 
 export type MedicareData = {
-  colour: "green" | "blue" | "yellow";
+  colour: "Green" | "Blue" | "Yellow";
   number: string;
   individualReferenceNumber: string;
   name: string;

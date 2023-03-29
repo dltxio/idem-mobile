@@ -1,15 +1,15 @@
+import { ClaimTypeConstants, DocumentTypeConstants } from "../constants/common";
 import allDocuments from "../data/documents";
 import { ClaimType } from "../types/claim";
 import {
   DOB,
   Document,
-  DocumentType,
   LicenceData,
   MedicareData
 } from "../types/document";
 
 export const getDocumentFromDocumentType = (
-  documentType: DocumentType
+  documentType: DocumentTypeConstants
 ): Document => {
   const document = allDocuments.find((doc) => doc.type === documentType);
   if (document) return document;
@@ -80,7 +80,7 @@ export const getMedicareValuesAsObject = (
   }
 
   const fields: MedicareData = {
-    colour: "green",
+    colour: "Green",
     number: "",
     individualReferenceNumber: "",
     name: "",
@@ -98,7 +98,7 @@ export const getMedicareValuesAsObject = (
     }
     switch (field.title) {
       case "Card Type":
-        fields.colour = (field.value as "green" | "blue" | "yellow") ?? "green";
+        fields.colour = (field.value as "Green" | "Blue" | "Yellow") ?? "Green";
         break;
       case "Medicare Card Number":
         fields.number = field.value ?? "";
@@ -146,17 +146,17 @@ export const splitDob = (dob: string | undefined): DOB => {
 // TODO: REMOVE, PUT HERE TO UNIT TEST
 export const getClaimScreenByType = (claimType: ClaimType) => {
   switch (claimType) {
-    case "AddressCredential":
+    case ClaimTypeConstants.AddressCredential:
       return "AddressClaim";
-    case "AdultCredential":
+    case ClaimTypeConstants.AdultCredential:
       return "AdultClaim";
-    case "BirthCredential":
+    case ClaimTypeConstants.BirthCredential:
       return "BirthClaim";
-    case "EmailCredential":
+    case ClaimTypeConstants.EmailCredential:
       return "EmailClaim";
-    case "MobileCredential":
+    case ClaimTypeConstants.MobileCredential:
       return "MobileClaim";
-    case "NameCredential":
+    case ClaimTypeConstants.NameCredential:
       return "NameClaim";
     default:
       return "Home";

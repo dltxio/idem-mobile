@@ -1,7 +1,9 @@
+import { ClaimTypeConstants, DocumentTypeConstants } from "../constants/common";
 import { Claim } from "../types/claim";
+
 const claims: Claim[] = [
   {
-    type: "EmailCredential",
+    type: ClaimTypeConstants.EmailCredential,
     key: "0x03",
     mnemonic: "email",
     title: "Email",
@@ -11,7 +13,7 @@ const claims: Claim[] = [
     verificationDocuments: []
   },
   {
-    type: "MobileCredential",
+    type: ClaimTypeConstants.MobileCredential,
     key: "0x04",
     mnemonic: "mobilenumber",
     title: "Mobile",
@@ -21,7 +23,7 @@ const claims: Claim[] = [
     verificationDocuments: []
   },
   {
-    type: "NameCredential",
+    type: ClaimTypeConstants.NameCredential,
     key: "0x02",
     mnemonic: "fullname",
     title: "Full Name",
@@ -33,16 +35,12 @@ const claims: Claim[] = [
       { id: "lastName", title: "Last Name", type: "text" }
     ],
     verificationDocuments: [
-      "drivers-licence",
-      // "passport",
-      // "birth-certificate",
-      // "bank-statement",
-      // "rates-notice",
-      "medicare-card"
+      DocumentTypeConstants.LicenceDocument,
+      DocumentTypeConstants.MedicareDocument
     ]
   },
   {
-    type: "AddressCredential",
+    type: ClaimTypeConstants.AddressCredential,
     key: "0x05",
     mnemonic: "address",
     title: "Address",
@@ -57,16 +55,10 @@ const claims: Claim[] = [
       { id: "state", title: "State", type: "text" },
       { id: "country", title: "Country", type: "text" }
     ],
-    verificationDocuments: [
-      "drivers-licence"
-      // "passport",
-      // "bank-statement",
-      // "rates-notice",
-      // "utility-account"
-    ]
+    verificationDocuments: [DocumentTypeConstants.LicenceDocument]
   },
   {
-    type: "BirthCredential",
+    type: ClaimTypeConstants.BirthCredential,
     key: "0x01",
     mnemonic: "dob",
     title: "Date Of Birth",
@@ -79,10 +71,10 @@ const claims: Claim[] = [
         type: "date"
       }
     ],
-    verificationDocuments: ["drivers-licence"] //"passport", "birth-certificate"
+    verificationDocuments: [DocumentTypeConstants.LicenceDocument]
   },
   {
-    type: "AdultCredential",
+    type: ClaimTypeConstants.AdultCredential,
     key: "0x00",
     mnemonic: "eighteenplus",
     title: "18+",
@@ -95,7 +87,7 @@ const claims: Claim[] = [
         type: "boolean"
       }
     ],
-    verificationDocuments: ["drivers-licence"]
+    verificationDocuments: [DocumentTypeConstants.LicenceDocument]
   },
   // {
   //   type: "TaxCredential",
@@ -109,7 +101,7 @@ const claims: Claim[] = [
   //   hideFromList: true
   // },
   {
-    type: "ProfileImageCredential",
+    type: ClaimTypeConstants.ProfileImageCredential,
     key: "0x07",
     mnemonic: "profileImage",
     title: "Profile image",
