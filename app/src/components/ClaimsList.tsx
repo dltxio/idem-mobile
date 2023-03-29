@@ -1,14 +1,15 @@
 import { AntDesign } from "@expo/vector-icons";
 import { View, StyleSheet } from "react-native";
 import { ListItem } from "@rneui/themed";
-import { Claim, ClaimType, ClaimWithValue } from "../types/claim";
+import { Claim, ClaimWithValue } from "../types/claim";
 import { displayClaimValue } from "../utils/claim-utils";
+import { ClaimTypeConstants } from "../constants/common";
 
 type PossiblyVerifiedClaim = Claim & { value?: string };
 
 type Props = {
   claims: PossiblyVerifiedClaim[];
-  onPress: (claimType: ClaimType) => void;
+  onPress: (claimType: ClaimTypeConstants) => void;
 };
 
 const ClaimsList: React.FC<Props> = ({ claims, onPress }) => {

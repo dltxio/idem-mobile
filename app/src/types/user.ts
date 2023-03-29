@@ -1,4 +1,4 @@
-import { ClaimType } from "./claim";
+import { ClaimTypeConstants } from "../constants/common";
 import { DOB, Fullname, LicenceData, MedicareData } from "./document";
 
 export type UserSignup = {
@@ -50,7 +50,7 @@ export type IdemVerification = {
 };
 
 export type JWT = {
-  claimType: ClaimType;
+  claimType: ClaimTypeConstants;
   jwt: string;
 };
 

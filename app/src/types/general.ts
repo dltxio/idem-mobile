@@ -1,4 +1,4 @@
-import { ClaimType } from "./claim";
+import { ClaimTypeConstants } from "../constants/common";
 
 export type FieldType =
   | "text"
@@ -33,7 +33,7 @@ export type Vendor = {
 };
 
 export type RequiredClaimType = {
-  type: ClaimType;
+  type: ClaimTypeConstants;
   verified: boolean;
 };
 

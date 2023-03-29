@@ -35,8 +35,11 @@ const UserDetailsHeader: React.FC = () => {
     if (file.canceled) {
       return;
     }
-    const fileId = await addFile(DocumentTypeConstants.ProfileImage, file.assets[0].uri);
-    addClaim("ProfileImageCredential", { fileId }, []);
+    const fileId = await addFile(
+      DocumentTypeConstants.ProfileImage,
+      file.assets[0].uri
+    );
+    addClaim(ClaimTypeConstants.ProfileImageCredential, { fileId }, []);
   };
 
   const showEthAddress = async () => {
