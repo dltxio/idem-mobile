@@ -17,7 +17,7 @@ const claims: Claim[] = [
     title: "Mobile",
     description: "Users mobile number",
     verificationAction: "otp",
-    fields: [{ id: "mobileNumber", title: "Mobile number", type: "phone" }],
+    fields: [{ id: "mobileNumber", title: "Mobile Number", type: "phone" }],
     verificationDocuments: []
   },
   {
@@ -28,9 +28,9 @@ const claims: Claim[] = [
     description: "Users full name",
     verificationAction: "document-upload",
     fields: [
-      { id: "firstName", title: "First name", type: "text" },
-      { id: "middleName", title: "Middle name", type: "text" },
-      { id: "lastName", title: "Last name", type: "text" }
+      { id: "firstName", title: "First Name", type: "text" },
+      { id: "middleName", title: "Middle Name", type: "text" },
+      { id: "lastName", title: "Last Name", type: "text" }
     ],
     verificationDocuments: [
       "drivers-licence",
@@ -69,13 +69,13 @@ const claims: Claim[] = [
     type: "BirthCredential",
     key: "0x01",
     mnemonic: "dob",
-    title: "Date of Birth",
+    title: "Date Of Birth",
     description: "Users date of birth",
     verificationAction: "document-upload",
     fields: [
       {
         id: "dob",
-        title: "Date of Birth",
+        title: "Date Of Birth",
         type: "date"
       }
     ],
