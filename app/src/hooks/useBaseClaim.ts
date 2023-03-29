@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Alert } from "react-native";
 import { AlertTitle, ClaimTypeConstants } from "../constants/common";
 import { useClaimsStore } from "../context/ClaimsStore";
-import { ClaimData, ClaimType, FormState } from "../types/claim";
+import { ClaimData, FormState } from "../types/claim";
 import { check18Plus } from "../utils/birthday-utils";
 import { claimsLocalStorage } from "../utils/local-storage";
 import usePgp from "./usePpg";
@@ -10,7 +10,7 @@ import usePgp from "./usePpg";
 type Hooks = {
   onSave: (
     formState: FormState,
-    claimType: ClaimType,
+    claimType: ClaimTypeConstants,
     navigation: any,
     files?: string[]
   ) => Promise<void>;
@@ -31,7 +31,7 @@ const useBaseClaim = (): Hooks => {
 
   const onSave = async (
     formState: FormState,
-    claimType: ClaimType,
+    claimType: ClaimTypeConstants,
     navigation: any,
     files?: string[]
   ) => {
@@ -39,8 +39,9 @@ const useBaseClaim = (): Hooks => {
     try {
       await addClaim(claimType, formState, files ?? []);
       const claims = await claimsLocalStorage.get();
-      if (claimType === "BirthCredential") await saveAndCheckBirthday(claims);
-      if (claimType === "EmailCredential") {
+      if (claimType === ClaimTypeConstants.BirthCredential)
+        await saveAndCheckBirthday(claims);
+      if (claimType === ClaimTypeConstants.EmailCredential) {
         const email = (formState.email as string).toLowerCase();
         await verifyPublicKey(email);
       }

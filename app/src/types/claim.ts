@@ -1,21 +1,10 @@
-import { DocumentTypeConstants } from "../constants/common";
+import { ClaimTypeConstants, DocumentTypeConstants } from "../constants/common";
 import { Field } from "./general";
-
-// Remove this and use constants from app/src/constants/common.ts
-export type ClaimType =
-  | "AdultCredential"
-  | "BirthCredential"
-  | "NameCredential"
-  | "EmailCredential"
-  | "MobileCredential"
-  | "AddressCredential"
-  | "TaxCredential"
-  | "ProfileImageCredential";
 
 export type VerificationAction = "document-upload" | "action" | "otp";
 
 export type Claim = {
-  type: ClaimType;
+  type: ClaimTypeConstants;
   key: string;
   mnemonic: string;
   verified?: boolean;
@@ -28,7 +17,7 @@ export type Claim = {
 };
 
 export type ClaimData = {
-  type: ClaimType;
+  type: ClaimTypeConstants;
   value: any; // each claim type has it own value type. todo - make generic
   files?: string[];
   verified?: boolean;
@@ -52,7 +41,7 @@ export type ClaimRequest = {
   host: string;
   callback: string;
   nonce: string;
-  claims: ClaimType[];
+  claims: ClaimTypeConstants[];
 };
 
 export type RequestOptResponse = {

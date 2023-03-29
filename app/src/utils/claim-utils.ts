@@ -7,12 +7,11 @@ import { Document } from "../types/document";
 import {
   Claim,
   ClaimRequestParams,
-  ClaimType,
   ClaimRequest,
   ClaimWithValue
 } from "../types/claim";
 
-export const getClaimScreenByType = (claimType: ClaimType) => {
+export const getClaimScreenByType = (claimType: ClaimTypeConstants) => {
   switch (claimType) {
     case ClaimTypeConstants.AddressCredential:
       return "AddressClaim";
@@ -32,7 +31,7 @@ export const getClaimScreenByType = (claimType: ClaimType) => {
 };
 
 export const getUserClaimByType = (
-  claimType: ClaimType,
+  claimType: ClaimTypeConstants,
   usersClaims: ClaimWithValue[]
 ) => {
   const claim = getClaimFromType(claimType);
@@ -44,13 +43,13 @@ export const getUserClaimByType = (
   };
 };
 
-export const getClaimFromType = (claimType: ClaimType): Claim => {
+export const getClaimFromType = (claimType: ClaimTypeConstants): Claim => {
   const claim = allClaims.find((claim) => claim.type === claimType);
   if (claim) return claim;
   throw Error("Claim not found");
 };
 
-export const getClaimsFromTypes = (claimTypes: ClaimType[]): Claim[] =>
+export const getClaimsFromTypes = (claimTypes: ClaimTypeConstants[]): Claim[] =>
   allClaims.filter((claim) => claimTypes.includes(claim.type));
 
 export const parseClaimRequest = (
@@ -93,12 +92,12 @@ export const parseClaimRequest = (
     host: hostname,
     callback: claimRequest.callback,
     nonce: claimRequest.nonce,
-    claims: validClaimTypes as ClaimType[]
+    claims: validClaimTypes as ClaimTypeConstants[]
   };
 };
 
 export const displayClaimValue = (claim: ClaimWithValue): string => {
-  const formatters: { [key in ClaimType]: (value: any) => string } = {
+  const formatters: { [key in ClaimTypeConstants]: (value: any) => string } = {
     AdultCredential: (value: any) => value.over18,
     BirthCredential: (value: any) => value.dob,
     NameCredential: (value: any) =>
@@ -209,10 +208,10 @@ export const userCanVerify = (
   );
 };
 
-/// if every claim that should get verified by greenId is verified this returns true
-/// otherwise returns false
+// if every claim that should get verified by greenId is verified this returns true
+// otherwise returns false
 export const userHasVerified = (userClaims: ClaimWithValue[]) => {
-  //The claims that need to be checked for verification
+  // The claims that need to be checked for verification
   const needsToBeUnverified = [
     // ClaimTypeConstants.AddressCredential,
     ClaimTypeConstants.BirthCredential,
