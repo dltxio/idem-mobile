@@ -10,7 +10,7 @@ import { useDocumentStore } from "../context/DocumentStore";
 import { useNavigation } from "@react-navigation/native";
 import { ProfileStackNavigation } from "../types/navigation";
 import defaultProfilePicture from "../../assets/default-profile-picture.png";
-import { ClaimTypeConstants } from "../constants/common";
+import { ClaimTypeConstants, DocumentTypeConstants } from "../constants/common";
 import useMnemonic from "../hooks/useMnemonic";
 import { truncateAddress } from "../utils/wallet-utils";
 
@@ -35,7 +35,7 @@ const UserDetailsHeader: React.FC = () => {
     if (file.canceled) {
       return;
     }
-    const fileId = await addFile("profile-image", file.assets[0].uri);
+    const fileId = await addFile(DocumentTypeConstants.ProfileImage, file.assets[0].uri);
     addClaim("ProfileImageCredential", { fileId }, []);
   };
 

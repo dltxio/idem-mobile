@@ -2,17 +2,20 @@ import * as React from "react";
 import * as FileSystem from "expo-file-system";
 import * as Crypto from "expo-crypto";
 import uuid from "react-native-uuid";
-import { Document, DocumentType, File } from "../types/document";
+import { Document, File } from "../types/document";
 import { getImageFileName } from "../utils/document-utils";
 import { documentLocalStorage, fileLocalStorage } from "../utils/local-storage";
 import { keccak256 } from "ethers/lib/utils";
 import { Buffer } from "buffer";
 import { Alert } from "react-native";
-import { AlertTitle } from "../constants/common";
+import { AlertTitle, DocumentTypeConstants } from "../constants/common";
 
 export type DocumentsValue = {
   files: File[];
-  addFile: (documentType: DocumentType, uri: string) => Promise<string>;
+  addFile: (
+    documentType: DocumentTypeConstants,
+    uri: string
+  ) => Promise<string>;
   deleteFile: (fileId: string) => void;
   resetFiles: () => void;
   documents: Document[];
@@ -65,7 +68,7 @@ export const DocumentProvider: React.FC<{
   };
 
   const addFile = async (
-    documentType: DocumentType,
+    documentType: DocumentTypeConstants,
     uri: string
   ): Promise<string> => {
     const name = getImageFileName(uri);

@@ -14,8 +14,8 @@ const PartnersStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        component={PartnersScreen}
         name="Partners"
+        component={PartnersScreen}
         options={{ title: "Partners" }}
       />
       <Stack.Screen

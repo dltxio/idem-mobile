@@ -1,9 +1,9 @@
-import { Vendor } from "./../types/general";
+import { Vendor } from "../types/general";
 import { PartnerEnum } from "../types/user";
 import { ClaimWithValue } from "../types/claim";
 import claims from "../data/claims";
 
-export const getVendor = (partnerId: number) => {
+export const getPartner = (partnerId: number) => {
   switch (partnerId) {
     case 1:
       return PartnerEnum.GPIB;

@@ -7,7 +7,7 @@ import {
   verificationStorage
 } from "../utils/local-storage";
 import { createRandomPassword } from "../utils/randomPassword-utils";
-import { getVendor } from "../utils/vendor";
+import { getPartner } from "../utils/partner";
 import useApi from "./useApi";
 
 type UserInfo = {
@@ -37,7 +37,7 @@ const useVendors = (): Hooks => {
         }
       }
 
-      const vendorName = getVendor(vendor.id);
+      const vendorName = getPartner(vendor.id);
       if (!vendorName) throw new Error("Vendor not found");
 
       const splitName = findNames(name);

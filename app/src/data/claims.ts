@@ -1,7 +1,9 @@
+import { ClaimTypeConstants, DocumentTypeConstants } from "../constants/common";
 import { Claim } from "../types/claim";
+
 const claims: Claim[] = [
   {
-    type: "EmailCredential",
+    type: ClaimTypeConstants.EmailCredential,
     key: "0x03",
     mnemonic: "email",
     title: "Email",
@@ -11,38 +13,34 @@ const claims: Claim[] = [
     verificationDocuments: []
   },
   {
-    type: "MobileCredential",
+    type: ClaimTypeConstants.MobileCredential,
     key: "0x04",
     mnemonic: "mobilenumber",
     title: "Mobile",
     description: "Users mobile number",
     verificationAction: "otp",
-    fields: [{ id: "mobileNumber", title: "Mobile number", type: "phone" }],
+    fields: [{ id: "mobileNumber", title: "Mobile Number", type: "phone" }],
     verificationDocuments: []
   },
   {
-    type: "NameCredential",
+    type: ClaimTypeConstants.NameCredential,
     key: "0x02",
     mnemonic: "fullname",
     title: "Full Name",
     description: "Users full name",
     verificationAction: "document-upload",
     fields: [
-      { id: "firstName", title: "First name", type: "text" },
-      { id: "middleName", title: "Middle name", type: "text" },
-      { id: "lastName", title: "Last name", type: "text" }
+      { id: "firstName", title: "First Name", type: "text" },
+      { id: "middleName", title: "Middle Name", type: "text" },
+      { id: "lastName", title: "Last Name", type: "text" }
     ],
     verificationDocuments: [
-      "drivers-licence",
-      // "passport",
-      // "birth-certificate",
-      // "bank-statement",
-      // "rates-notice",
-      "medicare-card"
+      DocumentTypeConstants.LicenceDocument,
+      DocumentTypeConstants.MedicareDocument
     ]
   },
   {
-    type: "AddressCredential",
+    type: ClaimTypeConstants.AddressCredential,
     key: "0x05",
     mnemonic: "address",
     title: "Address",
@@ -57,32 +55,26 @@ const claims: Claim[] = [
       { id: "state", title: "State", type: "text" },
       { id: "country", title: "Country", type: "text" }
     ],
-    verificationDocuments: [
-      "drivers-licence"
-      // "passport",
-      // "bank-statement",
-      // "rates-notice",
-      // "utility-account"
-    ]
+    verificationDocuments: [DocumentTypeConstants.LicenceDocument]
   },
   {
-    type: "BirthCredential",
+    type: ClaimTypeConstants.BirthCredential,
     key: "0x01",
     mnemonic: "dob",
-    title: "Date of Birth",
+    title: "Date Of Birth",
     description: "Users date of birth",
     verificationAction: "document-upload",
     fields: [
       {
         id: "dob",
-        title: "Date of Birth",
+        title: "Date Of Birth",
         type: "date"
       }
     ],
-    verificationDocuments: ["drivers-licence"] //"passport", "birth-certificate"
+    verificationDocuments: [DocumentTypeConstants.LicenceDocument]
   },
   {
-    type: "AdultCredential",
+    type: ClaimTypeConstants.AdultCredential,
     key: "0x00",
     mnemonic: "eighteenplus",
     title: "18+",
@@ -95,7 +87,7 @@ const claims: Claim[] = [
         type: "boolean"
       }
     ],
-    verificationDocuments: ["drivers-licence"]
+    verificationDocuments: [DocumentTypeConstants.LicenceDocument]
   },
   // {
   //   type: "TaxCredential",
@@ -109,7 +101,7 @@ const claims: Claim[] = [
   //   hideFromList: true
   // },
   {
-    type: "ProfileImageCredential",
+    type: ClaimTypeConstants.ProfileImageCredential,
     key: "0x07",
     mnemonic: "profileImage",
     title: "Profile image",
