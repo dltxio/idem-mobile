@@ -14,16 +14,16 @@ import useVendorsList from "../../hooks/useVendorsList";
 import { PartnersStackNavigationRoute } from "../../types/navigation";
 import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import useVendors from "../../hooks/userVendors";
-import { getVendor, getUnVerifiedClaimText } from "../../utils/vendor";
+import { getPartner, getUnVerifiedClaimText } from "../../utils/partner";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { AlertTitle, ClaimTypeConstants } from "../../constants/common";
 import { verificationStorage } from "../../utils/local-storage";
 
 const VendorDetailsScreen: React.FC = () => {
-  const { vendors } = useVendorsList();
+  const { partners } = useVendorsList();
   const { usersClaims } = useClaimsStore();
   const route = useRoute<PartnersStackNavigationRoute<"VendorDetails">>();
-  const vendor = vendors.find((v) => v.id == route.params.id);
+  const partner = partners.find((v) => v.id == route.params.id);
   const [signed, setSigned] = React.useState<boolean>(false);
   const { signup } = useVendors();
   const email = useClaimValue(ClaimTypeConstants.EmailCredential);
@@ -31,18 +31,18 @@ const VendorDetailsScreen: React.FC = () => {
   const name = useClaimValue(ClaimTypeConstants.NameCredential);
   const mobile = useClaimValue(ClaimTypeConstants.MobileCredential);
 
-  const unVerifiedClaimsText = getUnVerifiedClaimText(vendor, usersClaims);
+  const unVerifiedClaimsText = getUnVerifiedClaimText(partner, usersClaims);
 
   const vendorSignUp = async () => {
-    if (vendor && getVendor(vendor.id) && name && email) {
+    if (partner && getPartner(partner.id) && name && email) {
       const verification = await verificationStorage.get();
-      if (vendor.verifyClaims && !verification) {
+      if (partner.verifyClaims && !verification) {
         return Alert.alert(
           AlertTitle.Warning,
           "Please go to profile screen and verify your claims before signing up."
         );
       }
-      await signup({ name, email, mobile, dob }, vendor);
+      await signup({ name, email, mobile, dob }, partner);
       setSigned(true);
     } else {
       Alert.alert(
@@ -54,15 +54,15 @@ const VendorDetailsScreen: React.FC = () => {
 
   return (
     <ScrollView
-      style={[styles.container, { backgroundColor: vendor?.backgroundColor }]}
-      key={vendor?.name}
+      style={[styles.container, { backgroundColor: partner?.backgroundColor }]}
+      key={partner?.name}
       contentContainerStyle={styles.scrollContent}
     >
-      <Text style={styles.header}>{vendor?.name}</Text>
-      <Text style={styles.tagLine}>{vendor?.tagline}</Text>
-      <Text style={styles.description}>{vendor?.description}</Text>
+      <Text style={styles.header}>{partner?.name}</Text>
+      <Text style={styles.tagLine}>{partner?.tagline}</Text>
+      <Text style={styles.description}>{partner?.description}</Text>
       <Image
-        source={{ uri: vendor?.logo }}
+        source={{ uri: partner?.logo }}
         style={styles.logo}
         resizeMode="center"
       />
@@ -71,7 +71,7 @@ const VendorDetailsScreen: React.FC = () => {
         {unVerifiedClaimsText !== undefined && (
           <View style={styles.requiredClaimView}>
             <Text style={styles.requiredClaimText}>
-              {vendor?.name} requires your {unVerifiedClaimsText}.
+              {partner?.name} requires your {unVerifiedClaimsText}.
             </Text>
           </View>
         )}

@@ -12,23 +12,23 @@ type Navigation = PartnersStackNavigaton<"Partners">;
 
 const PartnersScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
-  const { vendors } = useVendorsList();
+  const { partners } = useVendorsList();
 
   return (
     <View style={[styles.container]}>
       <View style={commonStyles.screenContent}>
         <StatusBar hidden={false} />
-        {vendors.length > 0 &&
-          vendors.map((vendor) => {
-            if (vendor.enabled) {
+        {partners.length > 0 &&
+          partners.map((partner) => {
+            if (partner.enabled) {
               const content = (
                 <>
                   <ListItem.Content>
                     <ListItem.Title style={styles.vendorName}>
-                      {vendor.name}
+                      {partner.name}
                     </ListItem.Title>
                     <ListItem.Subtitle style={styles.tagLine}>
-                      {vendor.tagline}
+                      {partner.tagline}
                     </ListItem.Subtitle>
                   </ListItem.Content>
                   <AntDesign name="right" style={styles.icon} />
@@ -37,11 +37,11 @@ const PartnersScreen: React.FC = () => {
 
               return (
                 <ListItem
-                  key={vendor.name}
+                  key={partner.name}
                   style={styles.container}
                   onPress={() =>
                     navigation.navigate("VendorDetails", {
-                      id: vendor.id
+                      id: partner.id
                     })
                   }
                 >

@@ -1,6 +1,7 @@
+import { DocumentTypeConstants } from "../constants/common";
 import { Field } from "./general";
-import { DocumentType } from "./document";
 
+// Remove this and use constants from app/src/constants/common.ts
 export type ClaimType =
   | "AdultCredential"
   | "BirthCredential"
@@ -22,7 +23,7 @@ export type Claim = {
   description: string;
   verificationAction: VerificationAction;
   fields: Field[];
-  verificationDocuments: DocumentType[];
+  verificationDocuments: DocumentTypeConstants[];
   hideFromList?: boolean;
 };
 

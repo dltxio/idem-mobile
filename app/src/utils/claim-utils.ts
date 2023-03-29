@@ -14,17 +14,17 @@ import {
 
 export const getClaimScreenByType = (claimType: ClaimType) => {
   switch (claimType) {
-    case "AddressCredential":
+    case ClaimTypeConstants.AddressCredential:
       return "AddressClaim";
-    case "AdultCredential":
+    case ClaimTypeConstants.AdultCredential:
       return "AdultClaim";
-    case "BirthCredential":
+    case ClaimTypeConstants.BirthCredential:
       return "BirthClaim";
-    case "EmailCredential":
+    case ClaimTypeConstants.EmailCredential:
       return "EmailClaim";
-    case "MobileCredential":
+    case ClaimTypeConstants.MobileCredential:
       return "MobileClaim";
-    case "NameCredential":
+    case ClaimTypeConstants.NameCredential:
       return "NameClaim";
     default:
       return "Home";

@@ -1,14 +1,15 @@
+import { ClaimTypeConstants, DocumentTypeConstants } from "../constants/common";
 import allDocuments from "../data/documents";
+import { ClaimType } from "../types/claim";
 import {
   DOB,
   Document,
-  DocumentType,
   LicenceData,
   MedicareData
 } from "../types/document";
 
 export const getDocumentFromDocumentType = (
-  documentType: DocumentType
+  documentType: DocumentTypeConstants
 ): Document => {
   const document = allDocuments.find((doc) => doc.type === documentType);
   if (document) return document;
@@ -38,7 +39,7 @@ export const getLicenceValuesAsObject = (
     dob: {
       day: 1,
       month: 1,
-      year: 1
+      year: 1900
     }
   };
 
@@ -79,7 +80,7 @@ export const getMedicareValuesAsObject = (
   }
 
   const fields: MedicareData = {
-    colour: "green",
+    colour: "Green",
     number: "",
     individualReferenceNumber: "",
     name: "",
@@ -97,7 +98,7 @@ export const getMedicareValuesAsObject = (
     }
     switch (field.title) {
       case "Card Type":
-        fields.colour = (field.value as "green" | "blue" | "yellow") ?? "green";
+        fields.colour = (field.value as "Green" | "Blue" | "Yellow") ?? "Green";
         break;
       case "Medicare Card Number":
         fields.number = field.value ?? "";
@@ -139,5 +140,25 @@ export const splitDob = (dob: string | undefined): DOB => {
     throw new Error(
       "Failed to parse Date of birth. Make sure it is in the form dd/mm/yyyy"
     );
+  }
+};
+
+// TODO: REMOVE, PUT HERE TO UNIT TEST
+export const getClaimScreenByType = (claimType: ClaimType) => {
+  switch (claimType) {
+    case ClaimTypeConstants.AddressCredential:
+      return "AddressClaim";
+    case ClaimTypeConstants.AdultCredential:
+      return "AdultClaim";
+    case ClaimTypeConstants.BirthCredential:
+      return "BirthClaim";
+    case ClaimTypeConstants.EmailCredential:
+      return "EmailClaim";
+    case ClaimTypeConstants.MobileCredential:
+      return "MobileClaim";
+    case ClaimTypeConstants.NameCredential:
+      return "NameClaim";
+    default:
+      return "Home";
   }
 };

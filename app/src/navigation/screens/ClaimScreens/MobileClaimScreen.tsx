@@ -50,6 +50,7 @@ const MobileClaimScreen: React.FC = () => {
     const newMobileState = formatMobileNumberState();
     await openVerifyOtpScreen(newMobileState);
   };
+  
   return (
     <View style={commonStyles.screen}>
       <OtpDialog
