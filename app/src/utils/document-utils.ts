@@ -1,6 +1,5 @@
 import { ClaimTypeConstants, DocumentTypeConstants } from "../constants/common";
 import allDocuments from "../data/documents";
-import { ClaimType } from "../types/claim";
 import {
   DOB,
   Document,
@@ -144,7 +143,7 @@ export const splitDob = (dob: string | undefined): DOB => {
 };
 
 // TODO: REMOVE, PUT HERE TO UNIT TEST
-export const getClaimScreenByType = (claimType: ClaimType) => {
+export const getClaimScreenByType = (claimType: ClaimTypeConstants) => {
   switch (claimType) {
     case ClaimTypeConstants.AddressCredential:
       return "AddressClaim";

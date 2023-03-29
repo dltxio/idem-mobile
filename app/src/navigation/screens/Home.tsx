@@ -12,7 +12,6 @@ import { ProfileStackNavigation } from "../../types/navigation";
 import { ClaimsList, UserDetailsHeader } from "../../components";
 import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import { useNavigation } from "@react-navigation/native";
-import { ClaimType } from "../../types/claim";
 import usePushNotifications from "../../hooks/usePushNotifications";
 import CreateMnemonicController from "../../components/CreateMnemonicController";
 import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
@@ -42,7 +41,7 @@ const Home: React.FC = () => {
   const navigation = useNavigation<Navigation>();
   const { expoPushToken } = usePushNotifications();
 
-  const navigateToClaim = (claimType: ClaimType) => {
+  const navigateToClaim = (claimType: ClaimTypeConstants) => {
     const screenName = getClaimScreenByType(claimType);
     if (screenName) {
       navigation.navigate(screenName);

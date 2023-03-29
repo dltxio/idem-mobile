@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Alert } from "react-native";
-import { AlertTitle } from "../constants/common";
+import { AlertTitle, ClaimTypeConstants } from "../constants/common";
 import { useClaimsStore } from "../context/ClaimsStore";
 import { Navigation } from "../navigation/screens/ClaimScreens/MobileClaimScreen";
 import {
-  ClaimType,
   FormState,
   MobileClaimFormState,
   RequestOptResponse
@@ -20,7 +19,7 @@ type Hooks = {
     otpCode: string | undefined,
     formState: FormState,
     navigation: Navigation,
-    claimType: ClaimType
+    claimType: ClaimTypeConstants
   ) => Promise<void>;
 };
 
@@ -62,7 +61,7 @@ const useMobileClaim = (): Hooks => {
     otpCode: string | undefined,
     formState: FormState,
     navigation: Navigation,
-    claimType: ClaimType
+    claimType: ClaimTypeConstants
   ) => {
     if (!otpCode || !otpContext) return;
     const { hash, expiryTimestamp } = otpContext;
