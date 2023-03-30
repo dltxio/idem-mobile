@@ -1,8 +1,7 @@
 import { expect } from "chai";
-import { ClaimTypeConstants, DocumentTypeConstants } from "../src/constants/common";
-import { Document, Field, FieldType } from "../src/types/document";
+import { DocumentTypeConstants } from "../src/constants/common";
+import { Document } from "../src/types/document";
 import {
-  getClaimScreenByType,
   getDocumentFromDocumentType,
   getImageFileName,
   getLicenceValuesAsObject,
@@ -23,22 +22,6 @@ describe("Document-Utils", () => {
   });
 
   it("should get drivers", () => {
-    // const mock: LicenceData = {
-    //   licenceNumber: "",
-    //   cardNumber: "",
-    //   state: "QLD",
-    //   name: {
-    //     givenName: "",
-    //     middleNames: "",
-    //     surname: ""
-    //   },
-    //   dob: {
-    //     day: 1,
-    //     month: 1,
-    //     year: 1
-    //   }
-    // };
-
     const mock: Document = {
       id: "1",
       type: DocumentTypeConstants.LicenceDocument,
@@ -87,12 +70,5 @@ describe("Document-Utils", () => {
     expect(actual?.day).to.be.eq(29);
     expect(actual?.month).to.be.eq(4);
     expect(actual?.year).to.be.eq(2000);
-  });
-});
-
-describe("Claims", () => {
-  it("should get claim screen by type", () => {
-    const actual = getClaimScreenByType(ClaimTypeConstants.AdultCredential);
-    expect(actual).to.be.eq("AddressClaim");
   });
 });

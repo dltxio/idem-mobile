@@ -11,6 +11,7 @@ import {
   ClaimWithValue
 } from "../types/claim";
 
+// REMOVE DUPLCATION BUT MAKE TESTABLE
 export const getClaimScreenByType = (claimType: ClaimTypeConstants) => {
   switch (claimType) {
     case ClaimTypeConstants.AddressCredential:
