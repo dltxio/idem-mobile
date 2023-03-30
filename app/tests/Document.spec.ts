@@ -29,31 +29,31 @@ describe("Document-Utils", () => {
       fields: [
         {
           title: "Licence Number",
-          type: "string",
+          type: "text",
           value: "123456789",
           optional: false
         },
         {
           title: "Card Number",
-          type: "string",
+          type: "text",
           value: "abcdefghi",
           optional: false
         },
         {
           title: "First Name",
-          type: "string",
+          type: "text",
           value: "John",
           optional: false
         },
         {
           title: "Middle Name",
-          type: "string",
+          type: "text",
           value: "James",
           optional: true
         },
         {
           title: "Last Name",
-          type: "string",
+          type: "text",
           value: "Smith",
           optional: false
         }

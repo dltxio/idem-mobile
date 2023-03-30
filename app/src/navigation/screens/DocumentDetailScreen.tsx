@@ -209,7 +209,7 @@ const DocumentDetailScreen: React.FC = () => {
 
   const documentInput = (field: Field) => {
     switch (field.type) {
-      case "string":
+      case "text":
         return (
           <Input
             label={field.title}

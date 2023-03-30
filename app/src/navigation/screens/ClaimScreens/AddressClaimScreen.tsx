@@ -10,12 +10,13 @@ import {
 import { ClaimTypeConstants } from "../../../constants/common";
 import { FormState } from "../../../types/claim";
 import React from "react";
-import { FieldType } from "../../../types/document";
+
 import { Input } from "@rneui/themed";
 import useBaseClaim from "../../../hooks/useBaseClaim";
 import VerificationFiles from "../../../components/VerificationFiles";
 import { Button } from "@rneui/base";
 import { useClaimsStore } from "../../../context/ClaimsStore";
+import { FieldType } from "../../../types/common";
 
 type Navigation = ProfileStackNavigation<"AddressClaim">;
 

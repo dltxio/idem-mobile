@@ -1,9 +1,11 @@
 import { ClaimTypeConstants } from "../constants/common";
 
+// Should these be an enum?
 export type FieldType =
+  | "boolean"
   | "text"
   | "date"
-  | "boolean"
+  | "dropdown"
   | "number"
   | "email"
   | "phone"

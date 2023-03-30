@@ -1,4 +1,5 @@
 import { DocumentTypeConstants } from "../constants/common";
+import { FieldType } from "./common";
 
 export type Document = {
   id?: string;
@@ -15,9 +16,6 @@ export type Field = {
   valueOptions?: string[];
   value?: string;
 };
-
-// Should these be enums?
-export type FieldType = "string" | "date" | "number" | "dropdown";
 
 export type File = {
   id: string;

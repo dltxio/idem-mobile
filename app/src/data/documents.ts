@@ -44,20 +44,20 @@ const documents: Document[] = [
       },
       {
         title: "Card Number",
-        type: "string"
+        type: "text"
       },
       {
         title: "First Name",
-        type: "string"
+        type: "text"
       },
       {
         title: "Middle Name",
-        type: "string",
+        type: "text",
         optional: true
       },
       {
         title: "Last Name",
-        type: "string"
+        type: "text"
       },
       {
         title: "Date Of Birth",
@@ -100,11 +100,11 @@ const documents: Document[] = [
       },
       {
         title: "Full Name",
-        type: "string"
+        type: "text"
       },
       {
         title: "Card Expiry Date",
-        type: "string"
+        type: "text"
       },
       {
         title: "Date Of Birth",
