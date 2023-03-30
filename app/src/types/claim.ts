@@ -1,5 +1,5 @@
 import { ClaimTypeConstants, DocumentTypeConstants } from "../constants/common";
-import { Field } from "./general";
+import { Field } from "./common";
 
 export type VerificationAction = "document-upload" | "action" | "otp";
 

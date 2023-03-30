@@ -1,5 +1,5 @@
 import React from "react";
-import { Vendor } from "../types/general";
+import { Vendor } from "../types/common";
 import axios from "axios";
 import config from "../../config";
 

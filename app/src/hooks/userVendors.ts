@@ -1,4 +1,4 @@
-import { Vendor } from "./../types/general";
+import { Vendor } from "../types/common";
 import { Alert } from "react-native";
 import { AlertTitle } from "../constants/common";
 import { findNames } from "../utils/formatters";

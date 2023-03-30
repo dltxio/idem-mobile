@@ -1,13 +1,3 @@
-// export type DocumentType =
-//   | "drivers-licence"
-//   | "medicare-card"
-//   | "profile-image";
-// // | "birth-certificate"
-// // | "bank-statement"
-// // | "rates-notice"
-// // | "utility-account"
-// // | "passport";
-
 import { DocumentTypeConstants } from "../constants/common";
 
 export type Document = {

@@ -1,4 +1,4 @@
-import { Vendor } from "../types/general";
+import { Vendor } from "../types/common";
 import { PartnerEnum } from "../types/user";
 import { ClaimWithValue } from "../types/claim";
 import claims from "../data/claims";
