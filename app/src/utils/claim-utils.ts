@@ -175,7 +175,6 @@ export const userCanVerify = (
 ): boolean => {
   //The user needs all these claims saved to verify
   const requiredClaimsToVerify = [
-    // ClaimTypeConstants.AddressCredential,
     ClaimTypeConstants.EmailCredential,
     ClaimTypeConstants.BirthCredential,
     ClaimTypeConstants.NameCredential
@@ -190,14 +189,14 @@ export const userCanVerify = (
 
   const userClaimTypes = userClaims.map((claim) => {
     if (requiredClaimsToVerify.includes(ClaimTypeConstants[claim.type])) {
-      //check if the required docuements are attached to any claim in requiredClaimsToVerify
+      // check if the required docuements are attached to any claim in requiredClaimsToVerify
       claim.files?.forEach((docId) => {
         const docType = userDocuments.find((doc) => doc.id === docId)?.type;
         if (docType && !userDocumentTypes.includes(docType))
           userDocumentTypes.push(docType);
       });
 
-      //if the claim has a value assume the user has filled it out and it can be verified
+      // if the claim has a value assume the user has filled it out and it can be verified
       if (claim.value) return ClaimTypeConstants[claim.type];
     }
   });
@@ -213,7 +212,6 @@ export const userCanVerify = (
 export const userHasVerified = (userClaims: ClaimWithValue[]) => {
   // The claims that need to be checked for verification
   const needsToBeUnverified = [
-    // ClaimTypeConstants.AddressCredential,
     ClaimTypeConstants.BirthCredential,
     ClaimTypeConstants.NameCredential
   ];
