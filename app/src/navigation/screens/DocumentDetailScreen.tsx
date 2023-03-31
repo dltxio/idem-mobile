@@ -17,7 +17,7 @@ import { Input } from "@rneui/themed";
 import useSelectPhoto from "../../hooks/useSelectPhoto";
 import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/image-utils";
 import * as DocumentPicker from "expo-document-picker";
-import { Field } from "../../types/document";
+import { DocumentField } from "../../types/common";
 import ModalDropdown from "react-native-modal-dropdown";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
@@ -198,7 +198,7 @@ const DocumentDetailScreen: React.FC = () => {
   }, [document, formState]);
 
   const onChange = React.useCallback(
-    (input: string, field: Field) => {
+    (input: string, field: DocumentField) => {
       setFormState((previous) => ({
         ...previous,
         [field.title]: input
@@ -207,7 +207,7 @@ const DocumentDetailScreen: React.FC = () => {
     [setFormState]
   );
 
-  const documentInput = (field: Field) => {
+  const documentInput = (field: DocumentField) => {
     switch (field.type) {
       case "text":
         return (

@@ -11,6 +11,14 @@ export type FieldType =
   | "phone"
   | "house";
 
+export type DocumentField = {
+  title: string;
+  type: FieldType;
+  optional?: boolean;
+  valueOptions?: string[];
+  value?: string;
+};
+
 export type Field = {
   id: string;
   title: string;

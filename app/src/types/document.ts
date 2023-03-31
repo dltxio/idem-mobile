@@ -1,20 +1,12 @@
 import { DocumentTypeConstants } from "../constants/common";
-import { FieldType } from "./common";
+import { DocumentField } from "./common";
 
 export type Document = {
   id?: string;
   type: DocumentTypeConstants;
   title: string;
-  fields?: Field[];
+  fields?: DocumentField[];
   fileIds?: string[];
-};
-
-export type Field = {
-  title: string;
-  type: FieldType;
-  optional?: boolean;
-  valueOptions?: string[];
-  value?: string;
 };
 
 export type File = {
