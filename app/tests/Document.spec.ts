@@ -1,6 +1,9 @@
 import { expect } from "chai";
-import { ClaimTypeConstants, DocumentTypeConstants } from "../src/constants/common";
-import { Document, Field, FieldType } from "../src/types/document";
+import {
+  ClaimTypeConstants,
+  DocumentTypeConstants
+} from "../src/constants/common";
+import { Document } from "../src/types/document";
 import {
   getClaimScreenByType,
   getDocumentFromDocumentType,
