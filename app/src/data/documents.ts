@@ -61,7 +61,7 @@ const documents: Document[] = [
       {
         title: "Card Type",
         type: "dropdown",
-        valueOptions: ["green", "yellow", "blue"]
+        valueOptions: ["Green", "Blue", "Yellow"]
       },
       {
         title: "Medicare Card Number",
@@ -72,11 +72,11 @@ const documents: Document[] = [
         type: "number"
       },
       {
-        title: "Full Name",
+        title: "Name on Card",
         type: "string"
       },
       {
-        title: "Card Expiry Date",
+        title: "Valid To",
         type: "string"
       }
     ]
