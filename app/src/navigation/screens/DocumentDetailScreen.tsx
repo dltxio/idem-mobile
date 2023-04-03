@@ -239,6 +239,7 @@ const DocumentDetailScreen: React.FC = () => {
               label={field.title}
               ref={(ref: any) =>
                 (dateRefs.current = {
+                  ...dateRefs.current,
                   [field.title]: ref
                 })
               }
