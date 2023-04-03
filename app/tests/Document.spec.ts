@@ -96,6 +96,6 @@ describe("Document-Utils", () => {
 describe("Claims", () => {
   it("should get claim screen by type", () => {
     const actual = getClaimScreenByType(ClaimTypeConstants.AdultCredential);
-    expect(actual).to.be.eq("AddressClaim");
+    expect(actual).to.be.eq("AdultClaim");
   });
 });
