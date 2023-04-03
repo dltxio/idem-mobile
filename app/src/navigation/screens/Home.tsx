@@ -126,30 +126,33 @@ const Home: React.FC = () => {
       <StatusBar hidden={false} />
       <UserDetailsHeader />
       <CreateMnemonicController />
-      <ScrollView style={commonStyles.screenContent}>
-        <Text style={commonStyles.text.smallHeading}>Your Claims</Text>
-        {usersClaims.length ? (
-          <ClaimsList
-            claims={usersClaims.filter((c) => !c.hideFromList)}
-            onPress={navigateToClaim}
-          />
-        ) : (
-          <View>
-            <Text style={styles.emptyClaimsText}>
-              You don't have have any claims yet. Get started by verifying a
-              claim below.
-            </Text>
-          </View>
-        )}
-        {unclaimedClaims.length ? (
-          <>
-            <Text style={commonStyles.text.smallHeading}>All Claims</Text>
+      <View style={styles.container}>
+        <ScrollView style={styles.scrollContainer}>
+          <Text style={commonStyles.text.smallHeading}>Your Claims</Text>
+          {usersClaims.length ? (
             <ClaimsList
-              claims={unclaimedClaims.filter((c) => !c.hideFromList)}
+              claims={usersClaims.filter((c) => !c.hideFromList)}
               onPress={navigateToClaim}
             />
-          </>
-        ) : null}
+          ) : (
+            <View>
+              <Text style={styles.emptyClaimsText}>
+                You don't have have any claims yet. Get started by verifying a
+                claim below.
+              </Text>
+            </View>
+          )}
+          {unclaimedClaims.length ? (
+            <>
+              <Text style={commonStyles.text.smallHeading}>All Claims</Text>
+              <ClaimsList
+                claims={unclaimedClaims.filter((c) => !c.hideFromList)}
+                onPress={navigateToClaim}
+              />
+            </>
+          ) : null}
+          {/* <BottomNavBarSpacer /> */}
+        </ScrollView>
         <View style={styles.buttonWrapper}>
           {!canVerify && (
             <Text style={styles.verifyText}>
@@ -164,8 +167,7 @@ const Home: React.FC = () => {
             onPress={verifyUserOnProxy}
           />
         </View>
-        <BottomNavBarSpacer />
-      </ScrollView>
+      </View>
     </View>
   );
 };
@@ -176,11 +178,20 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   buttonWrapper: {
-    alignSelf: "stretch"
+    alignSelf: "stretch",
+    marginBottom: 20
   },
   verifyText: {
     marginHorizontal: 15,
     marginBottom: 10,
     fontSize: 12
+  },
+  container: {
+    ...commonStyles.screenContent,
+    flex: 1,
+    justifyContent: "space-between"
+  },
+  scrollContainer: {
+    flex: 1
   }
 });
