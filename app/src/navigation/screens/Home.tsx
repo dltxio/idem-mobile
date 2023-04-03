@@ -150,22 +150,22 @@ const Home: React.FC = () => {
             />
           </>
         ) : null}
-        <View style={styles.buttonWrapper}>
-          {!canVerify && (
-            <Text style={styles.verifyText}>
-              Complete your Name, DOB and Email claims and attach Medicare and
-              Licence documents to verify
-            </Text>
-          )}
-          <IdemButton
-            title="Verify My Claims"
-            loading={isVerifying}
-            disabled={!canVerify || hasVerified}
-            onPress={verifyUserOnProxy}
-          />
-        </View>
-        <BottomNavBarSpacer />
       </ScrollView>
+      <View style={styles.buttonWrapper}>
+        {!canVerify && (
+          <Text style={styles.verifyText}>
+            Complete your Name, DOB and Email claims and attach Medicare and
+            Licence documents to verify
+          </Text>
+        )}
+        <IdemButton
+          title="Verify My Claims"
+          loading={isVerifying}
+          disabled={!canVerify || hasVerified}
+          onPress={verifyUserOnProxy}
+        />
+      </View>
+      <BottomNavBarSpacer />
     </View>
   );
 };
