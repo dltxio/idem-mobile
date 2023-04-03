@@ -245,7 +245,7 @@ const DocumentDetailScreen: React.FC = () => {
               onFocus={() => showDatePickerFor(field.title)}
               showSoftInputOnFocus={false}
             />
-            {showDatePickerForFieldId && (
+            {showDatePickerForFieldId == field.title && (
               <DateTimePicker
                 onChange={(_event, date) => onDateSelect(date)}
                 value={rawDate ?? new Date()}
