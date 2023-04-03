@@ -2,7 +2,7 @@
   "expo": {
     "name": "idemID",
     "slug": "IDEM",
-    "version": "2.1.58",
+    "version": "2.1.59",
     "orientation": "portrait",
     "scheme": "idem",
     "icon": "./assets/iosLogo.png",
