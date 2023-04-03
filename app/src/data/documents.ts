@@ -2,33 +2,6 @@ import { DocumentTypeConstants } from "../constants/common";
 import { Document } from "../types/document";
 
 const documents: Document[] = [
-  // {
-  //   type: "passport",
-  //   title: "Passport",
-  //   fields: [
-  //     {
-  //       title: "Passport Number",
-  //       type: "number"
-  //     },
-  //     {
-  //       title: "First Name",
-  //       type: "string"
-  //     },
-  //     {
-  //       title: "Middle Name",
-  //       type: "string",
-  //       optional: true
-  //     },
-  //     {
-  //       title: "Last Name",
-  //       type: "string"
-  //     },
-  //     {
-  //       title: "Date Of Birth",
-  //       type: "date"
-  //     }
-  //   ]
-  // },
   {
     type: DocumentTypeConstants.LicenceDocument,
     title: "Driver Licence",
@@ -105,10 +78,24 @@ const documents: Document[] = [
       {
         title: "Card Expiry Date",
         type: "string"
+      }
+    ]
+  },
+  {
+    type: DocumentTypeConstants.PassportDocument,
+    title: "Passport",
+    fields: [
+      {
+        title: "Issue date",
+        type: "date"
       },
       {
-        title: "Date Of Birth",
+        title: "Expiry date",
         type: "date"
+      },
+      {
+        title: "Document number",
+        type: "string"
       }
     ]
   }
