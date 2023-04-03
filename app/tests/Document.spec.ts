@@ -1,6 +1,9 @@
 import { expect } from "chai";
-import { ClaimTypeConstants, DocumentTypeConstants } from "../src/constants/common";
-import { Document, Field, FieldType } from "../src/types/document";
+import {
+  ClaimTypeConstants,
+  DocumentTypeConstants
+} from "../src/constants/common";
+import { Document } from "../src/types/document";
 import {
   getClaimScreenByType,
   getDocumentFromDocumentType,
@@ -93,6 +96,6 @@ describe("Document-Utils", () => {
 describe("Claims", () => {
   it("should get claim screen by type", () => {
     const actual = getClaimScreenByType(ClaimTypeConstants.AdultCredential);
-    expect(actual).to.be.eq("AddressClaim");
+    expect(actual).to.be.eq("AdultClaim");
   });
 });
