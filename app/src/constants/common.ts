@@ -20,5 +20,6 @@ export enum ClaimTypeConstants {
 export enum DocumentTypeConstants {
   LicenceDocument = "drivers-licence",
   MedicareDocument = "medicare-card",
+  PassportDocument = "passport",
   ProfileImage = "profile-image"
 }
