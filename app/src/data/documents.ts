@@ -86,15 +86,15 @@ const documents: Document[] = [
     title: "Passport",
     fields: [
       {
-        title: "Issue date",
+        title: "Issue Date",
         type: "date"
       },
       {
-        title: "Expiry date",
+        title: "Expiry Date",
         type: "date"
       },
       {
-        title: "Document number",
+        title: "Document Number",
         type: "string"
       }
     ]
