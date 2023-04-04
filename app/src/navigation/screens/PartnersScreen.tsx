@@ -15,7 +15,7 @@ const PartnersScreen: React.FC = () => {
   const { partners } = useVendorsList();
 
   return (
-    <View style={[styles.container]}>
+    <View style={commonStyles.screen}>
       <View style={commonStyles.screenContent}>
         <StatusBar hidden={false} />
         {partners.length > 0 &&
@@ -27,9 +27,6 @@ const PartnersScreen: React.FC = () => {
                     <ListItem.Title style={styles.vendorName}>
                       {partner.name}
                     </ListItem.Title>
-                    <ListItem.Subtitle style={styles.tagLine}>
-                      {partner.tagline}
-                    </ListItem.Subtitle>
                   </ListItem.Content>
                   <AntDesign name="right" style={styles.icon} />
                 </>
@@ -61,7 +58,6 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "flex-start",
     alignItems: "center",
-    width: Dimensions.get("window").width,
     marginTop: 1
   },
 
@@ -78,12 +74,6 @@ const styles = StyleSheet.create({
 
   vendorName: {
     fontSize: 17
-  },
-
-  tagLine: {
-    textAlign: "left",
-    fontSize: 15,
-    justifyContent: "flex-start"
   },
 
   headingText: {
