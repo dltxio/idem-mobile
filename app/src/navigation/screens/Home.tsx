@@ -14,7 +14,6 @@ import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import { useNavigation } from "@react-navigation/native";
 import usePushNotifications from "../../hooks/usePushNotifications";
 import CreateMnemonicController from "../../components/CreateMnemonicController";
-import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { findNames } from "../../utils/formatters";
 import { Address, UserVerifyRequest } from "../../types/user";
 import useVerifyClaims from "../../hooks/useVerifyClaims";
