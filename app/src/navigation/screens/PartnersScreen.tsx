@@ -34,8 +34,8 @@ const PartnersScreen: React.FC = () => {
 
               return (
                 <ListItem
+                  bottomDivider
                   key={partner.name}
-                  style={styles.container}
                   onPress={() =>
                     navigation.navigate("VendorDetails", {
                       id: partner.id
@@ -55,27 +55,18 @@ const PartnersScreen: React.FC = () => {
 export default PartnersScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: "flex-start",
-    alignItems: "center",
-    marginTop: 1
-  },
-
   icon: {
     color: colors.black,
     fontSize: 24
   },
-
   header: {
     color: "black",
     fontSize: 40,
     marginBottom: 10
   },
-
   vendorName: {
     fontSize: 17
   },
-
   headingText: {
     right: 100,
     fontWeight: "500" as any,
