@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, StyleSheet, Dimensions, StatusBar } from "react-native";
+import { View, StyleSheet, StatusBar } from "react-native";
 import { ListItem } from "@rneui/themed";
 import commonStyles from "../../styles/styles";
 import { useNavigation } from "@react-navigation/native";
@@ -15,7 +15,7 @@ const PartnersScreen: React.FC = () => {
   const { partners } = useVendorsList();
 
   return (
-    <View style={[styles.container]}>
+    <View style={commonStyles.screen}>
       <View style={commonStyles.screenContent}>
         <StatusBar hidden={false} />
         {partners.length > 0 &&
@@ -27,9 +27,6 @@ const PartnersScreen: React.FC = () => {
                     <ListItem.Title style={styles.vendorName}>
                       {partner.name}
                     </ListItem.Title>
-                    <ListItem.Subtitle style={styles.tagLine}>
-                      {partner.tagline}
-                    </ListItem.Subtitle>
                   </ListItem.Content>
                   <AntDesign name="right" style={styles.icon} />
                 </>
@@ -37,8 +34,8 @@ const PartnersScreen: React.FC = () => {
 
               return (
                 <ListItem
+                  bottomDivider
                   key={partner.name}
-                  style={styles.container}
                   onPress={() =>
                     navigation.navigate("VendorDetails", {
                       id: partner.id
@@ -58,34 +55,18 @@ const PartnersScreen: React.FC = () => {
 export default PartnersScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: "flex-start",
-    alignItems: "center",
-    width: Dimensions.get("window").width,
-    marginTop: 1
-  },
-
   icon: {
     color: colors.black,
     fontSize: 24
   },
-
   header: {
     color: "black",
     fontSize: 40,
     marginBottom: 10
   },
-
   vendorName: {
     fontSize: 17
   },
-
-  tagLine: {
-    textAlign: "left",
-    fontSize: 15,
-    justifyContent: "flex-start"
-  },
-
   headingText: {
     right: 100,
     fontWeight: "500" as any,
