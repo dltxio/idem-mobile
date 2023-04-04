@@ -11,6 +11,7 @@ export type FieldType =
   | "phone"
   | "house";
 
+// Should we use a union type here?  export type DocumentField = Field & {
 export type DocumentField = {
   title: string;
   type: FieldType;

@@ -1,11 +1,6 @@
 import { ClaimTypeConstants, DocumentTypeConstants } from "../constants/common";
 import allDocuments from "../data/documents";
-import {
-  DOB,
-  Document,
-  LicenceData,
-  MedicareData
-} from "../types/document";
+import { DOB, Document, LicenceData, MedicareData } from "../types/document";
 
 export const getDocumentFromDocumentType = (
   documentType: DocumentTypeConstants
@@ -46,6 +41,7 @@ export const getLicenceValuesAsObject = (
     if (!field.optional && (!field.value || field.value === "")) {
       throw new Error("invalid drivers licence data");
     }
+    // Could we not use id here?
     switch (field.title) {
       case "Licence Number":
         fields.licenceNumber = field.value ?? "";
@@ -71,6 +67,7 @@ export const getLicenceValuesAsObject = (
   return fields;
 };
 
+// Couldnt these be a generic Type?
 export const getMedicareValuesAsObject = (
   document: Document | undefined
 ): MedicareData => {
