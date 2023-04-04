@@ -79,7 +79,7 @@ const ProfileStackNavigator = () => {
       <Stack.Screen
         name="MobileClaim"
         options={() => {
-          return { title: "Mobile Number" };
+          return { title: "Mobile" };
         }}
         component={MobileClaimScreen}
       />

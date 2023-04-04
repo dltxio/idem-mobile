@@ -237,15 +237,13 @@ const DocumentDetailScreen: React.FC = () => {
             <Input
               value={formState[field.title] as string}
               label={field.title}
-              ref={(ref: any) =>
-                (dateRefs.current = {
-                  [field.title]: ref
-                })
-              }
+              ref={(ref: any) => {
+                dateRefs.current[field.title] = ref;
+              }}
               onFocus={() => showDatePickerFor(field.title)}
               showSoftInputOnFocus={false}
             />
-            {showDatePickerForFieldId && (
+            {showDatePickerForFieldId == field.title && (
               <DateTimePicker
                 onChange={(_event, date) => onDateSelect(date)}
                 value={rawDate ?? new Date()}

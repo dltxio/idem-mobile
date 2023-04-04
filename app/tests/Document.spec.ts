@@ -1,7 +1,11 @@
 import { expect } from "chai";
-import { DocumentTypeConstants } from "../src/constants/common";
+import {
+  ClaimTypeConstants,
+  DocumentTypeConstants
+} from "../src/constants/common";
 import { Document } from "../src/types/document";
 import {
+  getClaimScreenByType,
   getDocumentFromDocumentType,
   getImageFileName,
   getLicenceValuesAsObject,
@@ -70,5 +74,12 @@ describe("Document-Utils", () => {
     expect(actual?.day).to.be.eq(29);
     expect(actual?.month).to.be.eq(4);
     expect(actual?.year).to.be.eq(2000);
+  });
+});
+
+describe("Claims", () => {
+  it("should get claim screen by type", () => {
+    const actual = getClaimScreenByType(ClaimTypeConstants.AdultCredential);
+    expect(actual).to.be.eq("AdultClaim");
   });
 });
