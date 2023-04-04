@@ -12,8 +12,6 @@ import {
 } from "../../../utils/claim-utils";
 import commonStyles from "../../../styles/styles";
 import { Button, Input } from "@rneui/themed";
-import PgpSection from "../../../components/PgpSection";
-import usePgp from "../../../hooks/usePpg";
 import { useClaimsStore } from "../../../context/ClaimsStore";
 import isEmail from "validator/lib/isEmail";
 
@@ -47,21 +45,6 @@ const EmailClaimScreen: React.FC = () => {
     claim.fields.filter((field) => formState[field.id]).length ===
     claim.fields.length;
 
-  const [hasPgp, setHasPgp] = React.useState<boolean>(false);
-  const {
-    pgpKey,
-    generateKeyPair,
-    generateKeyPairFromPrivateKey,
-    resendVerificationEmail,
-    importPrivateKeyFileFromDevice
-  } = usePgp();
-
-  React.useEffect(() => {
-    if (pgpKey) {
-      setHasPgp(true);
-    }
-  }, [pgpKey]);
-
   const handleSave = async () => {
     if (!isEmail(formState.email as string)) {
       return Alert.alert(
@@ -70,12 +53,6 @@ const EmailClaimScreen: React.FC = () => {
       );
     }
     await onSave(formState, claim.type, navigation);
-    if (!hasPgp) {
-      return Alert.alert(
-        AlertTitle.Warning,
-        "Your Email has been saved, please add a PGP key to verify your email."
-      );
-    }
   };
 
   return (
@@ -108,18 +85,10 @@ const EmailClaimScreen: React.FC = () => {
               );
             })}
           </View>
-          <PgpSection
-            emailInput={formState["email"] as string}
-            isEmailVerified={isEmailVerified}
-            generateKeyPair={generateKeyPair}
-            generateKeyPairFromPrivateKey={generateKeyPairFromPrivateKey}
-            resendVerificationEmail={resendVerificationEmail}
-            importPrivateKeyFileFromDevice={importPrivateKeyFileFromDevice}
-          />
         </ScrollView>
         <View style={styles.buttonWrapper}>
           <Button
-            title={hasPgp ? "Verify" : "Save"}
+            title={"Save"}
             loading={loading}
             onPress={() => handleSave()}
             disabled={!canSave || disableButton}
