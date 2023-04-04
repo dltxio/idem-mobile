@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, StyleSheet, Dimensions, StatusBar } from "react-native";
+import { View, StyleSheet, StatusBar } from "react-native";
 import { ListItem } from "@rneui/themed";
 import commonStyles from "../../styles/styles";
 import { useNavigation } from "@react-navigation/native";
