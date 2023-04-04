@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Alert, ScrollView, StatusBar, View } from "react-native";
+import { Alert, ScrollView, StatusBar, StyleSheet, View } from "react-native";
 import { AlertTitle, ClaimTypeConstants } from "../../../constants/common";
 import useBaseClaim from "../../../hooks/useBaseClaim";
 import ClaimScreenStyles from "../../../styles/ClaimScreenStyles";
@@ -80,48 +80,44 @@ const EmailClaimScreen: React.FC = () => {
 
   return (
     <View style={commonStyles.screen}>
-      <ScrollView style={commonStyles.screenContent}>
-        <View style={ClaimScreenStyles.content}>
-          <StatusBar hidden={false} />
+      <View style={styles.container}>
+        <ScrollView style={styles.scrollContainer}>
+          <View style={ClaimScreenStyles.content}>
+            <StatusBar hidden={false} />
 
-          {claim.fields.map((field) => {
-            const onChange = (value: string) => {
-              setFormState((previous) => ({
-                ...previous,
-                [field.id]: value
-              }));
-            };
+            {claim.fields.map((field) => {
+              const onChange = (value: string) => {
+                setFormState((previous) => ({
+                  ...previous,
+                  [field.id]: value
+                }));
+              };
 
-            return (
-              <View key={field.id}>
-                <Input
-                  label={field.title}
-                  clearButtonMode="always"
-                  keyboardType={keyboardTypeMap["email"]}
-                  autoCapitalize="none"
-                  value={formState[field.id] as string}
-                  onChangeText={onChange}
-                  disabled={disabledEmailInput}
-                />
-              </View>
-            );
-          })}
-        </View>
-        <PgpSection
-          emailInput={formState["email"] as string}
-          isEmailVerified={isEmailVerified}
-          generateKeyPair={generateKeyPair}
-          generateKeyPairFromPrivateKey={generateKeyPairFromPrivateKey}
-          resendVerificationEmail={resendVerificationEmail}
-          importPrivateKeyFileFromDevice={importPrivateKeyFileFromDevice}
-        />
-        <View
-          style={{
-            justifyContent: "flex-end",
-            alignSelf: "stretch",
-            marginTop: 20
-          }}
-        >
+              return (
+                <View key={field.id}>
+                  <Input
+                    label={field.title}
+                    clearButtonMode="always"
+                    keyboardType={keyboardTypeMap["email"]}
+                    autoCapitalize="none"
+                    value={formState[field.id] as string}
+                    onChangeText={onChange}
+                    disabled={disabledEmailInput}
+                  />
+                </View>
+              );
+            })}
+          </View>
+          <PgpSection
+            emailInput={formState["email"] as string}
+            isEmailVerified={isEmailVerified}
+            generateKeyPair={generateKeyPair}
+            generateKeyPairFromPrivateKey={generateKeyPairFromPrivateKey}
+            resendVerificationEmail={resendVerificationEmail}
+            importPrivateKeyFileFromDevice={importPrivateKeyFileFromDevice}
+          />
+        </ScrollView>
+        <View style={styles.buttonWrapper}>
           <Button
             title={hasPgp ? "Verify" : "Save"}
             loading={loading}
@@ -129,9 +125,24 @@ const EmailClaimScreen: React.FC = () => {
             disabled={!canSave || disableButton}
           />
         </View>
-      </ScrollView>
+      </View>
     </View>
   );
 };
 
 export default EmailClaimScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    ...commonStyles.screenContent,
+    flex: 1,
+    justifyContent: "space-between"
+  },
+  scrollContainer: {
+    flex: 1
+  },
+  buttonWrapper: {
+    alignSelf: "stretch",
+    marginBottom: 20
+  }
+});
