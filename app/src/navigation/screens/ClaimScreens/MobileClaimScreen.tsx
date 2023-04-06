@@ -81,7 +81,7 @@ const MobileClaimScreen: React.FC = () => {
             return (
               <View key={field.id}>
                 <Input
-                  label="Country code"
+                  label="Country Code"
                   keyboardType="phone-pad"
                   value={phone.countryCode}
                   defaultValue={"+61"}
