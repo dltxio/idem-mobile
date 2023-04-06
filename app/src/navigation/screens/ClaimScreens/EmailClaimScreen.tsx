@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Alert, ScrollView, StatusBar, StyleSheet, View } from "react-native";
+import { Alert, ScrollView, StatusBar, View } from "react-native";
 import { AlertTitle, ClaimTypeConstants } from "../../../constants/common";
 import useBaseClaim from "../../../hooks/useBaseClaim";
 import ClaimScreenStyles from "../../../styles/ClaimScreenStyles";
