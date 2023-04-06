@@ -148,7 +148,7 @@ const usePgp = (): Hooks => {
             {
               Alert.alert(
                 AlertTitle.Success,
-                "Your PGP key has been successfully verified by IDEM."
+                "Your email has been successfully verified by IDEM."
               );
             }
           } else {
