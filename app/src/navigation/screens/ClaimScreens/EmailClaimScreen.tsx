@@ -12,10 +12,9 @@ import {
 } from "../../../utils/claim-utils";
 import commonStyles from "../../../styles/styles";
 import { Button, Input } from "@rneui/themed";
-import PgpSection from "../../../components/PgpSection";
-import usePgp from "../../../hooks/usePpg";
 import { useClaimsStore } from "../../../context/ClaimsStore";
 import isEmail from "validator/lib/isEmail";
+import useApi from "../../../hooks/useApi";
 
 type Navigation = ProfileStackNavigation<"EmailClaim">;
 
@@ -32,6 +31,7 @@ const EmailClaimScreen: React.FC = () => {
   const [disableButton, setDisableButton] = React.useState(false);
   const [disabledEmailInput, setDisabledEmailInput] = React.useState(false);
   const { loading, onSave } = useBaseClaim();
+  const api = useApi();
 
   const isEmailVerified =
     userClaim?.type === "EmailCredential" && userClaim.verified;
@@ -47,21 +47,6 @@ const EmailClaimScreen: React.FC = () => {
     claim.fields.filter((field) => formState[field.id]).length ===
     claim.fields.length;
 
-  const [hasPgp, setHasPgp] = React.useState<boolean>(false);
-  const {
-    pgpKey,
-    generateKeyPair,
-    generateKeyPairFromPrivateKey,
-    resendVerificationEmail,
-    importPrivateKeyFileFromDevice
-  } = usePgp();
-
-  React.useEffect(() => {
-    if (pgpKey) {
-      setHasPgp(true);
-    }
-  }, [pgpKey]);
-
   const handleSave = async () => {
     if (!isEmail(formState.email as string)) {
       return Alert.alert(
@@ -70,12 +55,26 @@ const EmailClaimScreen: React.FC = () => {
       );
     }
     await onSave(formState, claim.type, navigation);
-    if (!hasPgp) {
+  };
+
+  const handleVerify = async () => {
+    if (!isEmail(formState.email as string)) {
       return Alert.alert(
         AlertTitle.Warning,
-        "Your Email has been saved, please add a PGP key to verify your email."
+        "Please enter a valid email address."
       );
     }
+    await api
+      .createUser({
+        email: formState.email as string
+      })
+      .then(() => {
+        Alert.alert("Email Sent", "IDEM has sent a verification email.");
+      })
+      .catch((error) => {
+        Alert.alert(AlertTitle.Error, error);
+        throw error;
+      });
   };
 
   return (
@@ -107,29 +106,23 @@ const EmailClaimScreen: React.FC = () => {
             );
           })}
         </View>
-        <PgpSection
-          emailInput={formState["email"] as string}
-          isEmailVerified={isEmailVerified}
-          generateKeyPair={generateKeyPair}
-          generateKeyPairFromPrivateKey={generateKeyPairFromPrivateKey}
-          resendVerificationEmail={resendVerificationEmail}
-          importPrivateKeyFileFromDevice={importPrivateKeyFileFromDevice}
-        />
-        <View
-          style={{
-            justifyContent: "flex-end",
-            alignSelf: "stretch",
-            marginTop: 20
-          }}
-        >
-          <Button
-            title={hasPgp ? "Verify" : "Save"}
-            loading={loading}
-            onPress={() => handleSave()}
-            disabled={!canSave || disableButton}
-          />
-        </View>
       </ScrollView>
+      <View style={ClaimScreenStyles.buttonWrapper}>
+        <Button
+          title={"Verify Email"}
+          loading={loading}
+          onPress={() => handleVerify()}
+          disabled={!canSave || disableButton}
+        />
+      </View>
+      <View style={ClaimScreenStyles.buttonWrapper}>
+        <Button
+          title={"Save"}
+          loading={loading}
+          onPress={() => handleSave()}
+          disabled={!canSave || disableButton}
+        />
+      </View>
     </View>
   );
 };
