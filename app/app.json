@@ -2,7 +2,7 @@
   "expo": {
     "name": "idemID",
     "slug": "IDEM",
-    "version": "2.1.65",
+    "version": "2.1.67",
     "orientation": "portrait",
     "scheme": "idem",
     "icon": "./assets/iosLogo.png",
@@ -15,7 +15,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "config": {
         "usesNonExemptEncryption": false
@@ -50,7 +52,13 @@
           "color": "#ffffff"
         }
       ],
-      "expo-document-picker"
+      [
+        "expo-document-picker",
+        {
+          "appleTeamId": "FRG84WT9XZ",
+          "iCloudContainerEnvironment": "Production"
+        }
+      ]
     ]
   }
 }
