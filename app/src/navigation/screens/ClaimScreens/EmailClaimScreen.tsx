@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Alert, ScrollView, StatusBar, View } from "react-native";
 import { AlertTitle, ClaimTypeConstants } from "../../../constants/common";
-import useBaseClaim from "../../../hooks/useBaseClaim";
 import ClaimScreenStyles from "../../../styles/ClaimScreenStyles";
 import { FormState } from "../../../types/claim";
 import { ProfileStackNavigation } from "../../../types/navigation";
@@ -15,12 +14,13 @@ import { Button, Input } from "@rneui/themed";
 import { useClaimsStore } from "../../../context/ClaimsStore";
 import isEmail from "validator/lib/isEmail";
 import useApi from "../../../hooks/useApi";
+import Dialog from "react-native-dialog";
 
 type Navigation = ProfileStackNavigation<"EmailClaim">;
 
 const EmailClaimScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
-  const { usersClaims } = useClaimsStore();
+  const { usersClaims, addClaim } = useClaimsStore();
   const { claim, userClaim } = getUserClaimByType(
     ClaimTypeConstants.EmailCredential,
     usersClaims
@@ -30,8 +30,11 @@ const EmailClaimScreen: React.FC = () => {
   );
   const [disableButton, setDisableButton] = React.useState(false);
   const [disabledEmailInput, setDisabledEmailInput] = React.useState(false);
-  const { loading, onSave } = useBaseClaim();
+  const [loading, setLoading] = React.useState<boolean>(false);
   const api = useApi();
+
+  const [showVerifyEmailDialog, setShowVerifyEmailDialog] =
+    React.useState(false);
 
   const isEmailVerified =
     userClaim?.type === "EmailCredential" && userClaim.verified;
@@ -47,38 +50,57 @@ const EmailClaimScreen: React.FC = () => {
     claim.fields.filter((field) => formState[field.id]).length ===
     claim.fields.length;
 
-  const handleSave = async () => {
+  const handleVerifyRequest = async () => {
     if (!isEmail(formState.email as string)) {
       return Alert.alert(
         AlertTitle.Warning,
         "Please enter a valid email address."
       );
     }
-    await onSave(formState, claim.type, navigation);
-  };
-
-  const handleVerify = async () => {
-    if (!isEmail(formState.email as string)) {
-      return Alert.alert(
-        AlertTitle.Warning,
-        "Please enter a valid email address."
-      );
-    }
+    setLoading(true);
     await api
       .createUser({
         email: formState.email as string
       })
       .then(() => {
-        Alert.alert("Email Sent", "IDEM has sent a verification email.");
+        setShowVerifyEmailDialog(true);
       })
       .catch((error) => {
         Alert.alert(AlertTitle.Error, error);
-        throw error;
       });
+    setLoading(false);
+  };
+
+  const handleSubmitVerificationCode = async (
+    verificationCode: string | undefined
+  ) => {
+    if (!verificationCode) return;
+    try {
+      const isSuccess = await api.verifyEmail({
+        email: formState.email as string,
+        verificationCode
+      });
+      if (isSuccess) {
+        await addClaim(claim.type, formState, [], true);
+        Alert.alert("Your email has been verified.");
+        navigation.reset({
+          routes: [{ name: "Home" }]
+        });
+      } else {
+        Alert.alert("Please try again, verification code invalid.");
+      }
+    } catch (error: any) {
+      Alert.alert(AlertTitle.Error, error?.message);
+    }
   };
 
   return (
     <View style={commonStyles.screen}>
+      <VerifyEmailDialog
+        showDialog={showVerifyEmailDialog}
+        onCancel={() => setShowVerifyEmailDialog(false)}
+        onSubmit={handleSubmitVerificationCode}
+      />
       <ScrollView style={commonStyles.screenContent}>
         <View style={ClaimScreenStyles.content}>
           <StatusBar hidden={false} />
@@ -111,15 +133,7 @@ const EmailClaimScreen: React.FC = () => {
         <Button
           title={"Verify Email"}
           loading={loading}
-          onPress={() => handleVerify()}
-          disabled={!canSave || disableButton}
-        />
-      </View>
-      <View style={ClaimScreenStyles.buttonWrapper}>
-        <Button
-          title={"Save"}
-          loading={loading}
-          onPress={() => handleSave()}
+          onPress={() => handleVerifyRequest()}
           disabled={!canSave || disableButton}
         />
       </View>
@@ -128,3 +142,35 @@ const EmailClaimScreen: React.FC = () => {
 };
 
 export default EmailClaimScreen;
+
+const VerifyEmailDialog: React.FC<{
+  showDialog: boolean;
+  onCancel: () => void;
+  onSubmit: (otpCode?: string) => void;
+}> = ({ showDialog, onCancel, onSubmit }) => {
+  const [input, setInput] = React.useState<string>();
+
+  return (
+    <Dialog.Container visible={showDialog} onBackdropPress={onCancel}>
+      <Dialog.Title>Enter your verification code</Dialog.Title>
+      <Dialog.Input
+        onChangeText={setInput}
+        autoFocus={true}
+        keyboardType={"number-pad"}
+      ></Dialog.Input>
+      <Dialog.Button
+        onPress={onCancel}
+        label="Cancel"
+        bold={true}
+        color="#007ff9"
+      />
+      <Dialog.Button
+        onPress={() => {
+          onSubmit(input);
+        }}
+        label="OK"
+        color="#007ff9"
+      />
+    </Dialog.Container>
+  );
+};

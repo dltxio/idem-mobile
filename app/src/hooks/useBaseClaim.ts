@@ -5,7 +5,6 @@ import { useClaimsStore } from "../context/ClaimsStore";
 import { ClaimData, FormState } from "../types/claim";
 import { check18Plus } from "../utils/birthday-utils";
 import { claimsLocalStorage } from "../utils/local-storage";
-import usePgp from "./usePpg";
 
 type Hooks = {
   onSave: (
@@ -27,7 +26,6 @@ const useBaseClaim = (): Hooks => {
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
   const [selectedFileIds, setSelectedFileIds] = useState<string[]>([]);
   const { addClaim } = useClaimsStore();
-  const { verifyPublicKey } = usePgp();
 
   const onSave = async (
     formState: FormState,
@@ -41,10 +39,6 @@ const useBaseClaim = (): Hooks => {
       const claims = await claimsLocalStorage.get();
       if (claimType === ClaimTypeConstants.BirthCredential)
         await saveAndCheckBirthday(claims);
-      if (claimType === ClaimTypeConstants.EmailCredential) {
-        const email = (formState.email as string).toLowerCase();
-        await verifyPublicKey(email);
-      }
     } catch (error) {
       setLoading(false);
       Alert.alert(
