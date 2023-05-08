@@ -2,7 +2,7 @@
   "name": "idem",
   "version": "1.2.0",
   "license": "MIT",
-  "main": "./src/App.tsx",
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start:local": "expo start",
     "start": "expo start --dev-client",
