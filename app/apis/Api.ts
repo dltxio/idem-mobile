@@ -49,4 +49,9 @@ export default class Api extends HTTPClient {
 
   public getUser = async (email: string) =>
     this.get<UsersResponse>(`users/${email}`);
+
+  public verifyEmail = async (body: {
+    verificationCode: string;
+    email: string;
+  }) => this.post<boolean>(`users/verify-email`, body);
 }
