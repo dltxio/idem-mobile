@@ -3,7 +3,7 @@ import React from "react";
 import { ScrollView, StatusBar, View, Text } from "react-native";
 import { ClaimTypeConstants } from "../../../constants/common";
 import ClaimScreenStyles from "../../../styles/ClaimScreenStyles";
-import { FormState, PhoneType } from "../../../types/claim";
+import { FormState } from "../../../types/claim";
 import { ProfileStackNavigation } from "../../../types/navigation";
 import { getUserClaimByType } from "../../../utils/claim-utils";
 import commonStyles from "../../../styles/styles";
@@ -11,12 +11,13 @@ import { Button, Input } from "@rneui/themed";
 import useMobileClaim from "../../../hooks/useMobileClaim";
 import Dialog from "react-native-dialog";
 import { useClaimsStore } from "../../../context/ClaimsStore";
+import debounce from "lodash.debounce";
 
 export type Navigation = ProfileStackNavigation<"MobileClaim">;
 
 const MobileClaimScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
-  const { usersClaims } = useClaimsStore();
+  const { addClaim, updateClaim, usersClaims } = useClaimsStore();
   const { claim, userClaim } = getUserClaimByType(
     ClaimTypeConstants.MobileCredential,
     usersClaims
@@ -33,24 +34,27 @@ const MobileClaimScreen: React.FC = () => {
     verifyOtp
   } = useMobileClaim();
 
-  const formatMobileNumberState = () => {
-    const mobileState = formState["mobileNumber"];
-    const newMobileState = {
-      countryCode: mobileState.countryCode.trim() ?? "+61",
-      number: mobileState.number.replace(/^0/, "")
-    };
-    setFormState((previous) => ({
-      ...previous,
-      ["mobileNumber"]: newMobileState
-    }));
-    return newMobileState;
+  const requestOtp = async () => {
+    const mobileNumber = formState["mobileNumber"];
+    await openVerifyOtpScreen(mobileNumber);
   };
 
-  const requestOtp = async () => {
-    const newMobileState = formatMobileNumberState();
-    await openVerifyOtpScreen(newMobileState);
-  };
-  
+  const debouncedUpdateClaim = React.useCallback(
+    debounce(async (formState, claim, userClaim) => {
+      if (!userClaim) {
+        await addClaim(claim.type, formState, [], false);
+      } else {
+        await updateClaim(claim.type, formState, [], false);
+      }
+    }, 500),
+    []
+  );
+
+  React.useEffect(() => {
+    if (userClaim?.verified) return;
+    debouncedUpdateClaim(formState, claim, userClaim);
+  }, [formState]);
+
   return (
     <View style={commonStyles.screen}>
       <OtpDialog
@@ -66,41 +70,24 @@ const MobileClaimScreen: React.FC = () => {
         <View style={ClaimScreenStyles.content}>
           <StatusBar hidden={false} />
           <Text style={ClaimScreenStyles.mobileWarningText}>
-            Only Australian mobile numbers are supported, denoted by the +61
-            country code.
+            Only Australian mobile numbers are supported
           </Text>
 
           {claim.fields.map((field) => {
-            const onChange = (value: string | PhoneType) => {
+            const onChange = (value: string) => {
               setFormState((previous) => ({
                 ...previous,
                 [field.id]: value
               }));
             };
-            const phone = (formState[field.id] as PhoneType) ?? {};
             return (
               <View key={field.id}>
                 <Input
-                  label="Country Code"
-                  keyboardType="phone-pad"
-                  value={phone.countryCode}
-                  defaultValue={"+61"}
-                  onChangeText={(value) => {
-                    onChange({ ...phone, countryCode: value });
-                  }}
-                  editable={false}
-                />
-
-                <Input
                   label={field.title}
                   keyboardType="phone-pad"
-                  value={phone.number}
-                  onChangeText={(value) => {
-                    onChange({
-                      countryCode: phone.countryCode ?? "+61",
-                      number: value
-                    });
-                  }}
+                  value={formState[field.id]}
+                  onChangeText={onChange}
+                  disabled={userClaim?.verified}
                 />
               </View>
             );

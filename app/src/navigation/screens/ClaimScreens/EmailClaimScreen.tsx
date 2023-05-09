@@ -11,6 +11,7 @@ import {
 } from "../../../utils/claim-utils";
 import commonStyles from "../../../styles/styles";
 import { Button, Input } from "@rneui/themed";
+import debounce from "lodash.debounce";
 import { useClaimsStore } from "../../../context/ClaimsStore";
 import isEmail from "validator/lib/isEmail";
 import useApi from "../../../hooks/useApi";
@@ -20,7 +21,7 @@ type Navigation = ProfileStackNavigation<"EmailClaim">;
 
 const EmailClaimScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
-  const { usersClaims, addClaim } = useClaimsStore();
+  const { usersClaims, addClaim, updateClaim } = useClaimsStore();
   const { claim, userClaim } = getUserClaimByType(
     ClaimTypeConstants.EmailCredential,
     usersClaims
@@ -51,7 +52,7 @@ const EmailClaimScreen: React.FC = () => {
     claim.fields.length;
 
   const handleVerifyRequest = async () => {
-    if (!isEmail(formState.email as string)) {
+    if (!isEmail(formState.email)) {
       return Alert.alert(
         AlertTitle.Warning,
         "Please enter a valid email address."
@@ -60,7 +61,7 @@ const EmailClaimScreen: React.FC = () => {
     setLoading(true);
     await api
       .createUser({
-        email: formState.email as string
+        email: formState.email
       })
       .then(() => {
         setShowVerifyEmailDialog(true);
@@ -77,7 +78,7 @@ const EmailClaimScreen: React.FC = () => {
     if (!verificationCode) return;
     try {
       const isSuccess = await api.verifyEmail({
-        email: formState.email as string,
+        email: formState.email,
         verificationCode
       });
       if (isSuccess) {
@@ -93,6 +94,21 @@ const EmailClaimScreen: React.FC = () => {
       Alert.alert(AlertTitle.Error, error?.message);
     }
   };
+
+  const debouncedUpdateClaim = React.useCallback(
+    debounce(async (formState, claim, userClaim) => {
+      if (!userClaim) {
+        await addClaim(claim.type, formState, [], false);
+      } else {
+        await updateClaim(claim.type, formState, [], false);
+      }
+    }, 500),
+    []
+  );
+
+  React.useEffect(() => {
+    debouncedUpdateClaim(formState, claim, userClaim);
+  }, [formState]);
 
   return (
     <View style={commonStyles.screen}>
@@ -120,7 +136,7 @@ const EmailClaimScreen: React.FC = () => {
                   clearButtonMode="always"
                   keyboardType={keyboardTypeMap["email"]}
                   autoCapitalize="none"
-                  value={formState[field.id] as string}
+                  value={formState[field.id]}
                   onChangeText={onChange}
                   disabled={disabledEmailInput}
                 />
