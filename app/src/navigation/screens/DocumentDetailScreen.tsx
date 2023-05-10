@@ -18,7 +18,7 @@ import useSelectPhoto from "../../hooks/useSelectPhoto";
 import { DOCUMENT_IMAGE_OPTIONS } from "../../utils/image-utils";
 import * as DocumentPicker from "expo-document-picker";
 import { Field } from "../../types/document";
-import ModalDropdown from "react-native-modal-dropdown";
+import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 
@@ -235,7 +235,7 @@ const DocumentDetailScreen: React.FC = () => {
         return (
           <View>
             <Input
-              value={formState[field.title] as string}
+              value={formState[field.title]}
               label={field.title}
               ref={(ref: any) => {
                 dateRefs.current[field.title] = ref;
@@ -257,13 +257,16 @@ const DocumentDetailScreen: React.FC = () => {
             <Text style={styles.dropdownTitle}>{field.title}</Text>
             <View style={styles.dropdownSelect}>
               <View style={styles.flex} />
-              <ModalDropdown
-                style={styles.flex}
-                dropdownStyle={styles.dropdownItems}
-                options={field.valueOptions}
-                onSelect={(index, value) => onChange(value, field)}
-                defaultValue={formState[field.title]}
-              />
+              <Picker
+                selectedValue={formState[field.title]}
+                onValueChange={(itemValue, itemIndex) =>
+                  onChange(itemValue, field)
+                }
+              >
+                {field.valueOptions?.map((option) => (
+                  <Picker.Item label={option} value={option} />
+                ))}
+              </Picker>
             </View>
           </View>
         );
