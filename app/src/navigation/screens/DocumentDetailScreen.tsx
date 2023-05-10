@@ -259,9 +259,7 @@ const DocumentDetailScreen: React.FC = () => {
               <View style={styles.flex} />
               <Picker
                 selectedValue={formState[field.title]}
-                onValueChange={(itemValue, itemIndex) =>
-                  onChange(itemValue, field)
-                }
+                onValueChange={(itemValue) => onChange(itemValue, field)}
               >
                 {field.valueOptions?.map((option) => (
                   <Picker.Item label={option} value={option} />
