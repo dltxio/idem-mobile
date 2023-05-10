@@ -168,7 +168,7 @@ const VerifyEmailDialog: React.FC<{
 
   return (
     <Dialog.Container visible={showDialog} onBackdropPress={onCancel}>
-      <Dialog.Title>Enter your verification code</Dialog.Title>
+      <Dialog.Title>Enter the verification code</Dialog.Title>
       <Dialog.Input
         onChangeText={setInput}
         autoFocus={true}
