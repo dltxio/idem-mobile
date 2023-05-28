@@ -3,17 +3,13 @@ import { Alert } from "react-native";
 import { AlertTitle, ClaimTypeConstants } from "../constants/common";
 import { useClaimsStore } from "../context/ClaimsStore";
 import { Navigation } from "../navigation/screens/ClaimScreens/MobileClaimScreen";
-import {
-  FormState,
-  MobileClaimFormState,
-  RequestOptResponse
-} from "../types/claim";
+import { FormState, RequestOptResponse } from "../types/claim";
 import useApi from "./useApi";
 
 type Hooks = {
   loading: boolean;
   showOtpDialog: boolean;
-  openVerifyOtpScreen: (formState: MobileClaimFormState) => Promise<void>;
+  openVerifyOtpScreen: (mobileNumber: string) => Promise<void>;
   setShowOtpDialog: (show: boolean) => void;
   verifyOtp: (
     otpCode: string | undefined,
@@ -29,12 +25,12 @@ const useMobileClaim = (): Hooks => {
   const [otpContext, setOtpContext] = useState<RequestOptResponse>();
 
   const api = useApi();
-  const { addClaim } = useClaimsStore();
+  const { updateClaim } = useClaimsStore();
 
-  const openVerifyOtpScreen = async (newMobileState: MobileClaimFormState) => {
+  const openVerifyOtpScreen = async (mobileNumber: string) => {
     setLoading(true);
 
-    if (newMobileState.countryCode !== "+61") {
+    if (!mobileNumber.startsWith("+61") && !mobileNumber.startsWith("0")) {
       Alert.alert(
         AlertTitle.Error,
         "IDEM only supports Australian numbers for mobile claims/verification."
@@ -45,7 +41,7 @@ const useMobileClaim = (): Hooks => {
 
     try {
       const otpResponse = await api.requestOtp({
-        mobileNumber: `${newMobileState.countryCode}${newMobileState.number}`
+        mobileNumber
       });
       if (otpResponse.hash && otpResponse.expiryTimestamp) {
         setOtpContext(otpResponse);
@@ -65,17 +61,17 @@ const useMobileClaim = (): Hooks => {
   ) => {
     if (!otpCode || !otpContext) return;
     const { hash, expiryTimestamp } = otpContext;
-    const newMobileState = formState["mobileNumber"];
+    const mobileNumber = formState["mobileNumber"];
     try {
       const verifyOtp = await api.verifyOtp({
         hash,
         code: otpCode,
         expiryTimestamp,
-        mobileNumber: `${newMobileState.countryCode}${newMobileState.number}`
+        mobileNumber
       });
 
       if (verifyOtp) {
-        await addClaim(claimType, formState, [], true);
+        await updateClaim(claimType, formState, [], true);
         Alert.alert("Your mobile has been verified.");
         navigation.reset({
           routes: [{ name: "Home" }]
