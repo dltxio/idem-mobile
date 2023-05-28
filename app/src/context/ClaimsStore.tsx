@@ -63,7 +63,7 @@ export const ClaimsProvider: React.FC<{
 
         return {
           ...cd,
-          claimValue: claimValue ?? cd.value,
+          value: claimValue ?? cd.value,
           files: files ?? cd.files,
           verified: verified ?? cd.verified,
           proof: proof ?? cd.proof
