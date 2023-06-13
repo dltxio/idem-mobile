@@ -58,7 +58,8 @@
           "appleTeamId": "FRG84WT9XZ",
           "iCloudContainerEnvironment": "Production"
         }
-      ]
+      ],
+      "sentry-expo"
     ]
   }
 }
