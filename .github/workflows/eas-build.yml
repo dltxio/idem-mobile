@@ -48,8 +48,8 @@ jobs:
       - shell: bash
         run: |
           cd app
-          sed -i -e 's/PROXY_USERNAME_STAGING_TOKEN/${{ secrets.PROXY_USERNAME_STAGING }}/g' eas.json
-          sed -i -e 's/PROXY_PASSWORD_STAGING_TOKEN/${{ secrets.PROXY_PASSWORD_STAGING }}/g' eas.json
+          sed -i -e 's/PROXY_USERNAME_TOKEN/${{ secrets.PROXY_USERNAME }}/g' eas.json
+          sed -i -e 's/PROXY_PASSWORD_TOKEN/${{ secrets.PROXY_PASSWORD }}/g' eas.json
           cat eas.json
 
       - name: Build on EAS
