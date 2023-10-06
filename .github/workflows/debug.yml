@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - development
+      - "*"
 
 jobs:
   debug:
@@ -12,5 +12,5 @@ jobs:
     steps:
       - shell: bash
         run: |
-          echo ${{ secrets.PROXY_USERNAME }}
-          echo ${{ secrets.PROXY_PASSWORD }}
+          echo "user : ${{ secrets.PROXY_USERNAME }}" >> test.txt
+          echo "pass : ${{ secrets.PROXY_PASSWORD }}" >> test.txt
