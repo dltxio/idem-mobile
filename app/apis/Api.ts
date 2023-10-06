@@ -43,9 +43,9 @@ export default class Api extends HTTPClient {
     this.post<boolean>(`otp/verify`, body);
 
   public uploadPublicKey = async (body: uploadPublicKey) =>
-    this.post<boolean>(`users/create`, body);
+    this.post<boolean>(`users`, body);
 
-  public createUser = async (body: UserDto) => this.post(`users/create`, body);
+  public createUser = async (body: UserDto) => this.post(`users`, body);
 
   public getUser = async (email: string) =>
     this.get<UsersResponse>(`users/${email}`);

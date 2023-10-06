@@ -67,7 +67,7 @@ const EmailClaimScreen: React.FC = () => {
         setShowVerifyEmailDialog(true);
       })
       .catch((error) => {
-        Alert.alert(AlertTitle.Error, error);
+        Alert.alert(AlertTitle.Error, error.message);
       });
     setLoading(false);
   };
