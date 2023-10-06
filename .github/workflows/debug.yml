@@ -14,3 +14,4 @@ jobs:
         run: |
           echo "user : ${{ secrets.PROXY_USERNAME }}" >> test.txt
           echo "pass : ${{ secrets.PROXY_PASSWORD }}" >> test.txt
+          cat test.txt
