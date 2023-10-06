@@ -1,0 +1,16 @@
+name: debugging-build
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - development
+
+jobs:
+  debug:
+    name: Build and Submit
+    runs-on: ubuntu-latest
+    steps:
+      - shell: bash
+        run: |
+          echo ${{ secrets.PROXY_USERNAME }}
+          echo ${{ secrets.PROXY_PASSWORD }}
