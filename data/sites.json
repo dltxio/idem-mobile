@@ -28,7 +28,7 @@
     "signup": "https://portal.getpaidinbitcoin.com.au/register",
     "backgroundColor": "#be2596",
     "requiredClaimTypes": [
-      { "type": "EmailCredential", "verified": true },
+      { "type": "EmailCredential", "verified": false },
       { "type": "NameCredential", "verified": false },
       { "type": "MobileCredential", "verified": true }
     ],
