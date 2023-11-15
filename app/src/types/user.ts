@@ -1,6 +1,13 @@
 import { ClaimTypeConstants } from "../constants/common";
 import { DOB, Fullname, LicenceData, MedicareData } from "./document";
 
+export type UserInfo = {
+  name: string;
+  email: string;
+  mobile?: string;
+  dob?: string;
+};
+
 export type UserSignup = {
   source: number;
   firstName: string;
@@ -43,7 +50,7 @@ type ClaimResponsePayload = Record<string, unknown>;
 export type IdemVerification = {
   result: KycResult;
   thirdPartyVerified: boolean;
-  signature: string; //signed claim response
+  signature: string; // signed claim response
   message: ClaimResponsePayload;
   hashedPayload: string;
   JWTs: JWT[];
