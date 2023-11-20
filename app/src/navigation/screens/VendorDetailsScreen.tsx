@@ -19,7 +19,6 @@ import BottomNavBarSpacer from "../../components/BottomNavBarSpacer";
 import { AlertTitle, ClaimTypeConstants } from "../../constants/common";
 import { verificationStorage } from "../../utils/local-storage";
 import { IdemVerification, UserInfo } from "../../types/user";
-import { use } from "chai";
 
 const VendorDetailsScreen: React.FC = () => {
   const { partners } = useVendorsList();
@@ -33,8 +32,12 @@ const VendorDetailsScreen: React.FC = () => {
 
   const partnerSignUp = async () => {
     if (partner) {
-
-      const userinfo: UserInfo;
+      const userinfo: UserInfo = {
+        name: "",
+        email: "",
+        mobile: "",
+        dob: ""
+      };
 
       for (const claim of partner.requiredClaimTypes) {
         const claimValue = usersClaims.find((c) => c.type === claim.type);
@@ -114,6 +117,7 @@ const VendorDetailsScreen: React.FC = () => {
     </ScrollView>
   );
 };
+
 export default VendorDetailsScreen;
 
 const styles = StyleSheet.create({
