@@ -1,21 +1,15 @@
-import { Vendor } from "./../types/general";
+import { Vendor } from "../types/general";
 import { Alert } from "react-native";
 import { AlertTitle } from "../constants/common";
 import { findNames } from "../utils/formatters";
 import {
   exchangeLocalStorage,
-  verificationStorage
+  // verificationStorage
 } from "../utils/local-storage";
 import { createRandomPassword } from "../utils/randomPassword-utils";
 import { getPartner } from "../utils/partner";
 import useApi from "./useApi";
-
-type UserInfo = {
-  name: string;
-  email: string;
-  mobile?: string;
-  dob?: string;
-};
+import { UserInfo } from "../types/user";
 
 type Hooks = {
   signup: (userInfo: UserInfo, vendor: Vendor) => Promise<void>;
@@ -28,17 +22,18 @@ const useVendors = (): Hooks => {
     const { name, email, mobile, dob } = userInfo;
     try {
       let idVerification;
-      if (vendor.verifyClaims) {
-        idVerification = await verificationStorage.get();
-        if (!idVerification) {
-          throw new Error(
-            "The required claims have not been verified. Please verify these claims on the profile page first."
-          );
-        }
-      }
+      
+      // if (vendor.verifyClaims) {
+      //   idVerification = await verificationStorage.get();
+      //   if (!idVerification) {
+      //     throw new Error(
+      //       "The required claims have not been verified. Please verify these claims on the profile page first."
+      //     );
+      //   }
+      // }
 
-      const vendorName = getPartner(vendor.id);
-      if (!vendorName) throw new Error("Vendor not found");
+      const partnerName = getPartner(vendor.id);
+      if (!partnerName) throw new Error("Partner not found");
 
       const splitName = findNames(name);
       const hasFullName = splitName?.firstName && splitName.lastName;
@@ -62,8 +57,10 @@ const useVendors = (): Hooks => {
         },
         idVerification
       );
+      
       let tempPassword: string;
       let userId;
+      
       if (vendor.id === 5) {
         userId = response.userId;
         tempPassword = response.password ?? randomTempPassword;
@@ -71,11 +68,13 @@ const useVendors = (): Hooks => {
         userId = response.userId;
         tempPassword = randomTempPassword;
       }
+      
       await exchangeLocalStorage.save({
-        vendor: vendorName,
+        vendor: partnerName,
         signup: true,
         userId
       });
+
       shareDetailsAlert(tempPassword);
     } catch (error: any) {
       Alert.alert(error?.message);

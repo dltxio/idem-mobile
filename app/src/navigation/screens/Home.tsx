@@ -170,6 +170,7 @@ const Home: React.FC = () => {
     </View>
   );
 };
+
 export default Home;
 
 const styles = StyleSheet.create({
