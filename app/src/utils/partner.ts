@@ -30,12 +30,14 @@ export const getUnVerifyClaims = (
     const userClaim = usersClaims.find(
       (claim) => claim.type === requiredClaim.type
     );
+
     if (!userClaim) {
       const claimTitle = claims.find(
         (c) => c.type === requiredClaim.type
       )?.title;
       return `${claimTitle?.toLocaleLowerCase()} claim to be completed`;
     }
+
     if (
       requiredClaim.verified &&
       userClaim?.verified !== requiredClaim.verified

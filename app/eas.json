@@ -16,6 +16,12 @@
         "simulator": true
       }
     },
+    "preview": {
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      }
+    },
     "staging": {
       "env": {
         "API_ENDPOINT": "https://proxy.idem.com.au/",
