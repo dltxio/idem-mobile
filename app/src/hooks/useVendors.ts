@@ -3,7 +3,7 @@ import { Alert } from "react-native";
 import { AlertTitle } from "../constants/common";
 import { findNames } from "../utils/formatters";
 import {
-  exchangeLocalStorage,
+  exchangeLocalStorage
   // verificationStorage
 } from "../utils/local-storage";
 import { createRandomPassword } from "../utils/randomPassword-utils";
@@ -22,7 +22,6 @@ const useVendors = (): Hooks => {
     const { name, email, mobile, dob } = userInfo;
     try {
       let idVerification;
-      
       // if (vendor.verifyClaims) {
       //   idVerification = await verificationStorage.get();
       //   if (!idVerification) {
@@ -36,8 +35,9 @@ const useVendors = (): Hooks => {
       if (!partnerName) throw new Error("Partner not found");
 
       const splitName = findNames(name);
+      console.log("splitName", splitName);
       const hasFullName = splitName?.firstName && splitName.lastName;
-      if (!hasFullName) throw new Error("Missing Full Name");
+      if (!hasFullName) throw new Error("Missing Full Name!");
 
       let randomTempPassword = "";
 
@@ -57,10 +57,10 @@ const useVendors = (): Hooks => {
         },
         idVerification
       );
-      
+
       let tempPassword: string;
       let userId;
-      
+
       if (vendor.id === 5) {
         userId = response.userId;
         tempPassword = response.password ?? randomTempPassword;
@@ -68,7 +68,7 @@ const useVendors = (): Hooks => {
         userId = response.userId;
         tempPassword = randomTempPassword;
       }
-      
+
       await exchangeLocalStorage.save({
         vendor: partnerName,
         signup: true,
