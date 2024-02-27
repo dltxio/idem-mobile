@@ -4,7 +4,7 @@
   "repository": "https://github.com/dltxio/idem-mobile.git",
   "license": "MIT",
   "engines": {
-    "node": "18.17.1"
+    "node": "18.18"
   },
   "scripts": {
     "prepare": "husky install",
