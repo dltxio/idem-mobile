@@ -4,7 +4,7 @@ import { ListItem } from "@rneui/themed";
 import commonStyles from "../../styles/styles";
 import { useNavigation } from "@react-navigation/native";
 import { PartnersStackNavigaton } from "../../types/navigation";
-import useVendorsList from "../../hooks/useVendorsList";
+import usePartnersLiset from "../../hooks/usePartnersList";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../../styles/colors";
 
@@ -12,7 +12,7 @@ type Navigation = PartnersStackNavigaton<"Partners">;
 
 const PartnersScreen: React.FC = () => {
   const navigation = useNavigation<Navigation>();
-  const { partners } = useVendorsList();
+  const { partners } = usePartnersLiset();
 
   return (
     <View style={commonStyles.screen}>

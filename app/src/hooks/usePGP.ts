@@ -166,18 +166,23 @@ const usePgp = (): Hooks => {
   );
 
   const importPrivateKeyFileFromDevice = async () => {
-    const res = await DocumentPicker.getDocumentAsync({
-      type: ["*/*"]
-    });
-    if (res.type === "cancel") return;
-    const isCorrectFileType =
-      res.name.endsWith(".asc") || res.name.endsWith(".key");
-    if (!isCorrectFileType) {
-      throw new Error("Invalid file type : expecting .asc or .key");
-    }
-    const fileContent = await FileSystem.readAsStringAsync(res.uri);
+    const res: DocumentPicker.DocumentPickerResult =
+      await DocumentPicker.getDocumentAsync({
+        type: ["*/.asc", "*/.key"]
+      });
+
+    if (res.canceled) return;
+    // const isCorrectFileType =
+    //   res.name.endsWith(".asc") || res.name.endsWith(".key");
+
+    // if (!isCorrectFileType) {
+    //   throw new Error("Invalid file type : expecting .asc or .key");
+    // }
+
+    const fileContent = await FileSystem.readAsStringAsync(res.assets[0].uri);
     return fileContent;
   };
+
   return {
     generateKeyPair,
     generateKeyPairFromPrivateKey,
