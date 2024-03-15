@@ -174,8 +174,8 @@ const DocumentDetailScreen: React.FC = () => {
       const res = await DocumentPicker.getDocumentAsync({
         type: "*/*"
       });
-      if (res && res.type !== "cancel") {
-        saveFile(res.uri);
+      if (res && !res.canceled) {
+        saveFile(res.assets[0].uri);
       }
     } catch (error) {
       console.log(error);

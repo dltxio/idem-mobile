@@ -37,7 +37,7 @@ type Props = {
   importPrivateKeyFileFromDevice: () => Promise<string | undefined>;
 };
 
-const PgpSection: React.FC<Props> = (props) => {
+const PGPSection: React.FC<Props> = (props) => {
   const emailClaimValue = useClaimValue(ClaimTypeConstants.EmailCredential);
   const nameClaimValue = useClaimValue(ClaimTypeConstants.NameCredential);
   const [isActive, setIsActive] = React.useState(false);
@@ -87,6 +87,7 @@ const PgpSection: React.FC<Props> = (props) => {
     },
     [extractAndLoadKeyPairFromContent]
   );
+
   const generateAndPublishNewPgpKey = React.useCallback(
     async (name: string, email: string) => {
       if (!isEmail(email)) {
@@ -101,10 +102,10 @@ const PgpSection: React.FC<Props> = (props) => {
     },
     [props.generateKeyPair]
   );
+
   const toggleSwitch = () => setIsActive((previousState) => !previousState);
 
   const shouldDisabledGeneratePgpKey = !emailClaimValue || !nameClaimValue;
-
   const shouldShowPublicKey = publicKey && props.isEmailVerified;
 
   React.useEffect(() => {
@@ -206,7 +207,8 @@ const PgpSection: React.FC<Props> = (props) => {
     </KeyboardAvoidingView>
   );
 };
-export default PgpSection;
+
+export default PGPSection;
 
 const styles = StyleSheet.create({
   container: {
@@ -223,15 +225,15 @@ const styles = StyleSheet.create({
   },
   didntGetEmailText: {
     alignItems: "center",
-    justtifyContent: "center",
+    // justtifyContent: "center",
     margin: 10,
     alignSelf: "stretch"
   },
   qrCodeContainer: {
     marginTop: 15,
     minHeight: 250,
-    alignItems: "center",
-    justtifyContent: "center"
+    alignItems: "center"
+    // justtifyContent: "center"
   },
   scrollContent: {
     justifyContent: "flex-start",

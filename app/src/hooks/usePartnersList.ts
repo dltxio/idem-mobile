@@ -12,16 +12,19 @@ type Hooks = {
   getPartners: () => Promise<void>;
 };
 
-const useVendorsList = (): Hooks => {
+const usePartnersList = (): Hooks => {
   const [partners, setPartners] = React.useState<Vendor[]>([]);
 
   const getPartners = async () => {
     try {
-      const sitesUrl = config.exchangeSitesJsonUrl;
+      const sitesUrl = config.partnersUrl;
       if (sitesUrl) {
         const { data: partners }: GetPartnersResponse = await axios.get(
           sitesUrl
         );
+
+        console.log("partners", partners);
+
         setPartners(partners);
       }
     } catch (error) {
@@ -37,4 +40,4 @@ const useVendorsList = (): Hooks => {
   return { partners, getPartners };
 };
 
-export default useVendorsList;
+export default usePartnersList;

@@ -10,7 +10,7 @@ import {
   ScrollView
 } from "react-native";
 import { Button } from "../../components";
-import useVendorsList from "../../hooks/useVendorsList";
+import useVendorsList from "../../hooks/usePartnersList";
 import { PartnersStackNavigationRoute } from "../../types/navigation";
 import { useClaimsStore, useClaimValue } from "../../context/ClaimsStore";
 import useVendors from "../../hooks/useVendors";
@@ -25,7 +25,7 @@ const VendorDetailsScreen: React.FC = () => {
   const { usersClaims } = useClaimsStore();
   const route = useRoute<PartnersStackNavigationRoute<"VendorDetails">>();
   const partner = partners.find((v) => v.id == route.params.id);
-  const [signed, setSigned] = React.useState<boolean>(false);
+  const [signedUp, setSignedUp] = React.useState<boolean>(false);
   const { signup } = useVendors();
 
   const unVerifiedClaimsText = getUnVerifiedClaimText(partner, usersClaims);
@@ -52,7 +52,7 @@ const VendorDetailsScreen: React.FC = () => {
       }
 
       await signup(userinfo, partner);
-      setSigned(true);
+      setSignedUp(true);
     }
 
     // if (partner && getPartner(partner.id) && name && email) {
@@ -110,7 +110,7 @@ const VendorDetailsScreen: React.FC = () => {
         <Button
           onPress={partnerSignUp}
           title="Sign Up"
-          disabled={signed || unVerifiedClaimsText !== undefined}
+          disabled={signedUp || unVerifiedClaimsText !== undefined}
         />
       </View>
       <BottomNavBarSpacer />
