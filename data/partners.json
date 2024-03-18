@@ -25,7 +25,7 @@
     "description": "",
     "website": "https://getpaidinbitcoin.com.au/",
     "logo": "https://raw.githubusercontent.com/dltxio/idem-mobile/main/data/GPIB_logo.png",
-    "signup": "https://portal.getpaidinbitcoin.com.au/register",
+    "signup": "https://testv2.getpaidinbitcoin.com.au/register",
     "backgroundColor": "#be2596",
     "requiredClaimTypes": [
       { "type": "EmailCredential", "verified": false },
