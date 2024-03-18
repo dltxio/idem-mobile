@@ -33,7 +33,7 @@
       { "type": "MobileCredential", "verified": true }
     ],
     "tempPassword": true,
-    "verifyClaims": true,
+    "verifyClaims": false,
     "enabled": true
   },
   {
