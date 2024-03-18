@@ -13,7 +13,7 @@ const devConfig: config.Config = {
   sentryDSN: "",
   sentryDebugEnable: false,
   partnersUrl:
-    "https://raw.githubusercontent.com/dltxio/idem-mobile/development/data/sites.json"
+    "https://raw.githubusercontent.com/dltxio/idem-mobile/development/data/partners.json"
 };
 
 const getChannelConfig = () => {
